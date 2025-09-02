@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="DeadAirAITweaks_kuerteeAttackAITweaks" name="[ТРЕБУЕТ ПЕРЕВОД] KUDA AI tweaks" author="deadair, kuertee" version="750" date="2025-03-05" save="false" enabled="1" description="Мод da ku ai tweaks расширяет возможности игры и добавляет улучшения геймплея.">
+<content id="DeadAirAITweaks_kuerteeAttackAITweaks" name="[ТРЕБУЕТ ПЕРЕВОД] KUDA AI tweaks" author="deadair, kuertee" version="750" date="2025-03-05" save="false" enabled="1" description="Мод da ku AI tweaks расширяет возможности игры и добавляет улучшения геймплея.">
 
-<text language="" description=" Combined Kuertee's Attack AI Tweaks mod and DeadAIR's AI Tweaks mod.&#13;&#10; Attack AI Tweaks: all ships avoid high-risk enemies, L/XL ships step forward on no damage, L/XL withdraw on damage. Read-me: https://www.nexusmods.com/x4foundations/mods/839&#13;&#10; DeadAIRAITweaks read-me: https://github.com/kuertee/x4-mod-da-ku-ai-tweaks/blob/master/deadairaitweaks-read-me.md&#13;&#10; " />
+<!--auto-generated ru by mass_translate.py--><text language="" description=" Combined Kuertee's Attack AI Tweaks mod and DeadAIR's AI Tweaks mod.&#13;&#10; Attack AI Tweaks: all ships avoid high-risk enemies, L/XL ships step forward on no damage, L/XL withdraw on damage. Read-me: https://www.nexusmods.com/x4foundations/mods/839&#13;&#10; DeadAIRAITweaks read-me: https://github.com/kuertee/x4-mod-da-ku-ai-tweaks/blob/master/deadairaitweaks-read-me.md&#13;&#10; " />
 
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] KUDA AI tweaks" description="Мод da ku ai tweaks расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] KUDA AI tweaks" description="Мод da ku AI tweaks расширяет возможности игры и добавляет улучшения геймплея." /></content>

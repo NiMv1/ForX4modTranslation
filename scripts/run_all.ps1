@@ -22,7 +22,13 @@ python .\ru_translation\fetch_online_descriptions.py
 Write-Host "==> Генерация кратких RU-аннотаций на основе локальных README/контекста"
 python .\ru_translation\generate_ru_summaries.py
 
+Write-Host "==> Массовый перевод RU name/description (без меток), постобработка"
+python .\ru_translation\mass_translate.py
+
 Write-Host "==> Отчёт по описаниям модов из content.xml/README (для дополнения RU-описаний)"
 python .\ru_translation\content_report.py
+
+Write-Host "==> Отчёт модов, требующих ручной вычитки (автогенерация)"
+python .\ru_translation\translation_review_report.py
 
 Write-Host "Готово."

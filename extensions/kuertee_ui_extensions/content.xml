@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="kuerteeUIExtensionsAndHUD" name="Расширения интерфейса и HUD (kuertee)" author="kuertee" version="760" date="2025-06-14" save="false" enabled="1" description="Расширяет интерфейс и элементы HUD: добавляет полезные панели, улучшает читаемость и удобство управления. Включает набор UI-улучшений и интеграций.">
+<content id="kuerteeUIExtensionsAndHUD" name="Расширения интерфейса и HUD (kuertee)" author="kuertee" version="760" date="2025-06-14" save="false" enabled="1" description="Мод kuertee UI extensions улучшает интерфейс и элементы HUD." ru_auto="1">
 
 <text language="" description="UI Extensions and HUD&#13;&#10; https://www.nexusmods.com/x4foundations/mods/552&#13;&#10; Code: https://github.com/kuertee/x4-mod-ui-extensions.git&#13;&#10; by kuertee. Contributors: Forleyor, Mycu.&#13;&#10;" />
-<text language="7" name="Расширения интерфейса и HUD (kuertee)" description="Расширяет интерфейс и элементы HUD: добавляет полезные панели, улучшает читаемость и удобство управления. Включает набор UI-улучшений и интеграций." /></content>
+<text language="7" name="Расширения интерфейса и HUD (kuertee)" description="Мод kuertee UI extensions улучшает интерфейс и элементы HUD." /></content>

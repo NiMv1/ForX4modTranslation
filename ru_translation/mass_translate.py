@@ -37,6 +37,11 @@ DESC_HINTS = [
 
 MARKER = '[ТРЕБУЕТ ПЕРЕВОД]'
 
+# Термины, которые не переводим и сохраняем как есть (регистр фиксируем)
+IMMUTABLE_TERMS = {
+    'HUD', 'UI', 'SETA', 'VRO', 'API', 'AI', 'DLC', 'HUD', 'XR', 'X4', 'OOS'
+}
+
 
 def is_placeholder(text: str) -> bool:
     if text is None:
@@ -72,6 +77,28 @@ def first_paragraph(text: str, limit=300) -> str:
     if not parts:
         return ''
     return parts[0][:limit]
+
+
+def normalize_quotes_and_punct(s: str) -> str:
+    # Прямые кавычки -> «»
+    s = s.replace('"', '"').replace("'", "'")
+    # Заменим пары кавычек на ёлочки, грубо
+    s = re.sub(r'"([^"]+)"', r'«\1»', s)
+    s = re.sub(r"'([^']+)'", r'«\1»', s)
+    # Уберём повторяющиеся пробелы и пробелы перед пунктуацией
+    s = re.sub(r'\s+', ' ', s).strip()
+    s = re.sub(r'\s+([,:;.!?])', r'\1', s)
+    # Добавим завершающую точку, если нужна
+    if s and s[-1] not in '.!?…':
+        s += '.'
+    return s
+
+
+def enforce_immutable_terms(s: str) -> str:
+    # Сохраняем регистр и форму ключевых аббревиатур
+    for term in IMMUTABLE_TERMS:
+        s = re.sub(fr'\b{term}\b', term, s, flags=re.IGNORECASE)
+    return s
 
 
 def collect_en(content: ET.Element) -> tuple[str, str]:
@@ -118,6 +145,7 @@ def translate_name(en_name: str, mod_dirname: str) -> str:
     # Если не появилось кириллицы, добавим пояснение "(мод)"
     if not has_cyrillic(name):
         name = f"Мод {mod_dirname.replace('_',' ').strip()}"
+    name = enforce_immutable_terms(name)
     return name[:120]
 
 
@@ -133,6 +161,8 @@ def synthesize_ru_desc(mod_name: str, en_name: str, en_desc_snippet: str, readme
         desc = f"Мод {base} {', '.join(hints)}."
     else:
         desc = f"Мод {base} расширяет возможности игры и добавляет улучшения геймплея."
+    desc = enforce_immutable_terms(desc)
+    desc = normalize_quotes_and_punct(desc)
     return desc[:900]
 
 
@@ -159,14 +189,13 @@ def process_mod(mod_dir: Path) -> bool:
         return False
 
     t_ru = content.find('.//text[@language="7"]')
-    name_ru_curr = (t_ru.get('name') if t_ru is not None else '') or content.get('name') or ''
-    desc_ru_curr = (t_ru.get('description') if t_ru is not None else '') or content.get('description') or ''
+    name_ru_curr = (t_ru.get('name') if t_ru is not None else '') or (content.get('name') or '')
+    desc_ru_curr = (t_ru.get('description') if t_ru is not None else '') or (content.get('description') or '')
 
-    # Если уже есть нормальный RU без метки — пропускаем
-    if name_ru_curr and has_cyrillic(name_ru_curr) and MARKER not in name_ru_curr:
-        pass
-    if desc_ru_curr and has_cyrillic(desc_ru_curr) and MARKER not in desc_ru_curr and not is_placeholder(desc_ru_curr):
-        return False
+    # Если и имя, и описание уже нормальные RU без меток и не плейсхолдеры —
+    # не меняем тексты, но помечаем ru_auto="1" при отсутствии атрибута.
+    name_ok = bool(name_ru_curr) and has_cyrillic(name_ru_curr) and (MARKER not in name_ru_curr)
+    desc_ok = bool(desc_ru_curr) and has_cyrillic(desc_ru_curr) and (MARKER not in desc_ru_curr) and (not is_placeholder(desc_ru_curr))
 
     # Собираем EN
     en_name, en_desc = collect_en(content)
@@ -182,7 +211,7 @@ def process_mod(mod_dir: Path) -> bool:
         if readme_snip:
             break
 
-    # Генерация
+    # Генерация эталонных значений (нужны также для ретега ru_auto)
     ru_name = translate_name(en_name, mod_dir.name)
     ru_desc = synthesize_ru_desc(mod_dir.name, en_name, en_desc, readme_snip)
 
@@ -202,7 +231,17 @@ def process_mod(mod_dir: Path) -> bool:
         tnode.set('description', ru_desc)
         changed = True
 
+    # Если тексты уже ок и совпадают с нашей автогенерацией, но ru_auto нет — поставим только атрибут
+    if (not changed) and name_ok and desc_ok and content.get('ru_auto') != '1':
+        if (
+            ((content.get('name') or '') == ru_name or (t_ru is not None and (t_ru.get('name') or '') == ru_name))
+            and ((content.get('description') or '') == ru_desc or (t_ru is not None and (t_ru.get('description') or '') == ru_desc))
+        ):
+            changed = True
     if changed:
+        # Проставим атрибут-маркер автогенерации на узле content
+        if content.get('ru_auto') != '1':
+            content.set('ru_auto', '1')
         tree.write(cx, encoding='utf-8', xml_declaration=True)
     return changed
 
