@@ -98,13 +98,13 @@ def fix_content_xml(content_xml_path: Path, mod_name: str) -> bool:
 
     marker = '[ТРЕБУЕТ ПЕРЕВОД] '
 
-    # Если RU отсутствует — заполняем первым доступным EN-кандидатом и помечаем
-    if not ru_name:
+    # Если RU отсутствует или является плейсхолдером — заполняем EN/README и помечаем
+    if (not ru_name) or is_placeholder(ru_name):
         for src, kind, val in en_candidates:
             if kind == 'name' and val and not is_placeholder(val):
                 ru_name = (val if val.startswith(marker) else (marker + val))
                 break
-    if not ru_desc:
+    if (not ru_desc) or is_placeholder(ru_desc):
         for src, kind, val in en_candidates:
             if kind == 'desc' and val and not is_placeholder(val):
                 ru_desc = (val if val.startswith(marker) else (marker + val))

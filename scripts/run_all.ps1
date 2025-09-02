@@ -16,6 +16,12 @@ python .\ru_translation\scan_readtext.py
 Write-Host "==> Валидация t-файлов (наличие RU и покрытие ReadText)"
 python .\ru_translation\t_validator.py
 
+Write-Host "==> Автопоиск описаний из интернета (GitHub/Nexus) для заполнения RU-описаний"
+python .\ru_translation\fetch_online_descriptions.py
+
+Write-Host "==> Генерация кратких RU-аннотаций на основе локальных README/контекста"
+python .\ru_translation\generate_ru_summaries.py
+
 Write-Host "==> Отчёт по описаниям модов из content.xml/README (для дополнения RU-описаний)"
 python .\ru_translation\content_report.py
 
