@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="sgm_replace_commander" name="[ТРЕБУЕТ ПЕРЕВОД] SGM Replace Commander" author="Soulbinder" version="101" date="2021-07-15" save="false" description="Мод sgm replace commander упрощает управление флотом и подчинёнными.">
+<content id="sgm_replace_commander" name="Мод sgm replace commander" author="Soulbinder" version="101" date="2021-07-15" save="false" description="Мод sgm replace commander упрощает управление флотом и подчинёнными." ru_auto="1">
   <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs Community Edition" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] SGM Replace Commander" description="Мод sgm replace commander упрощает управление флотом и подчинёнными." /></content>
+<text language="7" name="Мод sgm replace commander" description="Мод sgm replace commander упрощает управление флотом и подчинёнными." /><language language="7" description="Мод sgm replace commander упрощает управление флотом и подчинёнными." /></content>

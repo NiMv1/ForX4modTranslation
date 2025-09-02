@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="build_station_module_info" name="[ТРЕБУЕТ ПЕРЕВОД] Build station module info" description="Мод build station module info расширяет возможности игры и добавляет улучшения геймплея." author="fare_men" version="100" date="2025-05-09" save="0" enabled="1" sync="false">
+<content id="build_station_module_info" name="Мод build station module info" description="Мод build station module info расширяет возможности игры и добавляет улучшения геймплея." author="fare_men" version="100" date="2025-05-09" save="0" enabled="1" sync="false" ru_auto="1">
   <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Build station module info" description="Мод build station module info расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="Мод build station module info" description="Мод build station module info расширяет возможности игры и добавляет улучшения геймплея." /><language language="7" description="Мод build station module info расширяет возможности игры и добавляет улучшения геймплея." /></content>

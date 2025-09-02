@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="Reworked_EquipMods" name="[ТРЕБУЕТ ПЕРЕВОД] Reworked EquipMods" author="goose" version="104" date="2024-01-22" save="0" enabled="1" description="Мод reworked equipmentmods расширяет возможности игры и добавляет улучшения геймплея.">
+<content id="Reworked_EquipMods" name="Мод reworked equipmentmods" author="goose" version="104" date="2024-01-22" save="0" enabled="1" description="Мод reworked equipmentmods расширяет возможности игры и добавляет улучшения геймплея." ru_auto="1">
     <dependency id="ws_1696862840" optional="true" name="Variety and Rebalance Overhaul" />	
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Reworked EquipMods" description="Мод reworked equipmentmods расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="Мод reworked equipmentmods" description="Мод reworked equipmentmods расширяет возможности игры и добавляет улучшения геймплея." /><language language="7" description="Мод reworked equipmentmods расширяет возможности игры и добавляет улучшения геймплея." /></content>

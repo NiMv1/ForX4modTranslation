@@ -1,0 +1,17 @@
+{
+  "immutable_terms": ["HUD", "UI", "SETA", "VRO", "API", "AI", "DLC", "XR", "X4", "OOS"],
+  "forbidden_patterns": [
+    "\\bEgosoft\\b",
+    "\\bNexusMods?\\b"
+  ],
+  "custom_names": {
+    "vro": "VRO — визуальный ребаланс",
+    "vro_assets": "VRO: ассеты и совместимость"
+  },
+  "custom_descriptions": {
+    "vro": "Глобальный ребаланс визуала и параметров, переработка эффектов и баланса вооружений/кораблей.",
+    "vro_assets": "Ассеты и вспомогательные материалы для VRO; повышает совместимость с другими модами."
+  },
+  "desc_min_len": 40,
+  "desc_max_len": 900
+}

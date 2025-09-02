@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="gibbonFriendlyFire" name="[ТРЕБУЕТ ПЕРЕВОД] Gibbon Friendly Fire Tweaks" author="Gibbon" version="750" date="2025-07-25" save="false" enabled="1" description="Мод gibbon friendlyfire расширяет возможности игры и добавляет улучшения геймплея.">
+<content id="gibbonFriendlyFire" name="Мод gibbon friendlyfire" author="Gibbon" version="750" date="2025-07-25" save="false" enabled="1" description="Мод gibbon friendlyfire расширяет возможности игры и добавляет улучшения геймплея." ru_auto="1">
     <text language="" description="Gibbon Friendly Fire Tweaks" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Gibbon Friendly Fire Tweaks" description="Мод gibbon friendlyfire расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="Мод gibbon friendlyfire" description="Мод gibbon friendlyfire расширяет возможности игры и добавляет улучшения геймплея." /><language language="7" description="Мод gibbon friendlyfire расширяет возможности игры и добавляет улучшения геймплея." /></content>

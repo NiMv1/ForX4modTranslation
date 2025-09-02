@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="jagvro" name="[ТРЕБУЕТ ПЕРЕВОД] Jager Corvette VRO" description="Мод jager VRO расширяет возможности игры и добавляет улучшения геймплея." author="eva" version="100" date="2025-01-10" save="0" enabled="1" sync="false" lastupdate="1736528556">
-  <!--auto-generated ru by mass_translate.py--><dependency id="ws_1696862840" optional="true" name="Variety and Rebalance Overhaul" />
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Jager Corvette VRO" description="Мод jager VRO расширяет возможности игры и добавляет улучшения геймплея." author="eva" />
+<content id="jagvro" name="Мод jager VRO" description="Мод jager VRO расширяет возможности игры и добавляет улучшения геймплея." author="eva" version="100" date="2025-01-10" save="0" enabled="1" sync="false" lastupdate="1736528556" ru_auto="1">
+  <dependency id="ws_1696862840" optional="true" name="Variety and Rebalance Overhaul" />
+  <text language="7" name="Мод jager VRO" description="Мод jager VRO расширяет возможности игры и добавляет улучшения геймплея." author="eva" />
   <text language="33" name="Jager Corvette VRO" description="VRO update for the Jager Corvette " author="eva" />
   <text language="34" name="Jager Corvette VRO" description="VRO update for the Jager Corvette " author="eva" />
   <text language="39" name="Jager Corvette VRO" description="VRO update for the Jager Corvette " author="eva" />
@@ -12,4 +12,4 @@
   <text language="82" name="Jager Corvette VRO" description="VRO update for the Jager Corvette " author="eva" />
   <text language="86" name="Jager Corvette VRO" description="VRO update for the Jager Corvette " author="eva" />
   <text language="88" name="Jager Corvette VRO" description="VRO update for the Jager Corvette " author="eva" />
-</content>
+<language language="7" description="Мод jager VRO расширяет возможности игры и добавляет улучшения геймплея." /></content>

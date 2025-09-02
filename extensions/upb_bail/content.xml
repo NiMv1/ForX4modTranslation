@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="ws_3265669486" name="[ТРЕБУЕТ ПЕРЕВОД] upb Bail" description="Мод upb bail расширяет возможности игры и добавляет улучшения геймплея." author="netUpb" version="140" date="2025-06-18" save="0" lastupdate="1750279816">
+<content id="ws_3265669486" name="Мод upb bail" description="Мод upb bail расширяет возможности игры и добавляет улучшения геймплея." author="netUpb" version="140" date="2025-06-18" save="0" lastupdate="1750279816" ru_auto="1">
   
   <dependency id="ws_3265629547" version="200" optional="false" name="upb Lua Loader" />
   <dependency version="300" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] upb Bail" description="Мод upb bail расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="Мод upb bail" description="Мод upb bail расширяет возможности игры и добавляет улучшения геймплея." /><language language="7" description="Мод upb bail расширяет возможности игры и добавляет улучшения геймплея." /></content>

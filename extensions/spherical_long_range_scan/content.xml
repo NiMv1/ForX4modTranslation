@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="Sladernimo_SphericalLongRangeScan" name="[ТРЕБУЕТ ПЕРЕВОД] Spherical дальнего радиуса сканирования" date="2018-12-12" version="100" save="false" enabled="true" description="Мод spherical long range scan модифицирует сканирование и обнаружение объектов.">
+<content id="Sladernimo_SphericalLongRangeScan" name="Spherical дальнего радиуса сканирования" date="2018-12-12" version="100" save="false" enabled="true" description="Мод spherical long range scan модифицирует сканирование и обнаружение объектов." ru_auto="1">
   <dependency id="increased_longrange_scan" optional="true" />
   <text language="07" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
   <text language="33" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
@@ -12,4 +12,4 @@
   <text language="82" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
   <text language="86" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
   <text language="88" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Spherical дальнего радиуса сканирования" description="Мод spherical long range scan модифицирует сканирование и обнаружение объектов." /></content>
+<text language="7" name="Spherical дальнего радиуса сканирования" description="Мод spherical long range scan модифицирует сканирование и обнаружение объектов." /><language language="7" description="Мод spherical long range scan модифицирует сканирование и обнаружение объектов." /></content>

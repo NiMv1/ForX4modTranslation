@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="LearningAllTheThings" name="[ТРЕБУЕТ ПЕРЕВОД] LearningAllTheThings" description="Мод learningallthethings расширяет возможности игры и добавляет улучшения геймплея." author="iforgotmysocks" version="060" date="2018-12-12" save="0">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] LearningAllTheThings" description="Мод learningallthethings расширяет возможности игры и добавляет улучшения геймплея." author="iforgotmysocks" />
+<content id="LearningAllTheThings" name="Мод learningallthethings" description="Мод learningallthethings расширяет возможности игры и добавляет улучшения геймплея." author="iforgotmysocks" version="060" date="2018-12-12" save="0" ru_auto="1">
+  <text language="7" name="Мод learningallthethings" description="Мод learningallthethings расширяет возможности игры и добавляет улучшения геймплея." author="iforgotmysocks" />
   <text language="33" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />
   <text language="34" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />
   <text language="39" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />
@@ -11,4 +11,4 @@
   <text language="82" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />
   <text language="86" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />
   <text language="88" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />
-</content>
+<language language="7" description="Мод learningallthethings расширяет возможности игры и добавляет улучшения геймплея." /></content>

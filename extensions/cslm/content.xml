@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content name="[ТРЕБУЕТ ПЕРЕВОД] Capital Ship Loot Magnet" id="ws_1768106576" author="Assailer" version="108" date="2024-02-29" save="0" enabled="1" description="Мод cslm расширяет возможности игры и добавляет улучшения геймплея." sync="false" lastupdate="1709199322">
+<content name="Мод cslm" id="ws_1768106576" author="Assailer" version="108" date="2024-02-29" save="0" enabled="1" description="Мод cslm расширяет возможности игры и добавляет улучшения геймплея." sync="false" lastupdate="1709199322" ru_auto="1">
   <text language="44" name="Capital Ship Loot Magnet" description="Player capital ships will be gathering inventory loot in a very large range. This will help clearing sectors from debris boosting your FPS and simulation speeds." />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Capital Ship Loot Magnet" description="Мод cslm расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="Мод cslm" description="Мод cslm расширяет возможности игры и добавляет улучшения геймплея." /><language language="7" description="Мод cslm расширяет возможности игры и добавляет улучшения геймплея." /></content>

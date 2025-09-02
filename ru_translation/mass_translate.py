@@ -1,4 +1,5 @@
 import re
+import json
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -37,10 +38,26 @@ DESC_HINTS = [
 
 MARKER = '[ТРЕБУЕТ ПЕРЕВОД]'
 
-# Термины, которые не переводим и сохраняем как есть (регистр фиксируем)
-IMMUTABLE_TERMS = {
-    'HUD', 'UI', 'SETA', 'VRO', 'API', 'AI', 'DLC', 'HUD', 'XR', 'X4', 'OOS'
+# Конфиг по терминам/правкам
+CONFIG_PATH = REPO_ROOT / 'ru_translation' / 'terms_config.json'
+DEFAULT_IMMUTABLE = {'HUD', 'UI', 'SETA', 'VRO', 'API', 'AI', 'DLC', 'XR', 'X4', 'OOS'}
+CFG = {
+    'immutable_terms': list(DEFAULT_IMMUTABLE),
+    'forbidden_patterns': [],
+    'custom_names': {},
+    'custom_descriptions': {},
+    'desc_min_len': 40,
+    'desc_max_len': 900,
 }
+if CONFIG_PATH.exists():
+    try:
+        data = json.loads(CONFIG_PATH.read_text(encoding='utf-8'))
+        CFG.update({k: v for k, v in data.items() if k in CFG})
+    except Exception:
+        pass
+IMMUTABLE_TERMS = set(CFG['immutable_terms'])
+DESC_MIN = int(CFG['desc_min_len'])
+DESC_MAX = int(CFG['desc_max_len'])
 
 
 def is_placeholder(text: str) -> bool:
@@ -101,6 +118,16 @@ def enforce_immutable_terms(s: str) -> str:
     return s
 
 
+def strip_markers(s: str) -> str:
+    if not s:
+        return s
+    s2 = s.replace(MARKER, '')
+    # убрать возможные скобки/пробелы вокруг метки
+    s2 = re.sub(r"\s*\[\s*ТРЕБУЕТ\s+ПЕРЕВОД\s*\]\s*", " ", s2, flags=re.I)
+    s2 = re.sub(r"\s+", " ", s2).strip(" -–—[]\t\r\n")
+    return s2.strip()
+
+
 def collect_en(content: ET.Element) -> tuple[str, str]:
     name_en = (content.get('name') or '').strip()
     desc_en = (content.get('description') or '').strip()
@@ -114,6 +141,9 @@ def collect_en(content: ET.Element) -> tuple[str, str]:
                     desc_en = (t.get('description') or '').strip()
                 if name_en or desc_en:
                     break
+    # очистка меток, если автор их поместил в атрибуты EN
+    name_en = strip_markers(name_en)
+    desc_en = strip_markers(desc_en)
     return name_en, desc_en
 
 
@@ -163,7 +193,9 @@ def synthesize_ru_desc(mod_name: str, en_name: str, en_desc_snippet: str, readme
         desc = f"Мод {base} расширяет возможности игры и добавляет улучшения геймплея."
     desc = enforce_immutable_terms(desc)
     desc = normalize_quotes_and_punct(desc)
-    return desc[:900]
+    if len(desc) < DESC_MIN:
+        desc = desc.rstrip('.') + '. Добавляет полезные улучшения и удобства.'
+    return desc[:DESC_MAX]
 
 
 def ensure_ru_text_node(content_node: ET.Element) -> ET.Element:
@@ -173,6 +205,15 @@ def ensure_ru_text_node(content_node: ET.Element) -> ET.Element:
         ru_text_node.set('language', '7')
         content_node.append(ru_text_node)
     return ru_text_node
+
+
+def ensure_ru_language_node(content_node: ET.Element) -> ET.Element:
+    ru_lang_node = content_node.find('.//language[@language="7"]')
+    if ru_lang_node is None:
+        ru_lang_node = ET.Element('language')
+        ru_lang_node.set('language', '7')
+        content_node.append(ru_lang_node)
+    return ru_lang_node
 
 
 def process_mod(mod_dir: Path) -> bool:
@@ -189,8 +230,17 @@ def process_mod(mod_dir: Path) -> bool:
         return False
 
     t_ru = content.find('.//text[@language="7"]')
+    l_ru = content.find('.//language[@language="7"]')
     name_ru_curr = (t_ru.get('name') if t_ru is not None else '') or (content.get('name') or '')
-    desc_ru_curr = (t_ru.get('description') if t_ru is not None else '') or (content.get('description') or '')
+    desc_ru_curr = (
+        (t_ru.get('description') if t_ru is not None else '')
+        or (l_ru.get('description') if l_ru is not None else '')
+        or (content.get('description') or '')
+    )
+    if MARKER in name_ru_curr:
+        name_ru_curr = name_ru_curr.replace(MARKER, '').strip()
+    if MARKER in desc_ru_curr:
+        desc_ru_curr = desc_ru_curr.replace(MARKER, '').strip()
 
     # Если и имя, и описание уже нормальные RU без меток и не плейсхолдеры —
     # не меняем тексты, но помечаем ru_auto="1" при отсутствии атрибута.
@@ -212,8 +262,15 @@ def process_mod(mod_dir: Path) -> bool:
             break
 
     # Генерация эталонных значений (нужны также для ретега ru_auto)
-    ru_name = translate_name(en_name, mod_dir.name)
-    ru_desc = synthesize_ru_desc(mod_dir.name, en_name, en_desc, readme_snip)
+    ru_name = strip_markers(translate_name(en_name, mod_dir.name))
+    ru_desc = strip_markers(synthesize_ru_desc(mod_dir.name, en_name, en_desc, readme_snip))
+
+    # Кастомные переопределения из конфига по имени каталога мода
+    key = mod_dir.name
+    if key in CFG['custom_names']:
+        ru_name = CFG['custom_names'][key]
+    if key in CFG['custom_descriptions']:
+        ru_desc = CFG['custom_descriptions'][key]
 
     # Запись
     changed = False
@@ -224,11 +281,16 @@ def process_mod(mod_dir: Path) -> bool:
         content.set('description', ru_desc)
         changed = True
     tnode = ensure_ru_text_node(content)
+    lnode = ensure_ru_language_node(content)
     if (tnode.get('name') or '') != ru_name:
         tnode.set('name', ru_name)
         changed = True
     if (tnode.get('description') or '') != ru_desc:
         tnode.set('description', ru_desc)
+        changed = True
+    # продублируем в <language language="7">
+    if (lnode.get('description') or '') != ru_desc:
+        lnode.set('description', ru_desc)
         changed = True
 
     # Если тексты уже ок и совпадают с нашей автогенерацией, но ru_auto нет — поставим только атрибут

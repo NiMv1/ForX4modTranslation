@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="axesneutralenginetintscomplete" name="[ТРЕБУЕТ ПЕРЕВОД] Neutral Engine Tints Complete" description="Мод axesneutralenginetintscomplete расширяет возможности игры и добавляет улучшения геймплея." author="Axeface" version="100" date="2021-03-01" save="0">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Neutral Engine Tints Complete" description="Мод axesneutralenginetintscomplete расширяет возможности игры и добавляет улучшения геймплея." author="Axeface" />
+<content id="axesneutralenginetintscomplete" name="Мод axesneutralenginetintscomplete" description="Мод axesneutralenginetintscomplete расширяет возможности игры и добавляет улучшения геймплея." author="Axeface" version="100" date="2021-03-01" save="0" ru_auto="1">
+  <text language="7" name="Мод axesneutralenginetintscomplete" description="Мод axesneutralenginetintscomplete расширяет возможности игры и добавляет улучшения геймплея." author="Axeface" />
   <text language="33" name="Neutral Engine Tints Complete" description="Changes the Blue, Green, Pink and Red tints of the Argon, Teladi, Paranid and Split engine components to neutral grey tones." author="Axeface" />
   <text language="34" name="Neutral Engine Tints Complete" description="Changes the Blue, Green, Pink and Red tints of the Argon, Teladi, Paranid and Split engine components to neutral grey tones." author="Axeface" />
   <text language="39" name="Neutral Engine Tints Complete" description="Changes the Blue, Green, Pink and Red tints of the Argon, Teladi, Paranid and Split engine components to neutral grey tones." author="Axeface" />
@@ -12,4 +12,4 @@
   <text language="86" name="Neutral Engine Tints Complete" description="Changes the Blue, Green, Pink and Red tints of the Argon, Teladi, Paranid and Split engine components to neutral grey tones." author="Axeface" />
   <text language="88" name="Neutral Engine Tints Complete" description="Changes the Blue, Green, Pink and Red tints of the Argon, Teladi, Paranid and Split engine components to neutral grey tones." author="Axeface" />
   <dependency id="ego_dlc_split" version="100" name="Split Vendetta" />
-</content>
+<language language="7" description="Мод axesneutralenginetintscomplete расширяет возможности игры и добавляет улучшения геймплея." /></content>

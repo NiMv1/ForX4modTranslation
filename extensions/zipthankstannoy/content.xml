@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="zipthankstannoy" name="[ТРЕБУЕТ ПЕРЕВОД] zipthankstannoy" description="Мод zipthankstannoy расширяет возможности игры и добавляет улучшения геймплея." author="z1p" version="3" date="2024-03-19" save="0" enabled="1">
+<content id="zipthankstannoy" name="Мод zipthankstannoy" description="Мод zipthankstannoy расширяет возможности игры и добавляет улучшения геймплея." author="z1p" version="3" date="2024-03-19" save="0" enabled="1" ru_auto="1">
  <text language="44" name="zipthankstannoy" description="no more thanks comms or tannoy on stations" author="z1p" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] zipthankstannoy" description="Мод zipthankstannoy расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="Мод zipthankstannoy" description="Мод zipthankstannoy расширяет возможности игры и добавляет улучшения геймплея." /><language language="7" description="Мод zipthankstannoy расширяет возможности игры и добавляет улучшения геймплея." /></content>

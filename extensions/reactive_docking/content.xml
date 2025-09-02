@@ -3,4 +3,4 @@
   <dependency id="ws_2042901274" optional="true" name="SirNukes Mod Support APIs" />
   <dependency id="kuerteeUIExtensionsAndHUD" optional="true" version="750" />
   <text language="44" name="Reactive Docking" description="Separates the different docking behaviors for subordinates of carrier and non-carrier (but with landing pads) into options available to both ship types" author="Runekn" />
-<text language="7" name="Реактивная стыковка" description="Мод reactive docking добавляет/улучшает механику стыковки и поведения кораблей." /></content>
+<text language="7" name="Реактивная стыковка" description="Мод reactive docking добавляет/улучшает механику стыковки и поведения кораблей." /><language language="7" description="Мод reactive docking добавляет/улучшает механику стыковки и поведения кораблей." /></content>

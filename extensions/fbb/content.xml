@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content name="[ТРЕБУЕТ ПЕРЕВОД] Fly by Lockbox" id="ws_1683356126" author="Assailer" version="112" date="2022-06-20" save="0" enabled="1" description="Мод fbb расширяет возможности игры и добавляет улучшения геймплея." sync="false" lastupdate="1655745728">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Fly by Lockbox" description="Мод fbb расширяет возможности игры и добавляет улучшения геймплея." />
+<content name="Мод fbb" id="ws_1683356126" author="Assailer" version="112" date="2022-06-20" save="0" enabled="1" description="Мод fbb расширяет возможности игры и добавляет улучшения геймплея." sync="false" lastupdate="1655745728" ru_auto="1">
+  <text language="7" name="Мод fbb" description="Мод fbb расширяет возможности игры и добавляет улучшения геймплея." />
   <text language="33" name="Fly-by Lockbox" description="Fly-by Lockbox" />
   <text language="34" name="Fly-by Lockbox" description="Fly-by Lockbox" />
   <text language="39" name="Fly-by Lockbox" description="Fly-by Lockbox" />
@@ -8,4 +8,4 @@
   <text language="49" name="Fly-by Lockbox" description="Ausserhalb von Highways werden Sicherheitscontainer innerhalb 5km Reichweite automatisch entriegelt und deren Inhalt freigegeben.\n Keine Probleme mit Savegames oder zu anderen MODs bekannt." />
   <text language="86" name="Fly-by Lockbox" description="Fly-by Lockbox" />
   <text language="88" name="Fly-by Lockbox" description="Fly-by Lockbox" />
-</content>
+<language language="7" description="Мод fbb расширяет возможности игры и добавляет улучшения геймплея." /></content>

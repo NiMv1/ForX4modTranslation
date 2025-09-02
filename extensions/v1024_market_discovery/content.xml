@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content name="[ТРЕБУЕТ ПЕРЕВОД] V1024 Market Discovery" author="Vectorial1024" version="102" description="Мод v1024 market discovery расширяет торговые инструменты и аналитику рынка." save="0" date="2024-07-01" id="ws_3278721817" sync="false" lastupdate="1719821986">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] V1024 Market Discovery" description="Мод v1024 market discovery расширяет торговые инструменты и аналитику рынка." author="Vectorial1024" />
+<content name="Мод v1024 market discovery" author="Vectorial1024" version="102" description="Мод v1024 market discovery расширяет торговые инструменты и аналитику рынка." save="0" date="2024-07-01" id="ws_3278721817" sync="false" lastupdate="1719821986" ru_auto="1">
+  <text language="7" name="Мод v1024 market discovery" description="Мод v1024 market discovery расширяет торговые инструменты и аналитику рынка." author="Vectorial1024" />
   <text language="33" name="V1024 - Market Discovery" description="Discover Black Marketeer locations." author="Vectorial1024" />
   <text language="34" name="V1024 - Market Discovery" description="Discover Black Marketeer locations." author="Vectorial1024" />
   <text language="39" name="V1024 - Market Discovery" description="Discover Black Marketeer locations." author="Vectorial1024" />
@@ -11,4 +11,4 @@
   <text language="82" name="V1024 - Market Discovery" description="Discover Black Marketeer locations." author="Vectorial1024" />
   <text language="86" name="V1024 - Market Discovery" description="Discover Black Marketeer locations." author="Vectorial1024" />
   <text language="88" name="V1024 - Market Discovery" description="Discover Black Marketeer locations." author="Vectorial1024" />
-</content>
+<language language="7" description="Мод v1024 market discovery расширяет торговые инструменты и аналитику рынка." /></content>
