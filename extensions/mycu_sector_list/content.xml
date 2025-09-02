@@ -1,11 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="SectorList"
-         name="Mycu: Sector list"
-         author="Mycu"
-         version="131"
-         date="2025-01-04"
-         save="false"
-         enabled="1"
-         description="Adds list of known sectors to the map with current resources and buy/sell offers list.">
-    <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD"/>
-</content>
+<content id="SectorList" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Sector list" author="Mycu" version="131" date="2025-01-04" save="false" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] Adds list of known sectors to the map with current resources and buy/sell offers list.">
+    <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD" />
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Sector list" description="[ТРЕБУЕТ ПЕРЕВОД] Adds list of known sectors to the map with current resources and buy/sell offers list." /></content>

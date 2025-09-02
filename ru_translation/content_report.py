@@ -80,7 +80,8 @@ def parse_content_xml(path: Path):
     descr_ru = None
     descr_en = None
 
-    # Частые узлы: content/@name, content/@description, или вложенные <name lang="ru">, <description lang="ru">
+    # Частые узлы: content/@name, content/@description, вложенные <name lang="ru">, <description lang="ru">,
+    # а также <text language="7" name=... description=...>
     content = root.find('.//content')
     if content is not None:
         # атрибуты
@@ -88,6 +89,27 @@ def parse_content_xml(path: Path):
         descr_ru = content.get('description_ru') or content.get('description-ru') or content.get('description_ruRU')
         name_en = content.get('name_en') or content.get('name-en') or content.get('name')
         descr_en = content.get('description_en') or content.get('description-en') or content.get('description')
+
+        # Попытка взять RU из <text language="7">
+        t_ru = content.find('.//text[@language="7"]')
+        if t_ru is not None:
+            t_name = (t_ru.get('name') or '').strip()
+            t_desc = (t_ru.get('description') or '').strip()
+            if t_name:
+                name_ru = name_ru or t_name
+            if t_desc:
+                descr_ru = descr_ru or t_desc
+
+        # Если специальных RU-атрибутов нет, но content/@description содержит кириллицу или метку — считаем это RU
+        def has_cyrillic(s: str) -> bool:
+            return any('А' <= ch <= 'я' or ch in ('ё','Ё') for ch in s)
+        marker = '[ТРЕБУЕТ ПЕРЕВОД]'
+        if (not descr_ru) and descr_en:
+            if descr_en.startswith(marker) or has_cyrillic(descr_en):
+                descr_ru = descr_en
+        if (not name_ru) and name_en:
+            if name_en.startswith(marker) or has_cyrillic(name_en):
+                name_ru = name_en
         # вложенные
         for node in ('name', 'description'):
             for child in content.findall(node):

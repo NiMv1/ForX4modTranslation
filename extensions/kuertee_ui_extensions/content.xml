@@ -1,16 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="kuerteeUIExtensionsAndHUD"
-name="kuertee UI Extensions and HUD"
-author="kuertee"
-version="760"
-date="2025-06-14"
-save="false"
-enabled="1">
+<content id="kuerteeUIExtensionsAndHUD" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee UI Extensions and HUD" author="kuertee" version="760" date="2025-06-14" save="false" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] UI Extensions and HUD&#10;https://www.nexusmods.com/x4foundations/mods/552&#10;Code: https://github.com/kuertee/x4-mod-ui-extensions&#10;by kuertee. Contributors: AlexandreTK, DrWhoKnows, Erixon, Forleyor, IALuir, Mycu, Runekn, sticeIO.">
 
-<text language=""
-description="UI Extensions and HUD&#13;&#10;
-https://www.nexusmods.com/x4foundations/mods/552&#13;&#10;
-Code: https://github.com/kuertee/x4-mod-ui-extensions.git&#13;&#10;
-by kuertee. Contributors: Forleyor, Mycu.&#13;&#10;"
-/>
-</content>
+<text language="" description="UI Extensions and HUD&#13;&#10; https://www.nexusmods.com/x4foundations/mods/552&#13;&#10; Code: https://github.com/kuertee/x4-mod-ui-extensions.git&#13;&#10; by kuertee. Contributors: Forleyor, Mycu.&#13;&#10;" />
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee UI Extensions and HUD" description="[ТРЕБУЕТ ПЕРЕВОД] UI Extensions and HUD&#10;https://www.nexusmods.com/x4foundations/mods/552&#10;Code: https://github.com/kuertee/x4-mod-ui-extensions&#10;by kuertee. Contributors: AlexandreTK, DrWhoKnows, Erixon, Forleyor, IALuir, Mycu, Runekn, sticeIO." /></content>

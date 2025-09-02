@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="Sladernimo_SkipIntro" name="SkipIntro" date="2018-12-12" version="100" save="false" enabled="true">
+<content id="Sladernimo_SkipIntro" name="[ТРЕБУЕТ ПЕРЕВОД] Skip Intro" date="2018-12-12" version="100" save="false" enabled="true" description="[ТРЕБУЕТ ПЕРЕВОД] This mod skips the intro video on game start.">
   <text language="07" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
   <text language="33" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
   <text language="34" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
@@ -11,4 +10,4 @@
   <text language="82" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
   <text language="86" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
   <text language="88" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
-</content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Skip Intro" description="[ТРЕБУЕТ ПЕРЕВОД] This mod skips the intro video on game start." /></content>

@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="lyr_colourizedfactions" name="lyr: Colourized Factions" description="Colourizes faction texts; instead of white/gray, faction colours will be used for all texts" author="lyravega" version="102" date="2023-04-14" save="false" enabled="1">
+<content id="lyr_colourizedfactions" name="[ТРЕБУЕТ ПЕРЕВОД] lyr: Colourized Factions" description="[ТРЕБУЕТ ПЕРЕВОД] Colourizes faction texts; instead of white/gray, faction colours will be used for all texts" author="lyravega" version="102" date="2023-04-14" save="false" enabled="1">
 	<dependency id="ego_dlc_pirate" optional="true" />
 	<dependency id="ego_dlc_split" optional="true" />
 	<dependency id="ego_dlc_terran" optional="true" />
-</content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] lyr: Colourized Factions" description="[ТРЕБУЕТ ПЕРЕВОД] Colourizes faction texts; instead of white/gray, faction colours will be used for all texts" /></content>

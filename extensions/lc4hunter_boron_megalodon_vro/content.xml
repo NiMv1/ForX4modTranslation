@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="lc4hunter_boron_megalodon_vro" name="Boron Megalodon VRO" description="VRO patch for Lc4Hunter's Boron Megalodon" author="X4:RE Team" version="111" date="2024-07-03" save="0" enabled="1">
-	<dependency id="lc4hunter_boron_megalodon" optional="false" name="Boron Megalodon"></dependency>
-	<dependency id="ws_1696862840" optional="false" name="Variety and Rebalance Overhaul"></dependency>	
-	<text language="7" name="Boron Megalodon VRO" description="VRO patch for Lc4Hunter's Boron Megalodon" author="X4:RE Team" />
+<content id="lc4hunter_boron_megalodon_vro" name="[ТРЕБУЕТ ПЕРЕВОД] Boron Megalodon VRO" description="[ТРЕБУЕТ ПЕРЕВОД] VRO patch for Lc4Hunter's Boron Megalodon" author="X4:RE Team" version="111" date="2024-07-03" save="0" enabled="1">
+	<dependency id="lc4hunter_boron_megalodon" optional="false" name="Boron Megalodon" />
+	<dependency id="ws_1696862840" optional="false" name="Variety and Rebalance Overhaul" />	
+	<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Boron Megalodon VRO" description="[ТРЕБУЕТ ПЕРЕВОД] VRO patch for Lc4Hunter's Boron Megalodon" author="X4:RE Team" />
 	<text language="33" name="Boron Megalodon VRO" description="VRO patch for Lc4Hunter's Boron Megalodon" author="X4:RE Team" />
 	<text language="34" name="Boron Megalodon VRO" description="VRO patch for Lc4Hunter's Boron Megalodon" author="X4:RE Team" />
 	<text language="39" name="Boron Megalodon VRO" description="VRO patch for Lc4Hunter's Boron Megalodon" author="X4:RE Team" />

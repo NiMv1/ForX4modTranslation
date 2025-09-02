@@ -1,20 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="kuerteeBoardingOperationNotifications"
-name="kuertee UI: Boarding operation notifications"
-author="kuertee"
-version="710"
-date="2024-07-07"
-save="false"
-enabled="1">
+<content id="kuerteeBoardingOperationNotifications" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee UI: Boarding operation notifications" author="kuertee" version="710" date="2024-07-07" save="false" enabled="1">
 
-<text language=""
-description="UI: Boarding operation notifications&#13;&#10;
-https://www.nexusmods.com/x4foundations/mods/1407&#13;&#10;
-by kuertee&#13;&#10;
-&#13;&#10;
-Mod effects:&#13;&#10;
-============&#13;&#10;
--Adds progress notifications of boarding operations during the Infiltration and Assault phases.&#13;&#10;"
-/>
+<text language="" description="UI: Boarding operation notifications&#13;&#10; https://www.nexusmods.com/x4foundations/mods/1407&#13;&#10; by kuertee&#13;&#10; &#13;&#10; Mod effects:&#13;&#10; ============&#13;&#10; -Adds progress notifications of boarding operations during the Infiltration and Assault phases.&#13;&#10;" />
 
-</content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee UI: Boarding operation notifications" /></content>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="HJCopyBehavior" author="Hijack Hornet" name="[HJ] CopyBehavior" description="Allow to copy the default behavior from one ship to another. See video here : https://youtu.be/LOUMIngHxJQ" version="100" date="2021-07-07" save="false" lastupdate="">
-<dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs"></dependency>
-</content>
+<content id="HJCopyBehavior" author="Hijack Hornet" name="[ТРЕБУЕТ ПЕРЕВОД] [HJ] CopyBehavior" description="[ТРЕБУЕТ ПЕРЕВОД] Allow to copy the default behavior from one ship to another. See video here : https://youtu.be/LOUMIngHxJQ" version="100" date="2021-07-07" save="false" lastupdate="">
+<dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" />
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] [HJ] CopyBehavior" description="[ТРЕБУЕТ ПЕРЕВОД] Allow to copy the default behavior from one ship to another. See video here : https://youtu.be/LOUMIngHxJQ" /></content>

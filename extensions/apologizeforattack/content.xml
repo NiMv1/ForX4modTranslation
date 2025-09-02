@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="ApologizeForAttack" enabled="true" name="ApologizeForAttack" description="Player can stop unintented fights from escalation" author="iforgotmysocks" version="021" date="2019-12-24" save="false">
-  <text language="7" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+<content id="ApologizeForAttack" enabled="true" name="[ТРЕБУЕТ ПЕРЕВОД] ApologizeForAttack" description="[ТРЕБУЕТ ПЕРЕВОД] ApologizeForAttack" author="iforgotmysocks" version="021" date="2019-12-24" save="false">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] ApologizeForAttack" description="[ТРЕБУЕТ ПЕРЕВОД] ApologizeForAttack" author="iforgotmysocks" />
   <text language="33" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
   <text language="34" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
   <text language="39" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />

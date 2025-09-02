@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="xenonshipsresearch_xl_bridges" name="Xenon Ships Research - K and I Bridges" description="Adds Xenon K and I bridges" author="TheShooter36" version="200" date="2025-02-22" save="0" sync="false" >
-  <dependency id="ego_dlc_split" optional="false" name="Split Vendetta"/>
-  <dependency id="ego_dlc_terran" optional="false" name="Cradle of Humanity"/>
-  <dependency id="ego_dlc_pirate" optional="false" name="Tides of Avarice"/>  
-  <dependency id="ego_dlc_boron" optional="false" name="Kingdom End"/>
-  <dependency id="ego_dlc_timelines" optional="false" name="Timelines"/> 
-  <dependency id="xenonshipsresearch_swi" optional="true" name="Xenon Ships Research SWI"/> 
-  <dependency id="xenonshipsresearch" optional="true" name="Xenon Ships Research"/> 	 	
-</content>
+<content id="xenonshipsresearch_xl_bridges" name="[ТРЕБУЕТ ПЕРЕВОД] Xenon Ships Research - K and I Bridges" description="[ТРЕБУЕТ ПЕРЕВОД] Adds Xenon K and I bridges" author="TheShooter36" version="200" date="2025-02-22" save="0" sync="false">
+  <dependency id="ego_dlc_split" optional="false" name="Split Vendetta" />
+  <dependency id="ego_dlc_terran" optional="false" name="Cradle of Humanity" />
+  <dependency id="ego_dlc_pirate" optional="false" name="Tides of Avarice" />  
+  <dependency id="ego_dlc_boron" optional="false" name="Kingdom End" />
+  <dependency id="ego_dlc_timelines" optional="false" name="Timelines" /> 
+  <dependency id="xenonshipsresearch_swi" optional="true" name="Xenon Ships Research SWI" /> 
+  <dependency id="xenonshipsresearch" optional="true" name="Xenon Ships Research" /> 	 	
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Xenon Ships Research - K and I Bridges" description="[ТРЕБУЕТ ПЕРЕВОД] Adds Xenon K and I bridges" /></content>

@@ -1,22 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="kuerteeSurfaceElementTargeting"
-name="kuertee: Surface element targeting"
-author="kuertee"
-version="750"
-date="2025-02-21"
-save="false"
-enabled="1">
+<content id="kuerteeSurfaceElementTargeting" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee: Surface element targeting" author="kuertee" version="750" date="2025-02-21" save="false" enabled="1">
 
-<text language=""
-description="Surface element targeting&#13;&#10;
-https://www.nexusmods.com/x4foundations/mods/710&#13;&#10;
-by kuertee&#13;&#10;
-&#13;&#10;
-Mod effects:&#13;&#10;
-============&#13;&#10;
--Auto-targets the next surface element after destruction of the last.&#13;&#10;
--'Find All' Interaction: finds all surface elements of the same type.&#13;&#10;
-"/>
+<text language="" description="Surface element targeting&#13;&#10; https://www.nexusmods.com/x4foundations/mods/710&#13;&#10; by kuertee&#13;&#10; &#13;&#10; Mod effects:&#13;&#10; ============&#13;&#10; -Auto-targets the next surface element after destruction of the last.&#13;&#10; -'Find All' Interaction: finds all surface elements of the same type.&#13;&#10; " />
 
-<dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs"></dependency>
-</content>
+<dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" />
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee: Surface element targeting" /></content>

@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import xml.etree.ElementTree as ET
+import re
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXT_DIR = REPO_ROOT / 'extensions'
@@ -48,30 +49,77 @@ def fix_content_xml(content_xml_path: Path, mod_name: str) -> bool:
 
     # приоритет RU (7), затем EN (44/33/49)
     ru_name, ru_desc = extract_text_by_language(root, '7')
-    en_name, en_desc = '', ''
-    if not ru_name or not ru_desc:
-        for fallback in ('44', '33', '49'):
-            en_name, en_desc = extract_text_by_language(root, fallback)
-            if (not ru_name) and en_name:
-                ru_name = en_name
-            if (not ru_desc) and en_desc:
-                ru_desc = en_desc
-            if ru_name and ru_desc:
-                break
+    # кандидаты EN из text-узлов
+    en_candidates = []
+    for fallback in ('44', '33', '49'):
+        en_n, en_d = extract_text_by_language(root, fallback)
+        if en_n:
+            en_candidates.append(('text', 'name', en_n))
+        if en_d:
+            en_candidates.append(('text', 'desc', en_d))
 
-    # если RU формируется из EN или сомнителен — помечаем как требующий перевода
-    def needs_marker(ru_val: str, en_val: str) -> bool:
-        if not ru_val:
-            return False
-        if not en_val:
-            return False
-        return ru_val.strip() == en_val.strip()
+    # кандидаты EN из атрибутов <content>
+    def get_content_node(rt: ET.Element) -> ET.Element | None:
+        if rt.tag == 'content':
+            return rt
+        return rt.find('.//content')
+
+    content_node = get_content_node(root)
+    if content_node is not None:
+        c_en_name = (content_node.get('name') or '').strip()
+        c_en_desc = (content_node.get('description') or '').strip()
+        if c_en_name and not is_placeholder(c_en_name):
+            en_candidates.append(('attr', 'name', c_en_name))
+        if c_en_desc and not is_placeholder(c_en_desc):
+            en_candidates.append(('attr', 'desc', c_en_desc))
+
+    # кандидаты из README (первый абзац как описание)
+    def find_readme_text(mod_dir: Path) -> str:
+        names = (
+            'readme.md','README.md','ReadMe.md','readme.txt','README.txt','ReadMe.txt',
+            'description.txt','DESCRIPTION.txt','about.txt','About.txt','ABOUT.txt'
+        )
+        for nm in names:
+            p = mod_dir / nm
+            if p.exists():
+                try:
+                    txt = p.read_text(encoding='utf-8', errors='ignore')
+                    # первый абзац (до пустой строки) или до 600 символов
+                    parts = re.split(r"\n\s*\n+", txt.strip(), maxsplit=1)
+                    para = parts[0].strip()
+                    return para[:600]
+                except Exception:
+                    continue
+        return ''
+
+    readme_desc = find_readme_text(content_xml_path.parent)
+    if readme_desc:
+        en_candidates.append(('readme', 'desc', readme_desc))
 
     marker = '[ТРЕБУЕТ ПЕРЕВОД] '
-    # Проставим метку, если RU отсутствовал и был взят из EN, либо совпадает с EN
-    if ru_name and en_name and needs_marker(ru_name, en_name) and not ru_name.startswith(marker):
+
+    # Если RU отсутствует — заполняем первым доступным EN-кандидатом и помечаем
+    if not ru_name:
+        for src, kind, val in en_candidates:
+            if kind == 'name' and val and not is_placeholder(val):
+                ru_name = (val if val.startswith(marker) else (marker + val))
+                break
+    if not ru_desc:
+        for src, kind, val in en_candidates:
+            if kind == 'desc' and val and not is_placeholder(val):
+                ru_desc = (val if val.startswith(marker) else (marker + val))
+                break
+
+    # Если RU совпал с любым из кандидатов EN — добавим маркер
+    def matches_any_en(val: str) -> bool:
+        v = (val or '').strip()
+        for _, _, e in en_candidates:
+            if v and e and v == e.strip():
+                return True
+        return False
+    if ru_name and not ru_name.startswith(marker) and matches_any_en(ru_name):
         ru_name = marker + ru_name
-    if ru_desc and en_desc and needs_marker(ru_desc, en_desc) and not ru_desc.startswith(marker):
+    if ru_desc and not ru_desc.startswith(marker) and matches_any_en(ru_desc):
         ru_desc = marker + ru_desc
 
     changed = False
@@ -99,12 +147,6 @@ def fix_content_xml(content_xml_path: Path, mod_name: str) -> bool:
                 changed = True
 
     # Обеспечить наличие и заполнение <text language="7">
-    def get_content_node(rt: ET.Element) -> ET.Element | None:
-        if rt.tag == 'content':
-            return rt
-        return rt.find('.//content')
-
-    content_node = get_content_node(root)
     if content_node is not None:
         ru_text_node = content_node.find('.//text[@language="7"]')
         if ru_text_node is None:

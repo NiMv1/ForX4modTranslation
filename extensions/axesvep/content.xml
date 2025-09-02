@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<content id="axesvep" name="Vibrant Engine Plumes" description="Makes engine plumes more colourful." version="120" date="2025-03-29" save="false" sync="false" enabled="true" author="Axeface">
-  <dependency id="ego_dlc_split" optional="true" name="Split Vendetta"/>
-  <dependency id="ego_dlc_terran" optional="true" name="Cradle of Humanity"/>
-</content>
+<content id="axesvep" name="[ТРЕБУЕТ ПЕРЕВОД] Vibrant Engine Plumes" description="[ТРЕБУЕТ ПЕРЕВОД] Makes engine plumes more colourful." version="120" date="2025-03-29" save="false" sync="false" enabled="true" author="Axeface">
+  <dependency id="ego_dlc_split" optional="true" name="Split Vendetta" />
+  <dependency id="ego_dlc_terran" optional="true" name="Cradle of Humanity" />
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Vibrant Engine Plumes" description="[ТРЕБУЕТ ПЕРЕВОД] Makes engine plumes more colourful." /></content>

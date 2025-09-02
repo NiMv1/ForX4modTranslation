@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="otas_shippack" name="OTAS Shippack" description="Reintroduces the OTAS Corporation's ships" author="X4:RE Team" version="135" date="2024-04-25" >
+<content id="otas_shippack" name="[ТРЕБУЕТ ПЕРЕВОД] OTAS Shippack" description="[ТРЕБУЕТ ПЕРЕВОД] Reintroduces the OTAS Corporation's ships" author="X4:RE Team" version="135" date="2024-04-25">
   <dependency id="ego_dlc_split" optional="false" name="Split Vendetta" />
   <dependency id="ego_dlc_terran" optional="false" name="Cradle of Humanity" />
   <dependency id="ego_dlc_boron" optional="false" name="Kingdom End" />
-  <dependency id="ego_dlc_pirate" optional="false" name="Tides of Avarice"/>
-  <dependency id="ws_1696862840" optional="true" name="Variety and Rebalance Overhaul"/>  
-</content>
+  <dependency id="ego_dlc_pirate" optional="false" name="Tides of Avarice" />
+  <dependency id="ws_1696862840" optional="true" name="Variety and Rebalance Overhaul" />  
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] OTAS Shippack" description="[ТРЕБУЕТ ПЕРЕВОД] Reintroduces the OTAS Corporation's ships" /></content>

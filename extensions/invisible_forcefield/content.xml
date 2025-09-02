@@ -1,3 +1,2 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content name="Invisible Force Field" description="Mod makes invisible force field in docks + no slowdown of ships speed + UP FPS." author="denison10" date="2023-08-11" id="invisible_forcefield" save="0" enabled="1" version="101">
-<text name="Не Видимое Силовое Поле" description="Мод делает не видимое силовое поле в док-станций + нет замедления скорости кораблей + UP FPS." language="7" author="denison10"/></content>
+<content name="[ТРЕБУЕТ ПЕРЕВОД] Не Видимое Силовое Поле" description="[ТРЕБУЕТ ПЕРЕВОД] Мод делает не видимое силовое поле в док-станций + нет замедления скорости кораблей + UP FPS." author="denison10" date="2023-08-11" id="invisible_forcefield" save="0" enabled="1" version="101">
+<text name="[ТРЕБУЕТ ПЕРЕВОД] Не Видимое Силовое Поле" description="[ТРЕБУЕТ ПЕРЕВОД] Мод делает не видимое силовое поле в док-станций + нет замедления скорости кораблей + UP FPS." language="7" author="denison10" /></content>

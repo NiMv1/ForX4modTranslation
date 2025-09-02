@@ -1,22 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="kuerteeModPartsTrader"
-name="kuertee: Modifications parts trader"
-author="kuertee"
-version="750"
-date="2025-03-03"
-save="false"
-enabled="1">
+<content id="kuerteeModPartsTrader" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee: Modifications parts trader" author="kuertee" version="750" date="2025-03-03" save="false" enabled="1">
 
-<text language=""
-description="Modifications parts trader&#13;&#10;
-https://www.nexusmods.com/x4foundations/mods/721&#13;&#10;
-by kuertee&#13;&#10;
-&#13;&#10;
-Mod effects:&#13;&#10;
-============&#13;&#10;
--Trade your mod parts for other mod parts. The traders are interested in mod parts and not in credits. You can barter mod parts with them or sell mod parts to them. You can't buy mod parts from them.&#13;&#10;
-"/>
+<text language="" description="Modifications parts trader&#13;&#10; https://www.nexusmods.com/x4foundations/mods/721&#13;&#10; by kuertee&#13;&#10; &#13;&#10; Mod effects:&#13;&#10; ============&#13;&#10; -Trade your mod parts for other mod parts. The traders are interested in mod parts and not in credits. You can barter mod parts with them or sell mod parts to them. You can't buy mod parts from them.&#13;&#10; " />
 
-<dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs"></dependency>
-<dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD"></dependency>
-</content>
+<dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" />
+<dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD" />
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee: Modifications parts trader" /></content>

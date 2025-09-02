@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="Mons_Dont_Wait" name="Dont Wait" description="Don't Wait" author="iMonstrosity" version="101" date="2025-3-13" save="0" enabled="1">
+<content id="Mons_Dont_Wait" name="[ТРЕБУЕТ ПЕРЕВОД] Dont Wait" description="[ТРЕБУЕТ ПЕРЕВОД] Don't Wait" author="iMonstrosity" version="101" date="2025-3-13" save="0" enabled="1">
 	<text language="" name="Dont Wait" description="Don't Wait" author="iMonstrosity" />
-</content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Dont Wait" description="[ТРЕБУЕТ ПЕРЕВОД] Don't Wait" /></content>

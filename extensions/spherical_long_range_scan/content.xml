@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="Sladernimo_SphericalLongRangeScan" name="SphericalLongRangeScan" date="2018-12-12" version="100" save="false" enabled="true">
+<content id="Sladernimo_SphericalLongRangeScan" name="[ТРЕБУЕТ ПЕРЕВОД] Spherical Long Range Scan" date="2018-12-12" version="100" save="false" enabled="true" description="[ТРЕБУЕТ ПЕРЕВОД] This mod replaces the directional long range scan with a spherical scan.">
   <dependency id="increased_longrange_scan" optional="true" />
   <text language="07" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
   <text language="33" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
@@ -12,4 +11,4 @@
   <text language="82" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
   <text language="86" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
   <text language="88" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
-</content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Spherical Long Range Scan" description="[ТРЕБУЕТ ПЕРЕВОД] This mod replaces the directional long range scan with a spherical scan." /></content>

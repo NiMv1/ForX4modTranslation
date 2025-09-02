@@ -1,23 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  File name     : content.xml
-  Acknowledgment: Thanks to gso25mm-san for his great ideas and efforts.
-  © 2025 Schwarzemona All rights reserved.
--->
-<content id="ws_3398380235" name="Fleet Follow tweaks" description="[b]This mod tweaks the order &quot;Follow Commander&quot; for fleets.[/b]&#13;&#10;&#13;&#10;In vanilla, the &quot;Follow Commander&quot; order uses the same script as &quot;Follow Ship&quot; As a result, ships simply follow behind the commander without forming a formation.&#13;&#10;&#13;&#10;With this mod, ships that &quot;Follow Commander&quot; will form a proper formation with the commander, allowing the fleet to collectively construct a combat box using turrets.&#13;&#10;Additionally, subordinate ships will not retaliate when attacked.&#13;&#10;Just like in vanilla, ships under the &quot;Follow Commander&quot; order will not use their main weapons.&#13;&#10;&#13;&#10;I created this mod to form a combat box using gunships. However, I discovered that ships under the &quot;Follow Commander&quot; order tend to stop moving, making them easy targets for enemies.&#13;&#10;&#13;&#10;[b]Acknowledgements:[/b] I would like to express my gratitude for gso25mm's great ideas, efforts, and kind permission to release." version="710" date="2025-02-12" save="0" lastupdate="1739289047" author="Schwarzemona">
-  <text language="7" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="33" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="34" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="39" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="42" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="44" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="48" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="49" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="55" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="81" name="艦隊従属微調整" description="艦隊の命令の「指揮官に従属」を微調整します。"></text>
-  <text language="82" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="86" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="88" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="90" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
-  <text language="380" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets."></text>
+<content id="ws_3398380235" name="[ТРЕБУЕТ ПЕРЕВОД] Fleet Follow tweaks" description="[ТРЕБУЕТ ПЕРЕВОД] This mod tweaks the order “Follow commander” for fleets." version="710" date="2025-02-12" save="0" lastupdate="1739289047" author="Schwarzemona">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Fleet Follow tweaks" description="[ТРЕБУЕТ ПЕРЕВОД] This mod tweaks the order “Follow commander” for fleets." />
+  <text language="33" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="34" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="39" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="42" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="44" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="48" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="49" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="55" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="81" name="艦隊従属微調整" description="艦隊の命令の「指揮官に従属」を微調整します。" />
+  <text language="82" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="86" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="88" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="90" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
+  <text language="380" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
 </content>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<content name="Capital Ship Loot Magnet" id="ws_1768106576" author="Assailer" version="108" date="2024-02-29" save="0" enabled="1" description="Capital Ship Loot Magnet&#13;&#10;Version 1.08&#13;&#10;&#13;&#10;There is no known compatibility issue with any other mods, also uninstalling shall not affect your save games." sync="false" lastupdate="1709199322">
-  <text language="44" name="Capital Ship Loot Magnet" description="Player capital ships will be gathering inventory loot in a very large range. This will help clearing sectors from debris boosting your FPS and simulation speeds."/>
-</content>
+<content name="[ТРЕБУЕТ ПЕРЕВОД] Capital Ship Loot Magnet" id="ws_1768106576" author="Assailer" version="108" date="2024-02-29" save="0" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] Player capital ships will be gathering inventory loot in a very large range. This will help clearing sectors from debris boosting your FPS and simulation speeds." sync="false" lastupdate="1709199322">
+  <text language="44" name="Capital Ship Loot Magnet" description="Player capital ships will be gathering inventory loot in a very large range. This will help clearing sectors from debris boosting your FPS and simulation speeds." />
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Capital Ship Loot Magnet" description="[ТРЕБУЕТ ПЕРЕВОД] Player capital ships will be gathering inventory loot in a very large range. This will help clearing sectors from debris boosting your FPS and simulation speeds." /></content>

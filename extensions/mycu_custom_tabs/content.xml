@@ -1,12 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="CustomTabs"
-         name="Mycu: Custom Tabs"
-         author="Mycu"
-         version="211"
-         date="2025-02-21"
-         save="false"
-         enabled="1"
-         description="Adds up to nine new tabs to property owned menu allowing to organize player's assets and manage vanilla tabs.">
-    <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs"/>
-    <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD"/>
-</content>
+<content id="CustomTabs" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Custom Tabs" author="Mycu" version="211" date="2025-02-21" save="false" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] Adds up to nine new tabs to property owned menu allowing to organize player's assets and manage vanilla tabs.">
+    <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" />
+    <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD" />
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Custom Tabs" description="[ТРЕБУЕТ ПЕРЕВОД] Adds up to nine new tabs to property owned menu allowing to organize player's assets and manage vanilla tabs." /></content>

@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="ws3" name="Jager" description="Adds the Jager to the vigor syndicate wharf" author="eva" version="100" date="2025-01-05" save="0" enabled="1" sync="false" lastupdate="1683306181">
-  <text language="7" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="33" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="34" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="39" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="44" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="45" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="49" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="81" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="82" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="86" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
-  <text language="88" name="Jager" description="Adds the Jager to the Argon wharf" author="eva"/>
+<content id="ws3" name="[ТРЕБУЕТ ПЕРЕВОД] Jager" description="[ТРЕБУЕТ ПЕРЕВОД] Adds the Jager to the Argon wharf" author="eva" version="100" date="2025-01-05" save="0" enabled="1" sync="false" lastupdate="1683306181">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Jager" description="[ТРЕБУЕТ ПЕРЕВОД] Adds the Jager to the Argon wharf" author="eva" />
+  <text language="33" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
+  <text language="34" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
+  <text language="39" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
+  <text language="44" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
+  <text language="45" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
+  <text language="49" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
+  <text language="81" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
+  <text language="82" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
+  <text language="86" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
+  <text language="88" name="Jager" description="Adds the Jager to the Argon wharf" author="eva" />
 </content>

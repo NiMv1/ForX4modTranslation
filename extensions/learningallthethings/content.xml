@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<content id="LearningAllTheThings" name="LearnAllTheThings" description="Every playercontrolled npc has a chance to improve his skills every 20 minutes by 1 point (1/3rd of a star)"  author="iforgotmysocks" version="060" date="2018-12-12" save="0">
-  <text language="7" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />
+<content id="LearningAllTheThings" name="[ТРЕБУЕТ ПЕРЕВОД] LearningAllTheThings" description="[ТРЕБУЕТ ПЕРЕВОД] LearningAllTheThings" author="iforgotmysocks" version="060" date="2018-12-12" save="0">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] LearningAllTheThings" description="[ТРЕБУЕТ ПЕРЕВОД] LearningAllTheThings" author="iforgotmysocks" />
   <text language="33" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />
   <text language="34" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />
   <text language="39" name="LearningAllTheThings" description="LearningAllTheThings" author="iforgotmysocks" />

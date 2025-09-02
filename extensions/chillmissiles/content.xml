@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<content id="ws_3008031892" name="Replenish Missiles" description="Missiles are automatically replenished after firing" author="Chillmatica" version="150" date="2023-09-04" save="0" enabled="0" sync="false" lastupdate="1690013574">
-  <text language="7" name="Replenish Missiles" description="!!!ЧИТ МОД!!!Ракеты автоматически пополняются после выстрела" author="Chillmatica"/>
-  <text language="33" name="Replenish Missiles" description="Les missiles sont automatiquement réapprovisionnés après le tir" author="Chillmatica"/>
-  <text language="34" name="Replenish Missiles" description="Los misiles se reponen automáticamente después de disparar" author="Chillmatica"/>
-  <text language="44" name="Replenish Missiles" description="Missiles are automatically replenished after firing" author="Chillmatica"/>
-  <text language="49" name="Replenish Missiles" description="Raketen werden nach dem Abfeuern automatisch wieder aufgefüllt" author="Chillmatica"/>
-  <text language="86" name="Replenish Missiles" description="导弹发射后自动补充" author="Chillmatica"/>
+<content id="ws_3008031892" name="[ТРЕБУЕТ ПЕРЕВОД] Replenish Missiles" description="[ТРЕБУЕТ ПЕРЕВОД] !!!ЧИТ МОД!!!Ракеты автоматически пополняются после выстрела" author="Chillmatica" version="150" date="2023-09-04" save="0" enabled="0" sync="false" lastupdate="1690013574">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Replenish Missiles" description="[ТРЕБУЕТ ПЕРЕВОД] !!!ЧИТ МОД!!!Ракеты автоматически пополняются после выстрела" author="Chillmatica" />
+  <text language="33" name="Replenish Missiles" description="Les missiles sont automatiquement réapprovisionnés après le tir" author="Chillmatica" />
+  <text language="34" name="Replenish Missiles" description="Los misiles se reponen automáticamente después de disparar" author="Chillmatica" />
+  <text language="44" name="Replenish Missiles" description="Missiles are automatically replenished after firing" author="Chillmatica" />
+  <text language="49" name="Replenish Missiles" description="Raketen werden nach dem Abfeuern automatisch wieder aufgefüllt" author="Chillmatica" />
+  <text language="86" name="Replenish Missiles" description="导弹发射后自动补充" author="Chillmatica" />
 </content>
