@@ -1,5 +1,6 @@
-<content name="[ТРЕБУЕТ ПЕРЕВОД] Inventory Collector" id="ws_2063916598" author="Assailer" version="123" date="2023-06-18" save="0" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] Мод позволяет назначить корабли на сбор инвентаря." sync="false" lastupdate="1687099221">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Inventory Collector" description="[ТРЕБУЕТ ПЕРЕВОД] Мод позволяет назначить корабли на сбор инвентаря." />
+<?xml version='1.0' encoding='utf-8'?>
+<content name="[ТРЕБУЕТ ПЕРЕВОД] Inventory Collector" id="ws_2063916598" author="Assailer" version="123" date="2023-06-18" save="0" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод fs inv расширяет возможности игры и добавляет улучшения геймплея." sync="false" lastupdate="1687099221">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Inventory Collector" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод fs inv расширяет возможности игры и добавляет улучшения геймплея." />
   <text language="33" name="Collecteur d'inventaire" description="Inventory Collector" />
   <text language="34" name="Inventory Collector" description="Inventory Collector" />
   <text language="39" name="Inventory Collector" description="Inventory Collector" />

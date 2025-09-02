@@ -38,28 +38,69 @@ def read_text(p: Path) -> str:
         return ''
 
 
-def find_candidate_urls(mod_dir: Path) -> list[str]:
+def find_candidate_urls(mod_dir: Path, max_depth: int = 2) -> list[str]:
     urls = []
-    # scan common files
-    for nm in (
+    candidates = []
+    names = (
         'README.md','ReadMe.md','README.txt','readme.md','readme.txt',
         'about.txt','About.txt','DESCRIPTION.txt','description.txt'
-    ):
-        fp = mod_dir / nm
-        if fp.exists():
-            urls += re.findall(r'https?://\S+', read_text(fp))
-    # scan content.xml
-    cx = mod_dir / 'content.xml'
-    if cx.exists():
-        txt = read_text(cx)
-        urls += re.findall(r'https?://\S+', txt)
+    )
+    # collect candidate files up to depth
+    roots = [mod_dir]
+    for sub in ('docs', 'documentation', 'readme', 'wiki'):
+        p = mod_dir / sub
+        if p.exists() and p.is_dir():
+            roots.append(p)
+    visited = set()
+    def walk(dir_path: Path, depth: int):
+        if depth > max_depth:
+            return
+        for p in dir_path.iterdir():
+            if p.is_dir():
+                walk(p, depth + 1)
+            else:
+                if p.name in names:
+                    candidates.append(p)
+                elif p.name.lower() == 'content.xml':
+                    candidates.append(p)
+    for r in roots:
+        if r.exists() and r not in visited:
+            visited.add(r)
+            walk(r, 0)
+    for fp in candidates:
+        urls += re.findall(r'https?:\/\/\S+', read_text(fp))
     # dedupe and simple filter
     clean = []
     for u in urls:
         u = u.strip().rstrip(').,;"\'')
         if u not in clean and (u.startswith('http://') or u.startswith('https://')):
             clean.append(u)
-    return clean[:5]
+    return clean[:10]
+
+
+def find_local_readme_snippet(mod_dir: Path) -> str:
+    # search recursively similar to URLs
+    for depth in range(0, 3):
+        for sub in (Path('.'), Path('docs'), Path('documentation'), Path('readme'), Path('wiki')):
+            base = (mod_dir / sub)
+            if not base.exists() or not base.is_dir():
+                continue
+            for p in base.rglob('*'):
+                try:
+                    if p.is_file() and p.suffix.lower() in ('.md', '.txt'):
+                        txt = read_text(p)
+                        if not txt:
+                            continue
+                        # prefer english sections, strip markdown
+                        txt = re.sub(r'<[^>]+>', ' ', txt)
+                        txt = re.sub(r'[\t ]+', ' ', txt)
+                        txt = re.sub(r'[#*_>`]+', ' ', txt)
+                        para = first_paragraph(txt, limit=700)
+                        if para:
+                            return para
+                except Exception:
+                    continue
+    return ''
 
 
 def fetch_url(url: str) -> str:
@@ -103,7 +144,7 @@ def extract_snippet(url: str, html_text: str) -> str:
         art = re.search(r'<article[^>]*>([\s\S]+?)</article>', html_text, flags=re.I)
         if art:
             return first_paragraph(strip_html_keep_paragraphs(art.group(1)))
-    # NexusMods generic
+    # NexusMods generic (best-effort; may be blocked)
     if 'nexusmods.com' in host:
         desc = re.search(r'id=["\']description["\'][^>]*>([\s\S]+?)</div>', html_text, flags=re.I)
         if desc:
@@ -186,9 +227,13 @@ def process_mod(mod_dir: Path) -> bool:
         if not html_text:
             continue
         snip = extract_snippet(u, html_text)
-        if snip:
-            if update_content_xml(mod_dir, snip):
-                return True
+        if snip and update_content_xml(mod_dir, snip):
+            return True
+    # fallback: use local README snippet if any
+    local_snip = find_local_readme_snippet(mod_dir)
+    if local_snip:
+        if update_content_xml(mod_dir, local_snip):
+            return True
     return False
 
 

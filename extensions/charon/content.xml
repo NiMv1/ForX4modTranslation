@@ -1,5 +1,6 @@
-<content id="charon123" name="[ТРЕБУЕТ ПЕРЕВОД] Charon" description="[ТРЕБУЕТ ПЕРЕВОД] Adds the Charon to the Argon wharf" author="eva" version="100" date="2025-07-26" save="0" enabled="1" sync="false" lastupdate="1752975639">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Charon" description="[ТРЕБУЕТ ПЕРЕВОД] Adds the Charon to the Argon wharf" author="eva" />
+<?xml version='1.0' encoding='utf-8'?>
+<content id="charon123" name="[ТРЕБУЕТ ПЕРЕВОД] Charon" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод charon расширяет возможности игры и добавляет улучшения геймплея." author="eva" version="100" date="2025-07-26" save="0" enabled="1" sync="false" lastupdate="1752975639">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Charon" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод charon расширяет возможности игры и добавляет улучшения геймплея." author="eva" />
   <text language="33" name="Charon" description="Adds the Charon to the Argon wharf" author="eva" />
   <text language="34" name="Charon" description="Adds the Charon to the Argon wharf" author="eva" />
   <text language="39" name="Charon" description="Adds the Charon to the Argon wharf" author="eva" />

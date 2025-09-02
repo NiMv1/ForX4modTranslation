@@ -1,5 +1,6 @@
-<content id="ws_3398380235" name="[ТРЕБУЕТ ПЕРЕВОД] Fleet Follow tweaks" description="[ТРЕБУЕТ ПЕРЕВОД] This mod tweaks the order “Follow commander” for fleets." version="710" date="2025-02-12" save="0" lastupdate="1739289047" author="Schwarzemona">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Fleet Follow tweaks" description="[ТРЕБУЕТ ПЕРЕВОД] This mod tweaks the order “Follow commander” for fleets." />
+<?xml version='1.0' encoding='utf-8'?>
+<content id="ws_3398380235" name="[ТРЕБУЕТ ПЕРЕВОД] Fleet Follow tweaks" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод fleet follow tweaks упрощает управление флотом и подчинёнными." version="710" date="2025-02-12" save="0" lastupdate="1739289047" author="Schwarzemona">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Fleet Follow tweaks" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод fleet follow tweaks упрощает управление флотом и подчинёнными." />
   <text language="33" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
   <text language="34" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />
   <text language="39" name="Fleet Follow tweaks" description="This mod tweaks the order “Follow commander” for fleets." />

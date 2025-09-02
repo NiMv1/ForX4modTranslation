@@ -1,2 +1,3 @@
-<content id="money_drop" name="[ТРЕБУЕТ ПЕРЕВОД] Drop money" description="[ТРЕБУЕТ ПЕРЕВОД] Drop money from destroeyd ship" author="peak" version="100" date="" save="0" enabled="1" sync="false">
- <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Drop money" description="[ТРЕБУЕТ ПЕРЕВОД] Drop money from destroeyd ship" /></content>
+<?xml version='1.0' encoding='utf-8'?>
+<content id="money_drop" name="[ТРЕБУЕТ ПЕРЕВОД] Drop money" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод money drop расширяет возможности игры и добавляет улучшения геймплея." author="peak" version="100" date="" save="0" enabled="1" sync="false">
+ <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Drop money" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод money drop расширяет возможности игры и добавляет улучшения геймплея." /></content>

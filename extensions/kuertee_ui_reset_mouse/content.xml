@@ -1,5 +1,6 @@
-<content id="kuerteeUIResetMouseOnMenuClose" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee UI: Reset mouse" author="kuertee, Mycu" version="750" date="2025-02-21" save="false" enabled="1">
+<?xml version='1.0' encoding='utf-8'?>
+<content id="kuerteeUIResetMouseOnMenuClose" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee UI: Reset mouse" author="kuertee, Mycu" version="750" date="2025-02-21" save="false" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод kuertee ui reset mouse улучшает интерфейс и элементы HUD.">
 
 <text language="" description="UI: Reset mouse on menu and game controller&#13;&#10; https://www.nexusmods.com/x4foundations/mods/542&#13;&#10; by kuertee&#13;&#10; &#13;&#10; Mod effects:&#13;&#10; ============&#13;&#10; 1. auto-pilot disengage: mouse to the centre,&#13;&#10; 2. close of menu: mouse to the centre,&#13;&#10; 3. open of menu: mouse to the previous mouse position,&#13;&#10; 4. game controller move: hide mouse,&#13;&#10; 5. mouse move after game controller move: show mouse,&#13;&#10; 6. interact menu or conversation menu: disable mouse steering&#13;&#10; " />
 
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee UI: Reset mouse" /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] kuertee UI: Reset mouse" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод kuertee ui reset mouse улучшает интерфейс и элементы HUD." /></content>

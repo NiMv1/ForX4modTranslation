@@ -1,3 +1,4 @@
-<content id="ReplaceGunsSound" name="[ТРЕБУЕТ ПЕРЕВОД] Replace Guns Sound VRO" description="[ТРЕБУЕТ ПЕРЕВОД] Replace guns sound VRO." version="100" date="2025-03-29" save="false" sync="false" enabled="true" author="Bassted">
+<?xml version='1.0' encoding='utf-8'?>
+<content id="ReplaceGunsSound" name="[ТРЕБУЕТ ПЕРЕВОД] Replace Guns Sound VRO" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод replace guns sound vro меняет характеристики/звуки вооружения." version="100" date="2025-03-29" save="false" sync="false" enabled="true" author="Bassted">
   <dependency id="ws_1696862840" optional="true" name="Variety and Rebalance Overhaul" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Replace Guns Sound VRO" description="[ТРЕБУЕТ ПЕРЕВОД] Replace guns sound VRO." /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Replace Guns Sound VRO" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод replace guns sound vro меняет характеристики/звуки вооружения." /></content>

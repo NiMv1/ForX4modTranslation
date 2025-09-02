@@ -82,11 +82,12 @@ def parse_content_xml(path: Path):
 
     # Частые узлы: content/@name, content/@description, вложенные <name lang="ru">, <description lang="ru">,
     # а также <text language="7" name=... description=...>
-    content = root.find('.//content')
+    content = root if root.tag == 'content' else root.find('.//content')
     if content is not None:
         # атрибуты
         name_ru = content.get('name_ru') or content.get('name-ru') or content.get('name_ruRU')
         descr_ru = content.get('description_ru') or content.get('description-ru') or content.get('description_ruRU')
+        # по умолчанию обычные атрибуты считаем EN, но дальше переопределим, если там кириллица или маркер
         name_en = content.get('name_en') or content.get('name-en') or content.get('name')
         descr_en = content.get('description_en') or content.get('description-en') or content.get('description')
 
@@ -150,7 +151,21 @@ def main():
         name_ru, name_en, descr_ru, descr_en = parse_content_xml(cxml)
 
         ru_missing = is_placeholder(descr_ru)
-        ru_equals_en = bool(descr_ru and descr_en and descr_ru.strip() == descr_en.strip())
+        def has_cyrillic(s: str) -> bool:
+            return any('А' <= ch <= 'я' or ch in ('ё','Ё') for ch in s)
+        marker = '[ТРЕБУЕТ ПЕРЕВОД]'
+        def is_probably_en(s: str) -> bool:
+            if not s:
+                return False
+            ss = s.strip()
+            if ss.startswith(marker):
+                return False
+            if has_cyrillic(ss):
+                return False
+            return True
+        ru_equals_en = bool(
+            descr_ru and descr_en and is_probably_en(descr_en) and descr_ru.strip() == descr_en.strip()
+        )
         needs_improve = ru_missing or ru_equals_en
 
         if needs_improve:

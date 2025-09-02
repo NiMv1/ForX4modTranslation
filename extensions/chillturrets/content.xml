@@ -1,5 +1,6 @@
-<content id="ws_2996046035" name="[ТРЕБУЕТ ПЕРЕВОД] Chill Turrets" description="[ТРЕБУЕТ ПЕРЕВОД] Установите и забудьте турели с прогрессивным выбором цели, чтобы уменьшить ручное изменение настроек." author="Chillmatica" version="190" date="2023-08-07" save="0" lastupdate="1691418086">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Chill Turrets" description="[ТРЕБУЕТ ПЕРЕВОД] Установите и забудьте турели с прогрессивным выбором цели, чтобы уменьшить ручное изменение настроек." author="Chillmatica" />
+<?xml version='1.0' encoding='utf-8'?>
+<content id="ws_2996046035" name="[ТРЕБУЕТ ПЕРЕВОД] Chill Turrets" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод chillturrets расширяет возможности игры и добавляет улучшения геймплея." author="Chillmatica" version="190" date="2023-08-07" save="0" lastupdate="1691418086">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Chill Turrets" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод chillturrets расширяет возможности игры и добавляет улучшения геймплея." author="Chillmatica" />
   <text language="33" name="Chill Turrets" description="Réglez et oubliez les tourelles avec sélection progressive de la cible pour réduire le changement manuel des paramètres." author="Chillmatica" />
   <text language="34" name="Chill Turrets" description="Configure y olvide las torretas con la selección progresiva de objetivos para reducir el cambio manual de configuraciones." author="Chillmatica" />
   <text language="44" name="Chill Turrets" description="Set and forget turrets with progressive target selection to reduce manual changing of settings." author="Chillmatica" />

@@ -1,5 +1,6 @@
-<content id="ws_3529947103" name="[ТРЕБУЕТ ПЕРЕВОД] Rackham" description="[ТРЕБУЕТ ПЕРЕВОД] Adds the Rackham to the Argon wharf" author="eva" version="100" date="2025-07-27" save="0" lastupdate="1753583033">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Rackham" description="[ТРЕБУЕТ ПЕРЕВОД] Adds the Rackham to the Argon wharf" author="eva" />
+<?xml version='1.0' encoding='utf-8'?>
+<content id="ws_3529947103" name="[ТРЕБУЕТ ПЕРЕВОД] Rackham" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод rackham расширяет возможности игры и добавляет улучшения геймплея." author="eva" version="100" date="2025-07-27" save="0" lastupdate="1753583033">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Rackham" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод rackham расширяет возможности игры и добавляет улучшения геймплея." author="eva" />
   <text language="33" name="Rackham" description="Adds the Rackham to the Argon wharf" author="eva" />
   <text language="34" name="Rackham" description="Adds the Rackham to the Argon wharf" author="eva" />
   <text language="39" name="Rackham" description="Adds the Rackham to the Argon wharf" author="eva" />

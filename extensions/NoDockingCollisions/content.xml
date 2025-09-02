@@ -1,4 +1,5 @@
-<content id="NoDockingCollisions" name="[ТРЕБУЕТ ПЕРЕВОД] No Docking Collisions for S and M ships" description="[ТРЕБУЕТ ПЕРЕВОД] Disables docking collisions for S and M class ships" author="ShadowedWilds, General Vash, Rumble16" version="101" date="2024-05-06" save="0" enabled="1">
+<?xml version='1.0' encoding='utf-8'?>
+<content id="NoDockingCollisions" name="[ТРЕБУЕТ ПЕРЕВОД] No Docking Collisions for S and M ships" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод NoDockingCollisions добавляет/улучшает механику стыковки и поведения кораблей." author="ShadowedWilds, General Vash, Rumble16" version="101" date="2024-05-06" save="0" enabled="1">
 	<dependency id="ego_dlc_split" optional="true" name="Split Vendetta" />
 	<dependency id="ego_dlc_terran" optional="true" name="Cradle of Humanity" />
 	<dependency id="ego_dlc_pirate" optional="true" name="Tides of Avarice" />
@@ -6,4 +7,4 @@
 	<dependency id="Sovrei Resurgent" optional="true" name="Sovrei Resurgent" />
 	<dependency id="sov_dreadnaughts" optional="true" name="Dreadnaughts and Battlecruisers" />
 	<dependency id="SWI_Extension_SithExtension" optional="true" name="SWI Active Sith Faction" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] No Docking Collisions for S and M ships" description="[ТРЕБУЕТ ПЕРЕВОД] Disables docking collisions for S and M class ships" /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] No Docking Collisions for S and M ships" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод NoDockingCollisions добавляет/улучшает механику стыковки и поведения кораблей." /></content>
