@@ -1,6 +1,9 @@
 import re
 import json
+import argparse
+from datetime import datetime
 from pathlib import Path
+import shutil
 import xml.etree.ElementTree as ET
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -216,7 +219,7 @@ def ensure_ru_language_node(content_node: ET.Element) -> ET.Element:
     return ru_lang_node
 
 
-def process_mod(mod_dir: Path) -> bool:
+def process_mod(mod_dir: Path, *, force: bool, only_missing: bool, no_mark: bool, dry_run: bool, do_backup: bool) -> bool:
     cx = mod_dir / 'content.xml'
     if not cx.exists():
         return False
@@ -272,29 +275,38 @@ def process_mod(mod_dir: Path) -> bool:
     if key in CFG['custom_descriptions']:
         ru_desc = CFG['custom_descriptions'][key]
 
+    # Решение: когда применять изменения
+    apply_changes = True
+    if only_missing and name_ok and desc_ok:
+        apply_changes = False
+    if force:
+        apply_changes = True
+
     # Запись
     changed = False
-    if content.get('name') != ru_name:
-        content.set('name', ru_name)
-        changed = True
-    if content.get('description') != ru_desc:
-        content.set('description', ru_desc)
-        changed = True
+    if apply_changes:
+        if content.get('name') != ru_name:
+            content.set('name', ru_name)
+            changed = True
+        if content.get('description') != ru_desc:
+            content.set('description', ru_desc)
+            changed = True
     tnode = ensure_ru_text_node(content)
     lnode = ensure_ru_language_node(content)
-    if (tnode.get('name') or '') != ru_name:
-        tnode.set('name', ru_name)
-        changed = True
-    if (tnode.get('description') or '') != ru_desc:
-        tnode.set('description', ru_desc)
-        changed = True
-    # продублируем в <language language="7">
-    if (lnode.get('description') or '') != ru_desc:
-        lnode.set('description', ru_desc)
-        changed = True
+    if apply_changes:
+        if (tnode.get('name') or '') != ru_name:
+            tnode.set('name', ru_name)
+            changed = True
+        if (tnode.get('description') or '') != ru_desc:
+            tnode.set('description', ru_desc)
+            changed = True
+        # продублируем в <language language="7">
+        if (lnode.get('description') or '') != ru_desc:
+            lnode.set('description', ru_desc)
+            changed = True
 
     # Если тексты уже ок и совпадают с нашей автогенерацией, но ru_auto нет — поставим только атрибут
-    if (not changed) and name_ok and desc_ok and content.get('ru_auto') != '1':
+    if (not changed) and name_ok and desc_ok and content.get('ru_auto') != '1' and (not no_mark):
         if (
             ((content.get('name') or '') == ru_name or (t_ru is not None and (t_ru.get('name') or '') == ru_name))
             and ((content.get('description') or '') == ru_desc or (t_ru is not None and (t_ru.get('description') or '') == ru_desc))
@@ -302,19 +314,47 @@ def process_mod(mod_dir: Path) -> bool:
             changed = True
     if changed:
         # Проставим атрибут-маркер автогенерации на узле content
-        if content.get('ru_auto') != '1':
+        if (not no_mark) and content.get('ru_auto') != '1':
             content.set('ru_auto', '1')
+        if dry_run:
+            return False
+        if do_backup:
+            ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+            backup_path = cx.with_suffix(f'.xml.bak_{ts}')
+            try:
+                shutil.copy2(cx, backup_path)
+            except Exception:
+                pass
         tree.write(cx, encoding='utf-8', xml_declaration=True)
     return changed
 
 
+def parse_args():
+    ap = argparse.ArgumentParser(description='Mass translate X4 mods content.xml to RU')
+    ap.add_argument('--mods', nargs='*', help='Имена каталогов модов для обработки (по умолчанию все)')
+    ap.add_argument('--dry-run', action='store_true', help='Только показать, без записи файлов')
+    ap.add_argument('--force', action='store_true', help='Перезаписывать даже если RU уже ок')
+    ap.add_argument('--only-missing', action='store_true', help='Трогать только те, где RU отсутствует/плейсхолдер/с метками')
+    ap.add_argument('--no-mark', action='store_true', help='Не проставлять атрибут ru_auto')
+    ap.add_argument('--backup', action='store_true', help='Перед записью создать бэкап content.xml')
+    return ap.parse_args()
+
+
 def main():
+    args = parse_args()
+    if args.mods:
+        targets = [ext_dir / m for m in args.mods]
+    else:
+        targets = sorted(p for p in ext_dir.iterdir() if p.is_dir())
+
     total = 0
     changed = 0
-    for mod in sorted(p for p in ext_dir.iterdir() if p.is_dir()):
+    for mod in targets:
+        if not mod.exists() or not mod.is_dir():
+            continue
         total += 1
         try:
-            if process_mod(mod):
+            if process_mod(mod, force=args.force, only_missing=args.only_missing, no_mark=args.no_mark, dry_run=args.dry_run, do_backup=args.backup):
                 changed += 1
                 print(f"✔ Переведён: {mod.name}")
         except Exception as e:

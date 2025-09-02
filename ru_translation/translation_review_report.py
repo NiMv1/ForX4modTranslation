@@ -1,11 +1,15 @@
 from pathlib import Path
 import json
 import re
+import argparse
+import csv
+from datetime import datetime
 import xml.etree.ElementTree as ET
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ext_dir = REPO_ROOT / 'extensions'
 CONFIG_PATH = REPO_ROOT / 'ru_translation' / 'terms_config.json'
+OUT_DIR = REPO_ROOT / 'ru_translation' / 'out'
 
 
 def has_cyrillic(s: str) -> bool:
@@ -83,6 +87,11 @@ def gather_quality_flags(content) -> list[str]:
 
 
 def main():
+    ap = argparse.ArgumentParser(description='Report RU translation auto-generation and quality flags')
+    ap.add_argument('--json', action='store_true', help='Сохранить отчёт в JSON (ru_translation/out/report_YYYYMMDD_HHMMSS.json)')
+    ap.add_argument('--csv', action='store_true', help='Сохранить отчёт в CSV (ru_translation/out/report_YYYYMMDD_HHMMSS.csv)')
+    args = ap.parse_args()
+
     auto = []
     quality = {}
     for mod_dir in sorted(p for p in ext_dir.iterdir() if p.is_dir()):
@@ -117,6 +126,30 @@ def main():
         print('Проблем не найдено.')
     print('—')
     print(f'Итого: автогенерация: {len(auto)}; модов с флагами качества: {issues}')
+
+    # Выгрузка
+    if args.json or args.csv:
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+        if args.json:
+            jpath = OUT_DIR / f'report_{ts}.json'
+            payload = {
+                'auto': auto,
+                'quality': quality,
+                'counts': {'auto': len(auto), 'issues': issues}
+            }
+            jpath.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')
+            print(f'JSON: {jpath}')
+        if args.csv:
+            cpath = OUT_DIR / f'report_{ts}.csv'
+            with cpath.open('w', newline='', encoding='utf-8') as f:
+                w = csv.writer(f)
+                w.writerow(['mod', 'flag'])
+                for mod, flags in sorted(quality.items()):
+                    if flags:
+                        for fl in flags:
+                            w.writerow([mod, fl])
+            print(f'CSV: {cpath}')
 
 
 if __name__ == '__main__':
