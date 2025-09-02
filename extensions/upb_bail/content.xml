@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="ws_3265669486" name="[ТРЕБУЕТ ПЕРЕВОД] upb Bail" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод upb bail расширяет возможности игры и добавляет улучшения геймплея.&#10;EN: The ship bail event has been reorganized.&#10;    To explain for new players, the Bail event is an event that allows the crew and pilot of a ship under attack to abandon the ship, allowing the player to take over the ship." author="netUpb" version="140" date="2025-06-18" save="0" lastupdate="1750279816">
+<content id="ws_3265669486" name="[ТРЕБУЕТ ПЕРЕВОД] upb Bail" description="Мод upb bail расширяет возможности игры и добавляет улучшения геймплея." author="netUpb" version="140" date="2025-06-18" save="0" lastupdate="1750279816">
   
   <dependency id="ws_3265629547" version="200" optional="false" name="upb Lua Loader" />
   <dependency version="300" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] upb Bail" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод upb bail расширяет возможности игры и добавляет улучшения геймплея.&#10;EN: The ship bail event has been reorganized.&#10;    To explain for new players, the Bail event is an event that allows the crew and pilot of a ship under attack to abandon the ship, allowing the player to take over the ship." /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] upb Bail" description="Мод upb bail расширяет возможности игры и добавляет улучшения геймплея." /></content>

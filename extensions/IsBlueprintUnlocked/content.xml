@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="ws_2757002811" name="[ТРЕБУЕТ ПЕРЕВОД] Is Blueprint Unlocked" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод IsBlueprintUnlocked расширяет возможности игры и добавляет улучшения геймплея." author="TheLich" version="101" date="2025-04-17" save="0" enabled="1" sync="false" lastupdate="1744875027">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Is Blueprint Unlocked" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод IsBlueprintUnlocked расширяет возможности игры и добавляет улучшения геймплея." author="TheLich" />
+<content id="ws_2757002811" name="[ТРЕБУЕТ ПЕРЕВОД] Is Blueprint Unlocked" description="Мод IsBlueprintUnlocked расширяет возможности игры и добавляет улучшения геймплея." author="TheLich" version="101" date="2025-04-17" save="0" enabled="1" sync="false" lastupdate="1744875027">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Is Blueprint Unlocked" description="Мод IsBlueprintUnlocked расширяет возможности игры и добавляет улучшения геймплея." author="TheLich" />
   <text language="44" name="Is Blueprint Unlocked" description="Adds indicator to ship/station module's name, if player has unlocked this blueprint" author="TheLich" />
   <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" />
 </content>

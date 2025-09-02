@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="ImprovedRepairLaser" name="[ТРЕБУЕТ ПЕРЕВОД] ImprovedRepairLaser" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод improvedrepairlaser расширяет возможности игры и добавляет улучшения геймплея." author="iforgotmysocks" version="010" date="2018-12-01" save="0">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] ImprovedRepairLaser" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод improvedrepairlaser расширяет возможности игры и добавляет улучшения геймплея." author="iforgotmysocks" />
+<content id="ImprovedRepairLaser" name="[ТРЕБУЕТ ПЕРЕВОД] ImprovedRepairLaser" description="Мод improvedrepairlaser расширяет возможности игры и добавляет улучшения геймплея." author="iforgotmysocks" version="010" date="2018-12-01" save="0">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] ImprovedRepairLaser" description="Мод improvedrepairlaser расширяет возможности игры и добавляет улучшения геймплея." author="iforgotmysocks" />
   <text language="33" name="ImprovedRepairLaser" description="ImprovedRepairLaser" author="iforgotmysocks" />
   <text language="34" name="ImprovedRepairLaser" description="ImprovedRepairLaser" author="iforgotmysocks" />
   <text language="39" name="ImprovedRepairLaser" description="ImprovedRepairLaser" author="iforgotmysocks" />

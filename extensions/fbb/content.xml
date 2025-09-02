@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content name="[ТРЕБУЕТ ПЕРЕВОД] Fly-by Lockbox" id="ws_1683356126" author="Assailer" version="112" date="2022-06-20" save="0" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод fbb расширяет возможности игры и добавляет улучшения геймплея." sync="false" lastupdate="1655745728">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Fly-by Lockbox" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод fbb расширяет возможности игры и добавляет улучшения геймплея." />
+<content name="[ТРЕБУЕТ ПЕРЕВОД] Fly by Lockbox" id="ws_1683356126" author="Assailer" version="112" date="2022-06-20" save="0" enabled="1" description="Мод fbb расширяет возможности игры и добавляет улучшения геймплея." sync="false" lastupdate="1655745728">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Fly by Lockbox" description="Мод fbb расширяет возможности игры и добавляет улучшения геймплея." />
   <text language="33" name="Fly-by Lockbox" description="Fly-by Lockbox" />
   <text language="34" name="Fly-by Lockbox" description="Fly-by Lockbox" />
   <text language="39" name="Fly-by Lockbox" description="Fly-by Lockbox" />

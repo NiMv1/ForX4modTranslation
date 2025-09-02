@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="CustomTabs" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Custom Tabs" author="Mycu" version="211" date="2025-02-21" save="false" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод mycu custom tabs расширяет возможности игры и добавляет улучшения геймплея.">
+<content id="CustomTabs" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Custom Tabs" author="Mycu" version="211" date="2025-02-21" save="false" enabled="1" description="Мод mycu custom tabs расширяет возможности игры и добавляет улучшения геймплея.">
     <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" />
     <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Custom Tabs" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод mycu custom tabs расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Custom Tabs" description="Мод mycu custom tabs расширяет возможности игры и добавляет улучшения геймплея." /></content>

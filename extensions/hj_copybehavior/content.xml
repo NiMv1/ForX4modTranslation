@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="HJCopyBehavior" author="Hijack Hornet" name="[ТРЕБУЕТ ПЕРЕВОД] [HJ] CopyBehavior" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод hj copybehavior расширяет возможности игры и добавляет улучшения геймплея." version="100" date="2021-07-07" save="false" lastupdate="">
+<content id="HJCopyBehavior" author="Hijack Hornet" name="[ТРЕБУЕТ ПЕРЕВОД] [HJ] CopyBehavior" description="Мод hj copybehavior расширяет возможности игры и добавляет улучшения геймплея." version="100" date="2021-07-07" save="false" lastupdate="">
 <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] [HJ] CopyBehavior" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод hj copybehavior расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] [HJ] CopyBehavior" description="Мод hj copybehavior расширяет возможности игры и добавляет улучшения геймплея." /></content>

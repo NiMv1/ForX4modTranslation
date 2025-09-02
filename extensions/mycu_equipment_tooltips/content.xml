@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="EquipmentTooltips" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Equipment tooltips" author="Mycu" version="162" date="2025-06-14" save="false" enabled="1" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод mycu equipment tooltips расширяет возможности игры и добавляет улучшения геймплея.">
+<content id="EquipmentTooltips" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Equipment tooltips" author="Mycu" version="162" date="2025-06-14" save="false" enabled="1" description="Мод mycu equipment tooltips расширяет возможности игры и добавляет улучшения геймплея.">
     <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Equipment tooltips" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод mycu equipment tooltips расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Mycu: Equipment tooltips" description="Мод mycu equipment tooltips расширяет возможности игры и добавляет улучшения геймплея." /></content>

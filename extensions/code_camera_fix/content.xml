@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="ws_3500896293" name="[ТРЕБУЕТ ПЕРЕВОД] Исправление камеры" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод code camera fix расширяет возможности игры и добавляет улучшения геймплея." author="CODE" version="101" date="2025-08-01" save="false" enabled="1" sync="false" lastupdate="1754033768">
+<content id="ws_3500896293" name="[ТРЕБУЕТ ПЕРЕВОД] Исправление камеры" description="Мод code camera fix расширяет возможности игры и добавляет улучшения геймплея." author="CODE" version="101" date="2025-08-01" save="false" enabled="1" sync="false" lastupdate="1754033768">
   
   <text language="0" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE" />
   
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Исправление камеры" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод code camera fix расширяет возможности игры и добавляет улучшения геймплея." author="CODE" />
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Исправление камеры" description="Мод code camera fix расширяет возможности игры и добавляет улучшения геймплея." author="CODE" />
   
   <text language="33" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE" />
   

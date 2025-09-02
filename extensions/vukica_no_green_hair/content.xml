@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="no_green_hair" name="[ТРЕБУЕТ ПЕРЕВОД] Remove Green Hair" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод vukica no green hair расширяет возможности игры и добавляет улучшения геймплея." author="vukica" version="100" date="2024-08-20" save="0">
+<content id="no_green_hair" name="[ТРЕБУЕТ ПЕРЕВОД] Remove Green Hair" description="Мод vukica no green hair расширяет возможности игры и добавляет улучшения геймплея." author="vukica" version="100" date="2024-08-20" save="0">
   <dependency id="ego_dlc_terran" optional="true" name="Cradle of Humanity" />
   <dependency id="ego_dlc_pirate" optional="true" name="Tides of Avarice" />
   <dependency id="ego_dlc_boron" optional="true" name="Kingdom End" />
   <dependency id="ego_dlc_timelines" optional="true" name="Timelines" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Remove Green Hair" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод vukica no green hair расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Remove Green Hair" description="Мод vukica no green hair расширяет возможности игры и добавляет улучшения геймплея." /></content>

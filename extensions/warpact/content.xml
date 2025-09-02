@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="ws_2981440435" name="[ТРЕБУЕТ ПЕРЕВОД] War Pact" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод warpact расширяет возможности игры и добавляет улучшения геймплея." author="Chillmatica" version="140" date="2023-05-27" save="0" enabled="1" sync="false" lastupdate="1685227190">
+<content id="ws_2981440435" name="[ТРЕБУЕТ ПЕРЕВОД] War Pact" description="Мод warpact расширяет возможности игры и добавляет улучшения геймплея." author="Chillmatica" version="140" date="2023-05-27" save="0" enabled="1" sync="false" lastupdate="1685227190">
   <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" />
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] War Pact" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод warpact расширяет возможности игры и добавляет улучшения геймплея." author="Chillmatica" />
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] War Pact" description="Мод warpact расширяет возможности игры и добавляет улучшения геймплея." author="Chillmatica" />
   <text language="33" name="War Pact" description="Choisissez une faction avec laquelle vous allier. Ce mod synchronisera votre réputation avec votre allié, positif ou négatif." author="Chillmatica" />
   <text language="34" name="War Pact" description="Elige una facción con la que aliarte. Este mod sincronizará tu reputación con la de tu aliado, positiva o negativa." author="Chillmatica" />
   <text language="44" name="War Pact" description="Choose a faction to ally with. This mod will sync your reputation with your ally, positive or negative." author="Chillmatica" />

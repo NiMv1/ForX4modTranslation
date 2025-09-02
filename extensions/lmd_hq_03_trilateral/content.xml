@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="lmd_hq_03_trilateral" name="[ТРЕБУЕТ ПЕРЕВОД] Completed Headquarters - Trilateral" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод lmd hq 03 trilateral расширяет возможности игры и добавляет улучшения геймплея." author="LangyMD" save="false" version="200" date="2024-08-16">
+<content id="lmd_hq_03_trilateral" name="[ТРЕБУЕТ ПЕРЕВОД] Completed Headquarters Trilateral" description="Мод lmd hq 03 trilateral расширяет возможности игры и добавляет улучшения геймплея." author="LangyMD" save="false" version="200" date="2024-08-16">
     <dependency id="lmd_hq_03" optional="false" name="Completed Headquarters" />
-<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Completed Headquarters - Trilateral" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод lmd hq 03 trilateral расширяет возможности игры и добавляет улучшения геймплея." /></content>
+<text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Completed Headquarters Trilateral" description="Мод lmd hq 03 trilateral расширяет возможности игры и добавляет улучшения геймплея." /></content>

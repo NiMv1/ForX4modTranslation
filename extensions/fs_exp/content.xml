@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content name="[ТРЕБУЕТ ПЕРЕВОД] Sector Explorer" id="ws_2074838459" author="Assailer" version="148" date="2025-04-08" save="0" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод fs exp расширяет возможности игры и добавляет улучшения геймплея." lastupdate="1744109887">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Sector Explorer" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод fs exp расширяет возможности игры и добавляет улучшения геймплея." />
+<content name="[ТРЕБУЕТ ПЕРЕВОД] Sector Explorer" id="ws_2074838459" author="Assailer" version="148" date="2025-04-08" save="0" description="Мод fs exp расширяет возможности игры и добавляет улучшения геймплея." lastupdate="1744109887">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Sector Explorer" description="Мод fs exp расширяет возможности игры и добавляет улучшения геймплея." />
   <text language="86" name="Sector Explorer" description="星区探索" />
   <text language="33" name="Sector Explorer" description="Sector Explorer" />
   <text language="34" name="Sector Explorer" description="Sector Explorer" />

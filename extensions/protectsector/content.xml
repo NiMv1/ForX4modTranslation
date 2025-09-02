@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<content id="ws_3379427822" name="[ТРЕБУЕТ ПЕРЕВОД] Protect Sector" author="Chem O`Dun" version="109" date="2025-05-18" save="false" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод protectsector расширяет возможности игры и добавляет улучшения геймплея." lastupdate="1747564263">
-  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Protect Sector" description="[ТРЕБУЕТ ПЕРЕВОД] Краткое описание: Мод protectsector расширяет возможности игры и добавляет улучшения геймплея." />
+<content id="ws_3379427822" name="[ТРЕБУЕТ ПЕРЕВОД] Protect Sector" author="Chem O`Dun" version="109" date="2025-05-18" save="false" description="Мод protectsector расширяет возможности игры и добавляет улучшения геймплея." lastupdate="1747564263">
+  <text language="7" name="[ТРЕБУЕТ ПЕРЕВОД] Protect Sector" description="Мод protectsector расширяет возможности игры и добавляет улучшения геймплея." />
   <text language="33" name="Protéger le Secteur" description="Protéger le Secteur contre les vaisseaux hostiles" />
   <text language="34" name="Proteger el Sector" description="Proteger el Sector contra naves hostiles" />
   <text language="39" name="Proteggi Settore" description="Proteggi Settore contro navi ostili" />
