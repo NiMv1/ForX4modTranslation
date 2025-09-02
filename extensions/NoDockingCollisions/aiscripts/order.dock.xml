@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+CHANGES
+- S and M ships will no longer "dock" with other ships and will be collected by the destination ship once they are close.
+-->
+<diff>
+    <add sel="/aiscript/attention/actions/label[@name='requestdock']" pos="after">
+        <do_if value="$thisship.isclass.[class.ship_s, class.ship_m] and $destination.isclass.ship">
+            <do_if value="this.bboxdistanceto.{$destination} le 1000">
+                <debug_text text="'Better Doking with Ships - Initial Dock'"/>
+                <request_docking ship="$thisship" container="$destination" requirebuilding="$building" requiretrading="$trading" allowplayeronly="$allowplayeronly" ventureronly="$ventureplatform" ventureplatform="$ventureplatform" queuedresult="$queuedresult" grantedresult="$grantedresult" />
+              <do_if value="$grantedresult">
+			  <activate_landinggears object="$thisship" />
+<disable_collisions_between object="$thisship" target="$destination"/>
+                <dock ship="this.ship"/>
+                <resume label="finish"/>
+              </do_if>
+            </do_if>
+            <do_else>
+                <!-- Move to destination -->
+                <create_order object="this.ship" id="'MoveToObject'" immediate="true">
+                    <param name="destination" value="$destination"/>
+                </create_order>
+                <debug_text text="'Better Docking with Ships - Moving'"/>
+                <wait exact="1s"/>
+                <debug_text text="'Better Docking with Ships - Secondary Dock'"/>
+                <cancel_all_orders object="this.ship"/>
+                <request_docking ship="$thisship" container="$destination" requirebuilding="$building" requiretrading="$trading" allowplayeronly="$allowplayeronly" ventureronly="$ventureplatform" ventureplatform="$ventureplatform" queuedresult="$queuedresult" grantedresult="$grantedresult" />
+                <do_if value="$grantedresult">
+				<activate_landinggears object="$thisship" />
+<disable_collisions_between object="$thisship" target="$destination"/>
+                  <dock ship="this.ship"/>
+                  <resume label="finish"/>
+               </do_if>
+            </do_else>
+        </do_if>
+    </add>
+</diff>

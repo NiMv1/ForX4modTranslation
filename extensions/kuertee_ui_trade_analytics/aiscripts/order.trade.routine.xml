@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<!--
+		debugs
+		<attention min="unknown">
+			<actions>
+				...
+				<label name="prep"/>
+				...
+				<label name="start"/>
+				...
+				<label name="find trade run"/>
+	-->
+	<add pos="after" sel="//label[@name=&quot;prep&quot;]">
+		<do_if value="this.assignedcontrolled == @global.$md_kTA.UserSettings.$debugThisShip">
+			<set_value name="$debugchance" exact="100" />
+			<set_value name="$debugchance2" exact="100" />
+		</do_if>
+		<do_else>
+			<set_value name="$debugchance" exact="0" />
+			<set_value name="$debugchance2" exact="0" />
+		</do_else>
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' LABEL prep'" chance="$debugchance" />
+	</add>
+	<add pos="after" sel="//label[@name=&quot;start&quot;]">
+		<do_if value="this.assignedcontrolled == @global.$md_kTA.UserSettings.$debugThisShip">
+			<set_value name="$debugchance" exact="100" />
+			<set_value name="$debugchance2" exact="100" />
+		</do_if>
+		<do_else>
+			<set_value name="$debugchance" exact="0" />
+			<set_value name="$debugchance2" exact="0" />
+		</do_else>
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' LABEL start'" chance="$debugchance" />
+	</add>
+	<add pos="after" sel="//label[@name=&quot;find trade run&quot;]">
+		<do_if value="this.assignedcontrolled == @global.$md_kTA.UserSettings.$debugThisShip">
+			<set_value name="$debugchance" exact="100" />
+			<set_value name="$debugchance2" exact="100" />
+		</do_if>
+		<do_else>
+			<set_value name="$debugchance" exact="0" />
+			<set_value name="$debugchance2" exact="0" />
+		</do_else>
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' LABEL find trade run'" chance="$debugchance" />
+	</add>
+	<!--
+		============================================
+		fix infinite loop of unprocessed $warebasket
+		============================================
+	-->
+	<!--
+		<run_script name="$findtradescript">
+	-->
+	<add pos="after" sel="//run_script[@name=&quot;$findtradescript&quot;]">
+		<remove_value name="this.$kTA_isWareBasketUpdated" />
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' this.$kTA_isWareBasketUpdated (post remove_value): ' + @this.$kTA_isWareBasketUpdated" chance="$debugchance" />
+	</add>
+</diff>

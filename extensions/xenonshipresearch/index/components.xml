@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ?xml-stylesheet href="index.xsl" type="text/xsl" ? -->
+<diff>
+	<add sel = '/index' >
+		<entry name="weapon_xen_xl_battleship_01_mk1" value="extensions\xenonshipresearch\assets\props\WeaponSystems\capital\weapon_xen_xl_battleship_01_mk1" />
+	</add>
+</diff>

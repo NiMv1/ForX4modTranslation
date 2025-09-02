@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diff>
+  <!-- just removed the speakline-->
+  <replace sel="/mdscript/cues/library/actions/signal_cue_instantly[@cue='AddUseCaseDef'][38]/@param">table[ $name = '$IllegalActivity_Station_Defended',             $priority = 15, $speakpriority = -100, $chance = 100, $queue = true, $allow_comm_chatter = false,             $locations = [ '$StationLocation' ],             $actors = [               table[ $name = '$StationNPC', $location = '$StationLocation', $filter = [controlpost.manager], $monitor = table[ $forceonplayer = true ] ],             ],             $script = [               table[ $actor = '$StationNPC', $recipient = 'player', $comment = 'grateful',  $speakdelay = 500ms ]             ]           ]</replace>
+</diff>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diff>
+  <add sel="//soundlibrary">
+	<sound id="19530002_normal" description="OTAS Voicelines" repeat="1" is3d="1" preload="0">
+	  <sample start="extensions\otas_shippack\voice\19530002\normal"/>
+	  <effects>
+		<reverb room="sewer pipe" roomsize="10" drymix="5" density="90"/>
+	  </effects>			
+	</sound>
+		
+		<!--FIRESTORM ARTILLERY-->
+	<sound id="firestorm_turret_shoot" description="FIRESTORM ARTILLERY SHOOTING" repeat="1" is3d="1" preload="0">
+	  <sample selection="random">
+		<select start="extensions\otas_shippack\sfx\weapons\firestorm_1" />
+		<select start="extensions\otas_shippack\sfx\weapons\firestorm_2" />
+		<select start="extensions\otas_shippack\sfx\weapons\firestorm_3" />
+	  </sample>
+	  <volume start="2" distance="25" />
+	</sound>
+	<sound id="firestorm_turret_impact" description="FIRESTORM ARTILLERY IMPACT" repeat="1" is3d="1" preload="0">
+	  <sample selection="random">
+		<select start="extensions\otas_shippack\sfx\weapons\firestorm_hit_1" />
+		<select start="extensions\otas_shippack\sfx\weapons\firestorm_hit_2" />			
+	  </sample>
+	  <volume start="0.85" distance="25" />
+	</sound>
+		<!--PHASED ARRAY LASER CANNON-->
+	<sound id="palc_turret_shoot" description="PALC SHOOTING" repeat="1" is3d="1" preload="1">
+	  <sample selection="random">
+		<select start="extensions\otas_shippack\sfx\weapons\palc_1" />
+		<select start="extensions\otas_shippack\sfx\weapons\palc_2" />
+		<select start="extensions\otas_shippack\sfx\weapons\palc_3" />
+	  </sample>
+	  <volume start="0.4" distance="20" />
+	</sound>
+	<sound id="palc_turret_impact" description="PALC IMPACT" repeat="1" is3d="1" preload="1">
+	  <sample selection="random">
+		<select start="extensions\otas_shippack\sfx\weapons\palc_hit_1" />
+		<select start="extensions\otas_shippack\sfx\weapons\palc_hit_2" />
+		<select start="extensions\otas_shippack\sfx\weapons\palc_hit_3" />
+	  </sample>
+	  <volume start="0.8" distance="10" />
+	</sound>
+		<!--M/AM MASS DRIVER-->
+	<sound id="chargedshot" description="M/AM MASS DRIVER SHOOTING" repeat="1" is3d="1" preload="1">
+	  <sample selection="random">
+		<select start="extensions\otas_shippack\sfx\weapons\chargelaser" />
+	  </sample>
+	  <volume start="1.5" distance="35" />
+	</sound>				
+  </add>
+</diff>

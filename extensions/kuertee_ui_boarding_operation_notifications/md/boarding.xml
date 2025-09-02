@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+	<!--
+		<cue name="Infiltration_Ticker" instantiate="true" checkinterval="2s">
+			<actions>
+	-->
+	<add sel="//cue[@name=&quot;Infiltration_Ticker&quot;]/actions">
+		<do_if value="$MissionCue.hasmission and $MissionCue.hasguidance">
+			<set_value name="$k_progress_infiltration" exact="((this.$CurrentTotalProgress / (this.$InfiltratingMarines.count)f) * 100)i / 100.0" />
+			<do_if value="not this.$InfiltratingMarines.count">
+				<!-- <show_notification text="{1037, 2004} + {1001, 120} + ' 100%'" comment="Stage II - Infiltration: X%" /> -->
+			</do_if>
+			<do_elseif value="(not @$k_timeShowNotification_infiltration) or (player.age ge @$k_timeShowNotification_infiltration and $k_progress_infiltration != @$k_progress_infiltration_old) or player.age ge $k_timeShowNotification_infiltration + 5s">
+				<set_value name="$k_timeShowNotification_infiltration" exact="player.age + 5s" />
+				<set_value name="$k_progress_infiltration_old" exact="$k_progress_infiltration" />
+				<show_notification text="{1037, 2004} + {1001, 120} + ' ' + $k_progress_infiltration + '%'" comment="Stage II - Infiltration: X%" />
+			</do_elseif>
+		</do_if>
+	</add>
+	<!--
+		<cue name="Internal_Fight_Ticker" instantiate="true" checkinterval="5s">
+			<actions>
+				...
+				<do_if value="$TotalAttackerHealth and $TotalDefenderHealth">
+	-->
+	<add sel="//cue[@name=&quot;Internal_Fight_Ticker&quot;]/actions//do_if[@value=&quot;$TotalAttackerHealth and $TotalDefenderHealth&quot;]">
+		<do_if value="$MissionCue.hasmission and $MissionCue.hasguidance">
+			<!-- <debug_text text="'$TotalAttackerHealth: ' + $TotalAttackerHealth" />
+			<debug_text text="'$TotalDefenderHealth: ' + $TotalDefenderHealth" /> -->
+			<set_value name="$k_progress_assault" exact="100 - ($TotalDefenderHealth / ($TotalAttackerHealth)f * 1000)i / 100.0" />
+			<do_if value="(not @$k_timeShowNotification_assault) or (player.age ge $k_timeShowNotification_assault and $k_progress_infiltration != @$k_progress_infiltration_old) or player.age ge $k_timeShowNotification_assault + 5s">
+				<set_value name="$k_timeShowNotification_assault" exact="player.age + 5s" />
+				<set_value name="$k_progress_assault_old" exact="$k_progress_assault" />
+				<show_notification text="{1037, 2006} + {1001, 120} + ' ' + $k_progress_assault + '%'" comment="Stage III - Assault: X%" />
+			</do_if>
+		</do_if>
+	</add>
+</diff>

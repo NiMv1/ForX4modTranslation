@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language id="86">
+	<!-- "kuertee fft" = "kfft" = "11 6 6 20" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="116620" voice="no">
+		<!-- config -->
+		<t id="1">kuertee: 友军火力调整</t>
+		<t id="2">调试日志</t>
+		<t id="3">在这些情况下惩罚友军火力:</t>
+		<t id="4">受害者是目标</t>
+		<t id="5">关闭以适用于任何受害者</t>
+		<t id="6">受害者的护盾低于25%</t>
+		<t id="7">关闭以适用于任何护盾量</t>
+		<t id="8">伤害来自主炮。</t>
+		<t id="9">关闭以适用于任何武器</t>
+		<t id="10">调试日志 \(冗长的\)</t>
+		<t id="11">调试日志 \(只有未忽略的响应\)</t>
+	</page>
+</language>

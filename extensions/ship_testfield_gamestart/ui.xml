@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon name="ship_testfield_gamestart" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../ui/core/addon.xsd">
+  <environment type="menus">
+    <file name="ui/shiptestfield_lualib.lua" />
+    <dependency name="ego_interactmenu" />
+  </environment>
+</addon>

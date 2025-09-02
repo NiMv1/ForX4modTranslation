@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- english -->
+<language>
+	<!-- "kuertee mod part trader" = "kmpt" = "11 13 16 20" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="11131620" voice="no">
+		<t id="1">kuertee: Modifikationsteilehändler</t>
+		<!-- config -->
+		<t id="2">Debug-Protokoll</t>
+		<t id="3">Debug-Funktion ausführen</t>
+		<t id="4">An Händler verkaufen?</t>
+		<t id="5">Verkaufspreismultiplikator</t>
+		<t id="6">Von Händlern kaufen?</t>
+		<t id="7">Kaufspreismultiplikator</t>
+		<!-- convo -->
+		<t id="100">Handel?</t>
+		<!-- ui -->
+		<t id="200">Modifikationsteil</t>
+		<t id="201">Wert</t>
+		<t id="202">Anzahl</t>
+		<t id="203">Tauschwert</t>
+		<t id="204">Gesamtwert</t>
+		<t id="205">Geldwert</t>
+		<t id="206">Nettowert</t>
+		<!-- station -->
+		<t id="300">Modifikationsteilehändler</t>
+
+		<!-- mycu_verbose_transaction_log mod -->
+		<t id="401">Änderungen Teile Tauschhandel</t>
+	</page>
+</language>

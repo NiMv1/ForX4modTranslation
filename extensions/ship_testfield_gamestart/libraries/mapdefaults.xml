@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <add sel="/defaults">
+    <dataset macro="shiptest_gen_cluster00_macro">
+    <properties>
+      <identification name="{20003,350001}" description="{20003,350002}" image="enc_cluster35"/>
+      <area sunlight="1" economy="0.25" security="0.75" />
+    </properties>
+  </dataset>
+  <dataset macro="shiptest_gen_sector00_cluster00_macro">
+    <properties>
+      <identification name="{20004,350011}" description="{20004,350012}" />
+    </properties>
+  </dataset>
+	</add>
+</diff>

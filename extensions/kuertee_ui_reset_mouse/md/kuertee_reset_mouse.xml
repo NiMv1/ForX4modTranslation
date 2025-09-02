@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="kuertee_reset_mouse" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="ResetAll" namespace="this">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<debug_text text="'reset_cue ' + ResetMouse" />
+				<reset_cue cue="ResetMouse" />
+			</actions>
+			<cues>
+				<cue name="ResetAll2">
+					<actions>
+						<debug_text text="'signal_cue ' + ResetMouse" />
+						<signal_cue cue="ResetMouse" />
+						<reset_cue cue="parent" />
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+		<cue name="ResetMouse" namespace="this" version="2">
+			<patch sinceversion="2" status="complete">
+				<debug_text text="'patch sinceversion 2, state: ' + this.state" />
+				<debug_text text="'signal_cue ' + ResetAll" />
+				<signal_cue cue="ResetAll" />
+			</patch>
+			<conditions>
+				<check_any>
+					<event_cue_signalled />
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+				<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+			</conditions>
+			<actions>
+				<set_value name="$debugChance" exact="100" />
+				<set_value name="$isDoDebug1" exact="false" />
+				<set_value name="$isDoDebug2" exact="false" />
+			</actions>
+			<cues>
+				<cue name="Init">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<event_game_loaded />
+						</check_any>
+						<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+					</conditions>
+					<actions>
+						<do_if value="not $debugChance?">
+							<set_value name="$debugChance" exact="0" />
+						</do_if>
+						<debug_text text="'event.name: ' + event.name + ', $debugChance: ' + $debugChance" />
+						<set_value name="$isDoDebug1" exact="false" />
+						<set_value name="$isDoDebug2" exact="false" />
+						<do_if value="not $userLocation?">
+							<set_value name="$userLocation" exact="'c'" />
+						</do_if>
+						<do_if value="not $userLocation_onGamepadStart?">
+							<set_value name="$userLocation_onGamepadStart" exact="'bl'" />
+						</do_if>
+						<do_if value="not $userLocation_onGamepadEnd?">
+							<set_value name="$userLocation_onGamepadEnd" exact="'previous'" />
+						</do_if>
+						<do_if value="not $userLocation_onAutoPilotStop?">
+							<set_value name="$userLocation_onAutoPilotStop" exact="'c'" />
+						</do_if>
+						<set_value name="$controllerType" exact="null" />
+						<!-- <reset_cue cue="this" /> -->
+						<reset_cue cue="OnOpenFullScreenMenu" />
+						<reset_cue cue="OnInteractMenu" />
+						<reset_cue cue="OnConversation_20210914" />
+						<reset_cue cue="AutoPilot" />
+						<set_value name="$isInFullScreenMenu" exact="player.isinfullscreenmenu" />
+						<do_if value="not $time_InteractMenu?">
+							<set_value name="$time_InteractMenu" exact="0" />
+						</do_if>
+					</actions>
+					<cues>
+						<cue name="Init2" checktime="player.age + 1s">
+							<actions>
+								<raise_lua_event name="'kuertee_reset_mouse.OnOptionChange_GamepadStart'" param="$userLocation_onGamepadStart" />
+								<raise_lua_event name="'kuertee_reset_mouse.OnOptionChange_GamepadEnd'" param="$userLocation_onGamepadEnd" />
+								<reset_cue cue="parent" />
+								<reset_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="OnOpenFullScreenMenu">
+					<conditions>
+						<event_ui_triggered />
+						<check_value value="player.isinfullscreenmenu" />
+						<!-- <check_value value="event.param != 'Time' and event.param != 'Named_Pipes' and event.param != 'Hotkey'" /> -->
+						<check_value value="event.param2 != 'menu_close'" />
+					</conditions>
+					<actions>
+						<debug_text text="'event.name: ' + event.name + ', event.param: ' + event.param + ', event.param2: ' + event.param2" chance="ResetMouse.$debugChance" />
+						<do_if value="not $isInFullScreenMenu">
+							<set_value name="$isInFullScreenMenu" exact="player.isinfullscreenmenu" />
+							<debug_text text="'$isInFullScreenMenu: ' + $isInFullScreenMenu" chance="ResetMouse.$debugChance" />
+							<raise_lua_event name="'kuertee_reset_mouse.OnOpenFullScreenMenu'" />
+						</do_if>
+						<run_actions ref="ResetCueListeners">
+							<param name="Except" value="OnOpenFullScreenMenu" />
+						</run_actions>
+					</actions>
+					<cues>
+						<cue name="OnCloseFullScreenMenu_20210914">
+							<conditions>
+								<event_ui_triggered control="'menu_close'" />
+								<check_value value="not player.isinfullscreenmenu" />
+								<!-- <check_value value="event.param != 'TopLevelMenu'" />
+								<check_value value="event.param != 'InteractMenu'" /> -->
+							</conditions>
+							<actions>
+								<debug_text text="'event.name: ' + event.name + ', event.param: ' + event.param + ', event.param2: ' + event.param2" chance="ResetMouse.$debugChance" />
+							</actions>
+							<cues>
+								<cue name="OnCloseFullScreenMenu2_20210914" checktime="player.age + 0.125s">
+									<actions>
+										<debug_text text="'player.isinfullscreenmenu: ' + player.isinfullscreenmenu" chance="ResetMouse.$debugChance" />
+										<do_if value="not player.isinfullscreenmenu">
+											<do_if value="$isInFullScreenMenu">
+												<set_value name="$isInFullScreenMenu" exact="false" />
+												<debug_text text="'$isInFullScreenMenu: ' + $isInFullScreenMenu" chance="ResetMouse.$debugChance" />
+												<raise_lua_event name="'kuertee_reset_mouse.OnCloseFullScreenMenu'" param="$userLocation"/>
+											</do_if>
+											<reset_cue cue="OnOpenFullScreenMenu" />
+										</do_if>
+										<reset_cue cue="parent" />
+										<cancel_cue cue="this" />
+									</actions>
+								</cue>
+							</cues>
+						</cue>
+					</cues>
+				</cue>
+				<!-- <cue name="OnPlayerUndocked">
+					<conditions>
+						<event_object_undocked group="global.$PlayerControlledGroup" />
+					</conditions>
+					<actions>
+						<raise_lua_event name="'kuertee_reset_mouse.OnCloseFullScreenMenu'" param="$userLocation"/>
+						<reset_cue cue="this" />
+					</actions>
+				</cue> -->
+				<library name="ResetCueListeners" purpose="run_actions">
+					<params>
+						<param name="Except" />
+					</params>
+					<actions>
+						<!-- <do_if value="$Except != OnOpenFullScreenMenu">
+							<reset_cue cue="OnOpenFullScreenMenu" />
+						</do_if> -->
+						<do_if value="$Except != OnInteractMenu">
+							<reset_cue cue="OnInteractMenu" />
+						</do_if>
+						<do_if value="$Except != OnConversation_20210914">
+							<reset_cue cue="OnConversation_20210914" />
+						</do_if>
+						<do_if value="$Except != AutoPilot">
+							<reset_cue cue="AutoPilot" />
+						</do_if>
+					</actions>
+				</library>
+				<library name="DisableMouseSteering" purpose="run_actions">
+					<actions>
+						<raise_lua_event name="'Chat_Window_API.Print'" param="'DisableMouseSteering'" chance="ResetMouse.$debugChance" />
+						<do_if value="not player.isinfullscreenmenu">
+							<raise_lua_event name="'kuertee_reset_mouse.DisableMouseSteering'" param="1" />
+						</do_if>
+					</actions>
+				</library>
+				<library name="EnableMouseSteering" purpose="run_actions">
+					<actions>
+						<raise_lua_event name="'Chat_Window_API.Print'" param="'EnableMouseSteering'" chance="ResetMouse.$debugChance" />
+						<do_if value="not player.isinfullscreenmenu">
+							<raise_lua_event name="'kuertee_reset_mouse.DisableMouseSteering'" param="0" />
+						</do_if>
+					</actions>
+				</library>
+				<cue name="OnInteractMenu">
+					<conditions>
+						<event_ui_triggered screen="'InteractMenu'" />
+						<check_value value="player.occupiedship" />
+					</conditions>
+					<actions>
+						<debug_text text="'event.name: ' + event.name + ', event.param: ' + event.param + ', event.param2: ' + event.param2" chance="ResetMouse.$debugChance" />
+						<set_value name="$time_InteractMenu" exact="player.age" />
+						<run_actions ref="ResetCueListeners">
+							<param name="Except" value="OnInteractMenu" />
+						</run_actions>
+					</actions>
+					<cues>
+						<cue name="OnInteractMenu2" checktime="player.age + 0.125s">
+							<actions>
+								<debug_text text="'event.name: ' + event.name" chance="ResetMouse.$debugChance" />
+								<run_actions ref="DisableMouseSteering" />
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+						<cue name="OnInteractMenuClose">
+							<conditions>
+								<event_ui_triggered screen="'InteractMenu'" control="'menu_close'" />
+							</conditions>
+							<actions>
+								<debug_text text="'event.name: ' + event.name + ', event.param: ' + event.param + ', event.param2: ' + event.param2" chance="$debugChance" />
+								<set_value name="$time_InteractMenu" exact="player.age" />
+								<run_actions ref="EnableMouseSteering" />
+								<reset_cue cue="parent" />
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="OnConversation_20210914">
+					<conditions>
+						<event_conversation_started />
+						<check_value value="player.occupiedship" />
+					</conditions>
+					<actions>
+						<debug_text text="'event.name: ' + event.name + ', event.param: ' + event.param + ', event.param2: ' + event.param2" chance="ResetMouse.$debugChance" />
+						<debug_text text="'$time_InteractMenu: ' + $time_InteractMenu + 'player.age - $time_InteractMenu lt 5s: ' + (player.age - $time_InteractMenu lt 5s)" chance="ResetMouse.$debugChance" />
+						<do_if value="(not $time_InteractMenu) or player.age - $time_InteractMenu lt 5s">
+							<run_actions ref="ResetCueListeners">
+								<param name="Except" value="OnConversation_20210914" />
+							</run_actions>
+						</do_if>
+						<do_else>
+							<reset_cue cue="this" />
+						</do_else>
+					</actions>
+					<cues>
+						<cue name="OnConversation2_20210914" checktime="player.age + 0.125s">
+							<actions>
+								<debug_text text="'event.name: ' + event.name" chance="ResetMouse.$debugChance" />
+								<run_actions ref="DisableMouseSteering" />
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+						<cue name="OnConversationEnd_20210914">
+							<conditions>
+								<event_conversation_finished />
+							</conditions>
+							<actions>
+								<debug_text text="'event.name: ' + event.name + ', event.param: ' + event.param + ', event.param2: ' + event.param2" chance="$debugChance" />
+								<run_actions ref="EnableMouseSteering" />
+								<reset_cue cue="parent" />
+								<reset_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="AutoPilot">
+					<conditions>
+						<event_autopilot_target_set />
+						<check_value value="$userLocation_onAutoPilotStop != 'disabled'" />
+					</conditions>
+					<actions>
+						<debug_text text="'event.name: ' + event.name + ', event.param: ' + event.param + ', event.param2: ' + event.param2" chance="$debugChance" />
+						<run_actions ref="ResetCueListeners">
+							<param name="Except" value="AutoPilot" />
+						</run_actions>
+					</actions>
+					<cues>
+						<cue name="AutoPilotStop_Check2" instantiate="true" checkinterval="0.5s">
+							<actions>
+								<debug_text text="''" chance="@kuertee_interval" />
+								<!-- <debug_text text="'$userLocation_onAutoPilotStop: ' + $userLocation_onAutoPilotStop" chance="ResetMouse.$debugChance" /> -->
+								<do_if value="not player.autopilottarget">
+									<debug_text text="'player.autopilottarget: ' + player.autopilottarget" chance="ResetMouse.$debugChance" />
+									<do_if value="not player.isinfullscreenmenu">
+										<raise_lua_event name="'kuertee_reset_mouse.OnAutoPilotEnd'" param="$userLocation_onAutoPilotStop"/>
+									</do_if>
+									<reset_cue cue="parent" />
+								</do_if>
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<!-- <cue name="CutsceneStarted_20230628">
+					<conditions>
+						<event_cutscene_started />
+						<check_value value="player.isinfullscreencutscene" />
+					</conditions>
+					<actions>
+						<debug_text text="'event.name: ' + event.name + ' player.isinfullscreencutscene: ' + @player.isinfullscreencutscene" chance="ResetMouse.$debugChance" />
+						<do_if value="event.param3">
+							<do_if value="not player.isinfullscreenmenu">
+								<raise_lua_event name="'kuertee_reset_mouse.AutoCamCutscene_On'"/>
+							</do_if>
+						</do_if>
+						<do_else>
+							<reset_cue cue="this" />
+						</do_else>
+					</actions>
+					<cues>
+						<cue name="CutsceneStopped_20230628">
+							<conditions>
+								<event_cutscene_stopped />
+							</conditions>
+							<actions>
+								<debug_text text="'event.name: ' + event.name" chance="ResetMouse.$debugChance" />
+								<do_if value="not player.isinfullscreenmenu">
+									<raise_lua_event name="'kuertee_reset_mouse.AutoCamCutscene_Off'"/>
+								</do_if>
+								<reset_cue cue="parent" />
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue> -->
+				<cue name="OnModInstall">
+					<actions>
+						<debug_text text="'$debugChance: ' + $debugChance" />
+						<signal_cue_instantly cue="Init" />
+					</actions>
+				</cue>
+				<cue name="OnModInstallComplete" checktime="player.age + 1s">
+					<actions>
+						<set_value name="$debugChance" exact="0" />
+						<debug_text text="'$debugChance: ' + $debugChance" />
+					</actions>
+				</cue>
+				<cue name="OnOptionsMenuClose">
+					<conditions>
+						<event_ui_triggered screen="'OptionsMenu'" control="'menu_close'" />
+					</conditions>
+					<actions>
+						<debug_text text="'$userLocation_onGamepadStart: ' + $userLocation_onGamepadStart" chance="ResetMouse.$debugChance" />
+						<debug_text text="'$userLocation_onGamepadEnd: ' + $userLocation_onGamepadEnd" chance="ResetMouse.$debugChance" />
+						<raise_lua_event name="'kuertee_reset_mouse.OnOptionChange_GamepadStart'" param="$userLocation_onGamepadStart" />
+						<raise_lua_event name="'kuertee_reset_mouse.OnOptionChange_GamepadEnd'" param="$userLocation_onGamepadEnd" />
+						<reset_cue cue="AutoPilot" />
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+		<cue name="DebugChat" namespace="this">
+			<conditions>
+				<event_ui_triggered screen="'Chat_Window_API'" control="'text_entered'" />
+				<check_any>
+					<check_value value="event.param3.$text == 'debug kuertee interval'" />
+				</check_any>
+			</conditions>
+			<actions>
+				<debug_text text="event.param3" />
+				<do_if value="event.param3.$text == 'debug kuertee interval'">
+					<do_if value="player.age - @md.$kuertee_interval_time gt 1s">
+						<set_value name="md.$kuertee_interval_time" exact="player.age" />
+						<do_if value="@md.$kuertee_interval">
+							<remove_value name="md.$kuertee_interval" />
+						</do_if>
+						<do_else>
+							<set_value name="md.$kuertee_interval" exact="100" />
+						</do_else>
+					</do_if>
+					<debug_text text="'md.$kuertee_interval: ' + @md.$kuertee_interval" />
+				</do_if>
+				<reset_cue cue="this"/>
+			</actions>
+		</cue>
+	</cues>
+</mdscript>

@@ -1,0 +1,90 @@
+UI: Reset mouse
+https://www.nexusmods.com/x4foundations/mods/542
+by kuertee
+Reset on game controller by Mycu
+
+Updates
+=======
+v7.5.01, 21 Feb 2025:
+-Bug-fixes: 7.5 compatibility updates.
+
+Mod effects
+===========
+1. auto-pilot disengage: mouse to the centre, 2. close of menu: mouse to the centre, 3. open of menu: mouse to the previous mouse position, 4. game controller move: hide mouse, 5. mouse move after game controller move: show mouse, 6. interact menu or conversation menu: disable mouse steering
+
+Requirement
+===========
+-SirNukes Mod Support APIs mod (https://www.nexusmods.com/x4foundations/mods/503)
+-Kuertee's UI Extensions mod (https://www.nexusmods.com/x4foundations/mods/552) - Modded Lua files with callbacks to allow more than one mod to change the same UI element. The detection of game controller happens at the Lua level. This mod uses the "toplevel" menu's update tick. And UIX allows us access to the "toplevel" menu.
+
+Install
+=======
+-Unzip to 'X4 Foundations/extensions/kuertee_ui_reset_mouse/'.
+-Make sure the sub-folders and files are in 'X4 Foundations/extensions/kuertee_ui_reset_mouse/' and not in 'X4 Foundations/extensions/kuertee_ui_reset_mouse/kuertee_ui_reset_mouse/'.
+
+Uninstall
+=========
+-Delete the mod folder.
+
+Troubleshooting
+===============
+(1) Do not change the file structure of the mod. If you do, you'll need to troubleshoot problems you encounter yourself.
+(2) Allow the game to log events to a text file by adding "-debug all -logfile debug.log" to its launch parameters.
+(3) Enable the mod-specific Debug Log in the mod's Extension Options.
+(4) Play for long enough for the mod to log its events.
+(5) Send me (at kuertee@gmail.com) the log found in My Documents\Egosoft\X4\(your player-specific number)\debug.log.
+
+Credits
+=======
+By kuertee.
+Reset on game controller by Mycu.
+French localisation by Calvitix.
+German localisation by LeLeon.
+
+History
+=======
+v7.0.02, 29 Jun 2024:
+-Tweak: 7.00 hf 1 compatibility.
+-Maintenance update: use UI Extensions' new method to load mod-specific UIX lua(s)
+
+v6.1.001, 28 Jun 2023:
+-Bug-fix: Reset mouse to center after fullscreen cutscene didn't work unless my other mod, Autocamera, was active. Works with any fullscreen cutscene now.
+
+v6.0.002, 13 Apr 2023:
+-Tweak: Reset mouse to menu position after a full-screen cutscene is played.
+-Bug-fix: GetControllerInfo () in createInfoFrame_onUpdate_before_frame_update () callback may be causing FPS to drop since v5.0 of the base game. Limit calls to it to 1 per second.
+
+v4.2.0, 10 Dec 2021:
+-Bug-fix: The mouse was snapping to its previous location when navigation between the menu. This was suppose to only happen when opening the menu.
+
+v4.1.0, 06 Nov 2021:
+-Bug-fix: Mouse steering was getting re-enabled if you move from the map screen to a conversation. In this version, it should get re-enabled only AFTER the conversation.
+-Bug-fix: Mouse steering is disabled during conversinos ONLY if you initiate it. Previously, some video comms from NPCs would disable mouse steering.
+
+v2.0.6, 11 Aug 2021:
+-Bug-fix: Mouse Steering was sometimes not getting disabled when it should.
+
+v2.0.5, 25 Jul 2021:
+-New feature: Mouse steering is disabled when the Interact Menu or the Conversation Menu is opened.
+
+v2.0.4, 11 Jul 2021:
+-Bug-fix: Sometimes, the mouse was resetting to its previous position while using the menus. It's only suppose to reset to its previous position when you open any menu.
+
+v2.0.3, 03 Jul 2021:
+-New feature: Reset mouse when auto-pilot disengages.
+
+v2.0.2, 20 Apr 2021:
+-New feature: "Disable" options and "Return to previous" options.
+-New feature: The mouse returns to its previous position when opening a full screen menu.
+
+v2.0.1, 19 Apr 2021:
+-New feature: Reset mouse on game controller start and on mouse start after game controller move.
+
+v2.0.0, 11 Mar 2021:
+-New feature: updated for v4.0.0 beta 11 of the base game.
+-Tweaks: Cleaned-up unnecessary localisation files. Rewrote content.xml manifest file.
+
+v1.1.0, 3 Aug 2020:
+-New feature: The mouse's reset location can be set in the mod's Extensions Options. Useful for those who don't use mouse steering AND who'd prefer not to see a floating mouse on the HUD.
+
+1.0.0, 2 Aug 2020: Initial release.

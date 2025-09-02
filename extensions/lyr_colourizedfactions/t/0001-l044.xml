@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- order and spacing is shared with 'factions.xml' file for side-by-side viewing -->
+<diff>
+	<replace sel="/language/page[@id='20203']/t[@id='103']/text()">\033#ff39ff40#PL</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='203']/text()">\033#ff0055ff#ARG</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='303']/text()">\033#ff5097de#ANT</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='403']/text()">\033#ff8000ff#PAR</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='503']/text()">\033#ffff72ad#HOP</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='603']/text()">\033#ffa9c22e#TEL</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='703']/text()">\033#ff94bc92#MIN</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='803']/text()">\033#ffb03cca#ALI</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='903']/text()">\033#ff20f6fd#HAT</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1003']/text()">\033#ff89823a#SCA</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1103']/text()">\033#ffc90000#XEN</replace>
+	<!-- <t id="1203">TEM</t> -->
+	<replace sel="/language/page[@id='20203']/t[@id='1303']/text()">\033#ff4dc4ff#BOR</replace>
+	<!-- <t id="1403">FZY</t> -->
+	<replace sel="/language/page[@id='20203']/t[@id='1503']/text()">\033#fff0aeed#KHK</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1603']/text()">\033#ffff9e00#FRF</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1703']/text()">\033#fffbb298#FAF</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1803']/text()">\033#ffffd500#CUB</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1903']/text()">\033#ffffd500#CAB</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2003']/text()">\033#ffff691e#ZYA</replace>
+	<!-- <t id="2103">NHU</t> -->
+	<replace sel="/language/page[@id='20203']/t[@id='2203']/text()">\033#ffff691e#RHA</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2303']/text()">\033#ffbf39d7#TRI</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2403']/text()">\033#ff5a00ff#BUC</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2503']/text()">\033#ff5a00ff#TEM</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2603']/text()">\033#ff8a0101#HOF</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2803']/text()">\033#fffe8dfa#YAK</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2903']/text()">\033#ff41aa9a#PIO</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='3003']/text()">\033#ffbcd0fb#TER</replace>
+	<!-- <t id="3103">???</t> -->
+	<replace sel="/language/page[@id='20203']/t[@id='3203']/text()">\033#ff5480a0#RIP</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='3303']/text()">\033#ff978296#VIG</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='3403']/text()">\033#ff4dc4ff#BOR</replace>
+</diff>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE icons SYSTEM "icons.dtd" >
+<diff>
+  <add sel="/icons" >
+      <icon name="mapst_sectorlist" texture="extensions\mycu_sector_list\assets\fx\gui\textures\map_sidebar_tabs\mapst_sectorlist.tga" height="128" width="128"/>
+      <icon name="msl_update" texture="extensions\mycu_sector_list\assets\fx\gui\textures\msl_icons\icon_update.tga" height="32" width="32"/>
+  </add>
+</diff>

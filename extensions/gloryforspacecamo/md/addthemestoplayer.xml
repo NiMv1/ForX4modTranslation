@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mdscript name="Addthemestoplayerpaintjobs4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+    <cues>
+        <cue name="Addthemesonloadpaintjobs4">
+            <conditions>
+                <!-- the script will trigger either after loading a save or after creating a new game -->
+                <!-- it should only trigger once per save unless instantiated or reset -->
+                <check_any>
+                    <event_game_started />
+                    <event_game_loaded />
+                </check_any>
+            </conditions>
+            <delay exact="5s" />
+            <actions>
+                <!-- list of all paintmods used in themes as wares, as per "more default paint" by SkeletalFish -->
+                <!-- format of list is "[ware.warename1, ware.warename2, ware.warename3]" etc -->
+                <set_value name="$paintmods" exact="[
+                ware.Eagle_Ferris,
+                ware.Felon,
+                ware.Felon_ALT,
+                ware.Flanker,
+                ware.Fullback,
+                ware.Harrier_Hawker,
+                ware.IDF_Desert,
+                ware.IDF_Skyhawk,
+                ware.JAP_Naval,
+                ware.JAP_Tiger,
+                ware.SK_Pixel,
+                ware.Flanker_Grey,
+				ware.checkmate_21,
+				ware.checkmate_23,
+				ware.checkmate_23_alt,
+				ware.checkmate_pro,
+				ware.checkmate_pro_max,
+				ware.m346_ami,
+				ware.tomcat_iriaf,
+				ware.viper_aggressor,
+				ware.almolivra,
+				ware.asterhite,
+				ware.blotdon,
+				ware.icedragon,
+				ware.lightromentar,
+				ware.moonsite,
+				ware.starrynight,
+				ware.tomcat_aunwha
+                ]" />
+                <!-- passing the list to add_blueprints -->
+                <add_blueprints wares="$paintmods" />
+                <!-- explicit cleanup -->
+                <remove_value name="$paintmods" />
+            </actions>
+        </cue>
+    </cues>
+</mdscript>

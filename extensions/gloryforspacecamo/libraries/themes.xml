@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <add sel="/themes">
+    <theme id="painttheme_player_camo_1" default="error_theme" name="Eagle Ferris">
+      <group faction="player" paintmod="Eagle_Ferris" />
+    </theme>
+    <theme id="painttheme_player_camo_2" default="error_theme" name="Felon">
+      <group faction="player" paintmod="Felon" />
+    </theme>
+    <theme id="painttheme_player_camo_3" default="error_theme" name="Felon ALT">
+      <group faction="player" paintmod="Felon_ALT" />
+    </theme>
+    <theme id="painttheme_player_camo_4" default="error_theme" name="Flanker">
+      <group faction="player" paintmod="Flanker" />
+    </theme>
+    <theme id="painttheme_player_camo_5" default="error_theme" name="Flanker Grey">
+      <group faction="player" paintmod="Flanker_Grey" />
+    </theme>
+    <theme id="painttheme_player_camo_6" default="error_theme" name="Fullback">
+      <group faction="player" paintmod="Fullback" />
+    </theme>
+    <theme id="painttheme_player_camo_7" default="error_theme" name="Harrier Hawker">
+      <group faction="player" paintmod="Harrier_Hawker" />
+    </theme>
+    <theme id="painttheme_player_camo_8" default="error_theme" name="IDF Desert">
+      <group faction="player" paintmod="IDF_Desert" />
+    </theme>
+    <theme id="painttheme_player_camo_9" default="error_theme" name="IDF Skyhawk">
+      <group faction="player" paintmod="IDF_Skyhawk" />
+    </theme>
+    <theme id="painttheme_player_camo_10" default="error_theme" name="JAP Naval">
+      <group faction="player" paintmod="JAP_Naval" />
+    </theme>
+    <theme id="painttheme_player_camo_11" default="error_theme" name="JAP Tiger">
+      <group faction="player" paintmod="JAP_Tiger" />
+    </theme>
+    <theme id="painttheme_player_camo_12" default="error_theme" name="SK Pixel">
+      <group faction="player" paintmod="SK_Pixel" />
+    </theme>
+	<theme id="painttheme_player_camo_13" default="error_theme" name="Checkmate 21">
+      <group faction="player" paintmod="checkmate_21" />
+    </theme>
+	<theme id="painttheme_player_camo_14" default="error_theme" name="Checkmate 23">
+      <group faction="player" paintmod="checkmate_23" />
+    </theme>
+	<theme id="painttheme_player_camo_15" default="error_theme" name="Checkmate 23 ALT">
+      <group faction="player" paintmod="checkmate_23_alt" />
+    </theme>
+	<theme id="painttheme_player_camo_16" default="error_theme" name="Checkmate Pro">
+      <group faction="player" paintmod="checkmate_pro" />
+    </theme>
+	<theme id="painttheme_player_camo_17" default="error_theme" name="Checkmate Pro Max">
+      <group faction="player" paintmod="checkmate_pro_max" />
+    </theme>
+	<theme id="painttheme_player_camo_18" default="error_theme" name="M346 AMI">
+      <group faction="player" paintmod="m346_ami" />
+    </theme>
+	<theme id="painttheme_player_camo_19" default="error_theme" name="Tomcat IRIAF">
+      <group faction="player" paintmod="tomcat_iriaf" />
+    </theme>
+	<theme id="painttheme_player_camo_21" default="error_theme" name="Almolivra">
+      <group faction="player" paintmod="almolivra" />
+    </theme>
+	<theme id="painttheme_player_camo_22" default="error_theme" name="Asterhite">
+      <group faction="player" paintmod="asterhite" />
+    </theme>
+	<theme id="painttheme_player_camo_23" default="error_theme" name="Blotdon">
+      <group faction="player" paintmod="blotdon" />
+    </theme>
+	<theme id="painttheme_player_camo_24" default="error_theme" name="Ice Dragon">
+      <group faction="player" paintmod="icedragon" />
+    </theme>
+	<theme id="painttheme_player_camo_25" default="error_theme" name="Lightromentar">
+      <group faction="player" paintmod="lightromentar" />
+    </theme>
+	<theme id="painttheme_player_camo_26" default="error_theme" name="Moonsite">
+      <group faction="player" paintmod="moonsite" />
+    </theme>
+	<theme id="painttheme_player_camo_27" default="error_theme" name="Star Ry night">
+      <group faction="player" paintmod="starrynight" />
+    </theme>
+	<theme id="painttheme_player_camo_28" default="error_theme" name="Tomcat Aunwha...?">
+      <group faction="player" paintmod="tomcat_aunwha" />
+    </theme>
+	<theme id="painttheme_player_camo_20" default="error_theme" name="Viper Aggressor">
+      <group faction="player" paintmod="viper_aggressor" />
+    </theme>
+	
+  </add>
+</diff>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language  id="86">
+	<!-- "kuertee mod part trader" = "kmpt" = "11 13 16 20" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="11131620" voice="no">
+		<t id="1">kuertee: 改装件贸易商</t>
+		<!-- config -->
+		<t id="2">调试日志</t>
+		<t id="3">开启调试</t>
+		<t id="4">出售给贸易商?</t>
+		<t id="5">销售价值系数</t>
+		<t id="6">从贸易商处购买?</t>
+		<t id="7">购买价值系数</t>
+		<!-- convo -->
+		<t id="100">交易?</t>
+		<!-- ui -->
+		<t id="200">改装件</t>
+		<t id="201">价值</t>
+		<t id="202">数量</t>
+		<t id="203">可交换价值</t>
+		<t id="204">合计价值</t>
+		<t id="205">货币价值</t>
+		<t id="206">净额</t>
+		<!-- station -->
+		<t id="300">改装件贸易商</t>
+
+		<!-- mycu_verbose_transaction_log mod -->
+		<t id="401">修改部件易货</t>
+	</page>
+</language>

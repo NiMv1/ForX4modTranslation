@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="kuertee_trade_analytics_config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="StartSMO" instantiate="true">
+			<conditions>
+				<event_cue_signalled cue="md.Simple_Menu_Options.Reloaded"/>
+			</conditions>
+			<actions>
+				<!-- <debug_text text="'signal_cue_instantly ' + @md.Simple_Menu_API.Register_Options_Menu" /> -->
+				<signal_cue_instantly cue="md.Simple_Menu_API.Register_Options_Menu"
+					param="table[
+						$id = 'kuertee_trade_analytics_extension_options_menu',
+						$columns = 2,
+						$title = {11201, 1},
+						$onOpen = BuildOptionsMenu
+					]" />
+				<cancel_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="BuildOptionsMenu" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<!-- <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row" />
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={11201, 3}]" />
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'user_removeDataOfDestroyedTraders',
+						$checked = md.kuertee_trade_analytics.UserSettings.$user_removeDataOfDestroyedTraders,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$default = true,
+						$mouseOverText = {1001, 2661} + ': ' + {1001, 2648},
+						$onClick = OnSMOCheckboxChange,
+					]"
+					comment="2661 = Defaults, 2649 = 'off', 2648 = 'on'"
+				/> -->
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={11201, 2}, $color='Helper.color.red']"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'debugChance',
+						$checked = if md.kuertee_trade_analytics.UserSettings.$debugChance == 100 then true else false,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$bgColor = 'Helper.color.red',
+						$onClick = OnSMOCheckboxChange,
+					]"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={11201, 2}, $color='Helper.color.red']"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'debugChance2',
+						$checked = if md.kuertee_trade_analytics.UserSettings.$debugChance2 == 100 then true else false,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$bgColor = 'Helper.color.red',
+						$onClick = OnSMOCheckboxChange,
+					]"/>
+			</actions>
+		</cue>
+		<cue name="OnSMOCheckboxChange" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<!-- <debug_text text="event.param.$id + ' to: ' + @event.param.$value + ' or ' + @event.param.$checked" /> -->
+				<debug_text text="event.param.$id + ' pre: ' + md.kuertee_trade_analytics.UserSettings.{'$' + event.param.$id}" chance="md.kuertee_trade_analytics.UserSettings.$debugChance"/>
+				<do_if value="event.param.$id == 'debugChance' or event.param.$id == 'debugChance2'">
+					<set_value name="md.kuertee_trade_analytics.UserSettings.{'$' + event.param.$id}" exact="if event.param.$checked then 100 else 0" />
+					<signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu"/>
+				</do_if>
+				<do_else>
+					<set_value name="md.kuertee_trade_analytics.UserSettings.{'$' + event.param.$id}" exact="event.param.$checked" />
+				</do_else>
+				<debug_text text="event.param.$id + ' post: ' + md.kuertee_trade_analytics.UserSettings.{'$' + event.param.$id}" chance="md.kuertee_trade_analytics.UserSettings.$debugChance"/>
+				<cancel_cue cue = "this" />
+			</actions>
+		</cue>
+	</cues>
+</mdscript>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mdscript name="LearningAllTheThings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+    <cue name="LATT_Base">
+      <conditions>
+        <check_any>
+          <event_player_created/>
+          <event_cue_signalled/>
+        </check_any>
+      </conditions>
+      <actions>
+        <!-- UPDATE -->
+        <set_value name="$versionNumber" exact="0.6"/>
+        <do_if value="event.param">
+          <show_help duration="15s" custom="'LATT update to version %1 complete.'.[$versionNumber]"/>
+        </do_if>
+        <do_else>
+          <show_help duration="15s" custom="'LATT installed.'"/>
+        </do_else>
+      </actions>
+      <cues>
+        <cue name="LATT_Base_IncreaseSkills" instantiate="true" checkinterval="20min" checktime="player.age + 20s" namespace="this">
+          <actions>
+            <!--
+            ##############################
+            ########### CONFIG ###########
+        
+            Chance to improve:
+            This value represents the chance (in %) to level up a skill for every npc every hour.
+            Value can be set from 0 to 100
+            -->
+            <set_value name="$chanceToImprove" exact="50"/>
+            <!--
+            
+            
+            Amount to improve per run: 
+            Set between 0 and 15 (15 is max)
+            -->
+            <set_value name="$amountToImprove" exact="1" />
+            <!--
+            
+            
+            Chance devided by stars:
+            When enabled, the chance set above will be devided by the npc's amount of stars, leading to slower leveling with a higer number of stars.
+            So with a base chance of 30%, a 2 stars a pilot would only have a 15% chance to gain more levels, and a 3 star npc only 10%.
+            Value can be set true or false
+            -->
+            <set_value name="$devideChance" exact="true"/>
+            <!--
+            
+            
+            Only receive job fitting experience for the affected npc's skills
+            Set true or false
+            -->
+            <set_value name="$jobFitting" exact="false" />
+
+            <!--
+            ######### CONFIG END #########
+            # DONT EDIT BEYOND THIS LINE #
+            ##############################-->
+
+            <set_value name="$debug" exact="0"/>
+            <do_if value="not (@$chanceToImprove ge 0 and @$chanceToImprove le 100) or not $chanceToImprove? or typeof $chanceToImprove != datatype.integer">
+              <set_value name="$chanceToImprove" exact="30"/>
+              <debug_text chance="$debug" text="'$chanceToImprove value was faulty, its been set to 30%.'"/>
+              <show_help custom="'$chanceToImprove value was faulty, its been set to 30%.'"/>
+            </do_if>
+
+            <do_if value="not (@$amountToImprove ge 0 and @$amountToImprove le 15) or not $amountToImprove? or typeof $amountToImprove != datatype.integer">
+              <set_value name="$amountToImprove" exact="1"/>
+              <debug_text chance="$debug" text="'$amountToImprove value was faulty, its been set to 1.'"/>
+              <show_help custom="'$amountToImprove value was faulty, its been set to 1.'"/>
+            </do_if>
+
+            <do_if value="not (@$devideChance == 0 or @$devideChance == 1) or not $devideChance? or typeof $devideChance != datatype.integer">
+              <set_value name="$devideChance" exact="true"/>
+              <debug_text chance="$debug" text="'$devideChance value was faulty, its been set to true.'"/>
+              <show_help custom="'$devideChance value was faulty, its been set to true.'"/>
+            </do_if>
+
+            <do_if value="not (@$jobFitting == 0 or @$jobFitting == 1) or not $jobFitting? or typeof $jobFitting != datatype.integer">
+              <set_value name="$jobFitting" exact="false"/>
+              <debug_text chance="$debug" text="'$jobFitting value was faulty, its been set to false.'"/>
+              <show_help custom="'$jobFitting value was faulty, its been set to false.'"/>
+            </do_if>
+
+            <set_value name="$roles" exact="[entityrole.service, entityrole.marine]"/>
+            <set_value name="$skills" exact="[skilltype.boarding, skilltype.engineering, skilltype.management, skilltype.morale, skilltype.piloting]"/>
+            <set_value name="$skillGroups" exact="table[$controlentity = [skilltype.piloting, skilltype.morale], $manager = [skilltype.management, skilltype.morale], $service = [skilltype.engineering, skilltype.morale], $marine = [skilltype.boarding, skilltype.morale]]"/>
+
+            <find_object name="$playerProperty" owner="faction.player" class="[class.station, class.ship_xl, class.ship_l, class.ship_m, class.ship_s]" multiple="true" space="player.galaxy"/>
+            <debug_text chance="$debug" text="'Found: ' + $playerProperty.count + ' ships/sts!'"/>
+            <do_all exact="$playerProperty.count" counter="$h">
+              <set_value name="$pProp" exact="$playerProperty.{$h}"/>
+
+              <debug_text chance="$debug" text="'Processing ship/st: %1'.[$pProp.name]"/>
+
+              <find_object_component name="$npcs" class="class.npc" multiple="true" object="$pProp" owner="faction.player"/>
+              <do_if value="not $npcs.count">
+                <debug_text chance="$debug" text="'Skipping as no crew was found on ship: ' + $pProp.name"/>
+                <continue/>
+              </do_if>
+              <do_all exact="$npcs.count" counter="$i">
+                <set_value name="$npc" exact="$npcs.{$i}"/>
+                <debug_text chance="$debug" text="'Processing npc: %1 on ship/st: %2'.[$npc.name, $pProp.name]"/>
+                <set_value name="$selSkills" exact="[]"/>
+                <do_if value="$jobFitting">
+                  <do_if value="$npc.iscontrolentity and $npc.container.isclass.ship">
+                    <debug_text chance="$debug" text="'npc is a pilot'"/>
+                    <set_value name="$selSkills" exact="$skillGroups.$controlentity"/>
+                  </do_if>
+                  <do_elseif value="$npc.controlpost == controlpost.manager">
+                    <debug_text chance="$debug" text="'npc is a manager'"/>
+                    <set_value name="$selSkills" exact="$skillGroups.$manager"/>
+                  </do_elseif>
+                </do_if>
+                <do_else>
+                  <set_value name="$selSkills" exact="$skills"/>
+                </do_else>
+                <do_all exact="$selSkills.count" counter="$sk">
+                  <debug_text chance="$debug" text="'selected Skill %1: %2'.[$sk, $selSkills.{$sk}]"/>
+                </do_all>
+
+                <do_all exact="$selSkills.count" counter="$j">
+                  <set_value name="$skill" exact="$selSkills.{$j}"/>
+                  <debug_text chance="$debug" text="'Comb Skills: %1 Skill: %2 Value: %3 Name: %4'.[@$npc.combinedskill, @$skill, @$npc.skill.{$skill}, @$npc.name]"/>
+
+                  <do_if value="$npc.skill.{$skill} == 15">
+                    <continue/>
+                  </do_if>
+                  <set_value name="$chanceToApply" exact="$chanceToImprove"/>
+                  <do_if value="$devideChance and (@$npc.skill.{$skill} / 3) != 0">
+                    <set_value name="$chanceToApply" exact="($chanceToImprove / ($npc.skill.{$skill} / 3)i)i"/>
+                    <debug_text text="'Npc lv: %s chance: %s new chance: %s'.[$npc.skill.{$skill}, $chanceToImprove, $chanceToApply]" chance="$debug"/>
+                  </do_if>
+
+                  <do_if value="$npc.skill.{$skill} + $amountToImprove gt 15">
+                    <set_skill object="$pProp" entity="$npc" type="$skill" exact="15" chance="$chanceToApply"/>
+                  </do_if>
+                  <do_else>
+                    <add_skill object="$pProp" entity="$npc" type="$skill" exact="$amountToImprove" chance="$chanceToApply"/>
+                  </do_else>
+
+                </do_all>
+              </do_all>
+
+              <do_if value="$pProp.isclass.station">
+                <continue/>
+              </do_if>
+
+              <do_if value="not $pProp.people.count">
+                <debug_text chance="$debug" text="'Skipping as no crew people were found on ship: ' + $pProp.name"/>
+                <continue/>
+              </do_if>
+
+              <do_all exact="$roles.count" counter="$i">
+                <set_value name="$role" exact="$roles.{$i}"/>
+                <do_if value="not $pProp.people.{$role}.list">
+                  <debug_text chance="$debug" text="'Skipping as no crew was found for the role ' + $role + ' on ship: ' + $pProp.name"/>
+                  <continue/>
+                </do_if>
+                <set_value name="$crewList" exact="$pProp.people.{$role}.list"/>
+                <do_all exact="$crewList.count" counter="$t">
+                  <set_value name="$crew" exact="$crewList.{$t}"/>
+                  <debug_text chance="$debug" text="'Processing crew-npc: %1 of role: %2 on ship/st: %3'.[$pProp.people.{$crew}.name, $role.name, $pProp.name]"/>
+
+                  <do_if value="$jobFitting">
+                    <do_if value="$role == entityrole.service">
+                      <debug_text text="'npc is a engineer'" chance="$debug"/>
+                      <set_value name="$selSkills" exact="$skillGroups.$service"/>
+                    </do_if>
+                    <do_elseif value="$role == entityrole.marine">
+                      <debug_text text="'npc is a marine'" chance="$debug"/>
+                      <set_value name="$selSkills" exact="$skillGroups.$marine"/>
+                    </do_elseif>
+                  </do_if>
+                  <do_else>
+                    <set_value name="$selSkills" exact="$skills"/>
+                  </do_else>
+
+                  <do_all exact="$selSkills.count" counter="$j">
+                    <set_value name="$skill" exact="$selSkills.{$j}"/>
+                    <debug_text chance="$debug" text="'Role %1 Comb Skills: %2 Skill: %3 Value: %4 Name: %5'.[$role.name, @$pProp.people.{$crew}.combinedskill, @$skill, @$pProp.people.{$crew}.skill.{$skill}, @$pProp.people.{$crew}.name]"/>
+
+                    <do_if value="$pProp.people.{$crew}.skill.{$skill} == 15">
+                      <continue/>
+                    </do_if>
+                    <set_value name="$chanceToApply" exact="$chanceToImprove"/>
+                    <do_if value="$devideChance and (@$pProp.people.{$crew}.skill.{$skill} / 3)i != 0">
+                      <set_value name="$chanceToApply" exact="($chanceToImprove / ($pProp.people.{$crew}.skill.{$skill} / 3)i)i"/>
+                      <debug_text text="'Npc lv: %s chance: %s new chance: %s'.[$pProp.people.{$crew}.skill.{$skill}, $chanceToImprove, $chanceToApply]" chance="$debug"/>
+                    </do_if>
+
+                    <do_if value="$pProp.people.{$crew}.skill.{$skill} + $amountToImprove gt 15">
+                      <set_skill object="$pProp" template="$crew" type="$skill" exact="15" chance="$chanceToApply"/>
+                    </do_if>
+                    <do_else>
+                      <add_skill object="$pProp" template="$crew" type="$skill" exact="$amountToImprove" chance="$chanceToApply"/>
+                    </do_else>
+                  </do_all>
+                </do_all>
+              </do_all>
+
+            </do_all>
+
+            <remove_value name="$playerProperty"/>
+            <remove_value name="$pProp"/>
+            <remove_value name="$roles"/>
+            <remove_value name="$role"/>
+            <remove_value name="$skills"/>
+            <remove_value name="$skill"/>
+            <remove_value name="$crewList"/>
+            <remove_value name="$crew"/>
+            <remove_value name="$npcs"/>
+            <remove_value name="$npc"/>
+            <remove_value name="$chanceToImprove"/>
+            <remove_value name="$amountToImprove"/>
+            <remove_value name="$selSkills"/>
+            <remove_value name="$devideChance"/>
+            <remove_value name="$chanceToApply"/>
+          </actions>
+        </cue>
+
+        <cue name="LATT_VersionCheck" instantiate="false">
+          <conditions>
+            <check_any>
+              <event_player_created/>
+              <event_cue_signalled/>
+            </check_any>
+          </conditions>
+          <actions>
+            <!--UPDATE-->
+            <set_value name="$newVersionNumber" exact="0.6"/>
+
+            <do_if value="$versionNumber != $newVersionNumber or $versionNumber == null or $versionNumber == 0">
+              <signal_cue_instantly cue="LATT_KeepAlive" param="true"/>
+              <reset_cue cue="LATT_Base"/>
+            </do_if>
+            <reset_cue cue="this"/>
+          </actions>
+        </cue>
+
+      </cues>
+    </cue>
+
+    <cue name="LATT_KeepAlive" instantiate="false">
+      <conditions>
+        <check_any>
+          <event_cue_signalled/>
+        </check_any>
+      </conditions>
+      <delay exact="2s"/>
+      <actions>
+        <do_if value="event.param">
+          <signal_cue_instantly cue="LATT_Base" param="event.param"/>
+        </do_if>
+        <do_else>
+          <signal_cue cue="LATT_Base"/>
+        </do_else>
+        <reset_cue cue="this"/>
+      </actions>
+    </cue>
+  </cues>
+</mdscript>

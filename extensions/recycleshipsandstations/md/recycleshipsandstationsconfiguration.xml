@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="RecycleShipsAndStationsConfiguration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="E:\Modding\xsds\comb\md.xsd">
+  <cues>
+    <library name="RecycleShipsConfiguration">
+      <actions>
+        <!--
+        ##############################
+        #### RECYCLE SHIPS CONFIG ####
+        
+        Base Recycle Modifier
+        The base recycle modifier (the managers percentage (up to 25%) are still being added afterwards). 
+        Set between 1 and 500. (Default: 75)
+        -->
+        <set_value name="$options.$recycleFactor" exact="75"/>
+
+
+        <!--
+        Create automatic sell orders for stations with the recycle module?
+        When set to true stations equipped with the recycle module will automatically create a sell order for wares added due to recycling ships.  
+        Useful for warehouses that should sell by default.
+        Set true or false. (Default: false)
+        -->
+        <set_value name="$options.$automaticSellOrders" exact="false"/>
+
+
+        <!--
+        Blueprint Research Bonus
+        For the more impationed ones out there a setting, that allows to increase the default Blueprint research progress percentage by the chosen amount. Set between 0 and 100. (Default: 0)
+        -->
+        <set_value name="$options.$blueprintResearchBonusPercentage" exact="30"/>
+        
+        
+        <!--
+        XL Ship recycle duration
+        Sets the XL ship duration for recycling in minutes. Set at least 1min. (Default: 60min)
+        -->
+        <set_value name="$options.{class.ship_xl}.$recycleDuration" exact="30min"/>
+
+        
+        <!--
+        L Ship recycle duration
+        Sets the L ship duration for recycling in minutes. Set at least 1min. (Default: 45min)
+        -->
+        <set_value name="$options.{class.ship_l}.$recycleDuration" exact="20min"/>
+
+        
+        <!--
+        M Ship recycle duration
+        Sets the M ship duration for recycling in minutes. Set at least 1min. (Default: 20min)
+        -->
+        <set_value name="$options.{class.ship_m}.$recycleDuration" exact="10min"/>
+
+        
+        <!--
+        S Ship recycle duration
+        Sets the S ship duration for recycling in minutes. Set at least 1min. (Default: 10min)
+        -->
+        <set_value name="$options.{class.ship_s}.$recycleDuration" exact="5min"/>
+
+
+        <!--
+        Unlock Recycle Module Blueprint at gamestart/save load
+        Unlocks the blueprint at gamestart or save game load when set to true, if not the player has to buy it first. 
+        Set to true or false. (Default: false)
+        -->
+        <set_value name="$options.$unlockRecycleModuleBlueprint" exact="false"/>
+
+        
+        <!--
+        Faction mod support
+        You can add factions here that are added by other mods that should also be allowed to sell stations to. 
+        Can also be used to add story factions, that i may have missed.
+        To add factions, look up their id and add them as the star wars faction below: @faction.mynewfaction,
+        -->
+        <set_value name="$options.$factionsToSupport" exact="[
+                   @faction.galempire,
+                   ]"/>
+        
+        <!--
+        ######### CONFIG END #########
+        ##############################-->
+
+      </actions>
+    </library>
+  </cues>
+</mdscript>

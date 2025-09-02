@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="fs_inva" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="main" instantiate="true" namespace="this">
+			<conditions>
+				<check_any>
+				  <event_conversation_next_section sectionprefix="g_mainmore" />
+				  <event_conversation_returned_to_section sectionprefix="g_mainmore" />
+				</check_any>
+				<check_value value="event.object.controlled.isclass.ship and event.object.controlled.isplayerowned" />
+			</conditions>
+			<actions>
+				<do_if value="event.object.ship.defaultorder.id != 'InventoryCollector'">
+					<add_player_choice text="{314153, 3}" position="right" section="fs_inv_p_start"/>  
+				</do_if>
+				<do_else>
+					<add_player_choice_sub text="{314153, 4}" position="right" section="fs_inv_p_stop"/> 
+				</do_else>
+			</actions>
+		</cue>
+
+		<cue name="fs_inv_start" instantiate="true" namespace="this">
+			<conditions>
+				<event_conversation_next_section sectionprefix="fs_inv_p_start"/>
+			</conditions>
+			<actions>
+				<create_order id="'InventoryCollector'" object="event.object.ship" default="true"/>
+			</actions>
+		</cue>
+
+		<cue name="fs_inv_stop" instantiate="true" namespace="this">
+			<conditions>
+				<event_conversation_next_section sectionprefix="fs_inv_p_stop"/>
+			</conditions>
+			<actions>
+				<create_order id="'Wait'" object="event.object.ship" default="true">
+					<param name="allowdocked" value="not event.object.ship.iscapitalship"/>
+				</create_order>
+			</actions>
+		</cue>
+	</cues>
+</mdscript>

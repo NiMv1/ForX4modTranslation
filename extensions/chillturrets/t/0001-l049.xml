@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<language id="49">
+  <page id="8008577" title="Chill Turrets T Files" descr="German" voice="no">
+    <t id="100">Kühltürme installiert. Stellen Sie alle großen auf Angriffshauptstädte und mittlere auf Raketenabwehr ein.</t>
+<t id="101">Chill Turrets-Einstellungen</t>
+<t id="102">Angriffshauptstädte zielen auch auf Kämpfer ab</t>
+<t id="103">Große Türme schießen auf Jäger, wenn keine anderen geeigneten Ziele vorhanden sind</t>
+<t id="104">Spieler-Turm-Modi automatisch festlegen</t>
+<t id="105">Alle Schiffe und alle künftig gebauten Schiffe werden sofort auf diese Mods-Einstellung eingestellt.</t>
+<t id="106"></t>
+<t id="107"></t>
+<t id="138">Aktiviert</t>
+<t id="139">Deaktiviert</t>
+  </page>
+</language>

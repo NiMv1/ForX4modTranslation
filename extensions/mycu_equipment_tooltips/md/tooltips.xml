@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="MET_Tooltips" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../#modding/xsd/md.xsd">
+    <cues>
+        <cue name="MET_Main" namespace="this">
+            <conditions>
+                <check_any>
+                    <event_cue_signalled cue="md.Setup.GameStart"/>
+                    <event_game_loaded/>
+                </check_any>
+            </conditions>
+            <actions>
+                <debug_text text="'event.name: ' + event.name"/>
+                <set_value name="$debugChance" exact="0"/>
+                <debug_text text="'Mycu MET: Init'" chance="$debugChance"/>
+            </actions>
+            <cues>
+            </cues>
+        </cue>
+
+    </cues>
+</mdscript>

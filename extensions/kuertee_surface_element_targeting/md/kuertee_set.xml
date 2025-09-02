@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="kuertee_surface_element_targeting" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="OnModLuaInited">
+			<conditions>
+				<event_ui_triggered screen="'Interact_Menu_API'" control="'reloaded'" />
+			</conditions>
+			<actions>
+				<raise_lua_event name="'Interact_Menu_API.Add_Custom_Actions_Group_Id'" param="'actions_kuertee_set_menu'" />
+				<raise_lua_event name="'Interact_Menu_API.Add_Custom_Actions_Group_Text'" param="{1119520, 0}" />
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="ResetAll" namespace="this">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<debug_text text="'reset_cue ' + kSET" />
+				<reset_cue cue="kSET" />
+			</actions>
+			<cues>
+				<cue name="ResetAll2">
+					<actions>
+						<debug_text text="'signal_cue ' + kSET" />
+						<signal_cue cue="kSET" />
+						<reset_cue cue="parent" />
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+		<cue name="UserSettings">
+			<conditions>
+				<check_any>
+					<event_cue_signalled />
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+				<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+			</conditions>
+			<actions>
+				<set_value name="UserSettings.$debugChance" exact="0" />
+				<set_value name="UserSettings.$isDoDebug1" exact="false" />
+				<set_value name="UserSettings.$isDoDebug2" exact="false" />
+			</actions>
+		</cue>
+		<cue name="kSET" namespace="this" version="10">
+			<conditions>
+				<check_any>
+					<event_cue_signalled />
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+				<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+			</conditions>
+			<actions>
+				<set_value name="kSET.$attentionInZoneAndNearer" exact="[attention.inzone, attention.nearby, attention.adjacentroom, attention.inroom]" />
+				<set_value name="kSET.$attentionVisibleAndNearer" exact="[attention.visible, attention.inzone, attention.nearby, attention.adjacentroom, attention.inroom]" />
+				<set_value name="$se_target" exact="null" />
+				<set_value name="$mission_active" exact="null" />
+			</actions>
+			<patch sinceversion="2">
+				<debug_text text="'patch sinceversion 2, state: ' + this.state" />
+				<create_group groupname="$missionTargets" />
+			</patch>
+			<patch sinceversion="3">
+				<debug_text text="'patch sinceversion 3, state: ' + this.state" />
+				<set_value name="kSET.$attentionInZoneAndNearer" exact="[attention.inzone, attention.nearby, attention.adjacentroom, attention.inroom]" />
+			</patch>
+			<patch sinceversion="4">
+				<debug_text text="'patch sinceversion 4, state: ' + this.state" />
+				<!-- <create_group groupname="kSET.$playerTargets" />
+				<do_if value="player.occupiedship and player.target.exists">
+					<add_to_group groupname="kSET.$playerTargets" object="player.target" />
+				</do_if> -->
+			</patch>
+			<patch sinceversion="5">
+				<debug_text text="'patch sinceversion 5, state: ' + this.state" />
+				<!-- <remove_value name="$lastTarget" /> -->
+				<!-- <remove_value name="$lastTargetI" /> -->
+				<!-- <remove_value name="$shipOrStation" /> -->
+				<!-- <set_value name="$target_new" exact="null" /> -->
+				<!-- <set_value name="$target_current" exact="null" /> -->
+				<!-- <set_value name="$targetDefensible_new" exact="null" /> -->
+				<!-- <set_value name="$targetDefensible_current" exact="null" /> -->
+				<!-- <set_value name="$isSurfaceElementTarget" exact="0" /> -->
+				<!-- <set_value name="$isMissionTarget" exact="false" /> -->
+				<!-- <reset_cue cue="NewTarget" /> -->
+			</patch>
+			<patch sinceversion="6">
+				<debug_text text="'patch sinceversion 6, state: ' + this.state" />
+				<remove_value name="$surfaceElements" />
+				<remove_value name="$missionTargets" />
+				<remove_value name="kSET.$playerTargets" />
+				<remove_value name="$lastTarget" />
+				<remove_value name="$lastTargetI" />
+				<remove_value name="$shipOrStation" />
+				<remove_value name="$target_new" />
+				<remove_value name="$target_current" />
+				<remove_value name="$targetDefensible_new" />
+				<remove_value name="$targetDefensible_current" />
+				<remove_value name="$isSurfaceElementTarget" />
+				<remove_value name="$isMissionTarget" />
+			</patch>
+			<patch sinceversion="7">
+				<debug_text text="'patch sinceversion 7, state: ' + this.state" />
+				<set_value name="kSET.$attentionVisibleAndNearer" exact="[attention.visible, attention.inzone, attention.nearby, attention.adjacentroom, attention.inroom]" />
+			</patch>
+			<patch sinceversion="8">
+				<debug_text text="'patch sinceversion 8, state: ' + this.state" />
+				<set_value name="$se_target" exact="null" />
+			</patch>
+			<patch sinceversion="10">
+				<debug_text text="'patch sinceversion 10, state: ' + this.state" />
+				<remove_value name="$rmlCue" />
+				<set_value name="$mission_active" exact="null" />
+			</patch>
+			<cues>
+				<cue name="Init">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<event_game_loaded />
+						</check_any>
+						<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+					</conditions>
+					<actions>
+						<set_value name="UserSettings.$debugChance" exact="0" />
+						<debug_text text="'event.name: ' + event.name + ', UserSettings.$debugChance: ' + UserSettings.$debugChance" />
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="kSET_AbortMission">
+					<conditions>
+						<event_mission_aborted cue="kSET" />
+					</conditions>
+					<actions>
+						<debug_text text="'event.name: ' + event.name" chance="UserSettings.$debugChance" />
+						<remove_mission cue="kSET" />
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="PlayerTarget_Change" namespace="this" instantiate="true">
+					<conditions>
+						<!-- Event for when the player changes target (param = new target. null if player deselects target.) -->
+						<event_player_changed_target />
+						<check_value value="@player.occupiedship.exists" />
+						<!-- <check_value value="@event.param.isoperational and @event.param.exists" /> -->
+					</conditions>
+					<actions>
+						<!-- <debug_text text="'player.target: ' + player.target + ' (' + @player.target.knownname + ', ' + @player.target.hullpercentage + ', ' + @player.target.isoperational + ')'" chance="UserSettings.$debugChance" /> -->
+						<!-- <debug_text text="'event.param: ' + event.param + ' (' + @event.param.knownname + ', ' + @event.param.hullpercentage + ', ' + @event.param.isoperational + ')'" chance="UserSettings.$debugChance" /> -->
+						<set_value name="$newTarget" exact="event.param" />
+						<!-- <debug_text text="'$newTarget ' + @$newTarget" chance="UserSettings.$debugChance" /> -->
+						<do_if value="not $newTarget">
+							<cancel_cue cue="this" />
+						</do_if>
+						<do_else>
+							<do_if value="$newTarget.issurfaceelement">
+								<set_value name="kSET.$se_target" exact="$newTarget" />
+								<do_if value="@TargetDefensible.$se_group.indexof.{kSET.$se_target}">
+								</do_if>
+								<do_if value="kSET.$se_target.defensible == @TargetDefensible.$defensible">
+									<do_if value="@$newTarget.isoperational">
+										<!-- <show_notification text="'%s: Operational: %s%%.'.[$newTarget.knownname, $newTarget.hullpercentage]" /> -->
+										<!-- <show_notification text="{1119520, 112}.[$newTarget.knownname, $newTarget.hullpercentage]" /> -->
+										<do_if value="TargetDefensible_ShowSECounts.state == cuestate.waiting">
+											<signal_cue cue="TargetDefensible_ShowSECounts" />
+										</do_if>
+									</do_if>
+									<do_else>
+										<!-- <show_notification text="'%s: Not operational.'.[$newTarget.knownname]" /> -->
+										<show_notification text="{1119520, 113}.[$newTarget.knownname]" />
+									</do_else>
+								</do_if>
+							</do_if>
+							<do_if value="$newTarget.defensible">
+								<set_value name="$newTarget" exact="$newTarget.defensible" />
+							</do_if>
+							<do_if value="$newTarget == @TargetDefensible.$defensible">
+								<do_if value="DestroyListener_20220905.state != cuestate.disabled and DestroyListener_20220905.state != cuestate.complete">
+									<reset_cue cue="DestroyListener_20220905" />
+								</do_if>
+								<cancel_cue cue="this" />
+							</do_if>
+						</do_else>
+					</actions>
+					<cues>
+						<cue name="PlayerTarget_Change2" checktime="1s" checkinterval="1s" instantiate="true">
+							<actions>
+								<debug_text text="''" chance="@md.$kuertee_interval" />
+								<debug_text text="'TargetDefensible.state ' + TargetDefensible.state" chance="UserSettings.$debugChance" />
+								<debug_text text="'TargetDefensible_CleanUp.state ' + TargetDefensible_CleanUp.state" chance="UserSettings.$debugChance" />
+								<do_if value="TargetDefensible_CleanUp.state == cuestate.waiting">
+									<signal_cue cue="TargetDefensible_CleanUp" />
+								</do_if>
+								<do_elseif value="TargetDefensible.state == cuestate.waiting">
+									<do_if value="$newTarget.isoperational">
+										<do_if value="$newTarget != @TargetDefensible.$defensible" comment="new target">
+											<signal_cue_instantly cue="TargetDefensible" param="table[$defensible = $newTarget]" />
+										</do_if>
+									</do_if>
+									<do_if value="DestroyListener_20220905.state != cuestate.disabled and DestroyListener_20220905.state != cuestate.complete">
+										<reset_cue cue="DestroyListener_20220905" />
+									</do_if>
+									<cancel_cue cue="parent" />
+								</do_elseif>
+								<do_if value="DestroyListener_20220905.state != cuestate.disabled and DestroyListener_20220905.state != cuestate.complete">
+									<reset_cue cue="DestroyListener_20220905" />
+								</do_if>
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="TargetDefensible" namespace="this" version="4">
+					<conditions>
+						<event_cue_signalled />
+					</conditions>
+					<actions>
+						<set_value name="$defensible" exact="event.param.$defensible" />
+						<debug_text text="''" chance="UserSettings.$debugChance" />
+						<debug_text text="''" chance="UserSettings.$debugChance" />
+						<debug_text text="''" chance="UserSettings.$debugChance" />
+						<debug_text text="'$defensible: ' + $defensible + ' (' + @$defensible.knownname + ')'" chance="UserSettings.$debugChance" />
+						<create_group groupname="$surfaceElements" />
+						<create_group groupname="$missionTargets" />
+						<set_value name="$nextSurfaceElement" exact="null" />
+						<set_value name="$playerTarget_last" exact="null" />
+						<set_value name="$surfaceElement" exact="null" />
+						<clear_group group="$surfaceElements" />
+						<find_object_component groupname="$surfaceElements" object="$defensible" checkoperational="true" surfaceelement="true" multiple="true">
+							<match_hull max="0" negate="true" />
+						</find_object_component>
+						<create_group groupname="$se_group" />
+						<clear_group group="$se_group" />
+						<do_for_each name="$surfaceElement" in="$surfaceElements">
+							<add_to_group groupname="$se_group" object="$surfaceElement" />
+						</do_for_each>
+						<debug_text text="'$surfaceElements.count: ' + $surfaceElements.count + ' hullpercentage: ' + @$surfaceElements.{1}.hullpercentage" chance="UserSettings.$debugChance" />
+					</actions>
+					<patch sinceversion="2">
+						<debug_text text="'patch sinceversion 2, state: ' + this.state" />
+						<do_if value="not @$defensible.isoperational">
+							<do_if value="TargetDefensible_CleanUp.state == cuestate.waiting">
+								<signal_cue cue="TargetDefensible_CleanUp" />
+							</do_if>
+						</do_if>
+					</patch>
+					<patch sinceversion="4">
+						<debug_text text="'patch sinceversion 4, state: ' + this.state" />
+						<remove_value name="$emptyGroup" />
+					</patch>
+					<cues>
+						<cue name="TargetDefensible_CleanUp">
+							<conditions>
+								<check_any>
+									<event_cue_signalled />
+									<event_object_destroyed object="$defensible" />
+									<event_player_stopped_control />
+									<event_object_changed_sector object="player.occupiedship" />
+									<event_object_changed_sector object="$defensible" />
+									<check_all>
+										<event_object_changed_attention object="$defensible" />
+										<check_value value="not kSET.$attentionVisibleAndNearer.indexof.{event.param}" />
+									</check_all>
+									<check_all>
+										<event_object_changed_zone object="player.occupiedship" />
+										<check_value value="player.occupiedship.bboxdistanceto.{$defensible} gt player.sector.size * 0.5" />
+									</check_all>
+								</check_any>
+							</conditions>
+							<actions>
+								<debug_text text="'event.name: ' + event.name" chance="UserSettings.$debugChance" />
+								<do_if value="kSET.hasmission">
+									<remove_mission cue="kSET" />
+									<do_if value="@kSET.$lastMissionActive.exists and kSET.$lastMissionActive != kSET">
+										<activate_mission cue="kSET.$lastMissionActive" />
+									</do_if>
+								</do_if>
+								<reset_cue cue="parent" />
+								<reset_cue cue="this" />
+							</actions>
+						</cue>
+						<cue name="GuidanceDisabledEnabled" instantiate="true">
+							<conditions>
+								<check_any>
+									<event_guidance_disabled cue="kSET" />
+									<event_guidance_enabled cue="kSET" />
+								</check_any>
+							</conditions>
+							<actions>
+								<do_if value="event.name == 'event_guidance_disabled'">
+									<debug_text text="'from surfaceElements: ' + event.name" chance="UserSettings.$debugChance" />
+									<!-- <set_value name="$se_group" exact="$surfaceElements" /> -->
+									<set_value name="kSET.$mission_active" exact="null" />
+									<do_if value="DestroyListener_20220905.state != cuestate.disabled and DestroyListener_20220905.state != cuestate.complete">
+										<reset_cue cue="DestroyListener_20220905" />
+									</do_if>
+									<cancel_cue cue="this" />
+								</do_if>
+							</actions>
+							<cues>
+								<cue name="GuidanceDisabledEnabled_Enabled" checktime="player.age + 1s">
+									<actions>
+										<debug_text text="'from missionTargets'" chance="UserSettings.$debugChance" />
+										<!-- <set_value name="$se_group" exact="$missionTargets" /> -->
+										<set_value name="kSET.$mission_active" exact="kSET" />
+										<do_if value="DestroyListener_20220905.state != cuestate.disabled and DestroyListener_20220905.state != cuestate.complete">
+											<reset_cue cue="DestroyListener_20220905" />
+										</do_if>
+										<run_actions ref="TargetNextSE">
+											<param name="Group" value="$se_group" />
+										</run_actions>
+										<cancel_cue cue="parent" />
+										<cancel_cue cue="this" />
+									</actions>
+								</cue>
+							</cues>
+						</cue>
+						<cue name="TargetDefensible_ShowSECounts" namespace="this" instantiate="true">
+							<conditions>
+								<event_cue_signalled />
+							</conditions>
+							<delay exact="1s" />
+							<actions>
+								<set_value name="$se_group" exact="@event.param.$Group" />
+								<do_if value="not $se_group">
+									<set_value name="$se_group" exact="TargetDefensible.$se_group" />
+								</do_if>
+								<debug_text text="'$se_group.count: ' + @$se_group.count" chance="UserSettings.$debugChance" />
+								<do_if value="@$se_group.count">
+									<!-- <show_notification text="'%s(number) operational surface elements found.'.[$se_group.count]" /> -->
+									<show_notification text="{1119520, 111}.[$se_group.count]" />
+								</do_if>
+								<do_elseif value="@player.target.isclass.[class.ship_l, class.ship_xl, class.station]">
+									<!-- <show_notification text="'No operational surface elements found.'" /> -->
+									<show_notification text="{1119520, 110}" />
+								</do_elseif>
+								<cancel_cue cue="TargetDefensible_ShowSECounts" />
+							</actions>
+							<cues>
+								<cue name="TargetDefensible_ShowSECounts_EnsureOneInstanceOnly">
+									<conditions>
+										<event_cue_signalled cue="TargetDefensible_ShowSECounts.static" />
+									</conditions>
+									<actions>
+										<debug_text text="event.name" chance="UserSettings.$debugChance" />
+										<cancel_cue cue="TargetDefensible_ShowSECounts" />
+									</actions>
+								</cue>
+							</cues>
+						</cue>
+						<cue name="DestroyListener_20220905">
+							<conditions>
+								<event_object_destroyed group="$surfaceElements" />
+								<!-- <check_value value="event.param == player.occupiedship" /> -->
+								<check_value value="event.object == kSET.$se_target" />
+							</conditions>
+							<actions>
+								<!-- <find_object_component groupname="$surfaceElements" object="$defensible" checkoperational="true" surfaceelement="true" multiple="true">
+									<match_hull max="0" negate="true" />
+								</find_object_component> -->
+								<debug_text text="'$mission_active: ' + kSET.$mission_active" chance="UserSettings.$debugChance" />
+								<do_if value="kSET.$mission_active == kSET and @$missionTargets.count" comment="kSET mission first, if active">
+									<set_value name="$se_group" exact="$missionTargets" />
+								</do_if>
+								<do_elseif value="@kSET.$mission_active.exists and @kSET.$rmlTargets.count" comment="3rd-party mission, if exists">
+									<set_value name="$se_group" exact="kSET.$rmlTargets" />
+								</do_elseif>
+								<do_elseif value="kSET.hasmission and @$missionTargets.count" comment="fail-safe: kSET mission">
+									<set_value name="$se_group" exact="$missionTargets" />
+								</do_elseif>
+								<do_else comment="fail-safe: any surface element">
+									<set_value name="$se_group" exact="$surfaceElements" />
+								</do_else>
+								<!-- <run_actions ref="TargetNextSE">
+									<param name="Group" value="@$se_group" />
+								</run_actions>
+								<reset_cue cue="this" /> -->
+							</actions>
+							<cues>
+								<cue name="DestroyListener_NextTarget" checktime="player.age + 0.125s">
+									<actions>
+										<clear_group group="$surfaceElements" />
+										<find_object_component groupname="$surfaceElements" object="$defensible" checkoperational="true" surfaceelement="true" multiple="true">
+											<match_hull max="0" negate="true" />
+										</find_object_component>
+										<run_actions ref="TargetNextSE">
+											<param name="Group" value="@$se_group" />
+										</run_actions>
+										<reset_cue cue="parent" />
+										<cancel_cue cue="this" />
+									</actions>
+								</cue>
+							</cues>
+						</cue>
+						<cue name="FindTargetsByMacro_20220107">
+							<conditions>
+								<event_cue_signalled />
+								<check_value value="TargetDefensible.state == cuestate.complete" />
+							</conditions>
+							<delay exact="0.1ms" />
+							<actions>
+								<set_value name="$class" exact="@event.param.$class" />
+								<debug_text text="'$class: ' + $class" chance="UserSettings.$debugChance" />
+								<set_value name="$macro" exact="@event.param.$macro" />
+								<debug_text text="'$macro: ' + $macro + ' (' + @$macro.name + ')'" chance="UserSettings.$debugChance" />
+								<clear_group group="$missionTargets" />
+								<set_value name="$defensible" exact="TargetDefensible.$defensible" />
+								<debug_text text="'$defensible: ' + $defensible + ' ' + @$defensible.knownname + ' ' + @$defensible.idcode" chance="UserSettings.$debugChance" />
+								<debug_text text="'$surfaceElements: ' + $surfaceElements" chance="UserSettings.$debugChance" />
+								<clear_group group="TargetDefensible.$se_group" />
+								<clear_group group="$surfaceElements" />
+								<find_object_component groupname="$surfaceElements" object="$defensible" checkoperational="true" surfaceelement="true" multiple="true">
+									<match_hull max="0" negate="true" />
+								</find_object_component>
+								<do_for_each name="$surfaceElement" in="$surfaceElements">
+									<debug_text text="'$surfaceElement: ' + $surfaceElement + ' ' + $surfaceElement.macro.name + ' hullpercentage: ' + $surfaceElement.hullpercentage" chance="UserSettings.$debugChance" />
+									<do_if value="$class and $surfaceElement.isclass.[$class]">
+										<add_to_group groupname="TargetDefensible.$se_group" object="$surfaceElement" />
+										<add_to_group groupname="$missionTargets" object="$surfaceElement" />
+									</do_if>
+									<do_elseif value="$surfaceElement.macro == $macro">
+										<add_to_group groupname="TargetDefensible.$se_group" object="$surfaceElement" />
+										<add_to_group groupname="$missionTargets" object="$surfaceElement" />
+									</do_elseif>
+								</do_for_each>
+								<debug_text text="'$missionTargets: ' + $missionTargets" chance="UserSettings.$debugChance" />
+								<do_if value="$missionTargets.count">
+									<remove_mission cue="kSET" />
+									<raise_lua_event name="'kSET_get_active_mission'" />
+								</do_if>
+								<do_else>
+									<!-- <show_notification text="'No operational surface elements found.'" /> -->
+									<show_notification text="{1119520, 110}" />
+									<reset_cue cue="this" />
+								</do_else>
+							</actions>
+							<cues>
+								<cue name="FindTargetsByMacro2_20220107">
+									<conditions>
+										<event_ui_triggered screen="'kSET'" control="'get_active_mission'" />
+									</conditions>
+									<actions>
+										<do_if value="event.param3 != kSET">
+											<set_value name="kSET.$lastMissionActive" exact="event.param3" />
+										</do_if>
+										<create_mission cue="kSET" name="{1119520, 200}" faction="faction.player" type="missiontype.guidance">
+											<briefing>
+												<!-- <objective step="1" action="objective.custom" customaction="$defensible.name" /> -->
+												<objective step="1" group="$missionTargets" action="objective.destroy" />
+											</briefing>
+											<!-- <objective step="1" group="$missionTargets" action="objective.custom" customaction="$defensible.name" /> -->
+											<objective step="1" group="$missionTargets" action="objective.destroy" />
+										</create_mission>
+										<!-- <run_actions ref="TargetNextSE">
+											<param name="Group" value="$missionTargets" />
+										</run_actions> -->
+										<!-- <set_value name="$isMissionTarget" exact="true" />
+										<debug_text text="'$isMissionTarget: ' + $isMissionTarget" chance="UserSettings.$debugChance" /> -->
+										<debug_text text="'$missionTargets: ' + $missionTargets" chance="UserSettings.$debugChance" />
+										<!-- <reset_cue cue="GuidanceDisabledEnabled" /> -->
+										<set_value name="kSET.$mission_active" exact="kSET" />
+										<reset_cue cue="parent" />
+										<cancel_cue cue="this" />
+									</actions>
+								</cue>
+							</cues>
+						</cue>
+						<!-- <cue name="TargetDefensible_FirstRun">
+							<actions>
+								<signal_cue_instantly cue="TargetDefensible_ShowSECounts" param="$surfaceElements" />
+							</actions>
+						</cue> -->
+					</cues>
+				</cue>
+				<library name="TargetNextSE" purpose="run_actions">
+					<params>
+						<param name="Group" />
+					</params>
+					<actions>
+						<sort_group group="$Group" sortbyvalue="loop.element.distanceto.{player.entity} * loop.element.isoperational * (@loop.element.knownname != '')" sortdescending="false" />
+						<do_if value="not @$Group.count">
+							<set_value name="$Group" exact="TargetDefensible.$surfaceElements" />
+						</do_if>
+						<set_value name="$nextSurfaceElement" exact="null" />
+						<do_for_each name="$se_inList" in="$Group">
+							<check_line_of_sight name="$hasLOS" object="player.occupiedship" target="$se_inList" />
+							<do_if value="$hasLOS">
+								<set_value name="$nextSurfaceElement" exact="$se_inList" />
+								<break />
+							</do_if>
+						</do_for_each>
+						<do_if value="not $nextSurfaceElement">
+							<set_value name="$nextSurfaceElement" exact="@$Group.{1}" />
+						</do_if>
+						<debug_text text="'    $nextSurfaceElement: ' + $nextSurfaceElement + ' (' + $nextSurfaceElement.knownname + ')'" chance="UserSettings.$debugChance" />
+						<do_if value="@$nextSurfaceElement.isoperational and @$nextSurfaceElement.exists">
+							<do_if value="player.occupiedship">
+								<raise_lua_event name="'kSET_set_target'" param="$nextSurfaceElement" />
+							</do_if>
+							<set_value name="$nextSurfaceElement" exact="null" />
+						</do_if>
+						<do_else>
+							<do_if value="not $Group.count">
+								<do_if value="TargetDefensible_CleanUp.state == cuestate.waiting">
+									<signal_cue cue="TargetDefensible_CleanUp" />
+								</do_if>
+							</do_if>
+						</do_else>
+						<do_if value="TargetDefensible_ShowSECounts.state == cuestate.waiting">
+							<signal_cue_instantly cue="TargetDefensible_ShowSECounts" param="$Group" />
+						</do_if>
+					</actions>
+				</library>
+				<cue name="InteractMenu_Add" instantiate="true">
+					<conditions>
+						<event_cue_signalled cue="md.Interact_Menu_API.Get_Actions" />
+					</conditions>
+					<actions>
+						<set_value name="$interact_target" exact="@event.param.$object" />
+						<do_if value="not $interact_target.issurfaceelement">
+							<do_if value="@player.target.issurfaceelement">
+								<set_value name="$interact_target" exact="player.target" />
+							</do_if>
+						</do_if>
+						<debug_text text="'player.target: ' + player.target + ' (' + player.target.knownname + ')'" chance="UserSettings.$debugChance" />
+						<debug_text text="'$interact_target: ' + $interact_target + ' (' + $interact_target.knownname + ')'" chance="UserSettings.$debugChance" />
+						<do_if value="@$interact_target.issurfaceelement">
+							<debug_text text="'$interact_objects: ' + @$interact_objects.count" chance="UserSettings.$debugChance" />
+							<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param = "table[
+								$id = 'kSET_findTargets',
+								$section = 'actions_kuertee_set_menu',
+								$text = {1119520, 100}.[$interact_target.knownname],
+								$icon = '',
+								$callback = InteractMenu_Action
+							]" />
+						</do_if>
+						<set_value name="$defensible_interactMenu" exact="null" />
+						<do_if value="@$interact_target.defensible.isclass.defensible">
+							<set_value name="$defensible_interactMenu" exact="$interact_target.defensible" />
+						</do_if>
+						<do_elseif value="@$interact_target.isclass.defensible">
+							<set_value name="$defensible_interactMenu" exact="$interact_target" />
+						</do_elseif>
+						<debug_text text="'$defensible_interactMenu: ' + $defensible_interactMenu + ' ' + @$defensible_interactMenu.knownname + ' ' + @$defensible_interactMenu.idcode" chance="UserSettings.$debugChance" />
+						<do_if value="$defensible_interactMenu and player.occupiedship and player.occupiedship.distanceto.{$defensible_interactMenu} le player.occupiedship.maxradarrange">
+							<create_group groupname="$surfaceElements_interactMenu" />
+							<clear_group group="$surfaceElements_interactMenu" />
+							<find_object_component groupname="$surfaceElements_interactMenu" object="$defensible_interactMenu" checkoperational="true" surfaceelement="true" multiple="true">
+								<match_hull max="0" negate="true" />
+							</find_object_component>
+							<set_value name="$hasEngines" exact="false" />
+							<set_value name="$hasShields" exact="false" />
+							<set_value name="$hasTurrets" exact="false" />
+							<do_for_each name="$surfaceElement" in="$surfaceElements_interactMenu">
+								<debug_text text="'$surfaceElement: ' + $surfaceElement + ' ' + $surfaceElement.macro.name + ' ' + $surfaceElement.class + ' ' + $surfaceElement.hullpercentage" chance="UserSettings.$debugChance" />
+								<do_if value="$surfaceElement.isclass.engine and (not $hasEngines) and $surfaceElement.hullpercentage">
+									<set_value name="$hasEngines" exact="true" />
+									<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param = "table[
+										$id = 'kSET_findEngines',
+										$section = 'actions_kuertee_set_menu',
+										$text = {1119520, 100}.[{1001, 1103}],
+										$icon = '',
+										$callback = InteractMenu_Action,
+										$echo = table[$isEngines = true],
+									]" />
+								</do_if>
+								<do_if value="$surfaceElement.isclass.shieldgenerator and (not $hasShields) and $surfaceElement.hullpercentage">
+									<set_value name="$hasShields" exact="true" />
+									<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param = "table[
+										$id = 'kSET_findShields',
+										$section = 'actions_kuertee_set_menu',
+										$text = {1119520, 100}.[{1001, 1317}],
+										$icon = '',
+										$callback = InteractMenu_Action,
+										$echo = table[$isShields = true],
+									]" />
+								</do_if>
+								<do_if value="$surfaceElement.isclass.turret and (not $hasTurrets) and $surfaceElement.hullpercentage">
+									<set_value name="$hasTurrets" exact="true" />
+									<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param = "table[
+										$id = 'kSET_findTurrets',
+										$section = 'actions_kuertee_set_menu',
+										$text = {1119520, 100}.[{1001, 1319}],
+										$icon = '',
+										$callback = InteractMenu_Action,
+										$echo = table[$isTurrets = true],
+									]" />
+								</do_if>
+								<do_if value="$hasEngines and $hasShields and $hasTurrets">
+									<break />
+								</do_if>
+							</do_for_each>
+						</do_if>
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="InteractMenu_Action" instantiate="true">
+					<conditions>
+						<event_cue_signalled />
+					</conditions>
+					<actions>
+						<set_value name="$interact_target" exact="@event.param.$object" />
+						<set_value name="$isEngines" exact="@event.param.$echo.$isEngines" />
+						<set_value name="$isShields" exact="@event.param.$echo.$isShields" />
+						<set_value name="$isTurrets" exact="@event.param.$echo.$isTurrets" />
+						<do_if value="not $interact_target.issurfaceelement">
+							<do_if value="@player.target.issurfaceelement">
+								<set_value name="$interact_target" exact="player.target" />
+							</do_if>
+						</do_if>
+						<debug_text text="'$interact_target: ' + $interact_target + ' (' + $interact_target.knownname + ')'" chance="UserSettings.$debugChance" />
+						<debug_text text="'TargetDefensible.state: ' + TargetDefensible.state" chance="UserSettings.$debugChance" />
+						<debug_text text="'FindTargetsByMacro_20220107.state: ' + FindTargetsByMacro_20220107.state" chance="UserSettings.$debugChance" />
+						<do_if value="@TargetDefensible.$defensible != $interact_target.defensible">
+							<reset_cue cue="TargetDefensible" />
+						</do_if>
+					</actions>
+					<cues>
+						<cue name="InteractMenu_Action2">
+							<actions>
+								<debug_text text="'TargetDefensible.state: ' + TargetDefensible.state" chance="UserSettings.$debugChance" />
+								<debug_text text="'FindTargetsByMacro_20220107.state: ' + FindTargetsByMacro_20220107.state" chance="UserSettings.$debugChance" />
+								<do_if value="TargetDefensible.state == cuestate.waiting">
+									<signal_cue_instantly cue="TargetDefensible" param="table[$defensible = $defensible_interactMenu]" />
+								</do_if>
+								<do_if value="FindTargetsByMacro_20220107.state != cuestate.waiting">
+									<reset_cue cue="FindTargetsByMacro_20220107" />
+								</do_if>
+							</actions>
+							<cues>
+								<cue name="InteractMenu_Action3" checktime="player.age + 1s">
+									<actions>
+										<debug_text text="'TargetDefensible.state: ' + TargetDefensible.state" chance="UserSettings.$debugChance" />
+										<debug_text text="'FindTargetsByMacro_20220107.state: ' + FindTargetsByMacro_20220107.state" chance="UserSettings.$debugChance" />
+										<do_if value="FindTargetsByMacro_20220107.state == cuestate.waiting">
+											<do_if value="$isEngines">
+												<signal_cue_instantly cue="FindTargetsByMacro_20220107" param="table[$class = class.engine]" />
+											</do_if>
+											<do_elseif value="$isShields">
+												<signal_cue_instantly cue="FindTargetsByMacro_20220107" param="table[$class = class.shieldgenerator]" />
+											</do_elseif>
+											<do_elseif value="$isTurrets">
+												<signal_cue_instantly cue="FindTargetsByMacro_20220107" param="table[$class = class.turret]" />
+											</do_elseif>
+											<do_else>
+												<signal_cue_instantly cue="FindTargetsByMacro_20220107" param="table[$macro = $interact_target.macro]" />
+											</do_else>
+										</do_if>
+										<cancel_cue cue="InteractMenu_Action" />
+										<cancel_cue cue="parent" />
+										<cancel_cue cue="this" />
+									</actions>
+								</cue>
+							</cues>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="OnModInstall">
+					<actions>
+						<debug_text text="'UserSettings.$debugChance: ' + UserSettings.$debugChance" />
+						<signal_cue_instantly cue="Init" />
+					</actions>
+				</cue>
+				<cue name="OnModInstallComplete" checktime="player.age + 1s">
+					<actions>
+						<set_value name="UserSettings.$debugChance" exact="0" />
+						<debug_text text="'UserSettings.$debugChance: ' + UserSettings.$debugChance" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+		<cue name="User_DebugEnableDisable" namespace="this">
+			<conditions>
+				<event_ui_triggered screen="'Chat_Window_API'" control="'text_entered'" />
+				<check_any>
+					<check_value value="event.param3.$text == 'debug kuertee interval'" />
+					<check_value value="event.param3.$text == 'debug set enable'" />
+					<check_value value="event.param3.$text == 'debug set disable'" />
+					<check_value value="event.param3.$text == 'debug set destroy'" />
+				</check_any>
+			</conditions>
+			<actions>
+				<debug_text text="event.param3" />
+				<do_if value="event.param3.$text == 'debug kuertee interval'">
+					<do_if value="player.age - @md.$kuertee_interval_time gt 1s">
+						<set_value name="md.$kuertee_interval_time" exact="player.age" />
+						<do_if value="@md.$kuertee_interval">
+							<remove_value name="md.$kuertee_interval" />
+						</do_if>
+						<do_else>
+							<set_value name="md.$kuertee_interval" exact="100" />
+						</do_else>
+					</do_if>
+					<debug_text text="'md.$kuertee_interval: ' + @md.$kuertee_interval" />
+				</do_if>
+				<do_elseif value="event.param3.$text == 'debug set enable'">
+					<set_value name="UserSettings.$debugChance" exact="100" />
+					<raise_lua_event name="'Chat_Window_API.Print'" param="'debug enabled: ' + (UserSettings.$debugChance > 0)" />
+					<raise_lua_event name="'Chat_Window_API.Print'" param="'PlayerTarget_Change.state: ' + PlayerTarget_Change.state" />
+				</do_elseif>
+				<do_elseif value="event.param3.$text == 'debug set disable'">
+					<set_value name="UserSettings.$debugChance" exact="0" />
+					<raise_lua_event name="'Chat_Window_API.Print'" param="'debug enabled: ' + (UserSettings.$debugChance > 0)" />
+				</do_elseif>
+				<do_elseif value="event.param3.$text == 'debug set destroy'">
+					<destroy_object object="player.target" />
+				</do_elseif>
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+	</cues>
+</mdscript>

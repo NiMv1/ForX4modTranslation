@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+<replace sel="//attention[@min='nearby']/actions/do_elseif[@value='@$target.pilot.inventory.illegalto.{$homebase.zone.policefaction} or @$target.cargo.illegalto.{$homebase.zone.policefaction}' and resume]"> 
+  <do_elseif value="@$target.pilot.inventory.illegalto.{$homebase.zone.policefaction} or @$target.cargo.illegalto.{$homebase.zone.policefaction}" chance="100 - @$target.hidecargochance">
+    <do_if value="$target" exact="player.occupiedship">
+      <write_to_logbook category="general" title="{314150, 1}" text="{314150, 2}.[this.ship.name]" />
+    </do_if>
+    <do_else> 
+      <write_to_logbook category="general" title="{314150, 1}" text="{314150, 3}.[$target.name, this.ship.name]" />
+    </do_else> 
+  </do_elseif> 
+</replace>
+
+<replace sel="//attention[@min='nearby']/actions/label[@name='scancargo']">
+	<label name="scancargo"/>
+	<resume label="returntomasstraffic"/>
+</replace>
+
+<replace sel="//attention[@min='visible']/actions/label[@name='raisealarm']">
+	<label name="raisealarm"/>
+	<resume label="returntomasstraffic"/>
+</replace>
+
+</diff>

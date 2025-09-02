@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="ChillMissiles" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="md.xsd">
+    <cues>
+        <cue name="Init">
+            <conditions>
+                <event_universe_generated />
+            </conditions>
+        <actions>
+            <debug_text text="'Replenish Missiles: 2 Legit 2 Init'" filter="scripts" />
+            <do_if value="(not $PlayerOwnedShips?) or (not $PlayerStations?)">
+                <create_group groupname="$PlayerOwnedShips" />
+                <create_group groupname="$PlayerStations" />
+            </do_if>
+            <find_ship_by_true_owner groupname="$PlayerOwnedShips" faction="faction.player" space="player.galaxy" class="[class.ship_s,class.ship_m,class.ship_l,class.ship_xl]" functional="true" multiple="true" >
+                <match shiptype="shiptype.xsdrone" negate="true" />
+                <match shiptype="shiptype.escapepod" negate="true" />
+                <match shiptype="shiptype.distressdrone" negate="true" />
+                <match shiptype="shiptype.lasertower" negate="true" />
+                <match shiptype="shiptype.smalldrone" negate="true" />
+            </find_ship_by_true_owner>
+            <find_station space="player.galaxy" multiple="true" owner="faction.player" groupname="$PlayerStations" append="true" />
+        </actions>
+        <cues>
+            <cue name="GatherStations" checkinterval="15s" checktime="player.age + 15s">
+                <actions>
+                    <find_station space="player.galaxy" multiple="true" owner="faction.player" groupname="parent.$PlayerStations" />
+                    <do_for_each name="$station" in="parent.$PlayerStations" >
+                        <debug_text text="'chillmissiles station %s'.[$station.knownname]" filter="scripts" chance="0" />
+                    </do_for_each>
+                </actions>
+            </cue>
+            <cue name="MagicMissile" instantiate="true" namespace="this">
+                <conditions>
+                    <check_any>
+                        <event_object_launched_missile group="parent.$PlayerOwnedShips"/>
+                        <event_object_launched_missile group="parent.$PlayerStations"/>
+                    </check_any>
+                </conditions>
+                <actions>
+                    <set_value name="$missilemacro" exact="event.param2.macro" />
+                    <add_effect object="event.param2" effect="'ship_blowout_size_s'"/>
+                </actions>
+                <delay exact="(global.$ChillMissilesDelay)s" />
+                <actions>
+                    <do_if value="event.object.exists">
+                        <add_ammo object="event.object" macro="$missilemacro" amount="1" />
+                        <debug_text text="'chillmissiles: IS: Adding %s %s to %s'.[$missilemacro,event.object.idcode,event.object.knownname]" chance="0"/>
+                    </do_if>
+                </actions>
+            </cue>
+            <cue name="OOSMagicMissile" instantiate="true" checkinterval="60s" namespace="this">
+                <actions>
+                    <do_for_each name="$ship" in="parent.$PlayerOwnedShips">
+                        <do_if value="$ship.attention lt attention.visible and $ship.ammostorage.missile.count gt 0">
+                            <!--<debug_text text="'chillmissiles: checking %s'.[$ship.knownname]" />
+                            <debug_text text="'chillmissiles: Amount of missile free space: %s'.[$ship.ammostorage.missile.free]" />
+                            <debug_text text="'chillmissiles: Different types of missiles: %s'.[$ship.ammostorage.missile.table.keys.count]" />-->
+                            <set_value name="$split" exact="$ship.ammostorage.missile.free/$ship.ammostorage.missile.table.keys.count" />
+                            <do_for_each name="$missile" in="$ship.ammostorage.missile.table">
+                                <debug_text text="'chillmissiles: OOS Adding %s %s to %s'.[$split,$missile,$ship.knownname]" chance="0"/>
+                                <add_ammo object="$ship" macro="$missile" amount="$split" />
+                            </do_for_each>
+                        </do_if>
+                    </do_for_each>
+                </actions>
+            </cue>
+            <cue name="OOSMagicMissileStations" instantiate="true" checkinterval="60s" namespace="this">
+                <actions>
+                    <do_for_each name="$station" in="parent.$PlayerStations">
+                        <do_if value="$station.attention lt attention.visible and $station.ammostorage.missile.count gt 0">
+                            <!--<debug_text text="'chillmissiles: checking %s'.[$station.knownname]" />
+                            <debug_text text="'chillmissiles: Amount of missile free space: %s'.[$station.ammostorage.missile.free]" />
+                            <debug_text text="'chillmissiles: Different types of missiles: %s'.[$station.ammostorage.missile.table.keys.count]" />-->
+                            <set_value name="$split" exact="$station.ammostorage.missile.free/$station.ammostorage.missile.table.keys.count" />
+                            <do_for_each name="$missile" in="$station.ammostorage.missile.table">
+                                <debug_text text="'chillmissiles: Adding %s %s to %s'.[$split,$missile,$station.knownname]" chance="0" />
+                                <add_ammo object="$station" macro="$missile" amount="$split" />
+                            </do_for_each>
+                        </do_if>
+                    </do_for_each>
+                </actions>
+            </cue>
+            <cue name="UpdatePlayerShips" instantiate="true" comment="Keep the group fresh">
+                <conditions>
+                    <event_player_built_ship />
+                </conditions>/
+                <actions>
+                    <add_to_group groupname="parent.$PlayerOwnedShips" object="event.param" />
+                </actions>
+            </cue>
+            <cue name="UpdatePlayerShips30s" checkinterval="30s" instantiate="true" comment="Keep the group fresh">
+                <actions>
+                    <find_ship_by_true_owner groupname="$PlayerOwnedShips" faction="faction.player" space="player.galaxy" class="[class.ship_s,class.ship_m,class.ship_l,class.ship_xl]" functional="true" multiple="true" >
+                      <match shiptype="shiptype.xsdrone" negate="true" />
+                      <match shiptype="shiptype.escapepod" negate="true" />
+                      <match shiptype="shiptype.distressdrone" negate="true" />
+                      <match shiptype="shiptype.lasertower" negate="true" />
+                      <match shiptype="shiptype.smalldrone" negate="true" />
+                    </find_ship_by_true_owner>
+                </actions>
+            </cue>
+            <cue name="UpdatePlayerStations" instantiate="true" comment="Keep the group fresh">
+                <conditions>
+                    <event_player_built_station />
+                </conditions>
+                <actions>
+                    <do_if value="not parent.$PlayerStations.indexof.{event.param}">
+                        <add_to_group groupname="parent.$PlayerStations" object="event.param" />
+                    </do_if>
+                </actions>
+            </cue>
+        </cues>
+        </cue>
+    </cues>
+</mdscript>

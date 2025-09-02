@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<!-- debugs -->
+	<add pos="before" sel="(//return)[1]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' return (not $homebase.exists) $buyoffer: ' + null" chance="$debugchance" />
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' return (not $homebase.exists) $selloffer: ' + null" chance="$debugchance" />
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' return (not $homebase.exists) $failurereason: ' + {1045, 117}" chance="$debugchance" />
+	</add>
+	<add pos="after" sel="//label[@name=&quot;start&quot;]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' LABEL start'" chance="$debugchance" />
+	</add>
+	<add pos="after" sel="//label[@name=&quot;find trade run&quot;]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' LABEL find trade run'" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="//do_if[@value=&quot;not $skipshortage?&quot;]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' $skipshortage (acquiring trade data - before the do_if line): ' + @$skipshortage" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="(//do_if[@value=&quot;$resources_shortage.count&quot;])[1]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' $resources_shortage.count (acquiring trade data): ' + @$resources_shortage.count" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="(//do_if[@value=&quot;$usedshortage?&quot;])[1]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' $usedshortage (acquiring trade data): ' + @$usedshortage" chance="$debugchance" />
+	</add>
+	<add pos="after" sel="(//set_value[@name=&quot;$skipshortage&quot;])[1]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' $skipshortage (acquiring trade data - after set_value): ' + @$skipshortage" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="(//resume[@label=&quot;start&quot;])[1]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' resume LABEL start (acquiring trade data - after $manualwarebasket.count)'" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="//do_if[@value=&quot;@this.assignedcontrolled.order.id == 'TradeRoutine'&quot;]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' this.assignedcontrolled.order.id: ' + @this.assignedcontrolled.order.id" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="//remove_value[@name=&quot;$skipshortage&quot;]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' remove_value $skipshortage'" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="(//do_if[@value=&quot;$resources_shortage.count&quot;])[2]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' $resources_shortage.count (before resume label buy): ' + @$resources_shortage.count" chance="$debugchance" />
+	</add>
+	<add pos="after" sel="//label[@name=&quot;sell&quot;]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' LABEL sell'" chance="$debugchance" />
+	</add>
+	<add pos="after" sel="//label[@name=&quot;buy&quot;]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' LABEL buy'" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="(//do_if[@value=&quot;$usedshortage?&quot;])[2]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' $usedshortage (before resume label start): ' + @$usedshortage" chance="$debugchance" />
+	</add>
+	<add pos="after" sel="(//set_value[@name=&quot;$skipshortage&quot;])[2]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' $skipshortage (before resume label start - after set_value): ' + @$skipshortage" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="(//resume[@label=&quot;start&quot;])[2]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' resume LABEL start (after $usedshortage?)'" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="(//resume[@label=&quot;start&quot;])[3]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' resume LABEL start (after wait.idle)'" chance="$debugchance" />
+	</add>
+	<add pos="before" sel="(//return)[2]">
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' return (at script end) $buyoffer: ' + @$buyoffer" chance="$debugchance" />
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' return (at script end) $selloffer: ' + @$selloffer" chance="$debugchance" />
+		<debug_text text="'kTA ' + this.assignedcontrolled.idcode + ' return (at script end) $failurereason: ' + @$failurereason" chance="$debugchance" />
+	</add>
+	<!--
+		============================================
+		fix infinite loop of unprocessed $warebasket
+		============================================
+		1. order.trade.routine run_script trade.find.commander
+		2. in trade.find.commander, <edit_order_param order="this.assignedcontrolled.order" param="'warebasket'" value="$locwares"/>
+		3. because of step 2, order.trade.routine is reset, preventing it from processing the return vars of trade.find.commander.
+		1 to 3 loops infinitely because trade.find.commander edit_order_param at every run.
+		ref trade.find.commander.notes.txt
+
+		how to fix:
+		1. when $warebasket is process at either
+			<find_sell_offer seller="$homebase" wares="$warebasket" result="$locselloffer"/>
+			or
+			<find_buy_offer buyer="$homebase" wares="$warebasket" result="$locbuyoffer"/>
+			save $warebaseket
+		2. do not process <do_if value="$homebase.exists and not $homebase.iswreck and not $homebase.isrealclass.ship">
+			if the current $warebasket (which has been <edit_order_param/>) has not been processed
+	-->
+	<!--
+		<do_if value="$buyoffer.available">
+			...
+			<resume label="finish" />
+	-->
+	<add pos="before" sel="//do_if[@value=&quot;$buyoffer.available&quot;]//resume[@label=&quot;finish&quot;]">
+		<wait exact="1ms" />
+	</add>
+	<!--
+		<do_if value="$basketchanged?">
+	-->
+	<add pos="prepend" sel="//do_if[@value=&quot;$basketchanged?&quot;]">
+		<remove_value name="$basketchanged"/>
+		<do_if value="not @$oldwarebasket.count">
+			<!-- if we go through here more than once, do not overwrite $oldwarebasket -->
+			<set_value name="$oldwarebasket" exact="$warebasket.clone"/>
+		</do_if>
+	</add>
+	<!--
+		<do_if value="$basketchanged?">
+			<do_if value="@this.assignedcontrolled.order.id == 'TradeRoutine'">
+	-->
+	<remove sel="//do_if[@value=&quot;$basketchanged?&quot;]/do_if[@value=&quot;@this.assignedcontrolled.order.id == 'TradeRoutine'&quot;]" />
+	<!--
+		2nd iteration:
+		<do_if value="$usedshortage?">
+			<remove_value name="$usedshortage"/>
+	-->
+	<add pos="after" sel="(//do_if[@value=&quot;$usedshortage?&quot;]/remove_value[@name=&quot;$usedshortage&quot;])[2]">
+		<do_if value="@$oldwarebasket.count">
+			<set_value name="$warebasket" exact="$oldwarebasket.clone"/>
+		</do_if>
+		<remove_value name="$oldwarebasket"/>
+	</add>
+</diff>

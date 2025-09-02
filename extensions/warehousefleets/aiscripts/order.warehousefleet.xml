@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<aiscript name="WarehouseFleet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:/Spiele/Steam/steamapps/common/X4 Foundations/unpacked/libraries/aiscripts.xsd" version="38">
+
+    <order id="WarehouseFleet" name="WarehouseFleet" description="Складской Флот" category="trade" infinite="true">
+        <params>
+
+            <param name="sourceStation" required="true" type="object" text="Домашний Склад">
+                <input_param name="class" value="[class.station]" />
+                <input_param name="owner" value="this.ship.trueowner" />
+            </param>
+            <param name="targets" type="list" default="[$sourceStation.sector]" text="Цели">
+                <input_param name="type" value="'object'" />
+            </param>
+             <param name="targetsL" type="list" default="[]" text="Цели для крупных торговых судов (L)">
+                <input_param name="type" value="'object'" />
+            </param>
+            <param name="targetsM" type="list" default="[]" text="Цели для средних торговых судов (M)">
+                <input_param name="type" value="'object'" />
+            </param>
+            <param name="supplyTargets" type="list" default="[]" text="Цели Снабжения: Станции (Заполнять до максимума)">
+                <input_param name="type" value="'object'" />
+            </param>
+
+            <param name="minCargoUsage" default="50" type="number" text="Мин. Использование трюма (%)">
+                <input_param name="min" value="10" />
+                <input_param name="max" value="100" />
+            </param>
+            <param name="prioDistribution" default="5" type="number" text="Приоритет: Распределение товаров">
+                <input_param name="min" value="0" />
+                <input_param name="max" value="10" />
+            </param>
+            <param name="prioSupply" default="5" type="number" text="Приоритет: Снабжение стройплощадок">
+                <input_param name="min" value="0" />
+                <input_param name="max" value="10" />
+            </param>
+            <param name="prioTrade" default="5" type="number" text="Приоритет: Торговля">
+                <input_param name="min" value="0" />
+                <input_param name="max" value="10" />
+            </param>
+            <param name="tradeGatePenalty" default="20" type="number" text="Торговля: Штраф за Врата (%)">
+                <input_param name="min" value="0" />
+                <input_param name="max" value="90" />
+            </param>
+            <param name="accountThreshold" type="number" default="1" text="Порог Счета (Миллион)">
+                <input_param name="min" value="0" />
+                <input_param name="max" value="100" />
+            </param>
+
+        </params>
+        <requires>
+            <match shiptype="shiptype.lasertower" negate="true" />
+        </requires>
+    </order>
+
+    <interrupts>
+        <handler ref="SectorChangeHandler" />
+        <handler ref="AttackHandler" />
+        <handler ref="MissileLockHandler" />
+        <handler ref="ScannedHandler" />
+        <handler ref="InspectedHandler" />
+        <handler ref="FoundAbandonedHandler" />
+        <handler ref="FoundLockboxHandler" />
+        <handler ref="ResupplyHandler" />
+        <handler ref="TargetInvalidHandler" />
+         <handler ref="TideHandler" />
+    </interrupts>
+
+    <init>
+        <set_order_syncpoint_reached order="this.assignedcontrolled.order" />
+    </init>
+
+    <patch sinceversion="38">
+        <set_value name="$prioSupply" exact="5" />
+        <set_value name="$supplyTargets" exact="[]" />
+    </patch>
+
+    <attention min="unknown">
+        <actions>
+
+            <!-- Попытка планирования -->
+            <set_command command="command.searchtrades" />
+            <set_command_action commandaction="commandaction.searchingtrades" />
+            <signal_objects object="player.entity" param="'WarehouseFleets'" param2="'RequestScheduling'" param3="this.ship" />
+
+            <!-- Стыковка с Домашней Станцией -->
+            <set_command_action commandaction="commandaction.docking" />
+            <run_script name="'order.dock'" result="$docksuccess">
+                <param name="destination" value="$sourceStation" />
+                <param name="trading" value="true" />
+            </run_script>
+
+            <!-- Регулярно пытаться получить новое расписание -->
+            <do_while value="true">
+                <set_command_action commandaction="commandaction.searchingtrades" />
+                <signal_objects object="player.entity" param="'WarehouseFleets'" param2="'RequestScheduling'" param3="this.ship" />
+                <wait min="30s" max="60s" />
+            </do_while>
+        </actions>
+    </attention>
+</aiscript>

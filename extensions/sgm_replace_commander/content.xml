@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="sgm_replace_commander" name="SGM Replace Commander" author="Soulbinder" version="101" date="2021-07-15" save="false" description="Adds an interact menu option to replace a group commander">
+  <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs Community Edition"></dependency>
+</content>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<diff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- Working effects:
+  scfx_wave_01
+  sefx_shield_l_01
+  cpfx_gate_01
+  -->
+  <replace sel="/parameters/longrangescan/scan/@effect">cpfx_gate_01</replace>
+  <replace sel="/parameters/longrangescan/scan/angle/@pitch">180</replace>
+  <replace sel="/parameters/longrangescan/scan/angle/@yaw">360</replace>
+</diff>

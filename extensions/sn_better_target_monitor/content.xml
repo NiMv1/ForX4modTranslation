@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="ws_2042920500" name="Better Target Monitor" description="Improves the target monitor, with more info and legibility.&#13;&#10;&#13;&#10;May be customized through the extension options menu." author="SirNukes" version="202" date="2024-06-23" save="false" lastupdate="1719198450">
+  <language language="7" description="Мод улучшает информативность монитора цели предоставляя больше информации."></language>
+  <language language="33" description=" "></language>
+  <language language="37" description=" "></language>
+  <language language="39" description=" "></language>
+  <language language="44" description="Improves the target monitor, with more info and legibility."></language>
+  <language language="49" description=" "></language>
+  <language language="55" description=" "></language>
+  <language language="81" description=" "></language>
+  <language language="82" description=" "></language>
+  <language language="86" description=" "></language>
+  <language language="88" description=" "></language>
+  <!--Mod support APIs-->
+  <dependency id="ws_2042901274" version="100" optional="false" name="SirNukes Mod Support APIs"></dependency>
+  <dependency version="300"></dependency>
+</content>

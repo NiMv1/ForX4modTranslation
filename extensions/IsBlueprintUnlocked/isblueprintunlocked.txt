@@ -1,0 +1,104 @@
+local ffi = require ("ffi")
+local C = ffi.C
+local Lib = require ("extensions.sn_mod_support_apis.lua_interface").Library
+local newFunc = {}
+local oldFunc = {}
+local researchData = {}
+
+ffi.cdef[[
+  uint32_t GetNumBlueprints(const char* set, const char* category, const char* macroname);
+]]
+
+local function DebugErrorF(...)
+  DebugError(string.format(...))
+end
+
+local moduletypes = {"moduletypes_production", "moduletypes_build", "moduletypes_storage",
+                     "moduletypes_habitation", "moduletypes_welfare", "moduletypes_dock",
+                     "moduletypes_defence", "moduletypes_processing", "moduletypes_other",
+                     "moduletypes_venture"}
+
+local function Init ()
+  local shipConfigMenu = Lib.Get_Egosoft_Menu("ShipConfigurationMenu")
+  oldFunc.getExtraText = shipConfigMenu.getExtraText
+  shipConfigMenu.getExtraText = newFunc.getExtraText
+  oldFunc.displayAmmoSlot = shipConfigMenu.displayAmmoSlot
+  shipConfigMenu.displayAmmoSlot = newFunc.displayAmmoSlot
+  oldFunc.evaluateShipOptions = shipConfigMenu.evaluateShipOptions
+  shipConfigMenu.evaluateShipOptions = newFunc.evaluateShipOptions
+
+  local mapMenu = Lib.Get_Egosoft_Menu("MapMenu")
+  oldFunc.getModuleData = mapMenu.getModuleData
+  mapMenu.getModuleData = newFunc.getModuleData
+
+  RegisterEvent("RecycleResearchUpdated", newFunc.updateResearchData)
+  AddUITriggeredEvent("RequestResearchData", "get_data")
+end
+
+function newFunc.getModuleData(object64)
+  local moduledata = oldFunc.getModuleData(object64)
+  for _, moduletype in ipairs(moduletypes) do
+    local modules = moduledata[moduletype] or {}
+    for _, moduleentry in ipairs(modules) do
+      local macro = (type(moduleentry.module) == "string" and moduleentry.module) or GetComponentData(moduleentry.module, "macro")
+      if macro and C.GetNumBlueprints("", "", macro) > 0 then
+        moduleentry.name = "\27G*\27X " .. moduleentry.name
+      end
+    end
+  end
+  return moduledata
+end
+
+function newFunc.getExtraText(columnwidth, basetext, fullbasetext, macro, price, component, upgradetype)
+  if macro and C.GetNumBlueprints("", "", macro) > 0 then
+    basetext = "\27G*\27X " .. basetext
+  elseif macro then
+    local progress = researchData[macro]
+    if progress ~= nil then
+      basetext = "\27Y" .. (progress == "100" and "*" or "(" .. progress .. "%)") .. "\27X " .. basetext
+    end
+  end
+  return oldFunc.getExtraText(columnwidth, basetext, fullbasetext, macro, price, component, upgradetype)
+end
+
+function newFunc.displayAmmoSlot(ftable, type, macro, total, capacity, first)
+  local row = oldFunc.displayAmmoSlot(ftable, type, macro, total, capacity, first)
+  if row and macro then
+    local cell = ftable.rows[#ftable.rows - 1][1]
+    local text = cell.properties.text
+    if C.GetNumBlueprints("", "", macro) > 0 then
+      text = "\27G*\27X " .. text
+      cell.properties.text = text
+    else
+      local progress = researchData[macro]
+      if progress ~= nil then
+        text = "\27Y" .. (progress == "100" and "*" or "(" .. progress .. "%)") .. "\27X " .. text
+      end
+    end
+  end
+  return row
+end
+
+function newFunc.evaluateShipOptions()
+  local classOptions, shipOptions, curShipOption, loadoutOptions = oldFunc.evaluateShipOptions()
+  for _, ship in ipairs(shipOptions) do
+    if C.GetNumBlueprints("", "", ship.id) > 0 then
+      ship.text = "\27G*\27X " .. ship.text
+    else
+      local progress = researchData[ship.id]
+      if progress ~= nil then
+        ship.text = "\27Y" .. (progress == "100" and "*" or "(" .. progress .. "%)") .. "\27X " .. ship.text
+      end
+    end
+  end
+  return classOptions, shipOptions, curShipOption, loadoutOptions
+end
+
+function newFunc.updateResearchData(_, params)
+  for macro_progress in params:gmatch("([^;]+)") do
+    local macro, progress = macro_progress:match("(.+):(%d+)")
+    researchData[macro] = progress
+  end
+end
+
+Init ()

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+  <page id="314150" voice="no">
+    <t id="1">..: Secret Stash :..</t>
+    <t id="2">No contraband was detected by %1.</t>
+    <t id="3">%1 was scanned by %2.</t>
+    <t id="4">\033C%1\033X could not detect contraband on \033C%2\033X.</t>
+  </page>
+</language>

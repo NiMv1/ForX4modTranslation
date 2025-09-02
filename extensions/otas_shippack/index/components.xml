@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <add sel="/index">
+	<!--STATIONS/MODULES-->
+	<entry name="struct_otas_cross_01" value="extensions\otas_shippack\assets\structures\connectionmodules\struct_otas_cross_01"/> 
+	<entry name="prod_otas_stimulants" value="extensions\otas_shippack\assets\structures\production\prod_otas_stimulants"/> 	  
+	<!--SHIPS-->
+	<entry name="ship_otas_xl_tempest" value="extensions\otas_shippack\assets\units\size_xl\ship_otas_xl_tempest"/>	
+	<entry name="ship_otas_xl_andaman" value="extensions\otas_shippack\assets\units\size_xl\ship_otas_xl_andaman"/>		
+	<entry name="ship_otas_xl_vesuvius" value="extensions\otas_shippack\assets\units\size_xl\ship_otas_xl_vesuvius"/>	
+	<entry name="ship_otas_xl_genthus" value="extensions\otas_shippack\assets\units\size_xl\ship_otas_xl_genthus"/>	
+	<entry name="ship_otas_l_aquilo" value="extensions\otas_shippack\assets\units\size_l\ship_otas_l_aquilo"/>
+	<entry name="ship_otas_l_astraeus" value="extensions\otas_shippack\assets\units\size_l\ship_otas_l_astraeus"/>
+	<entry name="ship_otas_l_boreas" value="extensions\otas_shippack\assets\units\size_l\ship_otas_l_boreas"/>
+	<entry name="ship_otas_l_mistral" value="extensions\otas_shippack\assets\units\size_l\ship_otas_l_mistral"/>
+	<entry name="ship_otas_l_zephyrus" value="extensions\otas_shippack\assets\units\size_l\ship_otas_l_zephyrus"/>
+	<entry name="ship_otas_m_sirokos" value="extensions\otas_shippack\assets\units\size_m\ship_otas_m_sirokos"/>
+	<entry name="ship_otas_m_skiron" value="extensions\otas_shippack\assets\units\size_m\ship_otas_m_skiron"/>
+	<entry name="ship_otas_s_auster" value="extensions\otas_shippack\assets\units\size_s\ship_otas_s_auster"/>	
+	<entry name="ship_otas_s_eurus" value="extensions\otas_shippack\assets\units\size_s\ship_otas_s_eurus"/>
+	<entry name="ship_otas_s_notus" value="extensions\otas_shippack\assets\units\size_s\ship_otas_s_notus"/>	
+	<entry name="ship_otas_s_solano" value="extensions\otas_shippack\assets\units\size_s\ship_otas_s_solano"/>
+	<entry name="ship_otas_s_venti" value="extensions\otas_shippack\assets\units\size_s\ship_otas_s_venti"/>			
+	<!--iSHIELDS-->	
+	<entry name="ishield_otas_xl_tempest" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_xl_tempest"/>	
+	<entry name="ishield_otas_xl_andaman" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_xl_andaman"/>		
+	<entry name="ishield_otas_xl_vesuvius" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_xl_vesuvius"/>	
+	<entry name="ishield_otas_xl_genthus" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_xl_genthus"/>			
+	<entry name="ishield_otas_l_aquilo" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_l_aquilo"/>
+	<entry name="ishield_otas_l_astraeus" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_l_astraeus"/>
+	<entry name="ishield_otas_l_boreas" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_l_boreas"/>
+	<entry name="ishield_otas_l_mistral" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_l_mistral"/>
+	<entry name="ishield_otas_l_zephyrus" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_l_zephyrus"/>
+	<entry name="ishield_otas_m_sirokos" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_m_sirokos"/>
+	<entry name="ishield_otas_m_skiron" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_m_skiron"/>
+	<entry name="ishield_otas_s_auster" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_s_auster"/>
+	<entry name="ishield_otas_s_eurus" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_s_eurus"/>
+	<entry name="ishield_otas_s_notus" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_s_notus"/>
+	<entry name="ishield_otas_s_solano" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_s_solano"/>
+	<entry name="ishield_otas_s_venti" value="extensions\otas_shippack\assets\props\surfaceelements\ishield_otas_s_venti"/>		
+	<!--TURRETS/WEAPONS-->
+	<entry name="turret_otas_xl_firestorm" value="extensions\otas_shippack\assets\props\weaponsystems\capital\turret_otas_xl_firestorm" />
+	<entry name="turret_otas_l_palc" value="extensions\otas_shippack\assets\props\weaponsystems\energy\turret_otas_l_palc"/>		
+	<entry name="weapon_otas_s_gatling" value="extensions\otas_shippack\assets\props\weaponsystems\heavy\weapon_otas_s_gatling"/>
+	<entry name="weapon_otas_l_destroyer" value="extensions\otas_shippack\assets\props\weaponsystems\heavy\weapon_otas_l_destroyer"/>	
+	<entry name="weapon_otas_s_notus_launcher" value="extensions\otas_shippack\assets\props\weaponsystems\guided\weapon_otas_s_notus_launcher"/>
+	<entry name="weapon_otas_s_notus_bomb" value="extensions\otas_shippack\assets\props\weaponsystems\heavy\weapon_otas_s_notus_bomb"/>
+	<entry name="turret_otas_l_missilefrigate" value="extensions\otas_shippack\assets\props\weaponsystems\guided\turret_otas_l_missilefrigate"/>	
+	<!--MISC.ITEMS-->
+	<entry name="dock_gen_xs_ship_flat" value="extensions\otas_shippack\assets\props\surfaceelements\dock_gen_xs_ship_flat" />
+	<entry name="dockingbay_flat_m_01" value="extensions\otas_shippack\assets\structures\dock\dockingbay_flat_m_01" />
+	<entry name="dockarea_otas_xl_battleship_left" value="extensions\otas_shippack\assets\structures\dock\dockarea_otas_xl_battleship_left" />
+	<entry name="dockarea_otas_xl_battleship_right" value="extensions\otas_shippack\assets\structures\dock\dockarea_otas_xl_battleship_right" />
+	<entry name="bullet_otas_turret_xl_firestorm" value="extensions\otas_shippack\assets\fx\weaponfx\bullet_otas_turret_xl_firestorm"/>		
+	<entry name="impact_otas_turret_xl_firestorm" value="extensions\otas_shippack\assets\fx\weaponfx\impact_otas_turret_xl_firestorm"/>
+	<entry name="muzzle_otas_turret_xl_firestorm" value="extensions\otas_shippack\assets\fx\weaponfx\muzzle_otas_turret_xl_firestorm"/>
+	<entry name="missile_otas_l_anemoi" value="extensions\otas_shippack\assets\props\weaponsystems\missile\missile_otas_l_anemoi"/>
+	<entry name="bullet_otas_turret_l_palc" value="extensions\otas_shippack\assets\fx\weaponfx\bullet_otas_turret_l_palc"/>
+	<entry name="impact_otas_turret_l_palc" value="extensions\otas_shippack\assets\fx\weaponfx\impact_otas_turret_l_palc"/>
+	<entry name="muzzle_otas_turret_l_palc" value="extensions\otas_shippack\assets\fx\weaponfx\muzzle_otas_turret_l_palc"/>
+	<entry name="bullet_otas_l_destroyer" value="extensions\otas_shippack\assets\fx\weaponfx\bullet_otas_l_destroyer"/>		
+	<entry name="impact_otas_l_destroyer" value="extensions\otas_shippack\assets\fx\weaponfx\impact_otas_l_destroyer"/>	
+	<entry name="muzzle_otas_l_destroyer" value="extensions\otas_shippack\assets\fx\weaponfx\muzzle_otas_l_destroyer"/>	
+	<entry name="bullet_rangefinder_28km" value="extensions\otas_shippack\assets\fx\weaponfx\bullet_rangefinder_28km"/>
+	<entry name="weapon_rangefinder_28km" value="extensions\otas_shippack\assets\props\weaponsystems\guided\weapon_rangefinder_28km"/>	
+  </add>
+</diff>

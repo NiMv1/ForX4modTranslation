@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diff>
+	<add sel="/language">
+		<page id="936009" title="Xenon Ships Research" descr="Xenon Ships Research" voice="no">
+			<t id="1">Xenon Fighter Production</t>
+			<t id="2">"Boso Ta was able to figure out teleportation in a tube, with crates of common materials. Since recently we gained the ability to refit select few Xenon ships, it is not a stretch to reverse engineer Xenon fightercraft." - The Assistant</t>
+			<t id="3">Xenon SE Production</t>
+			<t id="4">"This appears to be an evolution of Xenon mining ships we came across earlier. Boso can certainly create some blueprints of this ship. We will also research alternate construction methods for a construction ship." - The Assistant</t>
+			<t id="5">Xenon PE Production</t>
+			<t id="6">"The designation PE is the P we all know and hate, except apparently this one has enough room and suitable conditions for Terran and Commonwealth races. Terrans won't like what we can do, certainly." - The Assistant</t>
+			<t id="7">Xenon B Production</t>
+			<t id="8">"Now that we have the capability to produce a few Xenon craft, time we jump into slightly bigger projects at cost of making Terrans irritated. Meet the B. Resembles those annoying Terraformer corvettes, however it is effective despite having next to no turrets. Just like the simulations." - The Assistant</t>
+			<t id="9">Xenon H Production</t>
+			<t id="10">"This is the pinnnacle of organics compatible Xenon ships from what I can gather. It's not a K or I but still packs a punch. Terran Protectorate will definitely notice our capabilities and relations are likely to sour." - The Assistant</t>
+			<t id="11">Xenon Defence Modules</t>
+			<t id="12">"With the insights gained from their researched ships, we can attempt to create blueprints of their Defense Modules. Our continued study of Xenon technology is bound to anger Terran Protectorate." - The Assistant</t>
+			<t id="13">Xenon Solar Plant</t>
+			<t id="14">"We can now attempt to create Xenon's own solar power plants and begin our path to wield advanced Xenon tech. This is where the fun begins." - The Assistant</t>
+			<t id="15">Xenon Storage Module</t>
+			<t id="16">"We won't know how the Xenon stores energy and processes ores, without reverse engineering their means of storage." - The Assistant</t>
+			<t id="17">Xenon Dock</t>
+			<t id="18">"Their docking modules and life support systems also appear to be compatible with Commonwealth and Terran races. It just works!" - The Assistant</t>
+			<t id="19">Xenon Wharf</t>
+			<t id="20">"Now we can produce our ships akin to Xenon. While we would look part, to Xenon we still would not be recognized as 'Branch 9', thus still be recognized as hostiles. Terrans will definitely go to full fledged war over this." - The Assistant</t>
+			<t id="21">Xenon Shipyard</t>
+			<t id="22">"This is it. The pinnacle of Xenon station architecture and engineering. This is where Assistant can produce Xenon H's alongside whichever other capital ships we have means to produce in the name of defending scientific discoveries! It is compatible with all L and XL sized ships. We can expect Terrans to commit a sizeable task force against this very station once they become aware of our ability to make these shipyards. They really are worse than my Split captors!" - Boso Ta</t>
+			<t id="23">Xenon K Production</t>
+			<t id="24">"The Boron scientist and Assistant have proven to be dangerous and equally capable individuals, a successful entrepreneur teamed with the brightest mind the Gate Network has seen and Commonwealth's lenient stance towards this meteoricly rising power has allowed these individuals to amass surprising amount of resources, personnel and assets, so much so, they have the ability to make use of AGI tech. Either way, the Commonwealth is about to face a crisis, should this research station succeed in latest research endeavor. Studying and reverse engineering a Xenon Destroyer, designation K. Commonwealth of Planets must show a united front should this technology be unleashed." - Dal Busta, interview with Terran Protectorate News Network.</t>
+			<t id="25">Xenon I Production</t>
+			<t id="26">"...this research of two madpeople becomes successful, we are truly doomed. So far, the individual codenamed 'Assistant' has been persistent on researching Xenon technology and have demonstrated successful field applications. This success in spite of the research station 'GENESIS' being under assault by both Terran forces and later a combined Commonwealth fleet. Our analysts paid a hefty price, both literally and figuratively, for the information about the research's progress and contents. It can be concluded that the Boron Scientist, Boso Ta has been up to more than only Split weapon experiments. Initially we assumed the so-called 'brighest mind in the galaxy' was Dr. Feynman, yet this recent information shows that it was Boso's vision behind that reverse engineering effort, alongside seemingly bottomless resources procured by the operators. Clearly, neither ATF efforts nor horrors of Terraformers weren't enough and now we have a true menace in the form of 'Xenon I'. What we could gather from the wrecks found shows not even our Asgards can hope to match this abomination's capabilities if mass produced by this station." - compiled analysis of recently emerging AGI technology, Terran Secret Service.</t>
+			<t id="27">Xenon M0 Mothership Production</t>
+			<t id="28">"Look at them, the so-called powers of the Gate Network, cowering in fear and shocked in awe, of what you have achieved, are achieving, will achieve! They are forming a coalition and a combined fleet, as a last ditch effort. Let them! For we have found the true apex of the Xenon technology! A superweapon, far exceeding even the Mjolnir weapon system of Asgards, is now within our grasp! According to its ancient data storage, this one already demolished many worlds, only to be put down by an experimental shuttle piloted by a Terran commander and a combined fleet of entire Gate Network. Sounds like some Argon propaganda holo to me. We only acquired this wreck thanks to drifting for a very long time. \nOnce you research this, all of the factions will become puny obstacles compared to your might. You will be the sole architects of the known universe! Even if all of the major powers unite, even if they know the location of your research station, they will be gone, reduced to atoms by the crimson lasers tearing apart even strongest Nattleships! Convince the 'Assistant' to fund this project, for all of our sakes." - Yaki raider Samuel Vicious, meeting with Boso Ta.</t>
+			<t id="1001">Precursor of Supremacy</t>
+			<t id="1002">Warrior of Iron</t>
+			<t id="1003">Herald of War</t>
+			<t id="1004">TER Task Force Vigilant Gladius</t>
+			<t id="1101">Titanic Manifest</t>
+			<t id="1102">Divine Vengeance</t>
+			<t id="1103">Talons of Zyarth</t>
+			<t id="1104">BOR Destroyer Squadron Ray</t>
+			<t id="1105">ZYA Destroyer Squadron Rattlesnake</t>
+			<t id="1201">ARG Moonveil Squadron Eclipse Vanguard</t>
+			<t id="1202">PAR Holy Guardian Ares</t>
+			<t id="1203">ZYA Family Tharka Chimera</t>
+			<t id="1300">Dragonfyre II</t>
+			<t id="1301">TER Shadow Squadron Xperimental Shuttle</t>
+			<t id="1401">Arbitrator of Terra</t>
+			<t id="1402">TER Destroyer Squadron Syn</t>
+			<t id="1403">Vigilant Watch</t>
+			<t id="7001">XEN Tau Perdition Beam</t>
+			<t id="7002">Result of the Xenon evolutionary process, this colossal spinal beam weapon is mounted on the M0 Mothership. Made to surpass any known organic-produced weapon system, its immense energy requirements are only satisfied by the M0 Mothership and intricacies in its construction makes the weapon incompatible with any other ship. Despite a very lengthy charging phase and even longer recharge and cooling phase the immense energy output makes this weapon outright suicidal to approach head-on, no matter how heavily shielded or armored.</t>
+		</page>
+	</add>
+</diff>

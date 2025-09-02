@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content name="Inventory Collector" id="ws_2063916598" author="Assailer" version="123" date="2023-06-18" save="0" enabled="1" description="Inventory Collector&#13;&#10;Version 1.23&#13;&#10;&#13;&#10;There is no known compatibility issue with any other mods, also uninstalling shall not affect your save games." sync="false" lastupdate="1687099221">
+  <text language="7" name="Inventory Collector" description="Мод позволяет назначить корабли на сбор инвентаря."/>
+  <text language="33" name="Collecteur d'inventaire" description="Inventory Collector"/>
+  <text language="34" name="Inventory Collector" description="Inventory Collector"/>
+  <text language="39" name="Inventory Collector" description="Inventory Collector"/>
+  <text language="44" name="Inventory Collector" description="Inventory Collector"/>
+  <text language="49" name="Inventarsammler" description="Inventory Collector"/>
+  <text language="86" name="Inventory Collector" description="Inventory Collector"/>
+  <text language="88" name="Inventory Collector" description="Inventory Collector"/>
+</content>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+  <page id="314150" voice="no">
+    <t id="1">..: Geheimversteck :..</t>
+    <t id="2">Keine Schmuggelware wurde bei %1 gefunden.</t>
+    <t id="3">%1 wurde durch %2 gescannt.</t>
+    <t id="4">\033C%1\033X konnte keine Schmuggelware entdecken \033C%2\033X.</t>
+  </page>
+</language>

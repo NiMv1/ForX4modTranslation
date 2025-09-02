@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<diff>
+    <remove sel="/aiscript/attention[@min='visible']/actions/do_while[@value=&quot;$target.isoperational and (($target.owner == faction.player) or $leaderpilot) and (this.assignedcontrolled.isformationwingman or ($iscarrierbased and @this.assignedcontrolled.dock.container == $target) or $target.dock or (((@$target.order.id == 'DockAndWait') or (@$target.order.id == 'DockAt')) and $target.hascontext.{$target.order.$destination.zone}))&quot;]/wait/interrupt/conditions/check_any/check_all/check_any/check_all/check_any/check_all/check_any/check_value[@value='this.assignedcontrolled.isplayerowned']" />
+</diff>

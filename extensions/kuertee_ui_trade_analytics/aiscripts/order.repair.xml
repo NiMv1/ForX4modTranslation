@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<!--
+		<label name="repair"/>
+		<do_elseif value="$destination.isplayerowned">
+			<do_if value="$destination.isclass.station">
+				<set_value name="$logbooktext" exact="{1016,98}.[this.assignedcontrolled.knownname, this.assignedcontrolled.idcode, $destination.knownname, $destination.idcode, $repairprice.formatted.default]"/>
+				<write_to_logbook category="upkeep" title="{1016,152}" text="$logbooktext" interaction="showonmap" faction="this.assignedcontrolled.owner" object="this.object" money="$repairprice"/>
+	-->
+	<add pos="after" sel="//label[@name=&quot;repair&quot;]/following-sibling::do_elseif[@value=&quot;$destination.isplayerowned&quot;]/do_if[@value=&quot;$destination.isclass.station&quot;]/write_to_logbook">
+		<!-- <debug_text text="'kTAnalytics signal_objects kTAnalytics_repair'" /> -->
+		<signal_objects object="player.galaxy" param="'kTAnalytics_repair'" param2="table[
+			$ship = this.assignedcontrolled,
+			$station = $destination,
+			$price = $repairprice,
+			$aiScriptId = this.assignedcontrolled.order.id
+		]" />
+	</add>
+	<!--
+      <wait exact="10min">
+        <interrupt>
+          <conditions>
+            <event_object_signalled object="this.assignedcontrolled" param="'repairs_done'"/>
+          </conditions>
+          <actions>
+            <debug_text text="'%s %s %s repaired. hullpercentage: %s, should be: %s'.[this.assignedcontrolled.idcode, this.assignedcontrolled.knownname, this.assignedcontrolled, this.assignedcontrolled.hullpercentage, $hullpercent]" chance="$debugchance"/>
+          </actions>
+        </interrupt>
+      </wait>
+	-->
+	<!-- <add sel="//wait[@exact=&quot;10min&quot;]/interrupt/actions">
+		<do_if value="$destination.isplayerowned">
+			<signal_objects object="player.galaxy" param="'kTAnalytics_repair'" param2="table[
+				$ship = this.assignedcontrolled,
+				$station = $destination,
+				$price = $repairprice,
+				$aiScriptId = this.assignedcontrolled.order.id
+			]" />
+		</do_if>
+	</add> -->
+</diff>

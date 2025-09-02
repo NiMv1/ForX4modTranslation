@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+	<page id="33232474" title="DeadAir Script T Files" descr="names used in DeadAir Scripts" voice="no">
+		<!-- DONE: Library entries like job names etc -->
+		<!-- DONE: hover descriptions for dynamic war -->
+		<t id="100">DA Mod {1001,4872}</t>
+		<!-- Submod Menus 101-109 -->
+		<t id="101">DA Dynamic War</t>
+		<t id="102">DA Dynamic News</t>
+		<t id="103">DA Evolution</t>
+		<t id="104">DA Fill</t>
+		<t id="105">DA Jobs</t>
+		<t id="106">DA Gate</t>
+		<t id="107">DA God</t>
+		<t id="108">DA Blueprint Analysis</t>
+		<t id="109">(XXX)</t>
+		<!-- Dynamic War Menu Entries -->
+		<t id="110">Increase Relations</t>
+		<t id="111">Decrease Relations</t>
+		<t id="112">Recent News</t>
+		<t id="113">(XXX)</t>
+		<t id="114">(XXX)</t>
+		<t id="115">(XXX)</t>
+		<t id="116">(XXX)</t>
+		<t id="117">(Options){1001,3405}</t>
+		<t id="118">Unlock Relations</t>
+		<t id="119">DW Ignored Factions</t>
+		<t id="120">Insufficient Relation</t>
+		<t id="121">(XXX)</t>
+		<t id="122">(XXX)</t>
+		<t id="123">Enable Dynamic War</t>
+		<t id="124">Enable DW Favors</t>
+		<t id="125">Dynamic War Interval</t>
+		<t id="126">Close Ally Weight</t>
+		<t id="127">Large Increase Weight</t>
+		<t id="128">Small Increase Weight</t>
+		<t id="129">Small Decrease Weight</t>
+		<t id="130">Large Decrease Weight</t>
+		<t id="131">Nemesis Weight</t>
+		<t id="132">No Change Weight</t>
+		<t id="133">Primary Race Modifier</t>
+		<t id="134">Current Relations Modifier</t>
+		<t id="135">Common Relations Modifier</t>
+		<t id="136">Enable DW Flavor Text</t>
+		<t id="137">Enable DW Debug</t>
+		<t id="138">Locked</t>
+		<t id="139">Unlocked</t>
+		<t id="140">Allowed</t>
+		<t id="141">Ignored</t>
+		<t id="142">Enable AI Relations Cap</t>
+		<t id="143">Maximum Factions to Check</t>
+		<t id="144">War History</t>
+		<t id="145">Sector Faction Logic Menu</t>
+		<t id="146">Enable DW Stat Tracking</t>
+		<t id="147">Enable DW Fatigue</t>
+		<t id="148">DW Minimum Time before Fatigue ending</t>
+		<!-- Dynamic War Menu Entry Descriptions -->
+		<t id="1110">Allows the player to use credits or favors to increase relations between two factions.</t>
+		<t id="1111">Allows the player to use credits or favors to increase relations between two factions. Decreasing relation between two factions requires a certain level of trust (reputation) with the faction.</t>
+		<t id="1112">Shows recent events similar to logbook.</t>
+		<t id="1113">Shows the amount of military ships that each supported faction has.</t>
+		<t id="1114">Shows the amount of economic ships and stations that each supported faction has.</t>
+		<t id="1115">Shows a general overview of a faction's amount of wares stored compared to amount desired.</t>
+		<t id="1116">Shows a general overview of a faction's station storage split between stations that produce a ware and stations that consume a ware.</t>
+		<t id="1117">Collection of options available to change how the Dynamic War script runs.</t>
+		<t id="1118">Allows the player to unlock a factions relation. This may cause issues with certain storyline missions.</t>
+		<t id="1119">Allows the player to enable or disable certain factions from Dynamic War script. Disabling a faction may help avoid issues with certain storyline missions.</t>
+		<t id="1120">You do not have enough reputation with (FACTION)</t>
+		<t id="1121">(XXX)</t>
+		<t id="1122">(XXX)</t>
+		<t id="1123">Changes whether the Dynamic War script will continue to run. Disabling does not revert relations.</t>
+		<t id="1124">Changes whether the player will continue to accrue favors for maintaining 20+ relation with a faction.</t>
+		<t id="1125">Changes the time \(in minutes\) between Dynamic War events. Default = 30 minutes</t>
+		<t id="1126">Changes the weighting of events where two factions' relation will increase TO 25. To calculate percent chance, take this weight and divide by total weight of events. Default = 1</t>
+		<t id="1127">Changes the weighting of events where two factions' relation will increase BY 15. To calculate percent chance, take this weight and divide by total weight of events. Default = 16</t>
+		<t id="1128">Changes the weighting of events where two factions' relation will increase BY 5. To calculate percent chance, take this weight and divide by total weight of events. Default = 32</t>
+		<t id="1129">Changes the weighting of events where two factions' relation will decrease BY 5. To calculate percent chance, take this weight and divide by total weight of events. Default = 32</t>
+		<t id="1130">Changes the weighting of events where two factions' relation will decrease BY 15. To calculate percent chance, take this weight and divide by total weight of events. Default = 16</t>
+		<t id="1131">Changes the weighting of events where two factions' relation will decrease TO -30. To calculate percent chance, take this weight and divide by total weight of events. Default = 1</t>
+		<t id="1132">Changes the weighting of events where two factions' relation will NOT change. To calculate percent chance, take this weight and divide by total weight of events. Default = 0</t>
+		<t id="1133">Changes the effect that a factions primary race plays. Factions will tend to be more friendly with same race and xenophobic the higher this value is. This value is multiplicative. Default = 0.25</t>
+		<t id="1134">Changes the effect that a factions current relation plays. Factions will tend to continue friendly relations or continue hostility the higher this value is. This value is multiplicative. Default = 0.5</t>
+		<t id="1135">Changes the effect that a factions current allies and enemies plays. Factions will tend to form coalitions the higher this value is. This value is multiplicative. Default = 0.25</t>
+		<t id="1136">Changes whether logbook entries have added flavor text. Does not affect gameplay but takes a lot of work to write them or find appropriate quotes.</t>
+		<t id="1137">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode.</t>
+		<t id="1138">This faction has locked relations.</t>
+		<t id="1139">(XXX)</t>
+		<t id="1140">This faction is able to be selected in the Dynamic War script. Only factions that are active, claim space, and have unlocked relations will be chosen.</t>
+		<t id="1141">This faction will not be selected by the Dynamic War script.</t>
+		<t id="1142">Changes whether a script that limits and corrects faction relations will run. This script prevents AI to AI relations above 27 to avoid meeting the "Self" condition. It also corrects {20203,701} relations to match {20203,601} to avoid civil war.</t>
+		<t id="1143">The number of factions the script will have as potential second faction during an event. Increasing this value can potentially cause an impact to performance as there is a large amount of calculations for determining faction strength. Default = 4</t>
+		<t id="1144">(XXX)</t>
+		<t id="1145">Allows the player to change whether faction logic in Clusters and their child Sectors is enabled. This menu will force the cluster and child sectors to be on the same setting if changed to avoid problems with AI. This may cause issues with certain storyline missions.</t>
+		<t id="1146">Enables new functionality to track ship kills and war stats for conflicts started by this script package.</t>
+		<t id="1147">Enables factions returning to previous reputation when they have sustained enough losses. Wars have a minimum time of 2 hours before peace can result via fatigue.</t>
+		<t id="1148">If fatigue is enabled, this is the minimum time in minutes before a war can end due to fatigue threshold.</t>
+		<!-- Dynamic War Misc -->
+		<t id="2110">(FACTION)Relations Locked.</t>
+		<t id="2111">(XXX)</t>
+		<t id="2112">(XXX)</t>
+		<t id="2113">(XXX)</t>
+		<t id="2114">Relation too high.</t>
+		<t id="2115">Diplomatic Favor</t>
+		<t id="2116">Cluster</t>
+		<t id="2117">Change in count compared to %s minutes ago.</t>
+		<t id="2118">War Fatigue</t>
+		<t id="2119">War Score</t>
+		<t id="2120">(XXX)</t>
+		<t id="2121">(XXX)</t>
+		<t id="2122">(XXX)</t>
+		<t id="2123">(XXX)</t>
+		<t id="2124">(XXX)</t>
+		<t id="2125">(XXX)</t>
+		<t id="2126">(XXX)</t>
+		<t id="2127">(XXX)</t>
+		<t id="2128">(XXX)</t>
+		<t id="2129">(XXX)</t>
+		<!-- Dynamic War Quotes -->
+		<!-- Alliance -->
+		<t id="3110">Lofty words cannot construct an alliance or maintain it; only concrete deeds can do that.(John F. Kennedy)</t>
+		<t id="3111">It is not love that makes the world go around, but rather those mutually supportive alliances through which parties recognize their dependence on each other for the achievement of shared and private goals.(Fred Allen)(Altered)</t>
+		<t id="3112">We are not dictating. We are not telling them how they should do it or who they should look like. We are their friends. We have mutual interests and we will help them in any way that is possible.(Colin Powell)(Altered)</t>
+		<t id="3113">Create strategic alliances and partnerships: Now and in years to come, shrewd leaders will create allegiances with other organizations whose fates are correlated with their own.(Warren G. Bennis)</t>
+		<t id="3114">No one person, no one nation, no one of us is as smart as all of us thinking together.(James G. Stavridis)(Altered)</t>
+		<!-- Friendly -->
+		<t id="3120">Community means engaging constructively with like-minded nations to build strong, sustaining institutions and alliances - and bringing emerging powers into this community so future conflict becomes less likely.(Joe Lieberman)</t>
+		<t id="3121">Alliances and international organizations should be understood as opportunities for leadership and a means to expand our influence, not as constraints on our power.(Chuck Hagel)</t>
+		<t id="3122">It always takes a group of people working together with a common purpose in an atmosphere of trust and collaboration to get extraordinary things done.(James M. Kouzes)</t>
+		<t id="3123">Where people of goodwill get together and transcend their differences for the common good, peaceful and just solutions can be found even for those problems which seem most intractable.(Nelson Mandela)</t>
+		<t id="3124">One usually dies because one is alone, or because one has got into something over one's head. One often dies because one does not have the right alliances, because one is not given support.(Giovanni Falcone)(Altered)</t>
+		<!-- Positive to Neutral -->
+		<t id="3130">Peace, commerce and honest friendship with all nations; entangling alliances with none.(Thomas Jefferson)</t>
+		<t id="3131">My ardent desire is, and my aim has been, to comply strictly with all our engagements, foreign and domestic, but to keep the State free from political connections with every other country; to see that they may be independent of all and under the influence of none.(George Washington)(Altered)</t>
+		<t id="3132">Commerce with all nations, alliance with none, should be our motto.(Thomas Jefferson)</t>
+		<t id="3133">Friendship is but another name for an alliance with the follies and the misfortunes of others. Our own share of miseries is sufficient: why enter then as volunteers into those of another?(Thomas Jefferson)</t>
+		<t id="3134">The great rule of conduct for us, in regard to foreign nations, is, in extending our commercial relations, to have with them as little political connection as possible.(George Washington)</t>
+		<!-- Negative to Neutral -->
+		<t id="3140">The rights of neutrality will only be respected when they are defended by an adequate power. A nation, despicable by its weakness, forfeits even the privilege of being neutral.(Alexander Hamilton)</t>
+		<t id="3141">A political society does not live to conduct foreign policy; it would be more correct to say that it conducts foreign policy in order to live.(George F. Kennan)</t>
+		<t id="3142">Great is the guilt of an unnecessary war. We must strive to maintain neutrality.(John Adams)(Altered)</t>
+		<t id="3143">To fight the raven you may make an alliance with the serpent until the battle is done.(Robert Jordan)(Altered)</t>
+		<t id="3144">To the world, we seek a new way forward, based on mutual interest and mutual respect. To those leaders around the globe who seek to sow conflict, or blame their society's ills on us - know that your people will judge you on what you can build, not what you destroy. To those who cling to power through corruption and deceit and the silencing of dissent, know that you are on the wrong side of history; but that we will extend a hand if you are willing to unclench your fist.(Barack Obama)(Altered)</t>
+		<t id="3145">Our goal is peace. We can gain that peace by strengthening our alliances, by speaking candidly about the dangers before us, by assuring potential adversaries of our seriousness, by actively pursuing every chance of honest and fruitful negotiation.(Ronald Reagan)</t>
+		<!-- Negative -->
+		<t id="3150">It is a power stronger than will. Could a stone escape from the laws of gravity? Impossible. Impossible, for evil to form an alliance with good.(Isidore Ducasse Lautreamont)</t>
+		<t id="3151">Let every nation know, whether it wishes us well or ill, that we shall pay any price, bear any burden, meet any hardship, support any friend, oppose any foe to assure the survival and the success of our nation.(John F. Kennedy)(Altered)</t>
+		<t id="3152">Trust is earned, respect is given, and loyalty is demonstrated. Betrayal of any one of those is to lose all three.(Ziad K. Abdelnour)</t>
+		<t id="3153">When you fear a foe, fear crushes your strength; and this weakness gives strength to your opponents.(William Shakespeare)</t>
+		<t id="3154">In a world of complex threats, our security and leadership depends on all elements of our power - including strong and principled diplomacy.(Barack Obama)</t>
+		<!-- Conflict -->
+		<t id="3160">The only thing necessary for the triumph of evil is for good men to do nothing. We refuse to sit idly by as our enemies grow bolder.(Edmund Burke)(Altered)</t>
+		<t id="3161">Evil is powerless if the good are unafraid. Our nation will not bow down to transgressions against us.(Ronald Reagan)(Altered)</t>
+		<t id="3162">It is our choice of good or evil that determines our character, not our opinion about good or evil. Our enemy has chosen evil and we choose to stand against them.(Aristotle)(Altered)</t>
+		<t id="3163">The door of conciliation and compromise is finally closed by our adversaries, and it remains only to us to meet the conflict with the dignity and firmness of men worthy of freedom.(Robert Toombs)</t>
+		<t id="3164">The way to secure peace is to be prepared for war. They that are on their guard, and appear ready to receive their adversaries, are in much less danger of being attacked, than the supine, secure, and negligent.(Benjamin Franklin)</t>
+		<!-- War -->
+		<t id="3170">Never leave an enemy behind, or it will rise again to fly at your throat.(Shakra)</t>
+		<t id="3171">We have before us an ordeal of the most grievous kind. We have before us many many long months of struggle and of suffering. You ask, what is our policy? I can say: It is to wage war against a monstrous tyranny.(Winston Churchill)(Altered)</t>
+		<t id="3172">You are about to embark upon the Great Crusade, toward which we have striven these many months. The eyes of the world are upon you. The hopes and prayers of our people everywhere march with you. You will bring about the destruction of the enemy war machine, the eliminations of tyranny, and the security for ourselves in a free universe.(Dwight D Eisenhower)(Altered)</t>
+		<t id="3173">The path we have chosen for the present is full of hazards, as all paths are; but it is the one most consistent with our character and courage as a nation. The cost of our way of life is always high, but we have always paid it. And one path we shall never choose, and that is the path of surrender or submission.(John F. Kennedy)(Altered)</t>
+		<t id="3174">Shall we allow our audacious enemies to violate with impunity the territory of our nation? Will you permit the enemy to escape which has carried terror into your families? You will not. March, then, to meet them. Teach the universe that a malediction attends those that violate the territory of our people. The result of our efforts will be unclouded glory, and a durable peace.(Napoleon Bonaparte)(Altered)</t>
+		<!-- War Stages -->
+		<t id="3180">Cold War</t>
+		<t id="3181">Low-Intensity Conflict</t>
+		<t id="3182">Military Campaign</t>
+		<t id="3183">Full-Scale War</t>
+		<!-- War Names -->
+		<t id="3190">Decisive</t>
+		<t id="3191">Heroic</t>
+		<t id="3192">Balanced</t>
+		<t id="3193">Close</t>
+		<t id="3194">Costly</t>
+		<!-- War Outcomes -->
+		<t id="3200">Victory</t>
+		<t id="3201">Stalemate</t>
+		<t id="3202">Defeat</t>
+		<!-- Evolution Menu Entries -->
+		<t id="160">Enable Evolution</t>
+		<t id="161">Evolution Interval</t>
+		<t id="162">Evolution Current Level / Max Level</t>
+		<t id="163">Enable Evolution Xenon Fleets</t>
+		<t id="164">Maximum Xenon Fleets Added</t>
+		<t id="165">Xenon Fleet Size</t>
+		<t id="166">Small Fleet</t>
+		<t id="167">Medium Fleet</t>
+		<t id="168">Large Fleet</t>
+		<t id="169">Enable Evolution Debug</t>
+		<t id="170">Enable Xenon Station Evolution</t>
+		<t id="171">Enable Evolution Fast Fleet Ordering</t>
+		<t id="172">Evolution Max Level Setting</t>
+		<t id="173">(XXX)</t>
+		<t id="174">(XXX)</t>
+		<t id="175">(XXX)</t>
+		<t id="176">(XXX)</t>
+		<t id="177">(XXX)</t>
+		<t id="178">(XXX)</t>
+		<t id="179">(XXX)</t>
+		<!-- Evolution Menu Entry Descriptions -->
+		<t id="1160">Changes whether the Evolution script will continue to run. Disabling does not revert ships already upgraded.</t>
+		<t id="1161">Changes the time \(in minutes\) between evolution level increases. Has no effect if Evolution disabled or already at max level. Default = 240 minutes</t>
+		<t id="1162">Shows the current progress level of Evolution.</t>
+		<t id="1163">Changes whether additional ships are built by xenon.</t>
+		<t id="1164">Changes the maximum number of Xenon fleets that will be ordered built by Xenon from this mod. Default = 10 fleets</t>
+		<t id="1165">Size of the Xenon fleets added by Evolution. This will only affect future fleets built. Default = Medium</t>
+		<t id="1166">1{1001,48}(XL) - 1{1001,48}(XL) {1001,7817}(Escort) - 3{1001,50}(M) {1001,7817}(Escort) - 6{1001,51}(S) {1001,7817}(Escort)</t>
+		<t id="1167">1{1001,48}(XL) - 3{1001,48}(XL) {1001,7817}(Escort) - 9{1001,50}(M) {1001,7817}(Escort) - 18{1001,51}(S) {1001,7817}(Escort)</t>
+		<t id="1168">1{1001,48}(XL) - 5{1001,48}(XL) {1001,7817}(Escort) - 15{1001,50}(M) {1001,7817}(Escort) - 30{1001,51}(S) {1001,7817}(Escort)</t>
+		<t id="1169">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode.</t>
+		<t id="1170">Changes whether Xenon shipyards and wharves will expand at evolution levels 1,3, and 5. At each of these tiers shipyards will add two additional storage modules, an additional XL ship builder, and an additional defense module. Wharves will add one additional storage module and one energy cell module.</t>
+		<t id="1171">Changes whether Xenon will order one or multiple Evolution fleets at a time. If enabled, Xenon will order one fleet at each shipyard. If disabled, Xenon will order one fleet at one shipyard. Fleets ordered will respect Maximum Xenon Fleets Added amount.</t>
+		<t id="1172">Changes the maximum level of Xenon evolution.</t>
+		<t id="1173">(XXX)</t>
+		<t id="1174">(XXX)</t>
+		<t id="1175">(XXX)</t>
+		<t id="1176">(XXX)</t>
+		<t id="1177">(XXX)</t>
+		<t id="1178">(XXX)</t>
+		<t id="1179">(XXX)</t>
+		<!-- Evolution Misc -->
+		<t id="2160">Branch 9 EVO {1001,1112}</t>
+		<t id="2161">Branch 9 EVO {1001,7817}</t>
+		<t id="2162">EVO {20402,1}(1)</t>
+		<t id="2163">EVO {20402,2}(2)</t>
+		<t id="2164">EVO {20402,3}(3)</t>
+		<t id="2165">EVO {20402,4}(4)</t>
+		<t id="2166">EVO {20402,5}(5)</t>
+		<t id="2167">EVO {20402,6}(6)</t>
+		<t id="2168">EVO {20402,7}(7)</t>
+		<t id="2169">EVO {20402,8}(8)</t>
+		<t id="2170">EVO {20402,9}(9)</t>
+		<t id="2171">EVO {20402,10}(10)</t>
+		<t id="2172">(XXX)</t>
+		<t id="2173">(XXX)</t>
+		<t id="2174">(XXX)</t>
+		<t id="2175">(XXX)</t>
+		<t id="2176">(XXX)</t>
+		<t id="2177">(XXX)</t>
+		<t id="2178">(XXX)</t>
+		<t id="2179">(XXX)</t>
+		<!-- Fill Menu Entries -->
+		<t id="200">Enable Fill</t>
+		<t id="201">Fill Interval</t>
+		<t id="202">Max {20102,1051} Ware %</t>
+		<t id="203">Adjusted Max {20102,1051} Ware %</t>
+		<t id="204">Min {20102,1051} Ware %</t>
+		<t id="205">Adjusted Min {20102,1051} Ware %</t>
+		<t id="206">Min {20102,1071}/{20102,1081} Ware %</t>
+		<t id="207">Adjusted Min {20102,1071}/{20102,1081} Ware %</t>
+		<t id="208">Enable Fill Ship Mods</t>
+		<t id="209">Enable Fill Debug</t>
+		<t id="210">Enable Fill Fleet Ship Mods</t>
+		<t id="211">Enable Fill Ship Paint Mods</t>
+		<t id="212">Fill Faction Menu</t>
+		<t id="213">Fill Statistics Menu</t>
+		<t id="214">{1001,9803} Credit Limit</t>
+		<t id="215">Xenon Shipbuilding Setting</t>
+		<t id="216">(XXX)</t>
+		<t id="217">(XXX)</t>
+		<t id="218">(XXX)</t>
+		<t id="219">(XXX)</t>
+		<!-- Fill Menu Entry Descriptions -->
+		<t id="1200">Changes whether the Fill script will continue to run.</t>
+		<t id="1201">How often Fill will check stations. Default=60</t>
+		<t id="1202">The lowest percentage of capacity a ware can be before removing cargo at the {20102,1051}. Set to 100 to disable the removal of cargo. Default=90.</t>
+		<t id="1203">The percentage capacity a ware will be after removing cargo at the {20102,1051}. Default=75.</t>
+		<t id="1204">The highest percentage of capacity a ware can be before adding cargo at the {20102,1051}. Set to 0 to disable the adding of cargo. Default=5.</t>
+		<t id="1205">The percentage capacity a ware will be after adding cargo at the {20102,1051}. Default=10.</t>
+		<t id="1206">The highest percentage capacity a ware can be before adding cargo at the {20102,1071}/{20102,1081}. Set to 0 to disable the adding of cargo. Default=5.</t>
+		<t id="1207">The percentage capacity a ware will be after adding cargo at the {20102,1071}/{20102,1081}. Default=10.</t>
+		<t id="1208">Changes whether the Fill script will add ship mods to a random XL/L ship of the station owner when resources are drained.</t>
+		<t id="1209">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode.</t>
+		<t id="1210">Changes whether the Fill script will add ship mods to all subordinates of the selected Military ship.</t>
+		<t id="1211">Changes whether the Fill script will paint ships that have mods added to them.</t>
+		<t id="1212">Menu for excluding factions from being affected by Fill for {1001,9803}s or shipyards/wharves.</t>
+		<t id="1213">Menu with statistics for wares added/removed, ships modded, and the account balance of factions.</t>
+		<t id="1214">Limits the wares that can be added to a Trade Station to less than the value of wares removed. This is calculated by the ware average price.</t>
+		<t id="1215">If Fill is enabled, this option will have the script add wares to Xenon shipyards and wharves even if the Shipyard/Wharf settings prevent the addition of wares. The script will add wares to Xenon shipyard/wharves when the station has less than 20%-25% of the desired wares.</t>
+		<t id="1216">(XXX)</t>
+		<t id="1217">(XXX)</t>
+		<t id="1218">(XXX)</t>
+		<t id="1219">(XXX)</t>
+		<!-- Fill Misc -->
+		<t id="2200">Added</t>
+		<t id="2201">Removed</t>
+		<t id="2202">Modified</t>
+		<t id="2203">Net</t>
+		<t id="2204">Changes whether settings for DA Fill will apply to this faction's {1001,9803}s.</t>
+		<t id="2205">Changes whether settings for DA Fill will apply to this faction's ship building/equipping stations.</t>
+		<t id="2206">Fill {20111,101}(Mk1)</t>
+		<t id="2207">Fill {20111,201}(Mk2)</t>
+		<t id="2208">Fill {20111,301}(Mk3)</t>
+		<t id="2209">(XXX)</t>
+		<t id="2210">(XXX)</t>
+		<t id="2211">(XXX)</t>
+		<t id="2212">(XXX)</t>
+		<t id="2213">(XXX)</t>
+		<t id="2214">(XXX)</t>
+		<t id="2215">(XXX)</t>
+		<t id="2216">(XXX)</t>
+		<t id="2217">(XXX)</t>
+		<t id="2218">(XXX)</t>
+		<t id="2219">(XXX)</t>
+		<!-- Jobs Menu Entries -->
+		<t id="240">Enable Expeditions</t>
+		<t id="241">Enable Smart Sector Tags</t>
+		<t id="242">Enable Jobs Exped Debug</t>
+		<t id="243">Enable Jobs SST Debug</t>
+		<t id="244">Enable Jobs SST Extra Debug</t>
+		<t id="245">Jobs Quotas</t>
+		<t id="246">Critical {1001,11284}(Sector) {1004,24}(Patrol)</t>
+		<t id="247">Core {1001,11284}(Sector) {1004,24}(Patrol)</t>
+		<t id="248">Border {1001,11284}(Sector) {1004,24}(Patrol)</t>
+		<t id="249">Contested {1001,11284}(Sector) {1004,24}(Patrol)</t>
+		<t id="250">Small Fleet</t>
+		<t id="251">Medium Fleet</t>
+		<t id="252">Large Fleet</t>
+		<t id="253">Galaxy Quota</t>
+		<t id="254">Sector Quota</t>
+		<t id="255">{1001,49}(L) {1002,12032}(Trader)</t>
+		<t id="256">{1001,50}(M) {1002,12032}(Trader)</t>
+		<t id="257">{1001,49}(L) {20204,5601}(Mineral Miner)</t>
+		<t id="258">{1001,50}(M) {20204,5601}(Mineral Miner)</t>
+		<t id="259">{1001,49}(L) {20204,5701}(Gas Miner)</t>
+		<t id="260">{1001,50}(M) {20204,5701}(Gas Miner)</t>
+		<t id="261">Vanilla Spawned Jobs Menu</t>
+		<t id="262">Job ID</t>
+		<t id="263">Remove Space Job Exclusivity</t>
+		<t id="264">(XXX)</t>
+		<t id="265">(XXX)</t>
+		<t id="266">(XXX)</t>
+		<t id="267">(XXX)</t>
+		<t id="268">(XXX)</t>
+		<t id="269">(XXX)</t>
+		<!-- Jobs Menu Entry Descriptions -->
+		<t id="1240">Changes whether the added expeditions jobs for factions will continue to be built, organized, and launched to attack enemies.</t>
+		<t id="1241">Changes whether the custom logic for determining Critical, Core, Border, and Contested sector jobs will continue to be built, organized, and launched to reinforce sectors.</t>
+		<t id="1242">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode.</t>
+		<t id="1243">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode.</t>
+		<t id="1244">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode. These debugs are extremely detailed and extensive.</t>
+		<t id="1245">(XXX)</t>
+		<t id="1246">This job patrols sectors that are considered critical to a faction. The sectors must include a shipyard or wharf AND be owned by the faction.</t>
+		<t id="1247">This job patrols sectors that are considered to be the core sectors. The sectors must not border enemy sectors or be contested. Sector must be owned by the faction and typically contains economic stations not expected to be under considerable threat.</t>
+		<t id="1248">This job patrols sectors that border enemy or unfriendly sectors. The sectors must be owned by the faction and are expected to be under considerable threat.</t>
+		<t id="1249">This job patrols sectors that have enemy or unfriendly presence in the sector. The sector must include at least one station owned by this faction and an enemy faction. These sectors are considered under considerable threat and the faction will attempt to increase it's control.</t>
+		<t id="1250">%s(#) {1002,12061}(Capital Ship) + %s(#) {1002,12061}(Capital Ship) {1001,7817}(Escort) + %s(#) {1001,50}(M) {1001,7817}(Escort) + %s(#) {1001,51}(S) {1001,7817}(Escort)</t>
+		<t id="1251">%s(#) {1002,12061}(Capital Ship) + %s(#) {1002,12061}(Capital Ship) {1001,7817}(Escort) + %s(#) {1001,50}(M) {1001,7817}(Escort) + %s(#) {1001,51}(S) {1001,7817}(Escort)</t>
+		<t id="1252">%s(#) {1002,12061}(Capital Ship) + %s(#) {1002,12061}(Capital Ship) {1001,7817}(Escort) + %s(#) {1001,50}(M) {1001,7817}(Escort) + %s(#) {1001,51}(S) {1001,7817}(Escort)</t>
+		<t id="1253">This number is the number of fleets the faction will attempt to maintain across the entire galaxy. If this number is set to 0 it will disable future orders of these fleets.</t>
+		<t id="1254">This number is the maximum number of fleets the faction will attempt to maintain in each sector that meets the criteria. If this number is set to 0 it will disable future orders of these fleets.</t>
+		<t id="1255">This job trades an assorted collection of container goods using a large sized ship.</t>
+		<t id="1256">This job trades an assorted collection of container goods using a medium sized ship.</t>
+		<t id="1257">This job mines assorted minerals using a large sized ship.</t>
+		<t id="1258">This job mines assorted minerals using a medium sized ship.</t>
+		<t id="1259">This job mines assorted gasses using a large sized ship.</t>
+		<t id="1260">This job mines assorted gasses using a medium sized ship.</t>
+		<t id="1261">(XXX)</t>
+		<t id="1262">This is the internal name of the job that spawns these ships under unmodified circumstances. There is no way to tell if the job has been changed to be built via scripting.</t>
+		<t id="1263">This option when toggled will remove the exlusive attribute from sectors that have been set-up to only allow jobs added by that extension. This is primarily used in the Boron DLC to prevent other jobs. When disabled, settings will be reset to default.</t>
+		<!-- Jobs Misc -->
+		<t id="2240">Strategic Patrol</t>
+		<t id="2241">Interior Patrol</t>
+		<t id="2242">Boundary Patrol</t>
+		<t id="2243">Arbitrator Patrol</t>
+		<t id="2244">(Destroyer Escort){20221,4001} {1001,7817}</t>
+		<t id="2245">(Frigate Escort){20221,3011} {1001,7817}</t>
+		<t id="2246">(Fighter Escort){20204,2601}</t>
+		<t id="2247">Fleet Size</t>
+		<t id="2248">{33232474,245} menu available once {33232474,241} is set to true.</t>
+		<t id="2249">Could not find appropriate faction jobs, check for poorly written diffs to jobs.xml.</t>
+		<t id="2250">(XXX)</t>
+		<t id="2251">(XXX)</t>
+		<t id="2252">(XXX)</t>
+		<t id="2253">(XXX)</t>
+		<t id="2254">(XXX)</t>
+		<t id="2255">{20109,101}(Container) {20221,4011}(Freighter)</t>
+		<t id="2256">{20109,101}(Container) {20221,3031}(Transporter)</t>
+		<t id="2257">{1001,49}(L) {20204,5601}(Mineral Miner)</t>
+		<t id="2258">{1001,50}(M) {20204,5601}(Mineral Miner)</t>
+		<t id="2259">{1001,49}(L) {20204,5701}(Gas Miner)</t>
+		<t id="2260">{1001,50}(M) {20204,5701}(Gas Miner)</t>
+		<t id="2261">(XXX)</t>
+		<t id="2262">(XXX)</t>
+		<!-- News Menu Entries -->
+		<t id="280">Enable Dynamic News</t>
+		<t id="281">Enable DN Notifications</t>
+		<t id="282">Enable DN Logbook</t>
+		<t id="283">Enable DN News Storage</t>
+		<t id="284">DN Interval</t>
+		<t id="285">Enable DN Debug</t>
+		<t id="286">Restrict News to Known Factions</t>
+		<t id="287">(XXX)</t>
+		<t id="288">(XXX)</t>
+		<t id="289">(XXX)</t>
+		<t id="290">(XXX)</t>
+		<t id="291">(XXX)</t>
+		<t id="292">(XXX)</t>
+		<t id="293">(XXX)</t>
+		<t id="294">(XXX)</t>
+		<t id="295">(XXX)</t>
+		<t id="296">(XXX)</t>
+		<t id="297">(XXX)</t>
+		<t id="298">(XXX)</t>
+		<t id="299">(XXX)</t>
+		<!-- News Menu Entry Descriptions -->
+		<t id="1280">Changes whether the Dynamic News script will continue to run.</t>
+		<t id="1281">Changes whether Dynamic News will send notifications on monitored events.</t>
+		<t id="1282">Changes whether Dynamic News will write to the logbook on monitored events.</t>
+		<t id="1283">Changes whether Dynamic News will store recent news events.</t>
+		<t id="1284">Changes the minimum time between the script checking for any new reports. This will change the time between checks for groups of reports that will be output in regular intervals.</t>
+		<t id="1285">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode.</t>
+		<t id="1286">Restricts certain news entries if the faction is not known to player.</t>
+		<t id="1287">(XXX)</t>
+		<t id="1288">(XXX)</t>
+		<t id="1289">(XXX)</t>
+		<t id="1290">(XXX)</t>
+		<t id="1291">(XXX)</t>
+		<t id="1292">(XXX)</t>
+		<t id="1293">(XXX)</t>
+		<t id="1294">(XXX)</t>
+		<t id="1295">(XXX)</t>
+		<t id="1296">(XXX)</t>
+		<t id="1297">(XXX)</t>
+		<t id="1298">(XXX)</t>
+		<t id="1299">(XXX)</t>
+		<!-- News Misc -->
+		<!-- $FACTION$ extending station $STATION_NAME$ ($STATION_IDCODE$) in $SECTOR_NAME$ -->
+		<t id="2280">%1 extending station %2 \(%3\) in %4.</t>
+		<!-- $FACTION$ extending station $STATION_NAME$ ($STATION_IDCODE$) with $MODULE_NAME$ in $SECTOR_NAME$ -->
+		<t id="2281">%1 extending station %2 \(%3\) with additional %4 in %5.</t>
+		<!-- $FACTION$ extending station $STATION_NAME$ ($STATION_IDCODE$) with $NUMBER$ modules in $SECTOR_NAME$ -->
+		<t id="2282">%1 extending station %2 \(%3\) with additional %4 modules in %5.</t>
+		<!-- $FACTION$ building new $WARE$ station in $SECTOR_NAME$ -->
+		<t id="2283">%1 building new %2 station in %3.</t>
+		<!-- $STATION$ in $SECTOR$ destroyed -->
+		<t id="2284">%s in %s destroyed</t>
+		<!-- by $KILLER$ -->
+		<t id="2285">by %s</t>
+		<!-- Stations lost: -->
+		<t id="2286">Stations lost:</t>
+		<!-- $STATION$ in $SECTOR$ -->
+		<t id="2287">%s in %s</t>
+		<!-- Expanded $STATION$($IDCODE$) in $SECTOR$ -->
+		<t id="2288">Expanded %s\(%s\) in %s</t>
+		<!-- with $NUMBER$ modules -->
+		<t id="2289">with %s modules</t>
+		<!-- Stations expanded: -->
+		<t id="2290">Stations expanded:</t>
+		<!-- Started $STATION$($IDCODE$) in $SECTOR$ -->
+		<t id="2291">Started %s\(%s\) in %s</t>
+		<!-- to produce $WARE$ -->
+		<t id="2292">to produce %s</t>
+		<!-- New stations started: -->
+		<t id="2293">New stations started:</t>
+		<!-- $NUMBER$ stations destroyed -->
+		<t id="2294">%s stations lost</t>
+		<!-- $NUMBER$ stations expanded -->
+		<t id="2295">%s stations expanded</t>
+		<!-- $NUMBER$ stations started -->
+		<t id="2296">%s stations started</t>
+		<t id="2297">{33232474,112} available once {33232474,280} and {33232474,283} are set to true.</t>
+		<t id="2298">(XXX)</t>
+		<t id="2299">(XXX)</t>
+		<!-- Gate Menu Entries -->
+		<t id="300">Enable DA Gate</t>
+		<t id="301">Enable Gate Debug</t>
+		<t id="302">Show All Gates</t>
+		<t id="303">(XXX)</t>
+		<t id="304">(XXX)</t>
+		<t id="305">(XXX)</t>
+		<t id="306">(XXX)</t>
+		<t id="307">(XXX)</t>
+		<t id="308">(XXX)</t>
+		<t id="309">(XXX)</t>
+		<t id="310">(XXX)</t>
+		<t id="311">(XXX)</t>
+		<t id="312">(XXX)</t>
+		<t id="313">(XXX)</t>
+		<t id="314">(XXX)</t>
+		<t id="315">(XXX)</t>
+		<t id="316">(XXX)</t>
+		<t id="317">(XXX)</t>
+		<t id="318">(XXX)</t>
+		<t id="319">(XXX)</t>
+		<!-- Gate Menu Entry Descriptions -->
+		<t id="1300">Changes whether the DA Gate script will continue to run. This only affects the scripts that find the gates, it does not revert gate status.</t>
+		<t id="1301">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode.</t>
+		<t id="1302">Changes whether the DA Gate script will show all gates in this menu or just predefined gates from list.</t>
+		<t id="1303">(XXX)</t>
+		<t id="1304">(XXX)</t>
+		<t id="1305">(XXX)</t>
+		<t id="1306">(XXX)</t>
+		<t id="1307">(XXX)</t>
+		<t id="1308">(XXX)</t>
+		<t id="1309">(XXX)</t>
+		<t id="1310">(XXX)</t>
+		<t id="1311">(XXX)</t>
+		<t id="1312">(XXX)</t>
+		<t id="1313">(XXX)</t>
+		<t id="1314">(XXX)</t>
+		<t id="1315">(XXX)</t>
+		<t id="1316">(XXX)</t>
+		<t id="1317">(XXX)</t>
+		<t id="1318">(XXX)</t>
+		<t id="1319">(XXX)</t>
+		<!-- Gate Misc -->
+		<t id="2300">(XXX)</t>
+		<t id="2301">(XXX)</t>
+		<t id="2302">(XXX)</t>
+		<t id="2303">(XXX)</t>
+		<t id="2304">(XXX)</t>
+		<t id="2305">(XXX)</t>
+		<t id="2306">(XXX)</t>
+		<t id="2307">(XXX)</t>
+		<t id="2308">(XXX)</t>
+		<t id="2309">(XXX)</t>
+		<t id="2310">(XXX)</t>
+		<t id="2311">(XXX)</t>
+		<t id="2312">(XXX)</t>
+		<t id="2313">(XXX)</t>
+		<t id="2314">(XXX)</t>
+		<t id="2315">(XXX)</t>
+		<t id="2316">(XXX)</t>
+		<t id="2317">(XXX)</t>
+		<t id="2318">(XXX)</t>
+		<t id="2319">(XXX)</t>
+		<!-- God Menu Entries -->
+		<t id="340">Enable DA God</t>
+		<t id="341">Enable God Debug</t>
+		<t id="342">Show / Hide Quota Settings for</t>
+		<t id="343">Production Ware</t>
+		<t id="344">Additional Modules to Build</t>
+		<t id="345">Activate DA God for %s</t>
+		<t id="346">Already Activated</t>
+		<t id="347">Enable God Extra Debug</t>
+		<t id="348">(Options Menu){1001,2600}</t>
+		<t id="349">God Quotas</t>
+		<t id="350">Allow Build in Player Owned Sector</t>
+		<t id="351">Attempt Recovery</t>
+		<t id="352">Allow Build in Friendly Owned Sector</t>
+		<t id="353">Enable Ship Building Station Upgrades</t>
+		<t id="354">Station Build Interval Multiplier</t>
+		<t id="355">Station Max Module Setting</t>
+		<t id="356">Activate DA God for Remaining %s Valid Factions</t>
+		<t id="357">(XXX)</t>
+		<t id="358">(XXX)</t>
+		<t id="359">(XXX)</t>
+		<!-- God Menu Entry Descriptions -->
+		<t id="1340">Changes whether the DA God options are available in the menu. This does not run the script or change anything in the game on it's own.</t>
+		<t id="1341">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode.</t>
+		<t id="1342">Displays or Hides the quota settings for this faction. No settings are applied until the Activate DA God for Faction button has been selected.</t>
+		<t id="1343">The ware produced by the station ordered by the DA God script.</t>
+		<t id="1344">The number of modules that will be built by the DA God script. Stations will each have up to 25 modules each when requested. Each ware and increment of 25 would result in an additional station so be aware that this may affect performance. The default values are calculated from several hundred hours of accumulated data for a strong and balanced economy.</t>
+		<t id="1345">This will trigger the script to run for this faction when this button is clicked. It will use the numbers set above on the sliders and is not reversible. The faction will attempt to maintain the number of modules set not including vanilla module count.</t>
+		<t id="1346">The script for %s has already been activated. Multiple runs for the same faction is not yet supported.</t>
+		<t id="1347">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode. These debugs are extremely detailed and extensive.</t>
+		<t id="1348">(XXX)</t>
+		<t id="1349">(XXX)</t>
+		<t id="1350">Changes whether the DA God script can order stations in a player owned sector if the faction has no sectors and has at least 20 relation with player. This does not alter normal vanilla station ordering behaviour.</t>
+		<t id="1351">Changes whether the DA God script will attempt to reorder/rebuild destroyed or failed stations that contain production modules from this mod. This does not attempt to rebuild modules not added by this mod.</t>
+		<t id="1352">Changes whether the DA God script can order stations in friendly owned sector if the faction has no sectors and has at least 20 relation with faction. This does not alter normal vanilla station ordering behaviour.</t>
+		<t id="1353">Changes whether the DA God script can order upgrades for a shipyard or wharf. Each station will only be upgraded once but the script will continue to check for new stations.</t>
+		<t id="1354">Adjusts the time between ordering stations for each faction. This is a multiplier to the coded time min max values. Default time between ordering stations is 20-25 minutes for initial stations and 25-30 minutes for recovery. Increasing this value will slow down the build up of stations.</t>
+		<t id="1355">Adjusts the amount of modules that the script will attempt to place on a single station.</t>
+		<t id="1356">This will trigger the script to run for the remaining %s valid factions when this button is clicked. It will use the numbers set by default unless they were individually changed or changed by a compatible mod. The faction will attempt to maintain the number of modules set not including vanilla module count.</t>
+		<t id="1357">(XXX)</t>
+		<t id="1358">(XXX)</t>
+		<t id="1359">(XXX)</t>
+		<!-- God Misc -->
+		<t id="2340">Production Ware</t>
+		<t id="2341">Additional Modules to Build</t>
+		<t id="2342">{33232474,349} menu available once {33232474,340} is set to true.</t>
+		<t id="2343">Warning: Did not detect a mod that increases plot size and prevents reduction. This may cause issues with station generation due to space constraints. Recommend using a value at or below 10.</t>
+		<t id="2344">Quota Not Activated</t>
+		<t id="2345">Quota Has Been Activated</t>
+		<t id="2346">The script has not been activated for %s.</t>
+		<t id="2347">The script can not be activated for %s because the faction is not active.</t>
+		<t id="2348">Quick activation available once {33232474,340} is set to true.</t>
+		<t id="2349">(XXX)</t>
+		<t id="2350">(XXX)</t>
+		<t id="2351">(XXX)</t>
+		<t id="2352">(XXX)</t>
+		<t id="2353">(XXX)</t>
+		<t id="2354">(XXX)</t>
+		<t id="2355">(XXX)</t>
+		<t id="2356">(XXX)</t>
+		<t id="2357">(XXX)</t>
+		<t id="2358">(XXX)</t>
+		<t id="2359">(XXX)</t>
+		<!-- BP Menu Entries -->
+		<t id="380">(Options Menu){1001,2600}</t>
+		<t id="381">(Progress Menus){1001,9513} {1001,4836}</t>
+		<t id="382">(Station Modules){1001,9610}</t>
+		<t id="383">(Ships){1001,6}</t>
+		<t id="384">(Equipment){1001,7935}</t>
+		<t id="385">Enable DA Blueprint Analysis</t>
+		<t id="386">Adjust Scan Requirements</t>
+		<t id="387">Enable BP Debug</t>
+		<t id="388">(Misc){1001,2664}</t>
+		<t id="389">(XXX)</t>
+		<t id="390">(XXX)</t>
+		<t id="391">(XXX)</t>
+		<t id="392">(XXX)</t>
+		<t id="393">(XXX)</t>
+		<t id="394">(XXX)</t>
+		<t id="395">(XXX)</t>
+		<t id="396">(XXX)</t>
+		<t id="397">(XXX)</t>
+		<t id="398">(XXX)</t>
+		<t id="399">(XXX)</t>
+		<!-- BP Menu Entry Descriptions -->
+		<t id="1380">This is a category for object classes not coded into the mod that are scanned.</t>
+		<t id="1381">(XXX)</t>
+		<t id="1382">(XXX)</t>
+		<t id="1383">(XXX)</t>
+		<t id="1384">(XXX)</t>
+		<t id="1385">Changes whether the Blueprint Analysis script will capture ship and station scans to award progress for unlocking blueprints.</t>
+		<t id="1386">Changes the number of scans for a class of objects required to unlock the blueprint. Change takes effect on the next scan of an object.</t>
+		<t id="1387">Changes whether debug entries in the code will output text or files. Has no effect if game is not run in the appropriate debug mode.</t>
+		<t id="1388">(XXX)</t>
+		<t id="1389">(XXX)</t>
+		<t id="1390">(XXX)</t>
+		<t id="1391">(XXX)</t>
+		<t id="1392">(XXX)</t>
+		<t id="1393">(XXX)</t>
+		<t id="1394">(XXX)</t>
+		<t id="1395">(XXX)</t>
+		<t id="1396">(XXX)</t>
+		<t id="1397">(XXX)</t>
+		<t id="1398">(XXX)</t>
+		<t id="1399">(XXX)</t>
+		<!-- BP Misc -->
+		<t id="2380">(Unknown Object Class){1001,9002} {1001,9197}</t>
+		<t id="2381">The original mod that inspired this was made by Jack the Stripper and permission to continue the mod was granted.</t>
+		<t id="2382">(XS Ships){1001,52} {1001,6}</t>
+		<t id="2383">(S Ships){1001,51} {1001,6}</t>
+		<t id="2384">(M Ships){1001,50} {1001,6}</t>
+		<t id="2385">(L Ships){1001,49} {1001,6}</t>
+		<t id="2386">(XL Ships){1001,48} {1001,6}</t>
+		<t id="2387">(XXX)</t>
+		<t id="2388">(XXX)</t>
+		<t id="2389">(XXX)</t>
+		<t id="2390">(XXX)</t>
+		<t id="2391">(XXX)</t>
+		<t id="2392">(XXX)</t>
+		<t id="2393">(XXX)</t>
+		<t id="2394">(XXX)</t>
+		<t id="2395">(XXX)</t>
+		<t id="2396">(XXX)</t>
+		<t id="2397">(XXX)</t>
+		<t id="2398">(XXX)</t>
+		<t id="2399">(XXX)</t>
+		<!-- Info Menu Entries -->
+		<t id="400">DA Information Menus</t>
+		<t id="401">Military Ship Count</t>
+		<t id="402">Economic Ship/Station Count</t>
+		<t id="403">(Ware Stored/Wanted){1001,45} {1001,1406}\/{1001,2903}</t>
+		<t id="404">Station Storage</t>
+		<t id="405">Production Module Count</t>
+		<t id="406">Trader Profit Menu</t>
+		<t id="407">Enable DA Trader Profit Tracking</t>
+		<t id="408">Ship Details Menu</t>
+		<t id="409">Sector Details Menu</t>
+		<t id="410">Station Calculator</t>
+		<t id="411">(XXX)</t>
+		<t id="412">(XXX)</t>
+		<t id="413">(XXX)</t>
+		<t id="414">(XXX)</t>
+		<t id="415">(XXX)</t>
+		<t id="416">(XXX)</t>
+		<t id="417">(XXX)</t>
+		<t id="418">(XXX)</t>
+		<t id="419">(XXX)</t>
+		<!-- Info Menu Entry Descriptions -->
+		<t id="1400">Information Menus</t>
+		<t id="1401">Shows the amount of military ships that each supported faction has.</t>
+		<t id="1402">Shows the amount of economic ships and stations that each supported faction has.</t>
+		<t id="1403">Shows a general overview of a faction's amount of wares stored compared to amount desired.</t>
+		<t id="1404">Shows a general overview of a faction's station storage split between stations that produce a ware and stations that consume a ware.</t>
+		<t id="1405">Shows a general overview of a faction's amount of production modules.</t>
+		<t id="1406">Shows a general overview of DeadTater and TaterTrader profits.</t>
+		<t id="1407">Changes whether the Trader Profit script will continue to track player owned traders. Disabling this option will reset tracked data.</t>
+		<t id="1408">(XXX)</t>
+		<t id="1409">(XXX)</t>
+		<t id="1410">(XXX)</t>
+		<t id="1411">(XXX)</t>
+		<t id="1412">(XXX)</t>
+		<t id="1413">(XXX)</t>
+		<t id="1414">(XXX)</t>
+		<t id="1415">(XXX)</t>
+		<t id="1416">(XXX)</t>
+		<t id="1417">(XXX)</t>
+		<t id="1418">(XXX)</t>
+		<t id="1419">(XXX)</t>
+		<!-- Info Menu Misc -->
+		<t id="2400">Change in count compared to %s ago.</t>
+		<t id="2401">Blue = Stored</t>
+		<t id="2402">Green = Excess</t>
+		<t id="2403">Red = Shortage</t>
+		<t id="2404">Producer</t>
+		<t id="2405">Consumer</t>
+		<t id="2406">Total lifetime estimated profit</t>
+		<t id="2407">Lifetime estimated profits are not completely accurate due to the effects of discounts and commissions at this time.</t>
+		<t id="2408">Estimated profit per hour</t>
+		<t id="2409">Hourly estimated profit is based on start time of the default behaviour for the ship and does not account for interruptions.</t>
+		<t id="2410">Number of ships</t>
+		<t id="2411">Change in number of ships since last viewed</t>
+		<t id="2412">Threat Score</t>
+		<t id="2413">{1001,3106}(Add) {1001,2456}(Station Workforce) {1001,8034}(Effects)</t>
+		<t id="2414">{1001,3106}(Add) {1001,1615}(Secondary resource) {1001,8034}(Effects)</t>
+		<t id="2415">Select Module to Add</t>
+		<t id="2416">{1001,3}(Station) Hourly {1001,1600}(Production) &amp; {1001,1609}(Consumption)</t>
+		<t id="2417">The production and consumption reflects workforce influence, but a habitat must be added to determine workforce race. This is only capable of calculating for one race of workers.</t>
+		<t id="2418">(XXX)</t>
+		<t id="2419">(XXX)</t>
+		<!-- Infestation Menu Entries -->
+		<t id="440">(XXX)</t>
+		<t id="441">(XXX)</t>
+		<t id="442">(XXX)</t>
+		<t id="443">(XXX)</t>
+		<t id="444">(XXX)</t>
+		<t id="445">(XXX)</t>
+		<t id="446">(XXX)</t>
+		<t id="447">(XXX)</t>
+		<t id="448">(XXX)</t>
+		<t id="449">(XXX)</t>
+		<t id="450">(XXX)</t>
+		<t id="451">(XXX)</t>
+		<t id="452">(XXX)</t>
+		<t id="453">(XXX)</t>
+		<t id="454">(XXX)</t>
+		<t id="455">(XXX)</t>
+		<t id="456">(XXX)</t>
+		<t id="457">(XXX)</t>
+		<t id="458">(XXX)</t>
+		<t id="459">(XXX)</t>
+		<!-- Infestation Menu Entry Descriptions -->
+		<t id="1440">(XXX)</t>
+		<t id="1441">(XXX)</t>
+		<t id="1442">(XXX)</t>
+		<t id="1443">(XXX)</t>
+		<t id="1444">(XXX)</t>
+		<t id="1445">(XXX)</t>
+		<t id="1446">(XXX)</t>
+		<t id="1447">(XXX)</t>
+		<t id="1448">(XXX)</t>
+		<t id="1449">(XXX)</t>
+		<t id="1450">(XXX)</t>
+		<t id="1451">(XXX)</t>
+		<t id="1452">(XXX)</t>
+		<t id="1453">(XXX)</t>
+		<t id="1454">(XXX)</t>
+		<t id="1455">(XXX)</t>
+		<t id="1456">(XXX)</t>
+		<t id="1457">(XXX)</t>
+		<t id="1458">(XXX)</t>
+		<t id="1459">(XXX)</t>
+		<!-- Infestation Misc -->
+		<t id="2440">Vector Ship</t>
+		<t id="2441">Spreading Infestation</t>
+		<t id="2442">Strange Khaak noises.</t>
+		<t id="2443">(XXX)</t>
+		<t id="2444">(XXX)</t>
+		<t id="2445">(XXX)</t>
+		<t id="2446">(XXX)</t>
+		<t id="2447">(XXX)</t>
+		<t id="2448">(XXX)</t>
+		<t id="2449">(XXX)</t>
+		<t id="2450">(XXX)</t>
+		<t id="2451">(XXX)</t>
+		<t id="2452">(XXX)</t>
+		<t id="2453">(XXX)</t>
+		<t id="2454">(XXX)</t>
+		<t id="2455">(XXX)</t>
+		<t id="2456">(XXX)</t>
+		<t id="2457">(XXX)</t>
+		<t id="2458">(XXX)</t>
+		<t id="2459">(XXX)</t>
+	</page>
+</language>

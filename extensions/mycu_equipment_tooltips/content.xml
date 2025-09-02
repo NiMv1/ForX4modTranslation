@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="EquipmentTooltips"
+         name="Mycu: Equipment tooltips"
+         author="Mycu"
+         version="162"
+         date="2025-06-14"
+         save="false"
+         enabled="1"
+         description="Adds tooltips to ship configuration equipment slots with stats.">
+    <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD"/>
+</content>

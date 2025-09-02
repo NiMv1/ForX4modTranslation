@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+  <page id="314150" voice="no">
+    <t id="1">..: Cachette Secrète :..</t>
+    <t id="2">Aucune contrebande n'a été détectée par %1.</t>
+    <t id="3">%1 a été scanné par %2.</t>
+    <t id="4">\033C%1\033X n'a pas pu détecter la contrebande sur \033C%2\033X.</t>
+  </page>
+</language>

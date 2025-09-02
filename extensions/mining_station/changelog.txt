@@ -1,0 +1,85 @@
+v1.0:
+- initial release
+
+v1.1:
+- fixed wrong production method of gen_mining_station_ice
+
+v1.2:
+- added smaller terran mining stations
+
+v1.3:
+- added gas collector stations for the Terrans and the other races
+- added small gas collector stations for the Terrans and the other races
+- clean up of mining station models
+- fixed wrong station (blue print) prices
+
+v1.4:
+- added Russian language, big thanks to aladinaleks!
+- changed production of all station, small stations produce 1/10 of large stations
+- changed ratio of energy cells to minerals/gases from 2:1 to 1:1
+- added readme and more comments to the code so you can change it easier
+- changed prices for station building
+- fixed wrong building material of some Terran stations 
+- mod should now work on Mac and Linux
+
+v1.5:
+- added S Mining Stations for the other races.
+
+v1.51:
+- added split dependency 
+
+v1.52:
+- updated Russian language, thanks to aladinaleks!
+
+v1.53:
+- added Chinese language, big thanks to cyno up!
+
+v1.6:
+- added two new energy cell production modules
+- removed old wares.xml
+- changed some production times of the modules
+- corrected mistakes in the description of the wares.xml
+
+v1.61:
+- updated Russian language, thanks to aladinaleks!
+- Unknown Energy Cell production no longer depends on sunlight
+
+v1.62:
+- added missing factions for the Unknown Energy Cell productions
+
+v1.7:
+- added S Rawscrap Converter Stations for the Terrans and the other races which produce scrap
+- changed needed wares for nearly all modules. Inflation simply hits everything.
+- The big Mining Stations produce now 40 times that of the small stations. And of course cost more.
+- There is now a 40% production increase, when big Mining Stations have workers.
+- The Energy Cell production modules produce more now.
+- changed some descriptions
+- added research! You can now research all blueprints of this mod which needs some resources and, of course, time.
+	- By default you can research blueprints of your playerrace. This can be changed via the mod options in the extension options.
+	- To change settings you need SirNukes Mod Support API Mod. You can get it on Steam or nexusmods.
+- via the same mod menu, you can now cheat and get the blueprints for free.
+- Big thanks to kuertee from Egosoft-forum and Nexusmod for making the last two points possible. He gave me the permission to crip and adapt certain parts of his code and mods to use Sir Nukes Mod Support API for extension options.
+- Big thanks to iforgotmysocks from Egosoft-forum and Nexusmod for giving me the permission to crip his update routine and adapt it.
+- Hopefully, some fps improvements for all Gas Collector Stations. I changed the fogs.
+
+v1.71:
+- updated to X4: Foundations v6.0.
+
+v1.72:
+- updated Russian language, thanks to aladinaleks!
+- set split, pirate and boron dlc dependency to optional. You may have errors in your debuglog (and no where else), but it's a sacrifice I am willing to make.
+
+v1.73:
+- some small code optimizations.
+
+24.06.2023, v1.74:
+- fixed turrets of the large Unknown Energy Cell Production. Added them for the S Unknown Energy Cell Production.
+
+21.10.2023, v1.75:
+- fixed name of Terran S Raw Scrap Converter Station.
+
+29.10.2023, v1.76:
+- updated Russian language, thanks to aladinaleks!
+
+11.05.2024, v1.77:
+- Fail safe added regarding the addition of the production method.

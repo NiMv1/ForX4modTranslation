@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<add sel="//cues/cue[@name='DefaultComm']/actions/do_else/add_player_choice_return" pos="before">
+		<debug_text text="' n-' + event.name + ' 1-' + event.param + ' 2-' + event.param2 + ' 3-' + event.param3" chance="0"/> 
+		<!-- sadece gemisi koltuğundaki NPC pilotlara ekle-->
+		<do_if value="not $npctemplate and event.object.controlpost == controlpost.aipilot and event.object.controlled and not event.object.isplayerowned">
+
+			<add_player_choice_sub text="'\33' + '#FF' + 'ffca18' + '#' + '_UPB MODs' + '\33x'" section="upb_MODs" position="bottom_left" comment="Installed other upb Mods"/>
+
+		</do_if>
+	</add>  
+
+</diff>

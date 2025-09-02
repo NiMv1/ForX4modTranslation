@@ -1,0 +1,3177 @@
+--[[
+    Yapılanlar :
+        1.34
+            On option screen 'Remove Cargo' from 'After Bails' and all 'Ejecting Ship People' options, which never save, fixed.
+        1.33
+            When the mod was removed and reinstalled, the global variables were not deleted, so the initialization with old values ​​was fixed.
+
+        1.32
+            Hull ve Equipment saldırıları saldırgan türüne göre ayrıldı
+            Bail şansı hesaplamasındaki bir bug düzeltildi. (sürüm 1.30 ile oluştu)
+            Debug dosyalarına resetleme özlliği kondu
+
+        1.31
+            Seçenekler ekranının açılmasını engelleyen hata giderildi. (1.30 ile oluştu)
+            
+        1.30
+            Hedef gemi sınıfına göre bail seçenekleri ayarlaması getirildi.
+            Geminin Chassisi haricinde geminin equipmentlarına saldırı yapıldığında da Bail tetiklenebilecek. Seçenekler ekranından ayarlanabilir.
+            logbook rapor onayı ayarlara bağlandı.
+            Ayarlar ekranındaki mouseover textler düzenlendi ve ekstra açıklamalar eklendi.
+            NPC-NPC bail olayında bir hata düzeltildi.
+            'UI Scale' 1.0 değeri üstünde iken 'Restore Default Settings' buttonu görünmüyordu. düzeltildi.
+            Debug çıktılarındaki bir hata düzeltildi.
+
+        1.20
+            x4 UI Scale 1.0 üzeri ayarlamalarda upb Bail Ayarlar penceresi altında görünmesi gereken 'Default Settings' düğmesi gözükmüyordu. Düzeltildi.
+            Dil dosyasında bazı çeviriler güncellendi
+        
+        1.19
+            Rusça dil desteği eklendi
+
+        118
+            dil dosyası eklendi
+
+        117
+            Notification ekranında bail bilgisi verilirken hedef geminin surrender olup olamayacağı bilgisi de eklendi.
+            Claim sonrası equipmentlar için otomatik full tamir seçeneği eklendi.
+            Filtre ayarları geliştirildi.
+
+
+]]
+-- reading on player.entity.$md_BailedShipList as ship table as list.  example: [ [table index 1]=[shipcomponent1, remainingtime], [2]=[shipcomponent2, remainingtime] .. ]
+-- reading on player.entity.$md_AbandonedShipList as ships list. example: [ [table index 1]=shipcomponent1, [2]=shipcomponent2 ..]
+-- call in md  param == { 0, 0, [ editedbailsettings, defaultbailsettings ], infoFrameTableMode }
+-- ffi setup
+local ffi = require("ffi")
+local C = ffi.C
+
+local playerID
+
+local debug0 = false         -- menu.çekirdekfonksiyonlarının giriş çıkışlarını görmek için
+local debug1 = false        -- init (lua yükleme zamanı) için
+local debug2 = false        -- menu.functionları içindeki detaylı döküm için
+local debugW = false         -- table satırlarında ve widget olaylarında debug0 zamanı görünmesini istediğimiz değerler için
+local debugWProps = false   -- tablelerin x,y width ve height değerlerini görmek için
+local debugCheat = false    -- cheat penceresini eklemek için
+
+local debugColorMod = false -- option mode da, frame tablelerinin zemin renkliliği için
+
+local debugGetData = false           -- Player.entity.$md_..._DataChanged   değişim durumu kontrol dökümü
+
+local debugValid = false
+
+local tPg = 1134020 -- dil dosyası ID'si
+
+local menu = {
+    name = "BailMenu",
+    title = ReadText(tPg, 1020),
+}
+
+local config = {
+	mainLayer = 5,
+	infoLayer = 4,
+	contextLayer = 2,
+	rowHeight = 17,
+    mapRowHeight = Helper.standardTextHeight,
+    propertySorterType = "remainingtime",
+    infoFrameTableMode = "manager",
+	leftBar = {
+		{ name = ReadText(tPg, 5010), icon = "mapst_ol_ships",    mode = "manager",   helpOverlayID = "mapst_ol_fleets",    helpOverlayText = ReadText(tPg, 5011) },
+        { spacing = true },
+        { name = ReadText(tPg, 5020),	        icon = "mapst_objectlist",	mode = "options",   helpOverlayID = "mapst_ol_objectlist",	helpOverlayText = ReadText(tPg, 5021) },
+        { spacing = true },
+        { name = "Cheat",	        icon = "mapst_objectlist",	mode = "cheats",    helpOverlayID = "mapst_ol_objectlist",	helpOverlayText = "This category shows cheats." },
+	},
+    classOrder = {
+        ["ship_s"]		= 1,
+        ["ship_m"]		= 2,
+        ["ship_l"]		= 3,
+        ["ship_xl"]		= 4,
+    },
+    selectedRowBgColor = { r = 28, g = 77, b = 160, a = 100 }, 
+
+}
+
+config.sColor = {
+    available = { r = 7, g = 29, b = 46, a = 100 },
+    black = { r = 0, g = 0, b = 0, a = 100 },
+    blue = { r = 90, g = 146, b = 186, a = 100 },
+    brightyellow = { r = 255, g = 255, b = 0, a = 100 },
+    changedvalue = { r = 255, g = 236, b = 81, a = 100 },
+    checkboxgroup = { r = 0, g = 102, b = 238, a = 60 },
+    cover = { r = 231, g = 244, b = 70, a = 100 },
+    cyan = { r = 46, g = 209, b = 255, a = 100 },
+    darkgrey = { r = 32, g = 32, b = 32, a = 100 },
+    darkorange = { r = 128, g = 95, b = 0, a = 100 },
+    done = { r = 38, g = 61, b = 78, a = 100 },
+    green = { r = 0, g = 255, b = 0, a = 100 },
+    grey = { r = 128, g = 128, b = 128, a = 100 },
+    grey64 = { r = 64, g = 64, b = 64, a = 100 },
+    illegal = { r = 255, g = 64, b = 0, a = 100 },
+    illegaldark = { r = 128, g = 32, b = 0, a = 100 },
+    lightgreen = { r = 100, g = 225, b = 0, a = 100 },
+    lightgrey = { r = 192, g = 192, b = 192, a = 100 },
+    mission = { r = 255, g = 190, b = 0, a = 100 },
+    orange = { r = 255, g = 192, b = 0, a = 100 },
+    playergreen = { r = 170, g = 255, b = 139, a = 100 },
+    red = { r = 255, g = 0, b = 0, a = 100 },
+    semitransparent = { r = 0, g = 0, b = 0, a = 95 },
+    slidervalue = { r = 71, g = 136, b = 184, a = 100 },
+    textred = { r = 255, g = 80, b = 80, a = 100 },
+    transparent60 = { r = 0, g = 0, b = 0, a = 60 },
+    transparent = { r = 0, g = 0, b = 0, a = 0 },
+    unselectable = { r = 32, g = 32, b = 32, a = 100 },
+    warning = { r = 192, g = 192, b = 0, a = 100 },
+    warningorange = { r = 255, g = 138, b = 0, a = 100 },
+    white = { r = 255, g = 255, b = 255, a = 100 },
+    yellow = { r = 144, g = 144, b = 0, a = 100 },
+
+    statusRed = {r = 255, g = 0, b = 0, a = 100},
+    statusOrange = {r = 255, g = 64, b = 0, a = 100},
+    statusYellow = {r = 255, g = 255, b = 0, a = 100},
+    statusGreen = {r = 0, g = 255, b = 0, a = 100},
+
+}
+
+config.rowTittleProperties= {
+    font = Helper.standardFont,
+    fontsize = Helper.headerRow1FontSize,
+    --x = Helper.standardTextOffsetx,
+    --y = Helper.standardTextOffsety,
+    --height = Helper.standardTextHeight - Helper.standardTextOffsety,
+    color = config.sColor.white,
+    titleColor = config.sColor.lightgrey,
+    halign = "left"
+}
+config.rowLabelProperties = {
+    font = Helper.standardFont,
+    fontsize = Helper.standardFontSize,
+    x = Helper.standardTextOffsetx,
+    y = Helper.standardTextOffsety,
+    height = Helper.standardTextHeight - Helper.standardTextOffsety,
+    color = config.sColor.blue,
+    halign = "left"
+}
+
+
+local x4Ver = tonumber(string.match(GetVersionString(), "(%w+)%."))
+local xdebug = debug1 and DebugError("lua_bailmenu. X4 Ver:" .. tostring(x4Ver))
+if x4Ver < 7 then
+    config.Color = {
+        
+        boxtext_box_default = { r = 49, g = 69, b = 83, a = 60 },			        -- defaultBoxTextBoxColor ya da { r = 0,  g = 57, b = 76, a = 88 } olabilir
+        boxtext_box_hidden = { r = 0, g = 0, b = 0, a = 0 },                        -- color.transparent
+
+        button_background_default = { r = 49, g = 69, b = 83, a = 60 },             -- defaultButtonBackgroundColor
+        button_background_hidden = { r = 0, g = 0, b = 0, a = 0 },                  -- color.transparent
+        button_background_inactive = { r = 32, g = 32, b = 32, a = 100 },           -- color.darkgrey
+        button_highlight_bigbutton = { r = 0, g = 149, b = 203, a = 100 },          -- { r = 0, g = 149, b = 203, a = 100 }
+        button_highlight_default = { r = 71, g = 136, b = 184, a = 100 },           -- defaultButtonHighlightColor
+        button_highlight_hidden = { r = 0, g = 0, b = 0, a = 0 },                   -- color.transparent
+        button_highlight_inactive = { r = 80, g = 80, b = 80, a = 100 },            -- defaultUnselectableButtonHighlightColor
+        
+        crew_transfer = { r = 255, g = 255, b = 0, a = 100 },                       -- color.brightyellow
+
+        dropdown_background_default = { r = 49, g = 69, b = 83, a = 60 },           -- defaultButtonBackgroundColor
+        dropdown_background_inactive = { r = 31, g = 31, b = 31, a = 100 },         -- defaultUnselectableButtonBackgroundColor
+        dropdown_highlight_default = { r = 71, g = 136, b = 184, a = 100 },         -- defaultButtonHighlightColor
+        dropdown_highlight_inactive = { r = 80, g = 80, b = 80, a = 100 },          -- defaultUnselectableButtonHighlightColor
+        
+        checkbox_background_default = { r = 66, g = 92, b = 111, a = 100 },         -- defaultCheckBoxBackgroundColor
+
+        editbox_background_default = { r = 49, g = 69, b = 83, a = 60 },            -- defaultEditBoxBackgroundColor
+
+        flowchart_border_default = { r = 90, g = 146, b = 186, a = 100 },		-- light cyan
+        flowchart_edge_default = { r = 255, g = 255, b = 255, a = 100 },            -- color.white
+        flowchart_node_background = { r = 25, g = 25, b = 25, a = 100 },		-- dark grey
+        flowchart_node_default = { r = 90, g = 146, b = 186, a = 100 },			    -- defaultFlowchartOutlineColor
+        flowchart_value_default = { r = 0, g = 116, b = 153, a = 100 },		    -- cyan
+        flowchart_slider_value1 = { r = 225, g = 149, b = 0, a = 100 },			-- orange
+        flowchart_slider_diff1 = { r = 89, g = 52, b = 0, a = 100 },				-- defaultFlowchartDiff1Color brown
+        flowchart_slider_value2 = { r = 66, g = 171, b = 61, a = 100 },			-- green
+        flowchart_slider_diff2 = { r = 4, g = 89, b = 0, a = 100 },					-- defaultFlowchartDiff2Color dark green
+
+        frame_background_black = { r = 0, g = 0, b = 0, a = 100 },                  -- color.black
+        frame_background_semitransparent = { r = 0, g = 0, b = 0, a = 95 },         -- color.semitransparent
+        frame_background2_notification = { r = 90, g = 146, b = 186, a = 100 },     -- color.blue
+
+        graph_data_1 ={ r = 253, g =  91, b =  91, a = 100 },				        -- { r = 253, g =  91, b =  91, a = 100 }
+        graph_data_2 = { r = 252, g = 171, b =  92, a = 100 },                      -- { r = 252, g = 171, b =  92, a = 100 }
+        graph_data_3 = { r =  85, g = 172, b =   0, a = 100 },                      -- { r =  85, g = 172, b =   0, a = 100 }
+        graph_data_4 = { r = 180, g = 250, b = 200, a = 100 },                      -- { r = 180, g = 250, b = 200, a = 100 }
+        graph_data_5 = { r =   0, g = 175, b = 180, a = 100 },                      -- { r =   0, g = 175, b = 180, a = 100 }
+        graph_data_6 = { r =  91, g = 133, b = 253, a = 100 },                      -- { r =  91, g = 133, b = 253, a = 100 }
+        graph_data_7 = { r = 171, g =  91, b = 253, a = 100 },                      -- { r = 171, g =  91, b = 253, a = 100 }
+        graph_data_8 = { r = 253, g =  91, b = 213, a = 100 },                      -- { r = 253, g =  91, b = 213, a = 100 }
+        graph_grid = {r = 96, g = 96, b = 96, a = 80},                              -- {r = 96, g = 96, b = 96, a = 80}
+
+        hint_background_orange = { r = 255, g = 192, b = 0, a = 100 },  	        -- color.orange
+        hint_background_azure = { r = 90, g = 146, b = 186, a = 100 },	            -- color.blue
+        
+        icon_error = { r = 255, g = 0, b = 88, a = 100 },                           -- { r = 255, g = 0, b = 88, a = 100 }
+        icon_error_inactive = { r = 179, g = 0, b = 62, a = 100 },                  -- { r = 179, g = 0, b = 62, a = 100 }
+        icon_hidden = { r = 0, g = 0, b = 0, a = 0 },                               -- color.transparent
+        icon_inactive = { r = 0, g = 0, b = 0, a = 60 },                            -- color.transparent60
+        icon_mission = { r = 255, g = 190, b = 0, a = 100 },                        -- color.mission
+        icon_normal = { r = 255, g = 255, b = 255, a = 100 },                       -- color.white
+        icon_transparent = { r = 0, g = 0, b = 0, a = 1 },                          -- { r = 0, g = 0, b = 0, a = 1 }
+        icon_warning = { r = 249, g = 132, b = 31, a = 100 },                       -- color.warningorange
+
+        lso_node_error = { r = 255, g = 0, b = 0, a = 100 },                        -- color.red
+        lso_node_warning = { r = 249, g = 132, b = 31, a = 100 },                   -- color.warningorange
+        lso_node_removed = { r = 255, g = 0, b = 0, a = 100 },                      -- color.red
+        lso_node_inactive = { r = 128, g = 128, b = 128, a = 100 },                 -- color.grey
+        lso_slot_container = { r = 224, g = 79, b = 0, a = 100 },                   -- defaultFlowchartConnector3Color
+        lso_slot_liquid = { r = 0, g = 154, b = 204, a = 100 },                     -- defaultFlowchartConnector2Color	
+        lso_slot_solid = { r = 255, g = 220, b = 0, a = 100 },                      -- defaultFlowchartConnector1Color
+        lso_slot_condensate = { r = 255, g = 153, b = 255, a = 100 },               -- defaultFlowchartConnector4Color
+        
+        order_override = { r = 255, g = 0, b = 0, a = 100 },                        -- color.red
+        order_temp = { r = 90, g = 146, b = 186, a = 100 }, 				        -- color.blue
+
+        player_cover = { r = 231, g = 244, b = 70, a = 100 },                       -- color.cover
+        player_info_background = { r = 0, g = 0, b = 0, a = 60 },                   -- color.transparent60
+
+        research_incomplete = { r = 128, g = 128, b = 128, a = 100 },               -- color.grey
+
+        resource_liquid = { r = 0, g = 0, b = 255, a = 100 },                       -- { r = 0, g = 0, b = 255, a = 100 }
+        resource_mineral = { r = 255, g = 0, b = 0, a = 100 },                      -- { r = 255, g = 0, b = 0, a = 100 } 
+        resource_mineral_liquid = { r = 255, g = 0, b = 255, a = 100 },             -- { r = 255, g = 0, b = 255, a = 100 }
+
+        row_background = { r = 0, g = 0, b = 0, a = 0 },                            -- color.transparent
+        row_background_blue = { r = 0, g = 57, b = 76, a = 88 },                   -- { r = 0,  g = 57, b = 76, a = 88 }
+        row_background_blue_opaque = { r = 0, g = 99, b = 134, a = 100 },          -- defaultTitleTrapezoidBackgroundColor { r = 66, g = 92, b = 111, a = 100 },
+        row_background_immediate = { r = 0, g = 243, b = 0, a = 100 },              --  r = 0, g = 243, b = 0, a = 100 }
+        row_background_selected = { r = 83, g = 116, b = 139, a = 60 },             -- defaultArrowRowBackgroundColor
+        row_background_unselectable = { r = 32, g = 32, b = 32, a = 100 },          -- color.unselectable (color.darkgrey)
+        row_separator = { r = 128, g = 128, b = 128, a = 100 },                     -- color.grey
+        row_separator_encyclopedia = { r = 7, g = 29, b = 46, a = 100 },            -- color.available
+        row_separator_white = { r = 255, g = 255, b = 255, a = 100 },               -- color.white
+        row_title = { r = 66, g = 92, b = 111, a = 60 },                            -- defaultSimpleBackgroundColor
+        row_title_background = { r = 49, g = 69, b = 83, a = 60 },                  -- defaultTitleBackgroundColor
+        
+        scenario_button_background = { r = 0, g = 0, b = 0, a = 100 },             -- { r = 0,  g = 0, b = 0, a = 100 }
+        scenario_button_inactive = { r = 121, g = 121, b = 119, a = 100 },         -- { r = 121,  g = 121, b = 119, a = 100 }
+        scenario_completed = { r = 246, g = 176, b = 114, a = 100 },               -- { r = 246,  g = 176, b = 114, a = 100 }
+        scenario_completed_border = { r = 246, g = 176, b = 114, a = 100 },        -- { r = 246,  g = 176, b = 114, a = 100 }
+        
+        ship_retrieval = { r = 163, g = 193, b = 227, a = 100 },    				-- defaultUnselectableFontColor
+        ship_stat_background = { r = 0, g = 0, b = 0, a = 60 },                    -- color.transparent60
+
+        slider_arrow_click = { r = 0, g = 57, b = 76, a = 100},                     -- { r = 0, g = 57, b = 76, a = 100}  
+        slider_arrow_disabled = { r = 91, g = 91, b = 89, a = 100 },                -- { r = 91, g = 91, b = 89, a = 100 }
+        slider_arrow_highlight = { r = 255, g = 255, b = 255, a = 100 },            -- { r = 255, g = 255, b = 255, a = 100 }
+        slider_arrow_normal = { r = 255, g = 255, b = 255, a = 100 },               -- { r = 255, g = 255, b = 255, a = 100 }
+        slider_background_default = { r = 22, g = 34, b = 41, a = 60 },             -- defaultSliderCellBackgroundColor
+        slider_background_inactive = { r = 40, g = 40, b = 40, a = 60 },            -- defaultSliderCellInactiveBackgroundColor
+        slider_background_transparent = { r = 0, g = 0, b = 0, a = 0 },             -- color.transparent
+        slider_diff_neg = { r = 216, g = 68, b = 29, a = 30 },                      -- defaultSliderCellNegativeValueColor
+        slider_diff_pos = { r = 29, g = 216, b = 35, a = 30 },                      -- defaultSliderCellPositiveValueColor
+        slider_value = { r = 99, g = 138, b = 166, a = 100 },                       -- defaultSliderCellValueColor , color.slidervalue
+        slider_value_inactive = { r = 128, g = 128, b = 128, a = 100 },             -- color.grey
+
+        statusbar_diff_neg_default = { r = 236, g = 53, b = 0, a = 30 },            -- defaultStatusBarNegChangeColor
+        statusbar_diff_pos = { r = 66, g = 92, b = 111, a = 60 },                   -- defaultSimpleBackgroundColor
+        statusbar_diff_pos_default = { r = 20, g = 222, b = 20, a = 30 },           -- defaultStatusBarPosChangeColor
+        statusbar_marker_default = { r = 153, g = 213, b = 234, a = 100 },
+        statusbar_marker_hidden = { r = 0, g = 0, b = 0, a = 0 },                   -- color.transparent
+        statusbar_value_default = { r = 71, g = 136, b = 184, a = 100 },            -- defaultStatusBarValueColor
+        statusbar_value_grey = { r = 128, g = 128, b = 128, a = 100 },              -- color.grey
+        statusbar_value_orange = { r = 255, g = 192, b = 0, a = 100 },  	        -- color.orange
+        statusbar_value_white = { r = 255, g = 255, b = 255, a = 100 },             -- color.white
+
+        table_background_3d_editor = { r = 0, g = 0, b = 0, a = 60 },               -- color.transparent60
+        table_background_default = { r = 255, g = 255, b = 255, a = 100 },          -- color.white
+
+        text_boarding_done = { r = 0, g = 255, b = 0, a = 100 },                    -- color.green
+        text_boarding_risk_verylow = { r = 0, g = 255, b = 0, a = 100 },            -- color.green
+        text_boarding_risk_low = { r = 144, g = 144, b = 0, a = 100 },	            -- color.yellow		
+        text_boarding_risk_medium = { r = 255, g = 192, b = 0, a = 100 },           -- color.orange
+        text_boarding_risk_high = { r = 255, g = 0, b = 0, a = 100 },               -- color.red
+        text_boarding_risk_veryhigh = { r = 255, g = 0, b = 0, a = 100 },           -- color.red
+        text_boarding_risk_impossible = { r = 255, g = 0, b = 0, a = 100 },         -- color.red
+        text_boarding_started = { r = 255, g = 192, b = 0, a = 100 },               -- color.orange
+        text_boarding_waiting = { r = 255, g = 0, b = 0, a = 100 },                 -- color.red
+        text_criticalerror = { r = 255, g = 0, b = 0, a = 100 },                    -- color.red
+        text_enemy = { r = 248, g = 145, b = 178, a = 100 },                        -- holomapcolor.enemycolor
+        text_error = { r = 255, g = 0, b = 0, a = 100 },                            -- color.red
+        text_failure = { r = 255, g = 0, b = 0, a = 100 },                          -- color.red
+        text_hidden = { r = 0, g = 0, b = 0, a = 0 },                               -- color.transparent
+        text_hostile = { r = 255, g = 0, b = 88, a = 100 },                         -- holomapcolor.hostilecolor
+        text_illegal = { r = 255, g = 64, b = 0, a = 100 },                         -- color.illegal
+        text_illegal_inactive = { r = 128, g = 32, b = 0, a = 100 },                -- color.illegaldark
+        text_inactive = { r = 128, g = 128, b = 128, a = 100 },                     -- color.grey
+        text_inprogress = { r = 242, g = 242, b = 135, a = 100 },                   -- { r = 242, g = 242, b = 135, a = 100 }
+        text_logbook_highlight = { r = 255, g = 0, b = 0, a = 100 },                -- color.red
+        text_mission = { r = 255, g = 190, b = 0, a = 100 },                        -- color.mission
+        text_negative = { r = 255, g = 0, b = 0, a = 100 },                         -- color.red
+        text_neutral = { r = 242, g = 242, b = 135, a = 100 },                      -- { r = 242, g = 242, b = 135, a = 100 }
+        text_normal = { r = 255, g = 255, b = 255, a = 100 },                       -- color.white
+        text_player = { r = 0, g = 255, b = 0, a = 100 },                           -- color.green
+        text_player_current = { r = 170, g = 255, b = 139, a = 100 },               -- color.playergreen
+        text_positive = { r = 0, g = 255, b = 0, a = 100 },                         -- color.green
+        text_skills = { r = 255, g = 255, b = 0, a = 100 },                         -- color.brightyellow
+        text_skills_irrelevant = { r = 144, g = 144, b = 0, a = 100 },              -- color.yellow
+        text_success = { r = 0, g = 255, b = 0, a = 100 },                          -- color.green
+        text_warning = { r = 249, g = 132, b = 31, a = 100 },                       -- color.warningorange
+
+        toplevel_arrow = { r = 128, g = 196, b = 255, a = 100 },                    -- { r = 128, g = 196, b = 255, a = 100 }
+        toplevel_arrow_inactive = { r = 64, g = 98, b = 128, a = 100 },             -- { r = 64, g = 98, b = 128, a = 100 }
+
+        trade_buyoffer = { r = 91, g = 148, b = 188, a = 100 },                     -- { r = 91, g = 148, b = 188, a = 100 }
+
+        weapon_group_highlight = { r = 0, g = 102, b = 238, a = 60 },               -- color.checkboxgroup
+
+    }
+else
+    config.Color = Color
+end
+
+-- init menu and register witdh Helper
+local function init()
+    Menus = Menus or {}
+
+    local founded = false
+    for _, imenu in ipairs(Menus) do -- note that i is simply a placeholder for an ignored variable 
+        if imenu.name == menu.name then
+            founded = true
+            break
+        end
+    end
+    if not founded then
+        table.insert(Menus, menu)
+        local xdebug = debug1 and DebugError("Inserted " .. menu.name .. " in Menus")
+        if Helper then
+            Helper.registerMenu(menu)
+            local xdebug = debug1 and DebugError("Registered " .. menu.name .. " in Menus")
+        end
+    else
+        local xdebug = debug1 and DebugError("" .. menu.name .. " founded in Menus, Passing to Insert and Register Proccess")
+    end
+    DebugError("" .. menu.name .. " .lua Init OK...")
+
+
+end
+
+-- cleanup variables in menu, no need for the menu variable to keep all the data while the menu is not active
+function menu.cleanup()
+    local xdebug = debug0 and DebugError("cleanup")
+
+    menu.mainFrame = nil
+	menu.infoFrame = nil
+    
+    menu.infoFrameTableMode = config.infoFrameTableMode
+    menu.propertySorterType = config.propertySorterType
+
+    menu.mdDataChanged = nil
+    menu.md_AbandonedShipList = {}
+    menu.editedSettings = {}
+
+    menu.TopTitleTable = {}
+    menu.sideBarTable = {}
+    menu.sorterTable = {}
+    menu.OlShipsTable = {}
+    -- options için setrow olayı yapılmadı, onrefresh olayında options sayfası hariç tutuldu.
+    menu.SettingsTable = {} 
+
+    menu.queueupdate = nil
+    menu.resetrow = nil
+
+    menu.createInfoFrameRunning = nil
+    menu.lastDataCheck = 0
+    menu.lastrefresh = 0
+    menu.refreshed = nil
+    menu.noupdate = nil
+
+    menu.selectedOLShip = nil
+	menu.settoprow = nil            -- OlShipsTable seçili satır için
+	menu.setselectedrow = nil       -- OlShipsTable seçili satır için
+
+    -- Sidebar için kullanıyoruz şimdilik ama 
+    -- ilerde kodu düzenlemek için seçili satırı saklaması gereken diğer tableleri de buraya dahil edebiliriz.
+    menu.selectedRows = {}  
+
+
+end
+
+function menu.prepareSettings()
+
+    -- * BOOLEANs, MD dosyalarındaki true LUA ya geldiğinde 1, false ise 0 olarak geliyor. Lua için düzenlenmeli.    
+    -- * MD dosyalarından gelen sayısal değer lua da second olarak algılanıyor. 
+    --      Bu yüzden min değeri ile çalışırken 60 la çarpılıp işleme alınmalı. MD dosyasına geri gönderirken de 60 a bölünüp gönderilmeli.
+
+    for i,settingstable in ipairs({ menu.editedSettings, menu.defaultSettings}) do
+        for j,key in ipairs({ 'ship_s', 'ship_m', 'ship_l', 'ship_xl'}) do
+            settingstable.class[key].validAttacks.Hull.Player           = tonumber(settingstable.class[key].validAttacks.Hull.Player) == 1
+            settingstable.class[key].validAttacks.Hull.PlayerOwned      = tonumber(settingstable.class[key].validAttacks.Hull.PlayerOwned) == 1
+            settingstable.class[key].validAttacks.Hull.NPC              = tonumber(settingstable.class[key].validAttacks.Hull.NPC) == 1
+            settingstable.class[key].validAttacks.Equipment.Player      = tonumber(settingstable.class[key].validAttacks.Equipment.Player) == 1
+            settingstable.class[key].validAttacks.Equipment.PlayerOwned = tonumber(settingstable.class[key].validAttacks.Equipment.PlayerOwned) == 1
+            settingstable.class[key].validAttacks.Equipment.NPC         = tonumber(settingstable.class[key].validAttacks.Equipment.NPC) == 1
+            settingstable.class[key].validAttacks.LaserTowers       = tonumber(settingstable.class[key].validAttacks.LaserTowers) == 1
+            settingstable.class[key].reports.report                 = tonumber(settingstable.class[key].reports.report) == 1
+            settingstable.class[key].reports.showhelp               = tonumber(settingstable.class[key].reports.showhelp) == 1
+            settingstable.class[key].reports.advsatellites          = tonumber(settingstable.class[key].reports.advsatellites) == 1
+            settingstable.class[key].reports.nonesatellites         = tonumber(settingstable.class[key].reports.nonesatellites) == 1
+            settingstable.class[key].reports.soundnotification      = tonumber(settingstable.class[key].reports.soundnotification) == 1
+            settingstable.class[key].reports.shownotification       = tonumber(settingstable.class[key].reports.shownotification) == 1
+            settingstable.class[key].reports.logbook                = tonumber(settingstable.class[key].reports.logbook) == 1
+            settingstable.class[key].removecargo                    = tonumber(settingstable.class[key].removecargo) == 1
+            settingstable.class[key].repairhull                     = tonumber(settingstable.class[key].repairhull) == 1
+            settingstable.class[key].repairshield                   = tonumber(settingstable.class[key].repairshield) == 1
+            settingstable.class[key].repairequipments               = tonumber(settingstable.class[key].repairequipments) == 1
+        end
+    end
+    
+    menu.editedSettings.Debug.isBailedShipsLogAppend = (menu.param[3][1].Debug.isBailedShipsLogAppend == 1) and true or false
+
+    menu.defaultSettings.Debug.isBailedShipsLogAppend = (menu.param[3][2].Debug.isBailedShipsLogAppend == 1) and true or false
+
+end
+
+function menu.onShowMenu()
+    local xdebug = debug0 and DebugError("onShowMenu")
+
+    playerID = ConvertStringTo64Bit(tostring(C.GetPlayerID()))
+
+    menu.cleanup()
+
+
+    if menu.param[3] and type(menu.param[3]) == "table"  then
+        menu.editedSettings = menu.param[3][1]
+        menu.defaultSettings = menu.param[3][2]
+        menu.prepareSettings()
+    end
+    menu.infoFrameTableMode = config.infoFrameTableMode
+    if menu.param[4] then
+        for k,v in ipairs(config.leftBar) do
+            if v.mode and v.mode == tostring(menu.param[4]) then
+                menu.infoFrameTableMode = menu.param[4]
+                break
+            end
+        end
+    end
+    
+
+    -- (conversation menusünün altında kalıyor)
+    -- Pencereyi negatif daralt -- 0 = merkez
+    -- örnek (PosY) yani pencerenin top 0 a yerleşmesi için  math.floor((Helper.viewHeight - menu.viewHeight) / 2) kadar vermek gerekir.
+    local nWidth, nHeight = 150, 0
+    -- Pencereyi negatif kaydır 
+    local nPosX , nPosY = 0, 190
+
+    menu.viewWidth = math.floor(Helper.viewWidth * 5 / 7)  - nWidth
+    menu.viewHeight = math.ceil(Helper.viewHeight * 3 / 5) - nHeight
+    
+    local PosX = math.floor((Helper.viewWidth - menu.viewWidth) / 2)  - nPosX
+    local PosX = (PosX > 0 ) and PosX or 0
+    local PosY = math.floor((Helper.viewHeight - menu.viewHeight) / 2)  - nPosY
+    local PosY = (PosY > 0 ) and PosY or 0
+
+    --DebugError(" math.floor((Helper.viewWidth - menu.viewWidth) / 2)    = " .. tostring(math.floor((Helper.viewWidth - menu.viewWidth) / 2)   ) )
+    --DebugError(" math.floor((Helper.viewHeight - menu.viewHeight) / 2)  = " .. tostring(math.floor((Helper.viewHeight - menu.viewHeight) / 2) ) )
+    menu.borderOffsetX = PosX
+	menu.borderOffsetY = PosY
+
+	menu.sideBarWidth = Helper.sidebarWidth -- Helper.scaleX(40)
+    menu.sideBarOffsetX = 0
+	menu.sideBarOffsetY = 0
+
+
+    menu.infoFrameOffsetX = menu.borderOffsetX +  menu.sideBarWidth  + 1 * Helper.borderSize
+    menu.infoFrameWidth = menu.viewWidth - menu.sideBarWidth  - 2 * Helper.borderSize
+	
+    menu.infoFrameOffsetY = menu.borderOffsetY + Helper.standardButtonHeight + 1 * Helper.borderSize
+    menu.infoFrameHeight = menu.viewHeight - Helper.standardButtonHeight - 2 * Helper.borderSize
+    
+    local strDebug = string.format([[ Main & Info Frames
+            Helper.viewWidth: %s        Helper.viewHeight   : %s
+            menu.viewWidth  : %s        menu.viewWidth      : %s
+            menu.sideBarWidth : %s      Helper.borderSize : %s
+            menu.borderOffsetX : %s     menu.borderOffsetY : %s
+            menu.infoFrameOffsetX : %s  menu.infoFrameOffsetY : %s
+            menu.infoFrameWidth : %s    menu.infoFrameHeight : %s      ]],
+        Helper.viewWidth,Helper.viewHeight,
+        menu.viewWidth, menu.viewWidth,
+        menu.sideBarWidth, Helper.borderSize,
+        menu.borderOffsetX, menu.borderOffsetY,
+        menu.infoFrameOffsetX, menu.infoFrameOffsetY,
+        menu.infoFrameWidth, menu.infoFrameHeight
+        )
+    if debugWProps then DebugError(strDebug) end
+
+
+    menu.display()
+end
+function menu.Get_mdData()
+
+    menu.lastDataCheck = getElapsedTime()
+    menu.mdDataChanged = nil
+
+    local isMdDataChanged = GetNPCBlackboard(playerID, "$md_upbBail_DataChanged")
+    local xdebug = debug0 and DebugError("isMdDataChanged = " .. tostring(isMdDataChanged))
+
+    if isMdDataChanged and (isMdDataChanged ~= 0) then
+        
+        menu.md_AbandonedShipList = GetNPCBlackboard(playerID, "$md_AbandonedShipList")
+
+        local xdebug = debugGetData and DebugError("menu.md_AbandonedShipList(count " .. #menu.md_AbandonedShipList .. ") = " .. tostring(menu.md_AbandonedShipList))
+
+        menu.mdDataChanged = true
+        
+    end
+    menu.initDataFromMdData()
+
+end
+
+function menu.playerIsInSector(sectorid)
+    local playersector = GetComponentData(playerID, "sectorid")
+    return (tostring(playersector) == tostring(sectorid))
+end
+function menu.isObjectRemove(expiretime, sectorid)
+    local playerIsInSector = menu.playerIsInSector(sectorid)
+    return menu.isObjectDestroyTime(expiretime) and (not playerIsInSector)
+end
+
+function menu.isObjectDestroyTime(expiretime)
+    local RemainingTime = expiretime and (expiretime - C.GetCurrentGameTime() ) or 1
+    return RemainingTime <= 0
+end
+
+function menu.initDataFromMdData()
+    -- sıralama ölçütlerini kullanabilmek için ownerless ship datasını ölçüt detayları ile yeni bir değişkende (OlShips) toplayacağız
+    menu.OlShips = {} 
+    -- LUA idleri                   ID : xxxx
+    -- 64 idleri                    xxxx    
+    -- C fonksiyonu 64 idleri ise   xxxxULL     şeklinde gözükür
+    -- MD ile lua arasındaki alınıp verilen sayısal veriler LUA tipindedir. 
+    -- C.  fonksiyonları C64 (xxxULL) ya da 64(xxx) verilerini parametre alır
+    -- Diğer fonksiyonlar  luaID(ID: xxx)  ya da 64lük(xxx) şeklindeki verileri parametrede kabul eder.
+    -- Bu durumda her iki fonksiyon tipi için de ortak kullanılan 64(xxx) lük verilerle çalışacağız.
+
+    local havechangedata = nil
+    local haveinvalid = nil
+    local destroytimepassed = nil 
+    local showiconchanged = nil 
+
+    local AbandonedShipList = menu.md_AbandonedShipList
+    local curtime = C.GetCurrentGameTime()
+    -- Abandoned Ships
+    for idx = #AbandonedShipList, 1, -1 do
+        local entry = AbandonedShipList[idx]
+        local objectLuaID = ConvertStringToLuaID(tostring(entry.object)) 
+        local object64 = ConvertStringTo64Bit(tostring(objectLuaID))
+        local objectC64 = C.ConvertStringTo64Bit(tostring(objectLuaID))
+        local sector, sectorid = GetComponentData(objectLuaID, "sector", "sectorid")
+        local sectorowner = GetComponentData(sectorid, "owner")
+        local UIRelation = GetUIRelation(sectorowner)
+        local relationrangename = GetFactionData(sectorowner, "prioritizedrelationrangename")
+        local tempdata = { 
+                id = idx, 
+                expiretime = entry.expiretime, 
+                object = object64,
+                sectorid = sectorid
+            }
+
+        local isValid, descr = menu.isObjectValid(tempdata)
+        if isValid then
+
+            local isObjectDestroyTime = menu.isObjectDestroyTime(entry.expiretime)
+            local playerIsInSector = menu.playerIsInSector(sectorid)
+            local expiretimecolor = (isObjectDestroyTime and playerIsInSector) and config.sColor.darkorange or config.sColor.white
+            -- ReadText(tPg, 6270) "It's time to destroy, but the player is in this sector. This ship will not be destroyed until the player changes sectors."
+            local expiretimemouseovertext = (isObjectDestroyTime and playerIsInSector) and ReadText(tPg, 6270) or ""
+            if isObjectDestroyTime and playerIsInSector then
+                -- sayfayı her an refresh ettirmedik bu yüzden geriye saymaya başlayacağı anı refresh için yakalamak istiyoruz
+                local fark = curtime - entry.expiretime
+                if ( fark >= 0 and fark <= 1)  then
+                    havechangedata = true
+                    destroytimepassed = true
+                end
+            end
+            tempdata.timeleft = { 
+                Text =  entry.expiretime and function () return menu.getRemainingTime(entry.expiretime) end or function () return "---" end , 
+                color = expiretimecolor,
+                mouseOverText = expiretimemouseovertext
+            }
+
+            -- GetComponentData object64 ya da objectLuaID ile çalışabiliyor
+            local owner, shiptype, macro, purpose = GetComponentData(objectLuaID, "owner", "shiptype", "macro", "primarypurpose")
+            local iconid = GetComponentData(object64, "icon")
+            local macroname = GetMacroData(macro, "name")
+
+            local name = ffi.string(C.GetComponentName(object64))
+            if not C.IsObjectKnown(object64) then
+                name = macroname
+            end
+
+            tempdata.objectLUA = objectLuaID
+            tempdata.object64 = object64
+            tempdata.objectC64 = objectC64
+            tempdata.objectid = ffi.string(C.GetObjectIDCode(object64))
+            tempdata.name = name
+            tempdata.class = ffi.string(C.GetComponentClass(object64))
+
+            tempdata.iconcolor =  menu.HexToColor(menu.editedSettings.class[tempdata.class].reports.color) 
+
+            local showmapIconcolor, momentOfChange = menu.Get_ExpireTimeIconColor(entry.expiretime)
+            if momentOfChange then
+                havechangedata = true
+                showiconchanged = true
+            end
+            tempdata.showmapIconcolor = showmapIconcolor
+
+            tempdata.sector = entry.sector
+            tempdata.sectorid = sectorid
+            tempdata.owner = owner
+
+            tempdata.sectorowner = sectorowner
+            tempdata.relationrangename = relationrangename
+            tempdata.UIRelation = UIRelation
+
+            tempdata.purpose = purpose
+            tempdata.shiptype = shiptype
+            tempdata.macro = macro
+            tempdata.macroname = macroname
+            
+            local ship_icon_name = name
+            if iconid and iconid ~= "" then
+                ship_icon_name = string.format("\027[%s] %s", iconid, name)
+            end
+            tempdata.icon = iconid
+            tempdata.ship_icon_name = ship_icon_name
+
+            table.insert(menu.OlShips, tempdata )
+        else
+            havechangedata = true
+            haveinvalid = true
+            table.remove(AbandonedShipList, idx)
+            --DebugError("InValid  idx = " .. tostring(idx) .. " , " .. entry.name  .. " " .. entry.idcode.. " (" .. entry.sector .. ") is Skipping... " .. descr)
+            local debugx = debugValid and DebugError("InValid  idx = " .. tostring(idx) .. " , " .. entry.name  .. " " .. entry.idcode.. " (" .. entry.sector .. ") is Skipping... " .. descr)
+        end
+
+    end
+
+    if havechangedata then
+        --DebugError(" Data Changed # " .. tostring(#AbandonedShipList) .. " , OlShips # " .. tostring(#menu.OlShips) .. "  , menu.mdDataChanged = " .. tostring(menu.mdDataChanged) .. " , havechangedata = " .. tostring(havechangedata) .. " , haveinvalid = " .. tostring(haveinvalid) .. " , destroytimepassed = " .. tostring(destroytimepassed) .. " , showiconchanged = " .. tostring(showiconchanged))
+        menu.mdDataChanged = true
+    end
+                
+    local xdebug = debug2 and DebugError("initData FromMdData  END")
+end
+
+function menu.display()
+
+    -- frame:addTable  	açılmış frameye tablo ekler (kaç sütunlu olacağı burada bbelirlenir)
+    -- table:addRow  	açılmış tabloya yeni bir satır ekler
+    --    (rowdata == nil or false: Not selectable. For selectable row without specific rowdata, use e.g. true)
+    --    (propertiesde  fixed=true olursa tüm satırın etrafı borderla belirtilir. )
+    -- row[x]			oluşturulan (x tablo sütununa göre değerlendirilir) satır bilgisine özellik ekler
+
+    menu.setdefaulttable = true
+
+    menu.Get_mdData()
+    menu.lastrefresh = getElapsedTime()
+    menu.createMainFrame()  -- bu frame içinde sidebar tablosunu   ?? ve close back butonlarının olacağı tabloları saklayacak ??
+    menu.createInfoFrame()  -- bu frame içinde 2 ayrı modda çalışacak olan tabloları açacağız. 1.mod manager tablosu, 2.mod ayarlar tablosu
+
+    menu.mdDataChanged = nil
+    SetNPCBlackboard(playerID, "$md_upbBail_DataChanged", false)
+
+    local xdebug = debug0 and DebugError(menu.name .. " display END")
+end
+
+function menu.createMainFrame()
+	menu.createMainFrameRunning = true
+	-- remove old data
+	Helper.removeAllWidgetScripts(menu, config.mainLayer)
+
+	menu.mainFrame = Helper.createFrameHandle(menu, {
+		layer = config.mainLayer,
+		width = menu.viewWidth ,
+		height = menu.viewHeight,
+		x = menu.borderOffsetX,
+		y = menu.borderOffsetY,
+	})
+    menu.mainFrame:setBackground("solid", { color = not debugColorMod and config.sColor.transparent or config.sColor.semitransparent })    -- 7.00 da
+
+    -- sideBar, önce bunu yazalım,  menu.viewCreated içinde mainFrame için ilk layeri sideBarTableID e atıyoruz
+    menu.sideBarTable = menu.createSideBar(menu.mainFrame)
+    -- TopTittle
+    menu.TopTitleTable = menu.createTopTittleTable(menu.mainFrame)
+
+	menu.mainFrame:display()
+
+    local xdebug = debug0 and DebugError(menu.name .. " createMainFrame  :display")
+end
+function menu.createTopTittleTable(frame)
+    --
+    -- TITTLE TABLE
+    --
+    local row, ftable
+    ftable = frame:addTable(1, { 
+        skipTabChange = true,
+      } )
+
+    ftable:setDefaultCellProperties("text", { 
+        halign = "center",
+        font = Helper.titleFont,
+        fontsize = 12,
+    } )
+
+    row = ftable:addRow(nil , { bgColor = config.Color.row_title_background }  )
+    row[1]:createText(menu.title, {} )
+
+
+    return ftable
+end
+
+function menu.createSideBar(frame)
+	local spacingHeight = menu.sideBarWidth / 4
+	local defaultInteractiveObject = false
+	local ftable = frame:addTable(1, { 
+        tabOrder = 1, 
+        x = menu.sideBarOffsetX, 
+        y = menu.sideBarOffsetY,         -- Helper.standardButtonHeight + Helper.borderSize, 
+        width = menu.sideBarWidth, 
+        scaling = false, borderEnabled = false, reserveScrollBar = false, defaultInteractiveObject = defaultInteractiveObject 
+    })
+
+	local foundselection
+	local leftbar = config.leftBar
+
+	for idx, entry in ipairs(leftbar) do
+		if (entry.condition == nil) or entry.condition() then
+			if entry.spacing then
+                if next(leftbar,idx) then
+                    if leftbar[next(leftbar,idx)].mode == "cheats" and not debugCheat then
+                    else
+                        local row = ftable:addRow(false, { fixed = true })
+                        row[1]:createIcon("mapst_seperator_line", { width = menu.sideBarWidth, height = spacingHeight })
+                    end
+                end
+			else
+				local mode = entry.mode
+				local row = ftable:addRow(true, { fixed = true })
+				local bgcolor = config.Color["row_title_background"]
+                if entry.mode == menu.infoFrameTableMode then
+                    bgcolor = config.Color["row_background_selected"]
+                end
+				local color = config.sColor.white
+                
+				if mode == 'cheats' and not debugCheat then 
+                
+                else 
+                    row[1]:createButton({ active = true, height = menu.sideBarWidth, bgColor = bgcolor, mouseOverText = entry.name, helpOverlayID = entry.helpOverlayID, helpOverlayText = entry.helpOverlayText }):setIcon(entry.icon, { color = color })
+                    row[1].handlers.onClick = function () return menu.buttonToggleObjectList(mode) end
+                end                    
+			end
+		end
+	end
+
+	ftable:setSelectedRow(menu.selectedRows.sideBar)
+	menu.selectedRows.sideBar = nil
+
+    return ftable
+end
+function menu.buttonToggleObjectList(objectlistparam)
+    local oldidx, newidx
+    local leftbar = config.leftBar
+    local count = 1
+	for _, entry in ipairs(leftbar) do
+		if (entry.condition == nil) or entry.condition() then
+			if entry.mode then
+                if entry.mode == menu.infoFrameTableMode then
+                    oldidx = count
+                end
+                if entry.mode == objectlistparam then
+                    newidx = count
+                end
+            end
+			count = count + 1
+		end
+		if oldidx and newidx then
+			break
+		end
+    end
+
+	if newidx then
+		Helper.updateButtonColor(menu.sideBarTableID, newidx, 1, config.Color.row_background_selected)
+	end
+	if oldidx then
+		Helper.updateButtonColor(menu.sideBarTableID, oldidx, 1, config.Color.button_background_default)
+	end
+    
+    menu.createInfoFrameRunning = true
+
+    --AddUITriggeredEvent(menu.name, objectlistparam, menu.infoFrameTableMode == objectlistparam and "off" or "on")
+
+    menu.infoFrameTableMode = objectlistparam
+    if newidx then
+        SelectRow(menu.sideBarTableID, newidx)
+    end
+
+    menu.refreshMainFrame = true
+    menu.setdefaulttable = true
+	menu.createInfoFrame()
+
+end
+
+function menu.createInfoFrame()
+    menu.createInfoFrameRunning = true
+
+	-- remove old data
+	Helper.clearDataForRefresh(menu, config.infoLayer)
+    
+	local frameProperties = {
+        width = menu.infoFrameWidth ,
+        height = menu.infoFrameHeight,
+        x = menu.infoFrameOffsetX,
+        y = menu.infoFrameOffsetY,
+		standardButtons = {},
+		layer = config.infoLayer,
+	}
+    menu.infoFrame = Helper.createFrameHandle(menu, frameProperties)
+    menu.infoFrame:setBackground("solid", { color = not debugColorMod and config.sColor.semitransparent or config.sColor.available })    -- 7.00 da
+    
+    if (menu.infoFrameTableMode == "cheats") then
+        menu.createCheatTable(menu.infoFrame)
+    elseif (menu.infoFrameTableMode == "options") then
+        menu.createOptionsTable(menu.infoFrame)
+    else -- (menu.infoFrameTableMode == "(bailed and abandoned ships) manager modu") 
+        menu.createManagerTable(menu.infoFrame)
+    end
+
+    menu.infoFrame:display()
+    local xdebug = debug0 and DebugError(menu.name .. " createInfoFrame  :display")
+    
+end
+
+function menu.createCheatTable(frame)
+	-- (cheat only)
+	local cheats = {
+		[1] = {
+			name = "Enable All Cheats",
+			info = "Reveal stations, encyclopedia, map, research and adds money and seta.",
+			callback = C.EnableAllCheats,
+			shortcut = {"action", 290}, -- INPUT_ACTION_DEBUG_FEATURE_3
+		},
+		[2] = {
+			name = "Reveal map",
+			callback = C.RevealMap,
+		},
+		[3] = {
+			name = "Reveal stations",
+			callback = C.RevealStations,
+		},
+		[4] = {
+			name = "Cheat 1bn Credits",
+			callback = function () return C.AddPlayerMoney(100000000000) end,
+		},
+		[5] = {
+			name = "Cheat SETA",
+			callback = function () return AddInventory(nil, "inv_timewarp", 1) end,
+		},
+		[6] = {
+			name = "Reveal encyclopedia",
+			info = "Also reveals the map and completes all research.",
+			callback = C.RevealEncyclopedia,
+		},
+		[7] = {
+			name = "Spawn CVs",
+			section = "gDebug_deployCVs",
+		},
+		[8] = {
+			name = "Fill nearby Build Storages",
+			section = "gDebug_station_buildresources",
+		},
+		[9] = {
+			name = "Inc Crew skill",
+			section = "gDebug_crewskill",
+		},
+		[10] = {
+			name = "Open Flowchart Test",
+			menu = "StationOverviewMenu",
+		},
+		[11] = {
+			name = "Cheat All Research",
+			callback = menu.cheatAllResearch,
+		},
+		[12] = {
+			name = "Cheat Docking Traffic",
+			sectionparam = C.CheatDockingTraffic,
+			shortcut = {"action", 291}, -- INPUT_ACTION_DEBUG_FEATURE_4
+		},
+		[13] = {
+			name = "Cheat Live Stream View Channels",
+			info = "Makes all faction channels available in Live Stream View.",
+			callback = C.CheatLiveStreamViewChannels,
+		},
+	}
+
+	local ftable = frame:addTable(1 , { tabOrder = 1 })
+	--ftable:addConnection(1, 2, true)
+	ftable:setDefaultCellProperties("text", { minRowHeight = config.mapRowHeight, fontsize = config.mapFontSize })
+	ftable:setDefaultCellProperties("button", { height = config.mapRowHeight })
+	ftable:setDefaultComplexCellProperties("button", "text", { fontsize = config.mapFontSize })
+
+	local row = ftable:addRow(false, { fixed = true, bgColor = config.Color["row_title_background"] })
+	row[1]:createText("Cheats", Helper.headerRowCenteredProperties)
+
+	for _, cheat in ipairs(cheats) do
+		local row = ftable:addRow(true, {  })
+		local shortcut = ""
+		if cheat.shortcut then
+			shortcut = Helper.formatOptionalShortcut(" \27A(%s)", cheat.shortcut[1], cheat.shortcut[2])
+		end
+		row[1]:createButton({ mouseOverText = cheat.info or "" }):setText(cheat.name .. shortcut)
+		if cheat.callback then
+			row[1].handlers.onClick = function () return cheat.callback() end
+		elseif cheat.menu then
+			row[1].handlers.onClick = function () Helper.closeMenuAndOpenNewMenu(menu, cheat.menu, {0, 0}) menu.cleanup() end
+		elseif cheat.section then
+			row[1].handlers.onClick = function () Helper.closeMenuForNewConversation(menu, cheat.section, ConvertStringToLuaID(tostring(C.GetPlayerComputerID())), nil, true) menu.cleanup() end
+		end
+	end
+
+end
+function menu.createManagerTable(frame)
+
+    local borderSize = Helper.borderSize  
+    local usablewidth = frame.properties.width 
+    local OLShipTableWidthRatio = 9 / 9
+
+    local offsetx = 0
+    local offsety = 0
+    local width = math.floor(usablewidth * OLShipTableWidthRatio) 
+
+    menu.FiltersTable = menu.createManager_FiltersTable(frame)
+
+    menu.sorterTable = menu.createManager_SorterTable(frame, offsetx, offsety, width)
+
+    menu.OlShipsTable = menu.createManager_OlShipsTable(frame, offsetx, offsety, width)
+
+
+    -- Report
+    local ftable = frame:addTable(7, {
+        tabOrder = 4,
+        x = offsetx + 2* Helper.borderSize,
+        width = width - 4* Helper.borderSize,
+        skipTabChange = true,
+    })
+
+    ftable:setColWidth(1, config.mapRowHeight * 8 )
+    ftable:setColWidth(2, config.mapRowHeight * 3 )
+    
+    ftable:setColWidth(3, config.mapRowHeight * 15 )
+    
+    ftable:setColWidth(5, config.mapRowHeight  )
+    ftable:setColWidth(6, config.mapRowHeight * 8 )
+    ftable:setColWidth(7, config.mapRowHeight * 3 )
+
+    -- Kılavuz
+    --local row = ftable:addRow(nil, { bgColor = config.sColor.orange })
+    --row[1]:setColSpan(1):createText("", { fontsize = 1, minRowHeight = 2 })
+    
+    ftable:setDefaultBackgroundColSpan(1, 7)
+
+    ftable:addEmptyRow(config.mapRowHeight / 2)
+
+    local claimablecount = menu.shows.report and menu.shows.report.claimable or 0
+    local shipcount = menu.shows.report and menu.shows.report.shown or 0
+    local row = ftable:addRow(false, { fixed = true, bgColor = config.Color["row_background_unselectable"] })   
+    row[1]:createText(ReadText(tPg, 6300) .. ":", {  }) -- Claimable
+    row[2]:createText(tostring(claimablecount), { halign = "right" })
+    local playersector, playersectorid = GetComponentData(playerID, "sector", "sectorid")
+    row[3]:createText(ReadText(tPg, 6310) .. ":", { halign = "right" })    -- Location of Player
+    row[4]:createText(playersector, { halign = "left" })
+    row[6]:createText(ReadText(tPg, 6320) .. ":", {  }) -- Shown
+    row[7]:createText(tostring(shipcount), { halign = "right" })
+
+    ftable.properties.y = menu.infoFrameHeight - Helper.borderSize - ftable:getFullHeight() - 3 * Helper.borderSize
+    menu.sorterTable.properties.y = menu.FiltersTable.properties.y + menu.FiltersTable:getFullHeight() + Helper.borderSize
+    menu.OlShipsTable.properties.y =  menu.sorterTable.properties.y + menu.sorterTable:getFullHeight() + Helper.borderSize
+    menu.OlShipsTable.properties.maxVisibleHeight = ftable.properties.y - menu.OlShipsTable.properties.y -- - Helper.borderSize
+
+end
+
+function menu.createManager_FiltersTable(frame)
+    
+    local font, fontsize = Helper.headerRow1Font, Helper.headerRow1FontSize -- Helper.standardFont, Helper.standardFontSize
+    local map_fontsize = fontsize
+    local map_textheight = math.ceil(C.GetTextHeight("Y", font, Helper.scaleFont(font, map_fontsize), Helper.viewWidth)) + 2 * Helper.borderSize
+
+    local ftable = frame:addTable(11, {
+        tabOrder = 2, 
+        reserveScrollBar = false,
+        x = 0,
+    })
+
+    local subLineProperties = {
+    fontsize = 1, 
+    minRowHeight = 2,
+    }
+
+    ftable:setColWidthPercent(1, 5)
+    ftable:setColWidth(3, map_textheight )
+    ftable:setColWidth(3, map_textheight )
+    ftable:setColWidth(5, map_textheight)
+    ftable:setColWidth(7, map_textheight)
+    ftable:setColWidth(9, map_textheight)
+    
+
+    -- Kılavuz
+    --local row = ftable:addRow(nil, { bgColor = config.sColor.orange })
+    --row[1]:setColSpan(1):createText("", subLineProperties)
+
+    menu.shows = menu.shows or { ship_s = false, ship_m = false, ship_l = true, ship_xl = true, playerislocated = false, knownsectors = true, enemysectors = false, unknownsectors = false }
+
+    
+    local row = ftable:addRow(false, {  } )
+    row[1]:setColSpan(11):createText(ReadText(tPg, 6020), config.rowTittleProperties )   -- Show
+    
+    ftable:addEmptyRow(Helper.borderSize)
+
+    row = ftable:addRow(true, { fixed = true , bgColor = config.sColor.transparent } )
+    row[2]:setColSpan(1):createText(ReadText(tPg, 6030), { halign = "left", font = font, fontsize = fontsize } )    -- Sector Type
+
+    row[3]:setColSpan(1):createCheckBox(menu.shows.playerislocated , { width = map_textheight, height = map_textheight })
+    row[3].handlers.onClick = function () 
+        menu.shows.playerislocated = not menu.shows.playerislocated;
+        menu.shows.enemysectors = false;
+        menu.shows.unknownsectors = false;
+        menu.refreshInfoFrame(); 
+    end
+	row[4]:setColSpan(1):createButton({ bgColor = config.Color["button_background_hidden"], height = map_textheight, mouseOverText = "" }):setText(ReadText(tPg, 6040), { halign = "left", font = font, fontsize = fontsize }) -- "Player is Located"
+	row[4].handlers.onClick = function () 
+        menu.shows.playerislocated = not menu.shows.playerislocated;  
+        menu.shows.enemysectors = false;
+        menu.shows.unknownsectors = false;
+        menu.refreshInfoFrame(); 
+    end
+    --row[4]:setColSpan(1):createText("Player is Located", { halign = "left", font = font, fontsize = fontsize } )
+
+    -- menu.shows.knownsectors
+    row[5]:setColSpan(1):createCheckBox(menu.shows.knownsectors , { active = true, width = map_textheight, height = map_textheight })
+    row[5].handlers.onClick = function () menu.shows.knownsectors = not menu.shows.knownsectors; menu.refreshInfoFrame(); end
+	row[6]:setColSpan(1):createButton({ active = true, bgColor = config.Color["button_background_hidden"], height = map_textheight, mouseOverText = "" }):setText(ReadText(tPg, 3000), { halign = "left", font = font, fontsize = fontsize }) -- "Known"
+	row[6].handlers.onClick = function () menu.shows.knownsectors = not menu.shows.knownsectors; menu.refreshInfoFrame(); end
+
+    -- menu.shows.enemysectors
+    row[7]:setColSpan(1):createCheckBox(menu.shows.enemysectors , { active = not menu.shows.playerislocated, width = map_textheight, height = map_textheight })
+    row[7].handlers.onClick = function () menu.shows.enemysectors = not menu.shows.enemysectors; menu.refreshInfoFrame(); end
+	row[8]:setColSpan(1):createButton({ active = not menu.shows.playerislocated, bgColor = config.Color["button_background_hidden"], height = map_textheight, mouseOverText = "" }):setText(ReadText(tPg, 3020), { halign = "left", font = font, fontsize = fontsize }) -- "Enemy & Hostile"
+	row[8].handlers.onClick = function () menu.shows.enemysectors = not menu.shows.enemysectors; menu.refreshInfoFrame(); end
+
+    -- menu.shows.unknownsectors
+    row[9]:setColSpan(1):createCheckBox(menu.shows.unknownsectors , { active = not menu.shows.playerislocated, width = map_textheight, height = map_textheight })
+    row[9].handlers.onClick = function () menu.shows.unknownsectors = not menu.shows.unknownsectors; menu.refreshInfoFrame(); end
+	row[10]:setColSpan(1):createButton({ active = not menu.shows.playerislocated, bgColor = config.Color["button_background_hidden"], height = map_textheight, mouseOverText = "" }):setText(ReadText(tPg, 3010), { halign = "left", font = font, fontsize = fontsize }) -- "Unknown"
+	row[10].handlers.onClick = function () menu.shows.unknownsectors = not menu.shows.unknownsectors; menu.refreshInfoFrame(); end
+    
+
+    ftable:addEmptyRow(Helper.borderSize)
+
+    row = ftable:addRow(true, { fixed = true , bgColor = config.sColor.transparent } )
+    row[2]:setColSpan(1):createText(ReadText(tPg, 6050), { halign = "left", font = font, fontsize = fontsize } )     -- Size
+
+    --menu.shows.ship_s = menu.shows.ship_s or false
+    row[3]:setColSpan(1):createCheckBox(menu.shows.ship_s , { width = map_textheight, height = map_textheight })
+    row[3].handlers.onClick = function () menu.shows.ship_s = not menu.shows.ship_s; menu.refreshInfoFrame(); end
+	row[4]:setColSpan(1):createButton({ bgColor = config.Color["button_background_hidden"], height = map_textheight, mouseOverText = "" }):setText(menu.editedSettings.class.ship_s.reports.text, { halign = "left", color = menu.HexToColor(menu.editedSettings.class.ship_s.reports.color), font = font, fontsize = fontsize }) -- "Unknown"
+	row[4].handlers.onClick = function () menu.shows.ship_s = not menu.shows.ship_s; menu.refreshInfoFrame(); end
+
+    --menu.shows.ship_m = menu.shows.ship_m or false
+    row[5]:setColSpan(1):createCheckBox(menu.shows.ship_m , { width = map_textheight, height = map_textheight })
+    row[5].handlers.onClick = function () menu.shows.ship_m = not menu.shows.ship_m; menu.refreshInfoFrame(); end
+	row[6]:setColSpan(1):createButton({ bgColor = config.Color["button_background_hidden"], height = map_textheight, mouseOverText = "" }):setText(menu.editedSettings.class.ship_m.reports.text, { halign = "left", color = menu.HexToColor(menu.editedSettings.class.ship_m.reports.color), font = font, fontsize = fontsize }) -- "Unknown"
+	row[6].handlers.onClick = function () menu.shows.ship_m = not menu.shows.ship_m; menu.refreshInfoFrame(); end
+
+    --menu.shows.ship_l = menu.shows.ship_l or true
+    row[7]:setColSpan(1):createCheckBox(menu.shows.ship_l , { width = map_textheight, height = map_textheight })
+    row[7].handlers.onClick = function () menu.shows.ship_l = not menu.shows.ship_l; menu.refreshInfoFrame(); end
+	row[8]:setColSpan(1):createButton({ bgColor = config.Color["button_background_hidden"], height = map_textheight, mouseOverText = "" }):setText(menu.editedSettings.class.ship_l.reports.text, { halign = "left", color = menu.HexToColor(menu.editedSettings.class.ship_l.reports.color), font = font, fontsize = fontsize }) -- "Unknown"
+	row[8].handlers.onClick = function () menu.shows.ship_l = not menu.shows.ship_l; menu.refreshInfoFrame(); end
+
+    --menu.shows.ship_xl = menu.shows.ship_xl or true
+    row[9]:setColSpan(1):createCheckBox(menu.shows.ship_xl , { width = map_textheight, height = map_textheight })
+    row[9].handlers.onClick = function () menu.shows.ship_xl = not menu.shows.ship_xl; menu.refreshInfoFrame(); end
+	row[10]:setColSpan(1):createButton({ bgColor = config.Color["button_background_hidden"], height = map_textheight, mouseOverText = "" }):setText(menu.editedSettings.class.ship_xl.reports.text, { halign = "left", color = menu.HexToColor(menu.editedSettings.class.ship_xl.reports.color), font = font, fontsize = fontsize }) -- "Unknown"
+	row[10].handlers.onClick = function () menu.shows.ship_xl = not menu.shows.ship_xl; menu.refreshInfoFrame(); end
+
+    ftable:addEmptyRow(Helper.borderSize)
+
+
+   return ftable
+end
+
+function menu.createManager_SorterTable(frame, offsetx, offsety, width)
+    
+    local subLineProperties = {
+        fontsize = 1, 
+        minRowHeight = 2,
+    }
+
+    --
+    -- TAB TABLE
+    --
+    local tabtable
+    local columnWidth = 60
+    local maxNumCategoryColumns =  math.floor(width / columnWidth)
+    --DebugError("maxNumCategoryColumns = " .. tostring(maxNumCategoryColumns) )
+    --DebugError("Helper.maxTableCols = " .. tostring(Helper.maxTableCols) )
+	if maxNumCategoryColumns > Helper.maxTableCols then
+		maxNumCategoryColumns = Helper.maxTableCols
+	end
+    local numOfSorterColumns = 5 -- "sort by:", "class", "name", "sector", "remainingtime"
+    local colSpanPerSorterColumn = math.floor(maxNumCategoryColumns / numOfSorterColumns)
+    tabtable = frame:addTable(maxNumCategoryColumns, {
+         tabOrder = 3, 
+         reserveScrollBar = false,
+         x = offsetx,
+         y = offsety,
+    })
+
+    local row
+
+    if maxNumCategoryColumns > 0 then
+		for i = 1, maxNumCategoryColumns do
+			tabtable:setColWidth(i, columnWidth, false)
+		end
+		local diff = width - maxNumCategoryColumns * (columnWidth + Helper.borderSize)
+		tabtable:setColWidth(maxNumCategoryColumns, columnWidth + diff, false)
+
+        
+        --local row = tabtable:addRow(false, { fixed = true , bgColor = config.sColor.transparent } )
+        --row[1]:setColSpan(maxNumCategoryColumns):createText(" ", { halign = "center", font = Helper.headerRow1Font, fontsize = Helper.headerRow1FontSize } )
+        tabtable:addEmptyRow(3)
+        row = tabtable:addRow(false, { fixed = true, bgColor = config.sColor.grey } )
+        row[1]:setColSpan(maxNumCategoryColumns):createText("", { height = 1 } )
+    
+        -- sorter row
+        local row = tabtable:addRow(true, { fixed = true, bgColor = config.sColor.transparent })
+        local sorterColumn
+        local tableColumn
+        -- "sort by"
+        row[1]:setColSpan(colSpanPerSorterColumn):createText(ReadText(1001, 2906) .. ReadText(1001, 120))
+        local buttonheight = Helper.scaleY(config.mapRowHeight)
+		-- "size"
+
+		sorterColumn = 2
+		tableColumn = (sorterColumn - 1) * colSpanPerSorterColumn + 1
+		local button = row[tableColumn]:setColSpan(colSpanPerSorterColumn):createButton({ scaling = false, height = buttonheight }):setText(ReadText(1001, 8026), { halign = "center", scaling = true })
+		if menu.propertySorterType == "class" then
+			button:setIcon("table_arrow_inv_down", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		elseif menu.propertySorterType == "classinverse" then
+            button:setIcon("table_arrow_inv_up", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		end
+        row[tableColumn].handlers.onClick = function () return menu.buttonPropertySorter("class") end
+
+		-- "name"
+		sorterColumn = 3
+		tableColumn = (sorterColumn - 1) * colSpanPerSorterColumn + 1
+		local button = row[tableColumn]:setColSpan(colSpanPerSorterColumn):createButton({ scaling = false, height = buttonheight }):setText(ReadText(1001, 2809), { halign = "center", scaling = true })
+		if menu.propertySorterType == "name" then
+			button:setIcon("table_arrow_inv_down", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		elseif menu.propertySorterType == "nameinverse" then
+			button:setIcon("table_arrow_inv_up", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		end
+		row[tableColumn].handlers.onClick = function () return menu.buttonPropertySorter("name") end
+		-- "sector"
+		--local row = tabtable:addRow(true, { fixed = true, bgColor = config.sColor.transparent }) -- alt satıra geç
+		sorterColumn = 4
+		tableColumn = (sorterColumn - 1) * colSpanPerSorterColumn + 1
+		button = row[tableColumn]:setColSpan(colSpanPerSorterColumn):createButton({ scaling = false, height = buttonheight }):setText(ReadText(1001, 11284), { halign = "center", scaling = true })
+		if menu.propertySorterType == "sector" then
+			button:setIcon("table_arrow_inv_down", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		elseif menu.propertySorterType == "sectorinverse" then
+			button:setIcon("table_arrow_inv_up", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		end
+		row[tableColumn].handlers.onClick = function () return menu.buttonPropertySorter("sector") end
+		-- "relation"
+		sorterColumn = 5
+		tableColumn = (sorterColumn - 1) * colSpanPerSorterColumn + 1
+		button = row[tableColumn]:setColSpan(colSpanPerSorterColumn):createButton({ scaling = false, height = buttonheight }):setText(ReadText(tPg, 6060), { halign = "center", scaling = true })    -- Relation
+		if menu.propertySorterType == "relation" then
+			button:setIcon("table_arrow_inv_down", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		elseif menu.propertySorterType == "relationinverse" then
+			button:setIcon("table_arrow_inv_up", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		end
+		row[tableColumn].handlers.onClick = function () return menu.buttonPropertySorter("relation") end
+		-- "remainingtime"
+		sorterColumn = 6
+		tableColumn = (sorterColumn - 1) * colSpanPerSorterColumn + 1
+		button = row[tableColumn]:setColSpan(colSpanPerSorterColumn):createButton({ scaling = false, height = buttonheight }):setText(ReadText(tPg, 6070), { halign = "center", scaling = true })   -- Remaining
+		if menu.propertySorterType == "remainingtime" then
+			button:setIcon("table_arrow_inv_down", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		elseif menu.propertySorterType == "remainingtimeinverse" then
+			button:setIcon("table_arrow_inv_up", { width = buttonheight, height = buttonheight, x = button:getColSpanWidth() - buttonheight })
+		end
+		row[tableColumn].handlers.onClick = function () return menu.buttonPropertySorter("remainingtime") end
+
+        row = tabtable:addRow(false, { fixed = true, bgColor = config.sColor.grey } )
+        row[1]:setColSpan(maxNumCategoryColumns):createText("", { height = 1 } )
+
+        tabtable:addEmptyRow(3)
+
+    end
+
+    return tabtable
+end
+function menu.createManager_OlShipsTable(frame, offsetx, offsety, width)
+
+    table.sort(menu.OlShips, menu.componentSorter(menu.propertySorterType))
+
+    local row, ftable
+    local keywidth = C.GetTextWidth("999", Helper.headerRow1Font,
+    Helper.scaleFont(Helper.headerRow1Font, Helper.headerRow1FontSize)) + 2 * (Helper.headerRow1Offsetx + Helper.borderSize)
+    menu.shipIconWidth = menu.getShipIconWidth()  -- Helper.headerRow1Font, Helper.headerRow1FontSize
+    local buttonsize = Helper.scaleY(config.mapRowHeight) + Helper.borderSize
+
+    local iconoffset = 2
+    local iconheight = math.ceil(config.rowHeight * 1.5)
+
+    --
+    -- OLShip TABLE
+    --
+    ftable = frame:addTable(7, {
+        tabOrder = 4,
+        x = offsetx + 2* Helper.borderSize,
+        y = offsety ,
+        width = width - 4* Helper.borderSize,
+        multiSelect = false,
+        borderEnabled = true
+    })
+
+    if menu.setdefaulttable then
+        ftable.properties.defaultInteractiveObject = true
+        menu.setdefaulttable = nil
+    end
+
+    -- 1-showbutton, 2-iconname, 3-location, 4-relation, 5-remainingtime, 6-hullbar, 7-destroybutton
+    --ftable:setDefaultBackgroundColSpan(1, 7)
+    
+    ftable:setColWidth(1, buttonsize * 2 )
+    ftable:setColWidthPercent(3, 30)
+    ftable:setColWidthPercent(4, 18)
+	ftable:setColWidthPercent(5, 12)
+    ftable:setColWidth(6 , buttonsize)
+    ftable:setColWidth(7 , buttonsize * 2)
+
+    local subLineProperties = {
+        fontsize = 1, 
+        minRowHeight = 2,
+    }
+
+    -- Kılavuz
+    --row = ftable:addRow(nil, { bgColor = config.sColor.orange })
+    --row[1]:setColSpan(1):createText("", subLineProperties)
+    
+    --  Tablo Başlığı
+    row = ftable:addRow(false, { fixed = true , bgColor = config.sColor.transparent } )
+    -- Backroundu ve texti setle
+    row[1]:setColSpan(6):createText(ReadText(tPg, 6080), { halign = "center", font = Helper.headerRow1Font, fontsize = Helper.headerRow1FontSize } )  -- Ownerless Ships
+    -- Satır Ekle - Gri ince
+    row = ftable:addRow(false, { fixed = true, bgColor = config.sColor.grey } )
+    row[1]:setColSpan(6):createText("", { height = 1 } )
+    
+    -- Tablo Listesi Sütun Başlıkları
+    -- Satır Ekle - Mavi kalın 
+    row = ftable:addRow(false, { fixed = true, bgColor = config.sColor.available } )
+    row[1]:setColSpan(1):createText(" ", { font = Helper.standardFontBold, halign = "left" } )
+    row[2]:setColSpan(1):createText(ReadText(tPg, 6090), { font = Helper.standardFontBold, halign = "left" } )   -- Name
+    row[3]:setColSpan(1):createText(ReadText(tPg, 6100), { font = Helper.standardFontBold, halign = "left" } )   -- Location
+    
+    row[4]:setColSpan(1):createText(ReadText(tPg, 6110), { font = Helper.standardFontBold, halign = "left" } ) -- Relation with the Sector Owner
+
+    row[5]:setColSpan(1):createText(ReadText(tPg, 6120), { font = Helper.standardFontBold, halign = "left" } ) -- Remaining Time
+    row[6]:createText(ReadText(tPg, 6130), { font = Helper.standardFontBold, halign = "right" } )   -- Shield / Hull
+    row[7]:setColSpan(1):createText(" ", { font = Helper.standardFontBold, halign = "left" } )
+
+    -- Tablo Listesi Sütun Başlıkları Altına Çizgi çek
+    row = ftable:addRow(false, { fixed = true } )
+    -- Satır Ekle - Gri ince
+    row[1]:setColSpan(5):createText("", { height = 2 } )
+    
+    -- Dolduralım
+    local font, fontsize = Helper.standardFont, Helper.standardFontSize
+    
+    local color = config.sColor.white
+    
+
+    menu.shows.report = { claimable = #menu.OlShips, shown = 0 }
+
+    if #menu.OlShips > 0 then
+        for idx, entry in ipairs(menu.OlShips) do
+
+            if (not menu.selectedOLShip) then
+                menu.selectedOLShip = entry.object
+            end
+
+            local playersector = GetComponentData(playerID, "sectorid")
+            local playerIsInSector = (tostring(playersector) == tostring(entry.sectorid)) 
+
+            local sectorowner = GetComponentData(entry.sectorid, "owner")
+            local sectorownercolor = GetFactionData(sectorowner, "color")
+            local isknownsector = C.IsKnownToPlayer(ConvertStringTo64Bit(tostring(entry.sectorid)))
+            local isenemy, ishostile = GetComponentData(entry.sectorid, "isenemy", "ishostile")
+
+            if menu.shows[entry.class] then
+                local bgColor = config.sColor.transparent
+                local show = false
+                if ((not isknownsector) and menu.shows.unknownsectors) then
+                    show = true
+                elseif (((isenemy or ishostile) and menu.shows.enemysectors )) and isknownsector then 
+                    show = true
+                elseif isknownsector and not isenemy and not ishostile then
+                    if menu.shows.knownsectors then
+                        show = true
+                    end
+                end
+                if menu.shows.playerislocated then
+                    show = playerIsInSector
+                end
+                if show then
+
+                    local isObjectDestroyTime = menu.isObjectDestroyTime(entry.expiretime)
+                    local playerIsInSector = menu.playerIsInSector(entry.sectorid)
+
+                    local row = ftable:addRow( entry.object  , { bgColor = bgColor })   --{ bgColor = bgColor }
+                    menu.shows.report.shown = menu.shows.report.shown + 1
+                    --debugW = false
+                    local coloredicon = Helper.convertColorToText(entry.iconcolor) .. string.format("\027[%s]", entry.icon) 
+                    local coloredname = Helper.convertColorToText(color) .. entry.name .. " " .. entry.objectid
+                    local ShipIconAndName = coloredicon .. " " .. coloredname .. (debugW and "   {row " .. tostring(row.index) .. " }" or "") .. (debugW and ", {luaID " .. tostring(entry.object) .. " }" or "")
+
+                    -- 
+                    local showmapIconText = Helper.convertColorToText(entry.showmapIconcolor) .. "\027[order_recon]\027X"
+                    local mouseOverText = "" --  string.format(Helper.convertColorToText(config.sColor.cyan) .. "Show %s on Map", entry.name .. " " .. entry.objectid )
+                    row[1]:createButton({ scaling = false, bgColor = config.sColor.transparent, mouseOverText = mouseOverText, y = 2 * iconoffset, height = buttonsize  })
+                    :setText(showmapIconText, { halign = "center" })
+                    row[1].handlers.onClick = function () return menu.buttonOnShowMap(entry.object) end
+                    -- 
+                    row[2]:setColSpan(1):createText( ShipIconAndName, { font = font, fontsize = fontsize , x = Helper.headerRow1Offsetx, y = 2 * iconoffset, minRowHeight = iconheight + 2 * iconoffset, mouseOverText = "" } )
+                    --
+                    local sectortext
+                    if isknownsector then
+                        sectortext = Helper.convertColorToText(sectorownercolor) .. entry.sector
+                    else
+                        sectortext = Helper.convertColorToText(sectorownercolor) .. entry.sector .. Helper.convertColorToText(config.sColor.grey) .. " " .. ReadText(tPg, 6200) -- "(Unknown Sector)"
+                    end
+                    row[3]:createText((playerIsInSector and "* " or "") .. sectortext, { mouseOverText = playerIsInSector and ReadText(tPg, 6250) or "", y = 2 * iconoffset, minRowHeight = iconheight + 2 * iconoffset } ) -- Player is in this sector.
+                    --
+                    local shortname, factionname = GetFactionData(sectorowner, "shortname", "name")
+                    local newshortname = Helper.convertColorToText(config.sColor.lightgrey) .. "[" .. Helper.convertColorToText(sectorownercolor) .. "- - -" .. Helper.convertColorToText(config.sColor.lightgrey) .. "] "
+                    local newfactionname = ReadText(tPg, 6210) -- "Ownerless Sector"
+                    if shortname ~= "" then
+                        newshortname = Helper.convertColorToText(config.sColor.lightgrey) .. "[" .. Helper.convertColorToText(sectorownercolor) .. shortname .. Helper.convertColorToText(config.sColor.lightgrey) .. "] "
+                        newfactionname = factionname
+                    end
+                    
+                    local UIRelation = entry.UIRelation
+                    local relationrangename = entry.relationrangename
+                    local linename = function ()
+                            local prioritizedrelationrangename = newshortname
+                            if sectorowner ~= 0 then 
+                                local colorrelation = menu.relationColor(sectorowner);
+                                prioritizedrelationrangename = newshortname .. ( sectorowner ~= "player" and Helper.convertColorToText(colorrelation) .. GetFactionData(sectorowner, "prioritizedrelationrangename") or "" ) ;
+                            end
+                            return prioritizedrelationrangename;
+                        end
+
+                    row[4]:createText(linename, { fontsize = fontsize, y = 2 * iconoffset, minRowHeight = iconheight + 2 * iconoffset, mouseOverText = newfactionname .. (sectorowner ~= "player" and ("\n" .. (UIRelation > 0 and "+" or "") .. tostring(UIRelation) .. " " .. relationrangename) or "" ) })
+                    -- 
+                    row[5]:createText(entry.timeleft.Text, { halign = "center", color = entry.timeleft.color, mouseOverText = entry.timeleft.mouseOverText, y = 2 * iconoffset, minRowHeight = iconheight + 2 * iconoffset } )
+                    
+                    -- 
+                    row[6]:createObjectShieldHullBar(entry.object)
+                    -- 
+                    local destroyIconText = Helper.convertColorToText(config.sColor.darkorange) .. "\027[order_attack]\027X"
+                    row[7]:createButton({ scaling = false, bgColor = config.sColor.transparent, mouseOverText = string.format(Helper.convertColorToText(config.sColor.red) .. ReadText(tPg, 6260), entry.name .. " " .. entry.objectid ), y = 2 * iconoffset, height = buttonsize  })   -- Destroy %s ship.
+                    :setText(destroyIconText, { halign = "center" })
+                    row[7].handlers.onClick = function () return menu.buttonDestroyShip(entry.object) end
+
+                    if menu.selectedOLShip == entry.object then
+                        menu.setselectedrow = row.index
+                    end
+                    
+                end
+            end
+        end
+
+    else
+        row = ftable:addRow("none", {  })
+        row[1]:setColSpan(6):createText("--- " .. ReadText(1001, 9132) .. " ---")
+    end
+
+    --[[ Ekranda row5-row26 satırları gözüküyor. 26 satırdan büyükse seçili olan 26-5 (21) fark alınırsa en üst satır bulunur, 
+        ama ekranda seçili satırın bir üst ve bir altındaki satırlar da gözüksün diyoruz ve farka +1 ekliyoruz.
+        menu.settoprow = ((not menu.settoprow) or (menu.settoprow == 0)) and ((menu.setselectedrow and menu.setselectedrow > 26) and (menu.setselectedrow - (26 - 5) + 1) or 5) or menu.settoprow
+        Şimdi normal böyle lakin, orijinal slide kaydırmayı böyle yapmıyor. en alt satırda iken değil de 1 üstünde iken kaydırıyor listeyi. (liste kaydırıldığında ekranda seçili satırın altında 1 satır daha gözüksün diyor)
+        Bu yüzden biz de aynısını istiyoruz tablo gizlenip ekrana tekrar görüntülendiğinde.
+        Sonuç olarak 25 den büyük satırlar için 20 kadar değer çıkartmamız gerekiyor görünecek baştaki satırı bulmak için ve +1 eklememize gerek yok.
+        menu.settoprow = ((not menu.settoprow) or (menu.settoprow == 0)) and ((menu.setselectedrow and menu.setselectedrow > 25) and (menu.setselectedrow - (25 - 5) ) or 5) or menu.settoprow
+        Bu hesaplama tablonun gizlendikten sonra tekrar göründüğünde seçili olanı ekranda görebilmemiz içindir. 
+    ]]
+    menu.settoprow = ((not menu.settoprow) or (menu.settoprow == 0)) and ((menu.setselectedrow and menu.setselectedrow > 18) and (menu.setselectedrow - (18 - 5) ) or 5) or menu.settoprow
+    --DebugError("menu.settoprow " .. tostring(menu.settoprow) .. ", menu.setselectedrow " .. tostring(menu.setselectedrow))
+    ftable:setTopRow(menu.settoprow)
+    ftable:setSelectedRow(menu.setselectedrow)
+    menu.setselectedrow = nil
+    menu.settoprow = nil
+
+    return ftable
+end
+
+function menu.createOptionsTable(frame)
+
+    local row, topTable
+
+    local usableX = Helper.borderSize  
+    local usablewidth = frame.properties.width - 2 * Helper.borderSize
+
+    topTable = frame:addTable(10, {
+        tabOrder = 0,
+        borderEnabled = true,
+        x = usableX,
+        y = Helper.borderSize,  -- * tablenin 4 kenarına ait kendi borderları da var
+        width = usablewidth,
+        skipTabChange = true,
+    })
+   
+    
+    topTable.properties.backgroundID = not debugColorMod and "" or "solid"   
+    topTable.properties.backgroundColor = not debugColorMod and config.Color["frame_background_semitransparent"] or config.sColor.blue    
+    
+	-- title
+	local row = topTable:addRow(nil, { fixed = false, bgColor = config.Color.row_title_background })
+	row[1]:setColSpan(10):createText(ReadText(tPg, 1060), Helper.headerRowCenteredProperties)   -- Options
+
+    menu.SettingsTable, menu.DebugTable, menu.SettingsBottomTable = menu.Settings_RowFormat2(frame, topTable.properties.x, topTable.properties.y + topTable:getFullHeight(), usablewidth )
+
+    if menu.optionsetselectedrow then
+        menu.SettingsTable:setSelectedRow(menu.optionsetselectedrow)
+        menu.optionsetselectedrow = nil
+    end
+    if menu.optionsettoprow then
+        menu.SettingsTable:setTopRow(menu.optionsettoprow)
+        menu.optionsettoprow = nil
+    end
+
+    local xdebug = debugWProps and DebugError(menu.name .. " (frame.properties.width / 2) " .. tostring((frame.properties.width / 2)) .. " Helper.borderSize " .. tostring(Helper.borderSize) )
+    local strDebug = string.format([[ Top Table
+            topTable.properties.x : %s        topTable.properties.width    : %s
+            topTable.properties.y : %s        topTable.properties.height   : %s
+            topTable.properties.maxVisibleHeight : %s        topTable:getFullHeight()    : %s  ]],
+            topTable.properties.x, topTable.properties.width,
+            topTable.properties.y, topTable.properties.height,
+            topTable.properties.maxVisibleHeight, topTable:getFullHeight()
+        )
+    if debugWProps then DebugError(strDebug) end
+
+end
+function menu.Settings_RowFormat2(frame, offsetX, offsetY, width)
+    local row
+
+    local offset = 1 * Helper.borderSize
+    local font, fontsize = Helper.standardFont, Helper.standardFontSize
+    local map_fontsize = 9
+    local map_textheight = math.ceil(C.GetTextHeight("Y", font, Helper.scaleFont(font, map_fontsize), Helper.viewWidth)) + 2 * offset
+
+    local buttonHeight = Helper.standardTextHeight * 1.5
+
+
+    menu.selclass = menu.selclass or "ship_s"
+    local classOptions = {}
+    for k,v in pairs(menu.editedSettings.class) do
+        table.insert(classOptions, { id = k, text = v.reports.text, icon = "", displayremoveoption = false } )
+    end
+    table.sort(classOptions, function (a, b) return config.classOrder[a.id] < config.classOrder[b.id] end)
+
+    local colorMap = { 
+        normal = menu.HexToColor( menu.editedSettings.class[menu.selclass].reports.color ), 
+        inactive = config.Color.text_inactive ,
+    }
+
+    --debugColorMod = true
+
+    local bottomTable = frame:addTable(3, {
+        tabOrder = 3,
+        width = ((width - (2 * Helper.borderSize )) / 2),
+        borderEnabled = true,
+    })
+
+    
+    bottomTable.properties.backgroundID = not debugColorMod and "" or "solid"   
+    bottomTable.properties.backgroundColor = not debugColorMod and config.Color["frame_background_semitransparent"] or config.sColor.orange
+    
+
+    row = bottomTable:addRow(true, { fixed=true, bgColor = config.sColor.transparent } )
+    row[3]:createButton({ height = buttonHeight }):setText(ReadText(tPg, 6500), { halign = "center" })  -- Restore Default Settings
+    row[3].handlers.onClick = menu.buttonRestoreDefault
+
+
+    bottomTable.properties.y = frame.properties.height - Helper.borderSize - bottomTable:getFullHeight()
+
+
+    local tablecolumns = 9
+    local leftTable = frame:addTable(tablecolumns, {
+        tabOrder = 1,
+        x = offsetX ,
+        y = offsetY + 2 * Helper.borderSize ,
+        width = ((width - (2 * Helper.borderSize )) / 2),
+        --maxVisibleHeight = bottomTable.properties.y - (offsetY + 2 * Helper.borderSize) - Helper.borderSize ,
+        --maxVisibleHeight = frame.properties.height - (offsetY + 2 * Helper.borderSize) - Helper.borderSize,
+        borderEnabled = true,
+    })
+    local ftable = leftTable
+    
+    ftable.properties.backgroundID = not debugColorMod and "" or "solid"   
+    --ftable.properties.backgroundColor = not debugColorMod and config.Color["frame_background_semitransparent"] or config.sColor.checkboxgroup
+    ftable.properties.backgroundColor = not debugColorMod and config.sColor.transparent60 or config.sColor.checkboxgroup
+    
+
+    if menu.setdefaulttable then
+		ftable.properties.defaultInteractiveObject = true
+		menu.setdefaulttable = nil
+	end
+
+    
+    local HeaderTextProperties = {
+        halign = "center",
+	    fontsize = 10,
+	    cellBGColor = { r = 0, g = 0, b = 0, a = 0 },
+	    titleColor = config.sColor.white,
+        color = config.sColor.white
+    }
+    local subHeaderTextProperties = {
+        halign = "center",
+	    fontsize = 10,
+	    cellBGColor = { r = 0, g = 0, b = 0, a = 0 },
+	    titleColor = config.sColor.lightgrey,
+        color = config.sColor.lightgrey
+    }
+    local subHeaderLeftTextProperties = {
+        halign = "left",
+	    fontsize = map_fontsize,
+	    cellBGColor = { r = 0, g = 0, b = 0, a = 0 },
+	    titleColor = config.Color.row_title
+    }
+
+    local subLineProperties = {
+        fontsize = 1, 
+        minRowHeight = 2,
+    }
+    local subLineTransparentProperties = {
+        fontsize = 1, 
+        minRowHeight = 2,
+        cellBGColor = { r = 0, g = 0, b = 0, a = 0 },
+    }
+    
+    ftable:setColWidth(1, map_textheight )
+    ftable:setColWidth(3, map_textheight )
+    ftable:setColWidth(5, map_textheight )
+    ftable:setColWidth(6, map_textheight )
+    ftable:setColWidth(8, map_textheight )
+    
+    -- Kılavuz
+    --local row = ftable:addRow(nil, { bgColor = config.sColor.orange })
+    --row[1]:setColSpan(1):createText("", subLineProperties)
+
+    local mouseovertextIncrase = "\n  " .. string.format(ReadText(tPg, 6560), Helper.convertColorToText(config.sColor.green) .. ReadText(tPg, 6561) .. "\27X" )
+    local mouseovertextDecrase = "\n  " .. string.format(ReadText(tPg, 6560), Helper.convertColorToText(config.sColor.red) ..  ReadText(tPg, 6562) .. "\27X" )
+
+    local function getDefaultText(value)
+        local coloredtext = "[ " .. Helper.convertColorToText(config.sColor.lightgrey) .. ReadText(tPg, 7020) .. "\27X" .. " ]"
+        if type(value) == "boolean" then
+            value = value and ReadText(tPg, 7021) or ReadText(tPg, 7022)
+        end
+        local textDefault = "\n  " .. string.format(coloredtext, Helper.convertColorToText(config.sColor.blue) ..  tostring(value) .. "\27X" )
+        return textDefault
+    end
+    
+    -- ----------------------------------
+
+    -- 6850 - Target Ship Class
+    -- 6851 - Options for %s class ships.
+    local row = ftable:addRow(true, { bgColor = config.Color["row_background_blue"] })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6850), { color = colorMap.normal , halign = "center", mouseOverText = string.format(ReadText(tPg, 6851), menu.editedSettings.class[menu.selclass].reports.text) })
+    row[5]:setColSpan(5):createDropDown(classOptions, { height = config.mapRowHeight, startOption = menu.selclass, mouseOverText = string.format(ReadText(tPg, 6851), menu.editedSettings.class[menu.selclass].reports.text) }):setTextProperties({fontsize = map_fontsize })
+    row[5].handlers.onDropDownConfirmed = function(_, idstring) 
+        menu.selclass = idstring
+        menu.noupdate = false
+        menu.refreshInfoFrame()
+    end
+    row[5].handlers.onDropDownActivated = function () menu.noupdate = true end
+
+    local isbigships = true
+    if menu.selclass == "ship_s" or menu.selclass == "ship_m" then
+        isbigships = false
+    end
+
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+
+    --    
+    -- 6590 Valid Attacks Types for Bail
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6590), HeaderTextProperties)
+    --
+    -- 6595 Hull
+    -- 6945 Attacks 
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6945) .. " " ..  ReadText(tPg, 6595), subHeaderTextProperties)
+    -- 6600 Player 
+    -- 6601 Toggle On/Off bail checks %s from Player piloted ship.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].validAttacks.Hull.Player, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].validAttacks.Hull.Player = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].validAttacks.Hull.Player = " .. tostring(checked))
+    end
+    row[2]:setColSpan(1):createText(ReadText(tPg, 6600), { color = colorMap.normal, mouseOverText = string.format(ReadText(tPg, 6601), ReadText(tPg, 6595)) .. getDefaultText(menu.defaultSettings.class[menu.selclass].validAttacks.Hull.Player) })
+    -- 6610 Player Owned 
+    -- 6611 Toggle On/Off bail checks %s from Player owned ships or stations.
+    row[3]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].validAttacks.Hull.PlayerOwned, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].validAttacks.Hull.PlayerOwned = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].validAttacks.Hull.PlayerOwned = " .. tostring(checked))
+    end
+    row[4]:setColSpan(1):createText(ReadText(tPg, 6610), { color = colorMap.normal, mouseOverText = string.format(ReadText(tPg, 6611), ReadText(tPg, 6595)) .. getDefaultText(menu.defaultSettings.class[menu.selclass].validAttacks.Hull.PlayerOwned) })
+    -- 6620 NPC 
+    -- 6621 Toggle On/Off bail checks %s from NPC owned ships or stations.
+    row[6]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].validAttacks.Hull.NPC, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[6].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].validAttacks.Hull.NPC = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].validAttacks.Hull.NPC = " .. tostring(checked))
+    end
+    row[7]:setColSpan(1):createText(ReadText(tPg, 6620), { color = colorMap.normal, mouseOverText = string.format(ReadText(tPg, 6621), ReadText(tPg, 6595)) .. getDefaultText(menu.defaultSettings.class[menu.selclass].validAttacks.Hull.NPC) })
+    --    
+    -- 6596 Equipment
+    -- 6945 Attacks     
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6945) .. " " .. ReadText(tPg, 6596), subHeaderTextProperties)
+    -- 6600 Player 
+    -- 6601 Toggle On/Off bail checks %s from Player piloted ship.
+    if not isbigships and menu.editedSettings.class[menu.selclass].validAttacks.Equipment.Player then
+        menu.editedSettings.class[menu.selclass].validAttacks.Equipment.Player = false
+        menu.Set_Md_Settings( "[fixed] class[" .. menu.selclass .. "].validAttacks.Equipment.Player = " .. tostring(false))
+    end
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].validAttacks.Equipment.Player, { active = isbigships, width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].validAttacks.Equipment.Player = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].validAttacks.Equipment.Player = " .. tostring(checked))
+    end
+    row[2]:setColSpan(1):createText(ReadText(tPg, 6600), { color = isbigships and colorMap.normal or colorMap.inactive, mouseOverText = isbigships and string.format(ReadText(tPg, 6601), ReadText(tPg, 6596)) .. getDefaultText(menu.defaultSettings.class[menu.selclass].validAttacks.Equipment.Player) or ReadText(tPg, 6870) })
+    -- 6610 Player Owned 
+    -- 6611 Toggle On/Off bail checks %s from Player owned ships or stations.
+    if not isbigships and menu.editedSettings.class[menu.selclass].validAttacks.Equipment.PlayerOwned then
+        menu.editedSettings.class[menu.selclass].validAttacks.Equipment.PlayerOwned = false
+        menu.Set_Md_Settings( "[fixed] class[" .. menu.selclass .. "].validAttacks.Equipment.PlayerOwned = " .. tostring(false))
+    end
+    row[3]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].validAttacks.Equipment.PlayerOwned, { active = isbigships, width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].validAttacks.Equipment.PlayerOwned = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].validAttacks.Equipment.PlayerOwned = " .. tostring(checked))
+    end
+    row[4]:setColSpan(1):createText(ReadText(tPg, 6610), { color = isbigships and colorMap.normal or colorMap.inactive, mouseOverText = isbigships and string.format(ReadText(tPg, 6611), ReadText(tPg, 6596)) .. getDefaultText(menu.defaultSettings.class[menu.selclass].validAttacks.Equipment.PlayerOwned) or ReadText(tPg, 6870) })
+    -- 6620 NPC 
+    -- 6621 Toggle On/Off bail checks %s from NPC owned ships or stations.
+    if not isbigships and menu.editedSettings.class[menu.selclass].validAttacks.Equipment.NPC then
+        menu.editedSettings.class[menu.selclass].validAttacks.Equipment.NPC = false
+        menu.Set_Md_Settings( "[fixed] class[" .. menu.selclass .. "].validAttacks.Equipment.NPC = " .. tostring(false))
+    end
+    row[6]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].validAttacks.Equipment.NPC, { active = isbigships, width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[6].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].validAttacks.Equipment.NPC = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].validAttacks.Equipment.NPC = " .. tostring(checked))
+    end
+    row[7]:setColSpan(1):createText(ReadText(tPg, 6620), { color = isbigships and colorMap.normal or colorMap.inactive, mouseOverText = isbigships and string.format(ReadText(tPg, 6621), ReadText(tPg, 6596)) .. getDefaultText(menu.defaultSettings.class[menu.selclass].validAttacks.Equipment.NPC) or ReadText(tPg, 6870) })
+
+    
+    -- Satır Ekle - ince
+    row = ftable:addRow(false, { bgColor = config.Color.row_title })
+    row[1]:setColSpan(tablecolumns):createText("", subLineProperties)
+    --validLaserTowers
+    -- 6630 - Laser Towers
+    -- 6631 - Toggle On/Off bail checks on attacks from any Laser Towers.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].validAttacks.LaserTowers, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].validAttacks.LaserTowers = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].validAttacks.LaserTowers = " .. tostring(checked))
+    end
+    row[2]:setColSpan(3):createText(ReadText(tPg, 6630), { color = colorMap.normal, mouseOverText = ReadText(tPg, 6631) .. getDefaultText(menu.defaultSettings.class[menu.selclass].validAttacks.LaserTowers) })
+
+    
+    
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+
+    --
+    -- 6640 - Bail Criteria
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6640), HeaderTextProperties)
+    -- ----------------------------------
+
+    -- targetshieldpercentagechk
+    -- 6650 - Shield Percentage Check
+    -- 6651 - If the shield percentage is at or below this value, the eject event starts.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6650), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6651) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.shieldpercent) })
+    row[5]:setColSpan(5):createSliderCell({ min = 0, max = 100, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.shieldpercent, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.shieldpercent = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.shieldpercent = " .. tostring(value))
+    end
+    -- ----------------------------------
+    -- Satır Ekle -  ince
+    row = ftable:addRow(false, { bgColor = config.Color.row_title })
+    row[1]:setColSpan(tablecolumns):createText("", subLineProperties)
+    
+    --  targethullpercentagechk
+    -- 6660 Hull Percentage Check
+    -- 6661 If the hull percentage is at or below this value, the eject event starts.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6660), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6661) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.hullpercent1) })
+    row[5]:setColSpan(5):createSliderCell({ min = 1, max = 100, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.hullpercent1, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.hullpercent1 = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.hullpercent1 = " .. tostring(value))
+    end
+    --  basechance
+    -- 6670 Base Chance
+    -- 6671 Base chance percentage for target personnel to be ejected.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6670), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6671) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.basechance1) })
+    row[5]:setColSpan(5):createSliderCell({ min = 1, max = 50, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.basechance1, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.basechance1 = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.basechance1 = " .. tostring(value))
+    end
+    -- ----------------------------------
+    -- Satır Ekle - ince
+    row = ftable:addRow(false, { bgColor = config.Color.row_title })
+    row[1]:setColSpan(tablecolumns):createText("", subLineProperties)
+
+    --  targethullpercentagechk1
+    -- 6680 Hull Percentage Check 1
+    -- 6681 The base chance will be adjusted when the target's hull percentage drops to or below this value.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6680), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6681) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.hullpercent2) })
+    row[5]:setColSpan(5):createSliderCell({ min = 1, max = 100, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.hullpercent2, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.hullpercent2 = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.hullpercent2 = " .. tostring(value))
+    end
+    --  basechance1
+    -- 6690 Base Chance 1
+    -- 6691 Next value based on eject chance adjust
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6690), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6691) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.basechance2) })
+    row[5]:setColSpan(5):createSliderCell({ min = 1, max = 75, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.basechance2, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.basechance2 = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.basechance2 = " .. tostring(value))
+    end
+    -- ----------------------------------
+    -- Satır Ekle - Gri ince
+    row = ftable:addRow(false, { bgColor = config.Color.row_title })
+    row[1]:setColSpan(tablecolumns):createText("", subLineProperties)
+    -- ----------------------------------
+    --  targethullpercentagechk2
+    -- 6700 Hull Percentage Check 2
+    -- 6701 The base chance will be adjusted again when the target's hull percentage drops to or below this value.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6700), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6701) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.hullpercent3) })
+    row[5]:setColSpan(5):createSliderCell({ min = 1, max = 100, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.hullpercent3, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.hullpercent3 = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.hullpercent3 = " .. tostring(value))
+    end
+    --  basechance2
+    -- 6710 Base Chance 2
+    -- 6711 Later value based on eject chance adjust
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6710), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6711) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.basechance3) })
+    row[5]:setColSpan(5):createSliderCell({ min = 1, max = 100, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.basechance3, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.basechance3 = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.basechance3 = " .. tostring(value))
+    end
+    -- ----------------------------------
+    
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+
+    -- ----------------------------------
+    -- 6730 Ejecting Ship People
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6730), HeaderTextProperties)
+    -- ejectpercentage.min
+    -- 6740 Min Eject Percentage
+    -- 6741 What is the minimum percentage of the ship's personnel that should be ejected each time there is an ejection?
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6740), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6741) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.ejectpercentage.min) })
+    row[5]:setColSpan(5):createSliderCell({ min = 1, max = 100, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.ejectpercentage.min, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.ejectpercentage.min = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.ejectpercentage.min = " .. tostring(value))
+    end
+    -- ejectpercentage.max
+    -- 6750 Max Eject Percentage
+    -- 6751 What is the maximum percentage of the ship's personnel that should be ejected each time there is an ejection?
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6750), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6751) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.ejectpercentage.max) })
+    row[5]:setColSpan(5):createSliderCell({ min = 1, max = 100, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.ejectpercentage.max, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.ejectpercentage.max = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.ejectpercentage.max = " .. tostring(value))
+    end
+
+    -- Satır Ekle - ince
+    row = ftable:addRow(false, { bgColor = config.Color.row_title })
+    row[1]:setColSpan(tablecolumns):createText("", subLineProperties)
+
+    -- critChk.hullpercent
+    -- 6760 FullBail Hull Percentage Check
+    -- 6761 In small or medium-sized ships, when the hull percentage falls to this value or below, a check event is required to remove all crew members.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6760), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6761) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.critChk.hullpercent) })
+    row[5]:setColSpan(5):createSliderCell({ min = 1, max = 100, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.critChk.hullpercent, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.critChk.hullpercent = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.critChk.hullpercent = " .. tostring(value))
+    end
+    -- critChk.chance
+    -- 6770 FullBail Chance
+    -- 6771 Chance of full eject
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6770), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6771) .. mouseovertextIncrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.critChk.chance) })
+    row[5]:setColSpan(5):createSliderCell({ min = 0, max = 100, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.critChk.chance, suffix = "%", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.critChk.chance = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.critChk.chance = " .. tostring(value))
+    end
+
+    -- Satır Ekle - ince
+    row = ftable:addRow(false, { bgColor = config.Color.row_title })
+    row[1]:setColSpan(tablecolumns):createText("", subLineProperties)
+
+    -- interval nextcapturetimeinc
+    -- 6720 Next Eject Check Timer
+    -- 6721 Time to wait for the next eject check.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(4):createText(ReadText(tPg, 6720), { color = colorMap.normal, mouseOverText = "  " .. ReadText(tPg, 6721) .. mouseovertextDecrase .. getDefaultText(menu.defaultSettings.class[menu.selclass].bailcriteria.nextcapturetimeinc) })
+    row[5]:setColSpan(5):createSliderCell({ min = 3, max = 30, step = 1, start = menu.editedSettings.class[menu.selclass].bailcriteria.nextcapturetimeinc, suffix = "sec", height = Helper.standardTextHeight })
+    row[5].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].bailcriteria.nextcapturetimeinc = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].bailcriteria.nextcapturetimeinc = " .. tostring(value))
+    end
+
+    -- ----------------------------------
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+
+    
+    -- 
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6810), HeaderTextProperties)  -- After Bails
+    --  removecargo
+    -- 6820 Remove Cargo 
+    -- 6821 When the ship is bailed out, let its cargo be removed.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].removecargo, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].removecargo = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].removecargo = " .. tostring(checked))
+    end
+    row[2]:setColSpan(2):createText(ReadText(tPg, 6820), { color = colorMap.normal, mouseOverText = ReadText(tPg, 6821) .. getDefaultText(menu.defaultSettings.class[menu.selclass].removecargo) })
+
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+
+    -- expiretime
+    -- 6830 Expire Time
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6830), HeaderTextProperties)
+    row[1].properties.titleColor = config.sColor.grey
+    -- expiretime.start
+    -- 6840 Small Ships 
+    -- 6841 Time to destroy bailed Small class ships.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(3):createText( string.format(ReadText(tPg, 6840), menu.editedSettings.class[menu.selclass].reports.text)  , { color = colorMap.normal, mouseOverText = string.format(ReadText(tPg, 6841), menu.editedSettings.class[menu.selclass].reports.text) .. getDefaultText(menu.defaultSettings.class[menu.selclass].expiretime.start) })
+    row[4]:setColSpan(6):createSliderCell({ step = 1, min = menu.editedSettings.class[menu.selclass].expiretime.min, max = menu.editedSettings.class[menu.selclass].expiretime.max, start = menu.editedSettings.class[menu.selclass].expiretime.start, suffix = ReadText(1001, 103), height = Helper.standardTextHeight })
+    row[4].handlers.onSliderCellConfirm = function(_, value)
+        menu.editedSettings.class[menu.selclass].expiretime.start = value
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].expiretime.start = " .. tostring(value))
+    end
+
+    
+    -- ----------------------------------
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+
+    -- 6880 When Ship Claim
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6880), HeaderTextProperties)
+    --  repairhull
+    -- 6890 Repair The Hull Fully 
+    -- 6891 When a bailed ship is claimed the armor will be fully repaired.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].repairhull, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].repairhull = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].repairhull = " .. tostring(checked))
+    end
+    row[2]:setColSpan(3):createText(ReadText(tPg, 6890), { color = colorMap.normal, mouseOverText = ReadText(tPg, 6891) .. getDefaultText(menu.defaultSettings.class[menu.selclass].repairhull) })
+    --  repairshield
+    -- 6895 Full The Shield 
+    -- 6896 When a bailed ship is claimed, full shield.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].repairshield, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].repairshield = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].repairshield = " .. tostring(checked))
+    end
+    row[2]:setColSpan(3):createText(ReadText(tPg, 6895), { color = colorMap.normal, mouseOverText = ReadText(tPg, 6896) .. getDefaultText(menu.defaultSettings.class[menu.selclass].repairshield) })
+
+    --repairequipments
+    -- 6900 Repair All Equipments 
+    -- 6901 When the bailed ship is claimed, all equipments (shields, turrets, engines etc..) must be fully repaired.
+    if not isbigships and menu.editedSettings.class[menu.selclass].repairequipments then
+        menu.editedSettings.class[menu.selclass].repairequipments = false
+        menu.Set_Md_Settings( "[fixed] class[" .. menu.selclass .. "].repairequipments = " .. tostring(false))
+    end
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].repairequipments, { active = isbigships, width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].repairequipments = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].repairequipments = " .. tostring(checked))
+    end
+    row[2]:setColSpan(3):createText(ReadText(tPg, 6900), { color = isbigships and colorMap.normal or colorMap.inactive , mouseOverText = isbigships and ReadText(tPg, 6901) .. getDefaultText(menu.defaultSettings.class[menu.selclass].repairequipments) or ReadText(tPg, 6870) })
+
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+    -- ----------------------------------
+
+
+    -- 6860 -Reporting
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6860), HeaderTextProperties) 
+
+    local report = menu.editedSettings.class[menu.selclass].reports.report
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    local rowindex = row.index
+    -- 6861 Report
+    -- 6862 Toggle On/Off Report for bailed %s class ships.
+    row[1]:setColSpan(1):createCheckBox(report, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.optionsetselectedrow = rowindex
+        menu.editedSettings.class[menu.selclass].reports.report = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].reports.report = " .. tostring(checked))
+        menu.refreshInfoFrame()
+    end
+    row[2]:setColSpan(1):createText(ReadText(tPg, 6861), { color = colorMap.normal, mouseOverText = string.format(ReadText(tPg, 6862), menu.editedSettings.class[menu.selclass].reports.text) .. getDefaultText(menu.defaultSettings.class[menu.selclass].reports.report) })
+
+    -- 
+    -- 6530 Valid Reports
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6530), subHeaderTextProperties)
+
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    -- 6540 - Adv. Satellites Sectors 
+    -- 6541 - Report for sectors containing advanced satellites of the player.
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].reports.advsatellites, { active = report, width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].reports.advsatellites = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].reports.advsatellites = " .. tostring(checked))
+    end
+    row[2]:setColSpan(3):createText(ReadText(tPg, 6540), { color = report and colorMap.normal or colorMap.inactive, mouseOverText = ReadText(tPg, 6541) .. getDefaultText(menu.defaultSettings.class[menu.selclass].reports.advsatellites) })
+    -- 6550 - None Satellites Sectors 
+    -- 6551 - Report for sectors where the player does not have satellites.
+    row[6]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].reports.nonesatellites, { active = report, width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[6].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].reports.nonesatellites = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].reports.nonesatellites = " .. tostring(checked))
+    end
+    row[7]:setColSpan(3):createText(ReadText(tPg, 6550), { color = report and colorMap.normal or colorMap.inactive,  mouseOverText = ReadText(tPg, 6551) .. getDefaultText(menu.defaultSettings.class[menu.selclass].reports.nonesatellites) })
+
+
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(tablecolumns):createText(ReadText(tPg, 6570), subHeaderTextProperties)    -- Report Methods
+
+    --  showhelp
+    -- 6580 - Show Help 
+    -- 6581 - Reports the bail information of other ships on the Show Help popup window.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].reports.showhelp, { active = report, width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].reports.showhelp = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].reports.showhelp = " .. tostring(checked))
+    end
+    row[2]:setColSpan(5):createText(ReadText(tPg, 6580), { color = report and colorMap.normal or colorMap.inactive, mouseOverText = ReadText(tPg, 6581) .. getDefaultText(menu.defaultSettings.class[menu.selclass].reports.showhelp) })
+    --  logbook
+    -- 6510 - Write to Logbook 
+    -- 6511 - Reports the bail information of other ships on the logbook.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].reports.logbook, { active = report, width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].reports.logbook = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].reports.logbook = " .. tostring(checked))
+    end
+    row[2]:setColSpan(5):createText(ReadText(tPg, 6510), { color = report and colorMap.normal or colorMap.inactive, mouseOverText = ReadText(tPg, 6511) .. getDefaultText(menu.defaultSettings.class[menu.selclass].reports.logbook) })
+    --  soundnotification
+    -- 6582 - Sound Notification - 
+    -- 6583 - Reports the bail information of other ships with sound notification.
+    -- 6584 - Listen
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].reports.soundnotification, { active = report, width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].reports.soundnotification = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].reports.soundnotification = " .. tostring(checked))
+    end
+    row[2]:setColSpan(5):createText(ReadText(tPg, 6582), { color = report and colorMap.normal or colorMap.inactive, mouseOverText = ReadText(tPg, 6583) .. getDefaultText(menu.defaultSettings.class[menu.selclass].reports.soundnotification) })
+    row[7]:createButton({ height = Helper.standardTextHeight }):setText(ReadText(tPg, 6584), { halign = "center" })
+    row[7].handlers.onClick = function () return  PlaySound(menu.editedSettings.class[menu.selclass].reports.soundnotificationid)  end
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+    
+    -- shownotification
+    -- 6520 - Show Player Attacks in Notification
+    -- 6521 - Show the player's bail capture status in the notification window.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(1):createCheckBox(menu.editedSettings.class[menu.selclass].reports.shownotification, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[1].handlers.onClick = function(_, checked)
+        menu.editedSettings.class[menu.selclass].reports.shownotification = checked
+        menu.Set_Md_Settings( "class[" .. menu.selclass .. "].reports.shownotification = " .. tostring(checked))
+    end
+    row[2]:setColSpan(5):createText(ReadText(tPg, 6520), { color = colorMap.normal, mouseOverText = ReadText(tPg, 6521) .. getDefaultText(menu.defaultSettings.class[menu.selclass].reports.shownotification)  })
+
+    
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+
+
+
+
+    -- DEBUG TABLE
+    local rightTable = frame:addTable(5, {
+        tabOrder = 2,
+        x = leftTable.properties.x  + leftTable.properties.width + Helper.borderSize + Helper.borderSize ,
+        y = leftTable.properties.y ,
+        width = leftTable.properties.width ,
+        --maxVisibleHeight = ftable.properties.maxVisibleHeight,
+        borderEnabled = true,
+    })
+    local ftable = rightTable
+    
+    ftable.properties.backgroundID = not debugColorMod and "" or "solid"   
+    ftable.properties.backgroundColor = not debugColorMod and config.Color["frame_background_semitransparent"] or config.sColor.darkorange
+
+
+    -- 
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(5):createText(ReadText(tPg, 6910), HeaderTextProperties) -- Debug Texts
+    -- 
+    -- Debug.Chance
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(2):createText(ReadText(tPg, 6920), { mouseOverText = ReadText(tPg, 6921) , color = config.sColor.lightgrey })   -- Debug Chance - Is write some importans to debugtext. It is only effective when running the game with debug mod support.
+    row[3]:setColSpan(1):createCheckBox( menu.editedSettings.Debug.Chance == 100 and true or false, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = menu.checkbox_DebugChance
+    -- Debug.Deep
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(2):createText(ReadText(tPg, 6930), { mouseOverText = ReadText(tPg, 6931) , color = config.sColor.lightgrey })  -- Debug Deep -- Is write more detail importans to debugtext. It is only effective when running the game with debug mod support.
+    row[3]:setColSpan(1):createCheckBox( menu.editedSettings.Debug.Deep == 100 and true or false, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = menu.checkbox_DebugDeep
+
+
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+
+    -- 
+    -- 6940 Debug Log Files
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(5):createText(ReadText(tPg, 6940), HeaderTextProperties)
+
+    -- 6950 Files Reset Timer
+    -- 6951 Cleaning time of debug files content.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(2):createText( ReadText(tPg, 6950)  , { mouseOverText = ReadText(tPg, 6951), color = config.sColor.lightgrey })
+    row[3]:setColSpan(3):createSliderCell({ step = 1, min = 1, max = 30, start = menu.editedSettings.Debug.Files.resetTime, suffix = ReadText(1001, 103), height = Helper.standardTextHeight })
+    row[3].handlers.onSliderCellConfirm = function(_, value)
+
+        menu.editedSettings.Debug.Files.resetTime = value
+
+        local controlID = "upbbail.Files.resetTime.set"
+        local screenParam = menu.editedSettings.Debug.Files.resetTime
+        AddUITriggeredEvent(menu.name, controlID, screenParam)
+    
+        
+        --menu.Set_Md_Settings( "Debug.Files.resetTime = " .. tostring(value))
+    end
+
+    -- 6945 Attacks
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(5):createText(ReadText(tPg, 6945), subHeaderTextProperties)
+
+    -- Debug.LogChances.Player
+    -- 6600 Player
+    -- 6970 Is write Player attacks to log file? It is only effective when running the game with debug mod support.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(2):createText(ReadText(tPg, 6600), { mouseOverText = ReadText(tPg, 6970) , color = config.sColor.lightgrey })
+    row[3]:setColSpan(1):createCheckBox( menu.editedSettings.Debug.LogChances.Player == 100 and true or false, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = menu.checkbox_DebugLogChancesPlayer
+    -- Debug.LogChances.PlayerOwned
+    -- 6610 PlayerOwned 
+    -- 6971 Is write PlayerOwned ships or stations attacks to log file? It is only effective when running the game with debug mod support.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(2):createText(ReadText(tPg, 6610), { mouseOverText = ReadText(tPg, 6971) , color = config.sColor.lightgrey })
+    row[3]:setColSpan(1):createCheckBox( menu.editedSettings.Debug.LogChances.PlayerOwned == 100 and true or false, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = menu.checkbox_DebugLogChancesPlayerOwned
+    -- Debug.LogChances.NPC
+    -- 6620 NPC Attacks 
+    -- 6972 Is write NPC ships or stations attacks to log file? It is only effective when running the game with debug mod support.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(2):createText(ReadText(tPg, 6620), { mouseOverText = ReadText(tPg, 6972) , color = config.sColor.lightgrey } )
+    row[3]:setColSpan(1):createCheckBox( menu.editedSettings.Debug.LogChances.NPC == 100 and true or false, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = menu.checkbox_DebugLogChancesNPC
+    
+    -- 6946 Detect
+    -- 6945 Attacks
+    row = ftable:addRow(false, { bgColor = config.sColor.transparent })
+    row[1]:setColSpan(5):createText(ReadText(tPg, 6946) .. " " .. ReadText(tPg, 6945), subHeaderTextProperties)
+
+    -- Debug.LogChances.DetectAttacks.PlayerOwned
+    -- 6960 Playerowned
+    -- 6983 Is write Detector for Playewrowned Attacks to log file? It is only effective when running the game with debug mod support.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(2):createText(ReadText(tPg, 6610), { mouseOverText = ReadText(tPg, 6983) ,color = config.sColor.lightgrey })
+    row[3]:setColSpan(1):createCheckBox( menu.editedSettings.Debug.LogChances.DetectAttacks.PlayerOwned == 100 and true or false, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = menu.checkbox_DebugLogChancesDetectAttacksPlayerOwned
+    -- Debug.LogChances.DetectAttacks.NPC
+    -- 6970 NPC
+    -- 6981 Is write Detector for NPC Attacks to log file? It is only effective when running the game with debug mod support.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(2):createText(ReadText(tPg, 6620), { mouseOverText = ReadText(tPg, 6981) ,color = config.sColor.lightgrey })
+    row[3]:setColSpan(1):createCheckBox( menu.editedSettings.Debug.LogChances.DetectAttacks.NPC == 100 and true or false, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = menu.checkbox_DebugLogChancesDetectAttacksNPC
+
+    -- Satır Ekle 
+    ftable:addEmptyRow()
+
+    -- Debug.LogChances.Abandoned
+    -- 6990 Abandoned Ships 
+    -- 6991 Is write Abandoned Bailed Ships to log file? It is only effective when running the game with debug mod support.
+    row = ftable:addRow(true, { bgColor = config.sColor.transparent } )
+    row[1]:setColSpan(2):createText(ReadText(tPg, 6990), { mouseOverText = ReadText(tPg, 6991) ,color = config.sColor.lightgrey })
+    row[3]:setColSpan(1):createCheckBox( menu.editedSettings.Debug.LogChances.Abandoned == 100 and true or false, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[3].handlers.onClick = menu.checkbox_DebugLogChancesAbandoned
+    -- Debug.isBailedShipsLogAppend
+    -- 6992 Append Mod 
+    -- 6993 Is write Abandoned Bailed Ships logFile in append mode? It is only effective when running the game with debug mod support.
+    row[4]:setColSpan(1):createText(ReadText(tPg, 6992), { mouseOverText = ReadText(tPg, 6993) , color = config.sColor.lightgrey})
+    row[5]:setColSpan(1):createCheckBox(menu.editedSettings.Debug.isBailedShipsLogAppend, { width = Helper.standardTextHeight, height = Helper.standardTextHeight })
+    row[5].handlers.onClick = menu.checkbox_DebugisBailedShipsLogAppend
+
+
+    bottomTable.properties.x = rightTable.properties.x
+    --bottomTable.properties.width = rightTable.properties.width
+
+
+    local strDebug = string.format([[ Left & Right & Bottom Tables
+            leftTable.properties.x : %s        leftTable.properties.width    : %s
+            leftTable.properties.y : %s        leftTable.properties.height   : %s
+            leftTable.properties.maxVisibleHeight : %s        leftTable:getFullHeight()    : %s
+            -----
+            rightTable.properties.x: %s        rightTable.properties.width   : %s   
+            rightTable.properties.y: %s        rightTable.properties.height  : %s   
+            rightTable.properties.maxVisibleHeight: %s        rightTable:getFullHeight()   : %s   
+            -----
+            bottomTable.properties.x: %s        bottomTable.properties.width   : %s   
+            bottomTable.properties.y: %s        bottomTable.properties.height  : %s   
+            bottomTable.properties.maxVisibleHeight: %s        bottomTable:getFullHeight()   : %s   ]],
+        leftTable.properties.x, leftTable.properties.width,
+        leftTable.properties.y, leftTable.properties.height,
+        leftTable.properties.maxVisibleHeight, leftTable:getFullHeight(),
+        rightTable.properties.x, rightTable.properties.width,
+        rightTable.properties.y, rightTable.properties.height,
+        rightTable.properties.maxVisibleHeight, rightTable:getFullHeight(),
+        bottomTable.properties.x, bottomTable.properties.width,
+        bottomTable.properties.y, bottomTable.properties.height,
+        bottomTable.properties.maxVisibleHeight, bottomTable:getFullHeight()
+        )
+    if debugWProps then DebugError(strDebug) end
+    
+    return leftTable, rightTable, bottomTable
+end
+
+
+
+local function UpbBail_addShip(_, params)
+    menu.noupdate = true
+    menu.md_AbandonedShipList = GetNPCBlackboard(playerID, "$md_AbandonedShipList")
+    menu.passOwnerless = true
+    menu.initDataFromMdData()
+    if menu.infoFrameTableMode == "manager" then
+        menu.refreshInfoFrame()
+    end
+    menu.passOwnerless = nil
+    menu.noupdate = nil
+end
+RegisterEvent("UpbBail.addShip", UpbBail_addShip)
+
+local function UpbBail_playerchangedsector(_, params)
+    menu.noupdate = true
+    menu.md_AbandonedShipList = GetNPCBlackboard(playerID, "$md_AbandonedShipList")
+    --menu.passOwnerless = true
+    menu.initDataFromMdData()
+    if menu.infoFrameTableMode == "manager" then
+        menu.refreshInfoFrame()
+    end
+    --menu.passOwnerless = nil
+    menu.noupdate = nil
+end
+RegisterEvent("UpbBail.playerchangedsector", UpbBail_playerchangedsector)
+
+
+-- ----------------------------------------------------
+-- WIDGETS
+-- ----------------------------------------------------
+
+function menu.Set_Md_Settings(changedProperty)
+    local controlID = "upbbail.settings.set"
+    local screenParam = { menu.editedSettings, changedProperty }
+    AddUITriggeredEvent(menu.name, controlID, screenParam)
+end
+
+function menu.buttonOnShowMap(object)
+    -- LUA idleri   ID : xxxx
+    -- 64 idleri    xxxx
+    -- MD ile lua arasındaki alınıp verilen sayısal veriler LUA tipi olmalı 
+    local xdebug = debug0 and DebugError("menu.buttonOnShowMap")
+    
+    local object64, objectLUA
+    local name, sectorid, sector, sector64, sectorLUA
+    local showzone, focuscomponent
+
+    local object64 = ConvertStringTo64Bit(tostring(object))
+    local objectLUA = ConvertStringToLuaID(tostring(object))
+    name, sector, sectorid = GetComponentData(object64, "name", "sector", "sectorid")
+    sector64 = ConvertIDTo64Bit(sectorid)
+    sectorLUA = ConvertStringToLuaID(tostring(sector64))
+    local textDebug = string.format(
+        [[
+        name =  %s
+        object    = %s
+        object64  = %s
+        objectLUA = %s
+        sectorid  = %s (%s)
+        sector64  = %s
+        sectorLUA = %s ]], name, object, object64, objectLUA, sectorid, sector, sector64, sectorLUA
+    )
+    local xdebug = debug2 and DebugError(textDebug)
+
+    if IsValidComponent(object) then
+
+        Helper.closeMenuAndReturn(menu, nil)
+        
+        menu.cleanup()
+
+        local controlID = "upbbail.show_on_map_target"
+        local screenParam = objectLUA
+        AddUITriggeredEvent(menu.name, controlID, screenParam)
+
+    else
+        PlaySound("ui_notification_pickup_fail")
+        menu.refreshInfoFrame()
+    end    
+
+end
+
+function menu.buttonDestroyShip(object)
+    
+    local xdebug = debug0 and DebugError("menu.buttonDestroyShip")
+
+    local object64, objectLUA
+    local name, sectorid, sector, sector64, sectorLUA
+    local showzone, focuscomponent
+
+    local object64 = ConvertStringTo64Bit(tostring(object))
+    local objectLUA = ConvertStringToLuaID(tostring(object))
+    name, sector, sectorid = GetComponentData(object64, "name", "sector", "sectorid")
+    sector64 = ConvertIDTo64Bit(sectorid)
+    sectorLUA = ConvertStringToLuaID(tostring(sector64))
+    local textDebug = string.format(
+        [[
+        name =  %s
+        object    = %s      type %s
+        object64  = %s      type %s
+        objectLUA = %s      type %s
+        sectorid  = %s (%s) type %s
+        sector64  = %s      type %s
+        sectorLUA = %s      type %s]], 
+        name, type(name), object, type(object), object64, type(object64), objectLUA, type(objectLUA), sectorid, type(sectorid), sector, type(sector), sector64, type(sector64), sectorLUA, type(sectorLUA)
+    )
+    local xdebug = debug2 and DebugError(textDebug)
+    
+    if IsValidComponent(object) then
+        
+        PlaySound("explosion_close_short_s")
+
+        for k,entry in ipairs(menu.md_AbandonedShipList) do
+            local s64 = ConvertStringTo64Bit(tostring(entry.object))
+            if s64 == object then
+                table.remove(menu.md_AbandonedShipList, k)
+                break
+            end 
+        end
+        
+        menu.initDataFromMdData()
+        menu.refreshInfoFrame()
+
+        local controlID = "upbbail.destroy_target"
+        local screenParam = objectLUA
+        AddUITriggeredEvent(menu.name, controlID, screenParam)
+
+    else
+        PlaySound("ui_notification_pickup_fail")
+        menu.refreshInfoFrame()
+    end    
+
+    
+
+end
+
+function menu.buttonRestoreDefault()
+
+    PlaySound("bail_click")
+
+    local controlID = "upbbail.settings.reset"
+    local screenParam = { }
+    AddUITriggeredEvent(menu.name, controlID, screenParam)
+
+end
+
+local function UpbBail_loadsettings(_, params)
+    local data = GetNPCBlackboard(playerID, "$upbBailSettings")
+
+    menu.editedSettings = data[1]
+    menu.defaultSettings = data[2]
+    menu.prepareSettings()
+
+    SetNPCBlackboard(playerID, "$upbBailSettings", nil)
+    menu.refreshInfoFrame()
+end
+RegisterEvent("UpbBail.loadsettings", UpbBail_loadsettings)
+
+-- -----------------
+
+function menu.checkbox_DebugChance(_, checked)
+	menu.editedSettings.Debug.Chance = checked and 100 or 0
+    menu.Set_Md_Settings("Debug.Chance " .. tostring(menu.editedSettings.Debug.Chance))
+end
+function menu.checkbox_DebugDeep(_, checked)
+	menu.editedSettings.Debug.Deep = checked and 100 or 0
+    menu.Set_Md_Settings("Debug.Deep " .. tostring(menu.editedSettings.Debug.Deep))
+end
+
+function menu.checkbox_DebugLogChancesPlayer(_, checked)
+	menu.editedSettings.Debug.LogChances.Player = checked and 100 or 0
+    menu.Set_Md_Settings("Debug.LogChances.Player " .. tostring(menu.editedSettings.Debug.LogChances.Player))
+end
+function menu.checkbox_DebugLogChancesPlayerOwned(_, checked)
+	menu.editedSettings.Debug.LogChances.PlayerOwned = checked and 100 or 0
+    menu.Set_Md_Settings("Debug.LogChances.PlayerOwned " .. tostring(menu.editedSettings.Debug.LogChances.PlayerOwned))
+end
+function menu.checkbox_DebugLogChancesNPC(_, checked)
+	menu.editedSettings.Debug.LogChances.NPC = checked and 100 or 0
+    menu.Set_Md_Settings("Debug.LogChances.NPC " .. tostring(menu.editedSettings.Debug.LogChances.NPC))
+end
+function menu.checkbox_DebugLogChancesAbandoned(_, checked)
+	menu.editedSettings.Debug.LogChances.Abandoned = checked and 100 or 0
+    menu.Set_Md_Settings("Debug.LogChances.Abandoned " .. tostring(menu.editedSettings.Debug.LogChances.Abandoned))
+end
+
+function menu.checkbox_DebugLogChancesDetectAttacksPlayerOwned(_, checked)
+	menu.editedSettings.Debug.LogChances.DetectAttacks.PlayerOwned = checked and 100 or 0
+    menu.Set_Md_Settings("Debug.LogChances.DetectAttacks.PlayerOwned " .. tostring(menu.editedSettings.Debug.LogChances.DetectAttacks.PlayerOwned))
+end
+function menu.checkbox_DebugLogChancesDetectAttacksNPC(_, checked)
+	menu.editedSettings.Debug.LogChances.DetectAttacks.NPC = checked and 100 or 0
+    menu.Set_Md_Settings("Debug.LogChances.DetectAttacks.NPC " .. tostring(menu.editedSettings.Debug.LogChances.DetectAttacks.NPC))
+end
+function menu.checkbox_DebugisBailedShipsLogAppend(_, checked)
+	menu.editedSettings.Debug.isBailedShipsLogAppend = checked
+    menu.Set_Md_Settings("Debug.isBailedShipsLogAppend " .. tostring(checked))
+end
+
+
+
+
+-- ----------------------------------------------------
+-- MENU FUNCTONS
+-- ----------------------------------------------------
+
+menu.updateInterval = 0.1
+
+function menu.onUpdate()
+    local curtime = getElapsedTime()
+
+    if menu.mainFrame then
+        menu.mainFrame:update()
+    end
+
+    if menu.infoFrame then
+        menu.infoFrame:update()
+    end
+
+    local refreshing = false
+    if menu.lock or menu.noupdate then
+        return
+    end
+
+    if menu.infoFrameTableMode == "options" then 
+        return
+    end
+
+    if (menu.lastDataCheck + 0.8) < curtime then
+        local xdebug = debugGetData and DebugError(menu.name .. " lastDataCheck timer 1sec= " .. menu.lastDataCheck .. "  curtime=" .. curtime)
+        menu.Get_mdData()
+    end
+
+    if (menu.queueupdate and not menu.noupdate) then
+        local xdebug = debug0 and DebugError(menu.name .. " REFRESHING   queue update ")
+        menu.refreshInfoFrame()
+        return
+    end
+
+    if menu.mdDataChanged and (not menu.createInfoFrameRunning) then
+        local xdebug = debug0 and DebugError(menu.name .. " REFRESHING   mdDataChanged")
+        menu.mdDataChanged = nil
+        SetNPCBlackboard(playerID, "$md_upbBail_DataChanged", false)
+        menu.refreshInfoFrame()
+        return
+    end
+
+    --[[
+    if menu.lastrefresh + 2.0 < curtime then
+        refreshing = true
+    end
+
+    if refreshing and (not menu.noupdate) and (not menu.createInfoFrameRunning) then
+        local xdebug = debug0 and DebugError("REFRESHING   refresh timer 2sec")
+		menu.lastrefresh = curtime
+		menu.refreshInfoFrame()
+	end
+    ]]
+
+    if menu.refreshMainFrame then
+        if not menu.createMainFrameRunning then
+            
+            menu.selectedRows.sideBar = Helper.currentTableRow[menu.sideBarTableID]
+            local xdebug = debug0 and DebugError(menu.name .. " REFRESHING   refreshMainFrame true" .. "  menu.infoFrameTableMode = " .. tostring(menu.infoFrameTableMode) ..  "  menu.sideBarTableID=" .. tostring(menu.sideBarTableID)  .. ", current Table Row = " .. tostring(menu.selectedRows.sideBar) )
+
+            menu.createMainFrame()
+            menu.refreshMainFrame = nil
+        end
+    end
+
+end
+
+function menu.onRowChanged(row, rowdata, uitable, modified, input, source)
+    
+    if source ~= "auto" then
+        if uitable == menu.OlShipsTable.id then
+            if menu.selectedOLShip ~= rowdata then
+
+                --menu.queueupdate = true
+            end
+        end
+        local textDebug = string.format(
+            [[ onRowChanged
+                -----------------------
+                uitable = %s
+                row = %s
+                rowdata: %s
+                -----------------------
+            ]],
+                uitable,
+                row,
+                ( type(rowdata) == "table" 
+                and 
+                    "table = " .. rowdata[2] .. ", group=" .. tostring(rowdata[3]) .. " ( " .. rowdata[1].. " )"
+                or 
+                    "nonetable = " .. tostring(rowdata) .. "" .. ""
+                )
+            )
+        
+        local xdebug = debug2 and DebugError(textDebug)
+
+    end
+end
+
+function menu.refreshInfoFrame()
+    if not menu.createInfoFrameRunning then
+        local xdebug = debug2 and DebugError("   REFRESH INFO FRAME   ")
+        if menu.infoFrameTableMode == "options" then
+            menu.optionsettoprow = menu.optionsettoprow or GetTopRow(menu.SettingsTable.id)
+            menu.optionsetselectedrow = menu.optionsetselectedrow or Helper.currentTableRow[menu.SettingsTable.id]
+        else
+            menu.queueupdate = nil
+            if not menu.resetrow then
+                menu.settoprow = menu.settoprow or GetTopRow(menu.OlShipsTable.id)
+                menu.setselectedrow = menu.setselectedrow or Helper.currentTableRow[menu.OlShipsTable.id]
+                --DebugError ("1 refreshInfoFrame:menu.selectedOLShip = " .. tostring(menu.selectedOLShip) )
+                --DebugError ("1 refreshInfoFrame:menu.setselectedrow = " .. tostring(menu.setselectedrow) )
+
+                if menu.setselectedrow then
+                    menu.selectedOLShip = menu.rowDataMap[menu.OlShipsTable.id][menu.setselectedrow]
+                end
+
+            end
+        end
+        menu.resetrow = nil
+        menu.createInfoFrame()
+    end
+end
+function menu.viewCreated(layer, ...)
+    
+	local xdebug = debug2 and DebugError(menu.name .. " viewCreated() " .. " layer = " .. layer .. " ... = " .. tostring(...)  )
+    --[[
+        "\n frame.id = " .. tostring(menu.infoFrame.id) ..
+        "\n titleTable.id = " .. tostring(menu.titleTable.id) ..
+        "\n sorterTable.id = " .. tostring(menu.sorterTable.id) ..
+        "\n OlShipsTable.id = " .. tostring(menu.OlShipsTable.id) ..
+    ]]
+    if layer == config.mainLayer then
+        menu.sideBarTableID = ...
+        menu.createMainFrameRunning = false
+    end
+
+	if layer == config.infoLayer then
+        menu.createInfoFrameRunning = false
+	end
+
+end
+function menu.onInteractiveElementChanged(element)
+    --local xdebug = debug2 and DebugError("onInteractiveElementChanged  " .. " element = " .. tostring(element)  )
+    menu.lastactivetable = element
+end
+
+function menu.onCloseElement(dueToClose, layer)
+    local xdebug = debug0 and DebugError(menu.name .. " menu.onCloseElement() " .. tostring(dueToClose) .. " layer " .. tostring(layer) )
+    Helper.closeMenu(menu, dueToClose, layer )
+    menu.cleanup()
+end
+
+
+
+
+
+
+-- ----------------------------------------------------
+-- SORTERS
+-- ----------------------------------------------------
+function menu.sortClassAndPurpose(a, b, invert)
+    local a_class = config.classOrder[a.class] or 0
+    local b_class = config.classOrder[b.class] or 0
+    if a_class == b_class then
+        local a_purpose = (a.purpose ~= "") and Helper.purposeOrder[a.purpose] or 0
+        local b_purpose = (b.purpose ~= "") and Helper.purposeOrder[b.purpose] or 0
+        if a_purpose == b_purpose then
+            if a.name == b.name then
+                return menu.sort_RelationLocationRemaining(a, b)
+            else
+                return a.name < b.name
+            end
+        else
+            return a_purpose < b_purpose
+        end
+    else
+		if invert then
+			return a_class > b_class
+		else
+			return a_class < b_class
+		end
+    end
+end
+
+function menu.sortName(a, b, invert)
+    if a.name == b.name then
+        local a_class = config.classOrder[a.class] or 0
+        local b_class = config.classOrder[b.class] or 0
+        if a_class == b_class then
+            local a_purpose = Helper.purposeOrder[a.purpose] or 0
+            local b_purpose = Helper.purposeOrder[b.purpose] or 0
+            if a_purpose == b_purpose then
+                return menu.sort_RelationLocationRemaining(a, b)
+            else
+                return a_purpose < b_purpose
+            end
+        else
+            return a_class < b_class
+        end
+    else
+		if invert then
+			return a.name > b.name
+		else
+			return a.name < b.name
+		end
+    end
+end
+
+function menu.sort_RelationLocationRemaining(a, b)
+    local curtime = C.GetCurrentGameTime()
+    local a_Relation = a.relationrangename
+    local b_Relation = b.relationrangename
+    if a_Relation == b_Relation then
+        local a_sectorname = a.sector or ""
+        local b_sectorname = b.sector or ""
+        
+        if a_sectorname == b_sectorname then
+            local a_time = a.expiretime or (24*3600 + curtime)
+            local b_time = b.expiretime or (24*3600 + curtime)
+            if not a_time or not b_time then
+                DebugError(menu.name .. " NO a_time OR b_time ... @FIKRET")
+                if not a_time then
+                    return true
+                end
+                return false
+            end
+            return a_time < b_time
+        else
+            return a_sectorname < b_sectorname
+        end
+    else
+        local a_UIRelation = a.UIRelation
+        local b_UIRelation = b.UIRelation
+        return a_UIRelation > b_UIRelation
+    end
+end
+
+
+function menu.sortLocation_RemainingClassName(a, b, invert)
+    local curtime = C.GetCurrentGameTime()
+	local a_sectorname = a.sector or ""
+	local b_sectorname = b.sector or ""
+    if a_sectorname == b_sectorname then
+        local a_time = a.expiretime or (24*3600 + curtime)
+        local b_time = b.expiretime or (24*3600 + curtime)
+        if a_time == b_time then
+            local a_class = config.classOrder[a.class] or 0
+            local b_class = config.classOrder[b.class] or 0
+            if a_class == b_class then
+                local a_purpose = Helper.purposeOrder[a.purpose] or 0
+                local b_purpose = Helper.purposeOrder[b.purpose] or 0
+                if a_purpose == b_purpose then
+                    local a_name = a.name -- .. a.objectid
+                    local b_name = b.name -- .. b.objectid
+                    if a_name == b_name then
+                        return a.objectid < b.objectid
+                    end
+                    return a_name < b_name
+                else
+                    return a_purpose < b_purpose
+                end
+            else
+                return a_class < b_class
+            end
+        else
+            return a_time < b_time
+        end 
+    else
+		if invert then
+			return a_sectorname > b_sectorname
+		else
+			return a_sectorname < b_sectorname
+		end
+    end 
+    
+end
+function menu.sortRelation(a, b, invert)
+    local a_Relation = a.relationrangename
+    local b_Relation = b.relationrangename
+    if a_Relation == b_Relation then
+        return menu.sortLocation_RemainingClassName(a, b, false)
+    else
+        local a_UIRelation = a.UIRelation
+        local b_UIRelation = b.UIRelation
+		if invert then
+			return a_UIRelation < b_UIRelation
+		else
+			return a_UIRelation > b_UIRelation
+		end
+    end    
+end
+
+function menu.sortRemainingtime(a, b, invert)
+    
+    local curtime = C.GetCurrentGameTime()
+	local a_time = a.expiretime or (invert and -( 24*3600 + curtime) or (24*3600 + curtime) )
+	local b_time = b.expiretime or (invert and -( 24*3600 + curtime) or (24*3600 + curtime) )
+	if a_time == b_time then
+        local a_class = config.classOrder[a.class] or 0
+        local b_class = config.classOrder[b.class] or 0
+        if a_class == b_class then
+            local a_purpose = Helper.purposeOrder[a.purpose] or 0
+            local b_purpose = Helper.purposeOrder[b.purpose] or 0
+            if a_purpose == b_purpose then
+                local a_name = a.name -- .. a.objectid
+                local b_name = b.name -- .. b.objectid
+                if a_name == b_name then
+                    local a_Relation = a.relationrangename 
+                    local b_Relation = b.relationrangename 
+                    if a_Relation == b_Relation then
+                        local a_sectorname = a.sector or ""
+                        local b_sectorname = b.sector or ""
+                        return a_sectorname < b_sectorname
+                    else
+                        local a_UIRelation = a.UIRelation
+                        local b_UIRelation = b.UIRelation
+                        return a_UIRelation > b_UIRelation
+                    end
+                else
+                    return a_name < b_name
+                end
+            else
+                return a_purpose < b_purpose
+            end
+        else
+            return a_class < b_class
+        end
+    else
+		if invert then
+			return a_time > b_time
+		else
+			return a_time < b_time
+		end
+    end
+end
+
+-- Default (sorttype == "name")
+-- example : table.sort( table, menu.componentSorter("nameinverse") )
+-- sorttype : name, nameinverse,    class, classinverse,    sector, sectorinverse,      remainingtime, remainingtimeinverse
+function menu.componentSorter(sorttype)
+    local sorter = menu.sortName
+    if sorttype == "nameinverse" then
+		sorter = function (a, b) return menu.sortName(a, b, true) end
+	elseif sorttype == "class" then
+		sorter = menu.sortClassAndPurpose
+	elseif sorttype == "classinverse" then
+		sorter = function (a, b) return menu.sortClassAndPurpose(a, b, true) end
+    elseif sorttype == "sector" then
+        sorter = menu.sortLocation_RemainingClassName
+	elseif sorttype == "sectorinverse" then
+        sorter = function (a, b) return menu.sortLocation_RemainingClassName(a, b, true) end
+    elseif sorttype == "relation" then
+		sorter = menu.sortRelation
+	elseif sorttype == "relationinverse" then
+		sorter = function (a, b) return menu.sortRelation(a, b, true) end
+    elseif sorttype == "remainingtime" then
+		sorter = menu.sortRemainingtime
+	elseif sorttype == "remainingtimeinverse" then
+		sorter = function (a, b) return menu.sortRemainingtime(a, b, true) end
+    end
+	return sorter
+end
+
+function menu.buttonPropertySorter(sorttype)
+	if menu.propertySorterType == sorttype then
+		menu.propertySorterType = sorttype .. "inverse"
+	else
+		menu.propertySorterType = sorttype
+	end
+	menu.refreshInfoFrame()
+end
+
+
+
+-- ----------------------------------------------------
+-- USER FUNCS
+-- ----------------------------------------------------
+
+function menu.isObjectValid(entry)
+
+    local isValid, descr = true, ""
+    local faction 
+    local isOperational
+    local playersector
+    local targetsector
+    
+    isOperational = IsComponentOperational(entry.object)
+    
+    if isOperational then
+        faction = GetComponentData(entry.object, "owner")
+        playersector = C.GetContextByClass(C.GetPlayerID(), "sector", false)
+        targetsector = C.GetContextByClass(entry.object, "sector", true)
+        if faction ~= "ownerless" and not menu.passOwnerless then
+            isValid = false
+            descr = "New Owner: " .. faction
+        elseif entry.expiretime then
+            isValid = not menu.isObjectRemove(entry.expiretime, entry.sectorid)
+            descr = isValid and descr or "Destroying Timeup"
+        end
+    else
+        isValid = false
+        descr = "Ship not operational"
+    end
+
+
+    local textDebug = string.format(
+        [[\n
+        object  (%s)     = %s %s
+        faction          = %s
+        isOperational    = %s
+        playersector     = %s
+        targetsector     = %s
+        expiretime      = %s
+        currentTime      = %s
+        isValid          = %s %s
+        ]], 
+        entry.object, entry.objectid, entry.name, faction, isOperational, playersector, targetsector, entry.expiretime, C.GetCurrentGameTime(), isValid, descr
+    )
+    
+    local xdebug = debugValid and DebugError(textDebug)
+	return isValid, descr
+end
+function menu.getRemainingTime(time)
+	local RemainingTime = time and (time - C.GetCurrentGameTime()) or 0
+    local negative = false
+	if RemainingTime < 0 then
+        RemainingTime = (-1) * RemainingTime
+        negative = true
+		--DebugError( menu.name .. ".getRemainingTime(): given time is in the future. Returning empty result")
+		--return ""
+	end
+
+	local timeformat = ReadText(tPg, 7005)  -- "%dd %Hh %Mm %Ss"
+	if RemainingTime < 3600 then
+		timeformat = ReadText(tPg, 7006)    -- "%mm %Ss"
+	elseif RemainingTime < 3600 * 24 then
+		timeformat = ReadText(tPg, 7007)    -- "%hh %Mm %Ss"
+	end
+
+	return  (negative and "-" or "") .. ConvertTimeString(RemainingTime, timeformat)
+end
+function menu.Get_ExpireTimeIconColor(expiretime)
+
+    local butonarrowcolor0 = config.sColor.lightgrey
+    local butonarrowcolor1 = config.sColor.green
+    local butonarrowcolor2 = config.sColor.brightyellow
+    local butonarrowcolor3 = config.sColor.red
+    
+    if expiretime then
+        local fark = expiretime - C.GetCurrentGameTime()
+        local momentOfChange = false
+        if fark <= 600 then           -- 10 mins  1min = 60sec
+            if fark >= 599 then momentOfChange = true end
+            return butonarrowcolor3, momentOfChange
+        elseif fark <= 1800 then      -- 30 mins
+            if fark >= 1799 then momentOfChange = true end
+            return butonarrowcolor2, momentOfChange
+        else
+            return butonarrowcolor1, false
+        end
+    else
+        return butonarrowcolor0, false
+    end
+end
+function menu.relationColor(faction)
+	if GetFactionData(faction, "ishostile") then
+		return config.Color["text_hostile"]
+	elseif GetFactionData(faction, "isenemy") then
+		return config.Color["text_enemy"]
+	else
+		return config.Color["text_normal"]
+	end
+end
+function menu.HexToColor(hex, setAlpha)
+    local hexRGB = string.gsub(hex, "#","")
+
+    local color = {r = 0, g = 0, b = 0, a = 0}
+    local strA, strR, strG, strB = hexRGB:sub(1,2), hexRGB:sub(3,4), hexRGB:sub(5,6), hexRGB:sub(7,8)
+    local iAlpha = tonumber( "0x" .. strA ) - 155
+    color.a = setAlpha and setAlpha or (iAlpha < 0 and 0 or iAlpha)
+    color.r = tonumber( "0x" .. strR )
+    color.g = tonumber( "0x" .. strG )
+    color.b = tonumber( "0x" .. strB )
+    -- DebugError ( "hexRGB = " .. hexRGB )
+    -- DebugError ( "strA=\"" .. strA .. "\" strR=\"" .. strR .. "\" strG=\"" .. strG .. "\" strB=" .. strB )
+    -- DebugError (" r=" .. color.r .. " g=" .. color.g .. " b=" .. color.b .. " a=" .. color.a )
+
+    return color
+end
+function menu.getShipIconWidth(font, fontsize)
+	local numbertext = "99"
+	local minWidthPercent = 0.015
+
+    local font = font and font or Helper.standardFont
+    local fontsize = fontsize and fontsize or Helper.standardFontSize
+
+	local textheight = math.ceil(C.GetTextHeight(numbertext, font, Helper.scaleFont(font, fontsize), Helper.viewWidth))
+	local textwidth = math.ceil(C.GetTextWidth(numbertext, font, Helper.scaleFont(font, fontsize)))
+
+	return math.max(minWidthPercent * menu.infoFrameWidth, math.max(textheight, textwidth))
+    --return math.max(textheight, textwidth)
+end
+
+
+
+
+
+-- ----------------------------------------------------
+-- TABLE FUNCTIONS
+-- ----------------------------------------------------
+
+-- tabledeki veri sayisi (__pairs method)
+function menu.GetTableLng(tbl)
+    local getN = 0
+    for n in pairs(tbl or {} ) do 
+      getN = getN + 1 
+    end
+    return getN
+end
+
+-- Kopyalanacak table en sona kadar parcalanarak alinir. (__pairs method)
+-- new_table = tablecopy(data)  
+-- copys the table "data"
+function menu.tablecopy(t)
+    local t2 = {};
+    for k,v in pairs(t) do
+        if type(v) == "table" then
+            t2[k] = menu.tablecopy(v);
+        else
+            t2[k] = v;
+        end
+    end
+    return t2;
+end
+
+--- Removes (and returns) a table element by its key, moving down other elements to close space and decrementing the size of the array
+---@param table table
+---@param key any
+function menu.tableremoveKey(table, key)
+    local element = table[key]
+    table[key] = nil
+    return element
+end
+
+--- Splits the table into rows using the __pairs method and combines each row into the list.
+---@param node table
+---@param nodename string 
+---@param tree any                  -- ( nil = newline and no indentation) or (true = newline and indentation) or (false = no newline and no indentation)
+---@param IsShowNumberKeys any      -- ( is show { [1] = xxxx, [2] = yyy } else { xxx, yyy } )
+---@param indentation number        -- default 1 (number of space characters betwen by tag)
+---@param lineIndentString string   -- default empty (head string of line)
+---@param font string               -- default Helper.standardFont
+---@param fontsize number           -- default Helper.standardFontSize
+---@param width number              -- default 450
+---@param useConcatResult any       -- ( nil == will use SplittedLines )
+function menu.tableGetTextLines(node, nodename, tree, IsShowNumberKeys, indentation, lineIndentString, font, fontsize, width, useConcatResult)
+    -- lua textTable = GetTextLines(text, font, fontsize, width) fonksiyonu en fazla 100 satıra bölebiliyor.
+    -- aldığımız bilgiyi satırlara ayırıp kendi listemizi oluşturacağız
+    local TextLines = {}
+    local indentstring = lineIndentString or ""
+
+    local font = font or Helper.standardFont
+    local fontsize = fontsize or Helper.standardFontSize
+    local width = width or 450
+    local concatResult, SplittedLines = menu.getstring_TableStructure(node, nodename, tree, IsShowNumberKeys, indentation)
+    if not useConcatResult then
+        for k, v in ipairs(SplittedLines) do
+            local textTable = GetTextLines(v, font, fontsize, width)
+            for i, line in ipairs(textTable) do
+                table.insert(TextLines, indentstring .. line)
+            end
+        end
+    else
+        TextLines = GetTextLines(concatResult, font, fontsize, width)
+    end
+    return TextLines
+end
+
+--- print table with __pairs method to DebugError 
+---@param node table
+---@param nodename string 
+---@param tree any                  -- ( nil = newline and no indentation) or (true = newline and indentation) or (false = no newline and no indentation)
+---@param IsShowNumberKeys any      -- ( is show { [1] = xxxx, [2] = yyy } else { xxx, yyy } )
+---@param indentation number        -- default 1 (number of space characters betwen by tag)
+---@param useConcatResult any       -- ( nil == will use SplittedLines )
+function menu.tablePrint(node, nodename, tree, IsShowNumberKeys, indentation, useConcatResult)
+    -- concat edilmiş string bilgisi DebugError için fazla gelebiliyor. Bu yüzden concat edilmeden önceki array lı çıktı lazım bize
+    -- !!! debugerror için 238 satırda bir resetliyeceğiz, daha fazla beklersek eksik bilgi basıyor
+    local NEW_LINE = "\n"
+    local TAB_CHAR = "  "
+
+    if nil == tree then
+        NEW_LINE = "\n"
+    elseif not tree then
+        NEW_LINE = ""
+        TAB_CHAR = ""
+    end
+
+    local concatResult, SplittedLines = menu.getstring_TableStructure(node, nodename, tree, IsShowNumberKeys, indentation)
+    if not useConcatResult then
+        local row = 0
+        local totalrow = 0
+        local str = ""
+        for i, v in ipairs(SplittedLines or {}) do
+            row = row + 1
+            str = str .. tostring(v) .. NEW_LINE
+            if row >= 230 then
+                DebugError("#" .. tostring(totalrow + 1) .. "-" ..  tostring(i) .. NEW_LINE .. str )
+                totalrow = totalrow + row
+                row = 0
+                str = ""
+            end
+        end
+        DebugError("#" .. tostring(totalrow + 1) .. "-" .. tostring(totalrow + row) .. NEW_LINE .. str )
+    else
+        DebugError(concatResult)  
+    end
+    return concatResult
+end
+
+--- string olarak table yapsini geri verir
+---@param node table
+---@param nodename string 
+---@param tree any                  -- ( nil = newline and no indentation) or (true = newline and indentation) or (false = no newline and no indentation)
+---@param IsShowNumberKeys any      -- ( is show { [1] = xxxx, [2] = yyy } else { xxx, yyy } )
+---@param indentation number        -- default 1 (number of space characters betwen by tag)
+function menu.getstring_TableStructure(node, nodename, tree, IsShowNumberKeys, indentation)
+    local cache, stack, output = {},{},{}
+    local depth = 1
+
+    if type(node) ~= "table" then
+        return "only table type is supported, got " .. type(node)
+    end
+
+    if nil == indentation then indentation = 1 end
+    
+    if nil == IsShowNumberKeys then
+         IsShowNumberKeys = nil
+    elseif not IsShowNumberKeys then
+        IsShowNumberKeys = nil
+    end
+
+    local NEW_LINE = "\n"
+    local TAB_CHAR = "  "
+
+    if nil == tree then
+        NEW_LINE = "\n"
+    elseif not tree then
+        NEW_LINE = ""
+        TAB_CHAR = ""
+    end
+
+    local output_str = ( (nodename and nodename ~= "") and tostring(nodename) .. NEW_LINE or "" )  .. "{"     
+    
+
+    while true do
+        local size = 0
+        for k,v in pairs(node) do
+            size = size + 1
+        end
+
+        local cur_index = 1
+        for k,v in pairs(node) do
+            if (cache[node] == nil) or (cur_index >= cache[node]) then
+
+                if (string.find( output_str, "}", output_str:len() )) then
+                    output_str = output_str .. "," .. NEW_LINE
+                elseif not (string.find( output_str, NEW_LINE, output_str:len() )) then
+                    output_str = output_str .. NEW_LINE
+                end
+
+                -- This is necessary for working with HUGE tables otherwise we run out of memory using concat on huge strings
+                table.insert(output,output_str)
+                output_str = ""
+
+                local key
+                if (type(k) == "number") then
+                    key = (IsShowNumberKeys) and "[" .. tostring(k) .. "]" or ""
+                elseif (type(k) == "boolean") then
+                    key = "[" .. tostring(k) .. "]"
+                else
+                    -- key = "['"..tostring(k).."']"
+                    key = "" .. tostring(k) .. ""
+                end
+
+                if (type(v) == "number" or type(v) == "boolean") then
+                    output_str = output_str .. string.rep(TAB_CHAR,depth*indentation) .. key .. ((key ~= "") and " = " or "") .. tostring(v)
+                elseif (type(v) == "table") then
+                    output_str = output_str .. string.rep(TAB_CHAR,depth*indentation) .. key .. ((key ~= "") and " = " or "") .. "{"  
+                    table.insert(stack,node)
+                    table.insert(stack,v)
+                    cache[node] = cur_index+1
+                    break
+                else
+                    output_str = output_str .. string.rep(TAB_CHAR,depth*indentation) .. key .. " = '"..tostring(v).."'"
+                end
+
+                if (cur_index == size) then
+                    output_str = output_str .. NEW_LINE .. string.rep(TAB_CHAR,(depth-1)*indentation) .. "}"
+                else
+                    output_str = output_str .. ","
+                end
+            else
+                -- close the table
+                if (cur_index == size) then
+                    output_str = output_str .. NEW_LINE .. string.rep(TAB_CHAR,(depth-1)*indentation) .. "}"
+                end
+            end
+
+            cur_index = cur_index + 1
+        end
+
+        if (size == 0) then
+            --output_str = output_str .. NEW_LINE .. string.rep(TAB_CHAR,(depth-1)*indentation) .. "}"
+            --output_str = output_str .. string.rep(TAB_CHAR,(depth-1)*indentation) .. "}"
+            output_str = output_str ..  "}"
+        end
+
+        if (#stack > 0) then
+            node = stack[#stack]
+            stack[#stack] = nil
+            depth = cache[node] == nil and depth + 1 or depth - 1
+        else
+            break
+        end
+    end
+
+    -- This is necessary for working with HUGE tables otherwise we run out of memory using concat on huge strings
+    table.insert(output,output_str)
+
+    local SplittedLines = {}
+    for k, v in ipairs(output) do
+        --DebugError("k = " .. tostring(k) .. "/" .. tostring(#output) .. " ,v = _" .. v .. "_ ,#v = " .. tostring(#v) )
+        local startindex = 1
+        local foundIndex = string.find( v, "\n", startindex )
+        local sub = string.sub( v, startindex, foundIndex and foundIndex -1 or string.len(v) )
+        --DebugError("startindex = " .. tostring(startindex) .. " ,foundIndex = " ..  tostring(foundIndex) .. " ,sub =_" .. tostring(sub) .. "_")
+        if sub ~= "" then
+            table.insert(SplittedLines, sub)
+        end
+        while foundIndex do
+            startindex = foundIndex + 1 
+            foundIndex = string.find( v, "\n", startindex )
+            sub = string.sub( v, startindex, foundIndex and foundIndex -1 or string.len(v) )
+            if sub ~= "" then
+                table.insert(SplittedLines, sub)
+            end
+            --DebugError("startindex = " .. tostring(startindex) .. " ,foundIndex = " ..  tostring(foundIndex) .. " ,sub =_" .. tostring(sub) .. "_" )
+        end
+        
+    end
+
+    output_str = table.concat(output)
+    return output_str, SplittedLines
+end
+
+
+
+init()
+

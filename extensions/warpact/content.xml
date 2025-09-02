@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="ws_2981440435" name="War Pact" description="Choose a faction to ally with. This mod will sync your reputation with your ally, positive or negative." author="Chillmatica" version="140" date="2023-05-27" save="0" enabled="1" sync="false" lastupdate="1685227190">
+  <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs"/>
+  <text language="7" name="War Pact" description="Зарабатывайте награды и репутацию за уничтожение врагов и дополнительную награду за охоту на разыскиваемых пилотов в галактике." author="Chillmatica"/>
+  <text language="33" name="War Pact" description="Choisissez une faction avec laquelle vous allier. Ce mod synchronisera votre réputation avec votre allié, positif ou négatif." author="Chillmatica"/>
+  <text language="34" name="War Pact" description="Elige una facción con la que aliarte. Este mod sincronizará tu reputación con la de tu aliado, positiva o negativa." author="Chillmatica"/>
+  <text language="44" name="War Pact" description="Choose a faction to ally with. This mod will sync your reputation with your ally, positive or negative." author="Chillmatica"/>
+  <text language="49" name="War Pact" description="Wählen Sie eine Fraktion, mit der Sie sich verbünden möchten. Dieser Mod synchronisiert Ihren Ruf mit dem Ihres Verbündeten, ob positiv oder negativ." author="Chillmatica"/>
+  <text language="86" name="War Pact" description="选择一个派系结盟。 这个模组会将你的声誉与你的盟友同步，无论是积极的还是消极的。" author="Chillmatica"/>
+</content>

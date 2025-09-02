@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<language id="34">
+  <page id="8008577" title="Chill Turrets T Files" descr="Spanish" voice="no">
+    <t id="100">Torretas de refrigeración instaladas. Configure todas las capitales grandes para atacar y las medianas para defensa antimisiles</t>
+<t id="101">Configuración de torretas de enfriamiento</t>
+<t id="102">Las capitales de ataque también atacan a los combatientes</t>
+<t id="103">Grandes torretas disparan al azar a los cazas si no hay otros objetivos adecuados</t>
+<t id="104">Establecer automáticamente los modos de torreta del jugador</t>
+<t id="105">Todos los barcos se configurarán inmediatamente con esta preferencia de mods y todos los barcos construidos en el futuro también.</t>
+<t id="106"></t>
+<t id="107"></t>
+<t id="138">Habilitado</t>
+<t id="139">Deshabilitado</t>
+  </page>
+</language>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="MSL_SectorList" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../#modding/xsd/md.xsd">
+    <cues>
+        <cue name="OnLuaInited">
+            <conditions>
+                <event_ui_triggered screen="'uix_mod_lua'" control="'init'" />
+            </conditions>
+            <actions>
+                <raise_lua_event name="'Lua_Loader.Load'" param="'extensions.mycu_sector_list.ui.msl'"/>
+            </actions>
+        </cue>
+
+        <cue name="OnLuaLoaderReadyCompleted">
+            <conditions>
+                <event_cue_completed cue="OnLuaInited"/>
+            </conditions>
+            <actions>
+                <reset_cue cue="OnLuaInited"/>
+                <reset_cue cue="this"/>
+            </actions>
+        </cue>
+
+        <cue name="MSL_Main" namespace="this">
+            <conditions>
+                <check_any>
+                    <event_cue_signalled cue="md.Setup.GameStart"/>
+                    <event_game_loaded/>
+                </check_any>
+            </conditions>
+            <actions>
+                <debug_text text="'event.name: ' + event.name"/>
+                <set_value name="$debugChance" exact="0"/>
+                <debug_text text="'Mycu MSL: Init'" chance="$debugChance"/>
+            </actions>
+            <cues>
+            </cues>
+        </cue>
+
+    </cues>
+</mdscript>

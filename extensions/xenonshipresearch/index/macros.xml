@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ?xml-stylesheet href="index.xsl" type="text\xsl" ? -->
+<index>
+	<entry name="weapon_xen_xl_battleship_01_mk1_a_macro" value="extensions\xenonshipresearch\assets\props\WeaponSystems\capital\macros\weapon_xen_xl_battleship_01_mk1_a_macro" />
+	<entry name="bullet_xen_weapon_xl_beam_01_mk1_macro" value="extensions\xenonshipresearch\assets\fx\weaponfx\macros\bullet_xen_weapon_xl_beam_01_mk1_macro" />
+</index>

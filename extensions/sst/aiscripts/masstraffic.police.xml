@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<diff>
+<replace sel="//do_if[@value='@$target.pilot.inventory.illegalto.{this.zone.policefaction} or @$target.cargo.illegalto.{this.zone.policefaction}']">
+  <do_if value="@$target.pilot.inventory.illegalto.{this.zone.policefaction} or @$target.cargo.illegalto.{this.zone.policefaction}" chance="100 - $target.hidecargochance">
+    <do_if value="$target" exact="player.occupiedship">
+      <write_to_logbook category="general" title="{314150, 1}" text="{314150, 2}.[this.ship.name]" />
+    </do_if>
+    <do_else> 
+      <write_to_logbook category="general" title="{314150, 1}" text="{314150, 3}.[$target.name, this.ship.name]" />
+    </do_else> 
+  </do_if>
+</replace>
+</diff>

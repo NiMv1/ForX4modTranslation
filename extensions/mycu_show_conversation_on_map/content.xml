@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="ShowConversationOnMap"
+         name="Mycu: Show conversation object on map"
+         author="Mycu"
+         version="102"
+         date="2025-07-29"
+         save="false"
+         enabled="1"
+         description="Adds a cutscene option to show conversation ship on the map">
+</content>

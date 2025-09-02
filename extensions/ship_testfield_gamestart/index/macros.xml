@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<index>
+  <entry name="shiptest_gen_universe_macro" value="extensions\ship_testfield_gamestart\maps\shiptest_gen_universe\shiptest_gen_galaxy"/>
+  <entry name="shiptest_gen_zone*" value="extensions\ship_testfield_gamestart\maps\shiptest_gen_universe\shiptest_gen_zone"/>
+  <entry name="shiptest_gen_sector*" value="extensions\ship_testfield_gamestart\maps\shiptest_gen_universe\shiptest_gen_sector"/>
+  <entry name="shiptest_gen_cluster*" value="extensions\ship_testfield_gamestart\maps\shiptest_gen_universe\shiptest_gen_cluster"/>
+</index>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="ChillTurrets" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+    <cues>
+        <cue name="LoadStuffAndSetup" version="3">
+			<conditions>
+				<event_universe_generated/>
+			</conditions>
+			<actions>
+                <debug_text text="'ChillTurrets setup check...'" filter="scripts" />
+				<do_if value="not global.$ChillTurretsPotShots?">
+					<set_value name="global.$ChillTurretsPotShots" exact="false" />
+                    <set_value name="global.$ChillTurretsAuto" exact="false" />
+                    <debug_text text="'ChillTurrets: variables initialized.'" filter="scripts" />
+				</do_if>
+                <do_else>
+                    <debug_text text="'ChillTurrets loaded.'" filter="scripts" />
+                </do_else>
+                <show_help color="[179,102,255,255]" duration="12s" halign="'center'" position="1" custom="{8008577,100}" />
+			</actions>
+            <patch sinceversion="2">
+                <do_if value="not global.$ChillTurretsAuto?">
+                    <set_value name="global.$ChillTurretsAuto" exact="false" />
+                    <debug_text text="'ChillTurrets: patched in Automatic option'" filter="scripts" />
+                    <show_help color="[179,102,255,255]" duration="10s" halign="'center'" position="1" custom="'ChillTurrets Updated v1.7: See new menu option for auto configure turrets'" />
+                </do_if>
+            </patch>
+            <patch sinceversion="3">
+                <show_help color="[179,102,255,255]" duration="10s" halign="'center'" position="1" custom="'ChillTurrets Updated v1.9: Mutual missile defense and mine defense'" />
+            </patch>
+		</cue>
+        <cue name="CTOptsInit" instantiate="false">
+            <actions>
+                <debug_text text="'ChillTurrets Options: Go, Init! Go on, git!'" filter="scripts" />
+            </actions>
+            <cues>
+                <cue name="RegisterCTOpts" instantiate="true">
+                    <conditions>
+                        <event_cue_signalled cue="md.Simple_Menu_API.Reloaded" />
+                    </conditions>
+                    <actions>
+                        <signal_cue_instantly
+                            cue="md.Simple_Menu_API.Register_Options_Menu"
+                            param="table[
+                    $id = 'ChillTurretsOptions',
+                    $columns = 3, 
+                    $title = {8008577,101},
+                    $onOpen = CTOptsMenu
+                    ]" />
+                    </actions>
+                </cue>
+                <cue name="CTOptsMenu" instantiate="true">
+                    <conditions>
+                        <event_cue_signalled />
+                    </conditions>
+                    <actions>
+                        <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row" />
+                        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text"
+                            param="table[
+								$col = 1,
+								$colSpan = 2,
+								$text = {8008577,102},
+								$mouseOverText= {8008577,103},
+							]" />
+                        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Button"
+                            param="table[
+								$col = 3, 
+								$colSpan = 1,
+								$text = table[
+								  $text   =  if global.$ChillTurretsPotShots == true then {8008577,138} else {8008577,139}, 
+								  $color  =  if global.$ChillTurretsPotShots == true then 'Helper.color.green' else 'Helper.color.red',
+								  $halign = 'center',
+								],
+								$onClick = PotShotsToggle,
+								$onRightClick = PotShotsToggle,
+							]" />
+                            <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row" />
+                            <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text"
+                                param="table[
+                                    $col = 1,
+                                    $colSpan = 2,
+                                    $text = {8008577,104},
+                                    $mouseOverText= {8008577,105},
+                                ]" />
+                            <signal_cue_instantly cue="md.Simple_Menu_API.Make_Button"
+                                param="table[
+                                    $col = 3, 
+                                    $colSpan = 1,
+                                    $text = table[
+                                      $text   =  if global.$ChillTurretsAuto == true then {8008577,138} else {8008577,139}, 
+                                      $color  =  if global.$ChillTurretsAuto == true then 'Helper.color.green' else 'Helper.color.red',
+                                      $halign = 'center',
+                                    ],
+                                    $onClick = AutoToggle,
+                                    $onRightClick = AutoToggle,
+                                ]" />
+                    </actions>
+                </cue>
+                <cue name="PotShotsToggle" instantiate="true">
+                    <conditions>
+                        <event_cue_signalled />
+                    </conditions>
+                    <actions>
+                        <set_value name="global.$ChillTurretsPotShots" exact="if global.$ChillTurretsPotShots == true then false else true" />
+                        <do_if value="not global.$ChillTurretsPotShots">
+                            <find_ship_by_true_owner faction="faction.player" space="player.galaxy" multiple="true" class="[class.ship_l,class.ship_xl]" checkoperational="true" groupname="$playerships"/>
+                            <do_for_each name="$ship" in="$playerships">
+                                <set_turret_targets object="$ship" stopshootingold="true" weaponmode="weaponmode.prefercapital" clearpreferred="true" target="[]" />
+                            </do_for_each>
+                            <remove_value name="$playerships" />
+                        </do_if>
+                        <signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu" />
+                    </actions>
+                </cue>
+                <cue name="AutoToggle" instantiate="true">
+                    <conditions>
+                        <event_cue_signalled />
+                    </conditions>
+                    <actions>
+                        <set_value name="global.$ChillTurretsAuto" exact="if global.$ChillTurretsAuto == true then false else true" />
+                        <do_if value="global.$ChillTurretsAuto">
+                            <find_ship_by_true_owner faction="faction.player" space="player.galaxy" multiple="true" class="[class.ship_s,class.ship_m,class.ship_l,class.ship_xl]" checkoperational="true" groupname="$playerships"/>
+                            <do_for_each name="$ship" in="$playerships">
+                                <find_object_component name="$LTurrets" object="$ship" class="class.turret" weapontype="combat" checkoperational="true" multiple="true" tag="tag.large" />
+                                <find_object_component name="$MTurrets" object="$ship" class="class.turret" weapontype="combat" checkoperational="true" multiple="true" tag="tag.medium" />
+                                <!-- v1.8 prep for Lc4Hunter's small turrets and Rothank's extra large turrets -->
+                                <find_object_component name="$STurrets" object="$ship" class="class.turret" weapontype="combat" checkoperational="true" multiple="true" tag="tag.small" />
+                                <find_object_component name="$XLTurrets" object="$ship" class="class.turret" weapontype="combat" checkoperational="true" multiple="true" tag="tag.extralarge" />
+
+                                <do_all exact="$LTurrets.count" counter="$i">
+                                    <set_weapon_mode weapon="$LTurrets.{$i}" weaponmode="weaponmode.prefercapital"/>
+                                </do_all>
+                                <do_all exact="$MTurrets.count" counter="$i">
+                                    <do_if value="$MTurrets.{$i}.ammo.capacity">
+                                        <set_weapon_mode weapon="$MTurrets.{$i}" weaponmode="weaponmode.preferfighters"/>
+                                    </do_if>
+                                    <do_else>
+                                        <set_weapon_mode weapon="$MTurrets.{$i}" weaponmode="weaponmode.prefermissiles"/>
+                                    </do_else>
+                                </do_all>
+                                <do_all exact="$XLTurrets.count" counter="$i">
+                                    <set_weapon_mode weapon="$XLTurrets.{$i}" weaponmode="weaponmode.prefercapital"/>
+                                </do_all>
+                                <do_all exact="$STurrets.count" counter="$i">
+                                    <do_if value="$STurrets.{$i}.ammo.capacity">
+                                        <set_weapon_mode weapon="$STurrets.{$i}" weaponmode="weaponmode.preferfighters"/>
+                                    </do_if>
+                                    <do_else>
+                                        <set_weapon_mode weapon="$STurrets.{$i}" weaponmode="weaponmode.prefermissiles"/>
+                                    </do_else>
+                                </do_all>
+                                <remove_value name="$LTurrets" />
+                                <remove_value name="$MTurrets" />
+                                <remove_value name="$STurrets" />
+                                <remove_value name="$XLTurrets" />
+                            </do_for_each>
+                            <remove_value name="$playerships" />
+                            <remove_value name="$ship" />
+                        </do_if>
+                        <signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu" />
+                    </actions>
+                </cue>
+                <cue name="AutoSetNewShips" instantiate="true" comment="Set turrets for newly built ships">
+                    <conditions>
+                        <event_player_built_ship />
+                        <check_value value="global.$ChillTurretsAuto" />
+                        <check_any>
+                            <check_value value="event.param.isclass.ship_s" />
+                            <check_value value="event.param.isclass.ship_m" />
+                            <check_value value="event.param.isclass.ship_l" />
+                            <check_value value="event.param.isclass.ship_xl" />
+                        </check_any>
+                    </conditions>
+                    <delay exact="1s" />
+                    <actions>
+                        <set_value name="$ship" exact="event.param" />
+                        <find_object_component name="$LTurrets" object="$ship" class="class.turret" weapontype="combat" checkoperational="true" multiple="true" tag="tag.large" />
+                        <find_object_component name="$MTurrets" object="$ship" class="class.turret" weapontype="combat" checkoperational="true" multiple="true" tag="tag.medium" />
+                        <!-- v1.8 prep for Lc4Hunter's small turrets and Rothank's extra large turrets -->
+                        <find_object_component name="$STurrets" object="$ship" class="class.turret" weapontype="combat" checkoperational="true" multiple="true" tag="tag.small" />
+                        <find_object_component name="$XLTurrets" object="$ship" class="class.turret" weapontype="combat" checkoperational="true" multiple="true" tag="tag.extralarge" />
+
+
+                        <do_all exact="$LTurrets.count" counter="$i">
+                            <set_weapon_mode weapon="$LTurrets.{$i}" weaponmode="weaponmode.prefercapital"/>
+                        </do_all>
+                        <do_all exact="$MTurrets.count" counter="$i">
+                            <do_if value="$MTurrets.{$i}.ammo.capacity">
+                                <set_weapon_mode weapon="$MTurrets.{$i}" weaponmode="weaponmode.preferfighters"/>
+                            </do_if>
+                            <do_else>
+                                <set_weapon_mode weapon="$MTurrets.{$i}" weaponmode="weaponmode.prefermissiles"/>
+                            </do_else>
+                        </do_all>
+                        <do_all exact="$XLTurrets.count" counter="$i">
+                            <set_weapon_mode weapon="$XLTurrets.{$i}" weaponmode="weaponmode.prefercapital"/>
+                        </do_all>
+                        <do_all exact="$STurrets.count" counter="$i">
+                            <do_if value="$STurrets.{$i}.ammo.capacity">
+                                <set_weapon_mode weapon="$STurrets.{$i}" weaponmode="weaponmode.preferfighters"/>
+                            </do_if>
+                            <do_else>
+                                <set_weapon_mode weapon="$STurrets.{$i}" weaponmode="weaponmode.prefermissiles"/>
+                            </do_else>
+                        </do_all>
+                        <remove_value name="$LTurrets" />
+                        <remove_value name="$MTurrets" />
+                        <remove_value name="$STurrets" />
+                        <remove_value name="$XLTurrets" />
+                        <remove_value name="$ship" />
+                    </actions>
+                </cue>
+            </cues>
+        </cue>
+    </cues>
+</mdscript>

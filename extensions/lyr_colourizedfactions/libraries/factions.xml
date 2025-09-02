@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- order and spacing is based on language files for side-by-side viewing -->
+<diff>
+	<replace sel="/factions/faction[@id='player']/color"><color r="57" g="255" b="64" /></replace> <!-- default: <color r="57" g="255" b="64" /> -->
+	<replace sel="/factions/faction[@id='argon']/color"><color r="0" g="85" b="255" /></replace> <!-- default: <color r="0" g="85" b="255" /> -->
+	<replace sel="/factions/faction[@id='antigone']/color"><color r="80" g="151" b="222" /></replace> <!-- default: <color r="80" g="151" b="222" /> -->
+	<replace sel="/factions/faction[@id='paranid']/color"><color r="128" g="0" b="255" /></replace> <!-- default: <color r="128" g="0" b="255" /> -->
+	<replace sel="/factions/faction[@id='holyorder']/color"><color r="255" g="114" b="173" /></replace> <!-- default: <color r="255" g="114" b="173" /> -->
+	<replace sel="/factions/faction[@id='teladi']/color"><color r="169" g="194" b="46" /></replace> <!-- default: <color r="169" g="194" b="46" /> -->
+	<replace sel="/factions/faction[@id='ministry']/color"><color r="148" g="188" b="146" /></replace> <!-- default: <color r="148" g="188" b="146" /> -->
+	<replace sel="/factions/faction[@id='alliance']/color"><color r="176" g="60" b="202" /></replace> <!-- default: <color r="176" g="60" b="202" /> -->
+	<replace sel="/factions/faction[@id='hatikvah']/color"><color r="32" g="246" b="253" /></replace> <!-- default: <color r="32" g="246" b="253" /> -->
+	<replace sel="/factions/faction[@id='scaleplate']/color"><color r="137" g="130" b="58" /></replace> <!-- default: <color r="137" g="130" b="58" /> -->
+	<replace sel="/factions/faction[@id='xenon']/color"><color r="201" g="0" b="0" /></replace> <!-- default: <color r="201" g="0" b="0" /> -->
+
+
+
+	<replace sel="/factions/faction[@id='khaak']/color"><color r="240" g="174" b="237" /></replace> <!-- default: <color r="240" g="174" b="237" /> -->
+	<replace sel="/factions/faction[@id='freesplit']/color"><color r="255" g="158" b="0" /></replace> <!-- default: <color r="255" g="158" b="0" /> -->
+	<replace sel="/factions/faction[@id='fallensplit']/color"><color r="251" g="178" b="152" /></replace> <!-- default: <color r="251" g="178" b="152" /> -->
+	<replace sel="/factions/faction[@id='court']/color"><color r="255" g="213" b="0" /></replace> <!-- default: <color r="255" g="213" b="0" /> -->
+
+	<replace sel="/factions/faction[@id='split']/color"><color r="255" g="105" b="30" /></replace> <!-- default: <color r="255" g="105" b="30" /> -->
+
+
+	<replace sel="/factions/faction[@id='trinity']/color"><color r="191" g="57" b="215" /></replace> <!-- default: <color r="191" g="57" b="215" /> -->
+	<replace sel="/factions/faction[@id='buccaneers']/color"><color r="90" g="0" b="255" /></replace> <!-- default: <color r="90" g="0" b="255" /> -->
+
+	<replace sel="/factions/faction[@id='holyorderfanatic']/color"><color r="138" g="1" b="1" /></replace> <!-- default: <color r="138" g="1" b="1" /> -->
+	<replace sel="/factions/faction[@id='yaki']/color"><color r="254" g="141" b="250" /></replace> <!-- default: <color r="254" g="141" b="250" /> -->
+	<replace sel="/factions/faction[@id='pioneers']/color"><color r="65" g="170" b="154" /></replace> <!-- default: <color r="65" g="170" b="154" /> -->
+	<replace sel="/factions/faction[@id='terran']/color"><color r="188" g="208" b="251" /></replace> <!-- default: <color r="188" g="208" b="251" /> -->
+
+	<replace sel="/factions/faction[@id='scavenger']/color"><color r="84" g="128" b="160" /></replace> <!-- default: <color r="84" g="128" b="160" /> -->
+	<replace sel="/factions/faction[@id='loanshark']/color"><color r="151" g="130" b="150" /></replace> <!-- default: <color r="151" g="130" b="150" /> -->
+
+	<replace sel="/factions/faction[@id='ownerless']/color"><color r="151" g="151" b="151" /></replace> <!-- default: <color r="151" g="151" b="151" /> -->
+	<replace sel="/factions/faction[@id='smuggler']/color"><color r="201" g="0" b="0" /></replace> <!-- default: <color r="201" g="0" b="0" /> -->
+	<replace sel="/factions/faction[@id='visitor']/color"><color r="255" g="255" b="0" /></replace> <!-- default: <color r="255" g="255" b="0" /> -->
+	<replace sel="/factions/faction[@id='civilian']/color"><color r="151" g="151" b="151" /></replace> <!-- default: <color r="151" g="151" b="151" /> -->
+	<replace sel="/factions/faction[@id='criminal']/color"><color r="201" g="0" b="0" /></replace> <!-- default: <color r="201" g="0" b="0" /> -->
+	<replace sel="/factions/faction[@id='boron']/color"><color r="77" g="196" b="255" /></replace> <!-- default: <color r="77" g="196" b="255" /> -->
+</diff>

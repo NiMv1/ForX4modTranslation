@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<icons>
+    <!-- Paint.Net kullanıldı. 
+        resim dosyaları R8G8B8A8 (sRGB dx10) .dds ya da .tga formatında kaydedilecek (sıkıştırılacaksa .gzip formatında sıkıştılımış olacaklar )
+        resmi .dds kaydetmemize rağmen burda .tga yazıyoruz
+        [BC3/DXT5 Doğrusal] varsa bu seçenek ile de (error metric -> uniform, generate mipmap seçilebilir) uygun export alınabilir.
+    -->
+    <icon name="rfm_restart" texture="extensions\upb_lsr_fleet_management\assets\fx\gui\textures\upbmod\rfmrestart.tga" height="512" width="512"></icon>
+    <icon name="rfm_disable" texture="extensions\upb_lsr_fleet_management\assets\fx\gui\textures\upbmod\rfmdisable.tga" height="128" width="128"></icon>
+    <icon name="rfm_autobuild" texture="extensions\upb_lsr_fleet_management\assets\fx\gui\textures\upbmod\autobuild.tga" height="512" width="512"></icon>
+    <icon name="rfm_clonerfm" texture="extensions\upb_lsr_fleet_management\assets\fx\gui\textures\upbmod\rfmclone.tga" height="512" width="512"></icon>
+    <icon name="rfm_removeship" texture="extensions\upb_lsr_fleet_management\assets\fx\gui\textures\upbmod\removeship.tga" height="512" width="512"></icon>
+
+
+    
+    
+</icons>

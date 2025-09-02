@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="distance_buy_blueprints" name="Distance buy blueprints and licenses" description="Adds buttons to the 'Factions and Relations' menu to buy blueprints and licenses." author="fare_men" version="110" date="2025-02-28" save="0" enabled="1" sync="false">
+    <text language="" name="Distance buy blueprints and licenses" description="Adds buttons to the 'Factions and Relations' menu to buy blueprints and licenses." author="fare_men"/>
+    <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD"/>
+</content>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="build_station_module_info" name="Build station module info" description="Shows the number of station modules under construction, broken and hacked" author="fare_men" version="100" date="2025-05-09" save="0" enabled="1" sync="false">
+  <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD"/>
+</content>

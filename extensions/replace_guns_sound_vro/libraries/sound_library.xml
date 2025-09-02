@@ -1,0 +1,94 @@
+<diff>
+	<!-- Teladi positron beam volume -->
+<replace sel="//sound[@id='wpn_gen_posbeam_shoot']/volume">
+      <volume start="0.1" distance="18" />
+</replace>
+
+	<!-- Autocannon-->
+<replace sel="//sound[@id='wpn_autocannon_shoot']">
+    <sound id="wpn_autocannon_shoot" description="Autocannon shooting" repeat="1" is3d="1" preload="1">
+      <sample selection="random">
+        <select start="extensions\replace_guns_sound_vro\sfx\weapons\autocannon_1" />
+        <select start="extensions\replace_guns_sound_vro\sfx\weapons\autocannon_2" />
+        <select start="extensions\replace_guns_sound_vro\sfx\weapons\autocannon_3" />
+      </sample>
+      <volume start="1.6" distance="8" />
+    </sound>
+</replace>
+
+
+	<!-- CHAINGUN-->
+<replace sel="//sound[@id='wpn_chaingun_shoot']">
+    <sound id="wpn_chaingun_shoot" description="chaingun" repeat="-1" is3d="1" preload="1">
+      <sample loop="extensions\replace_guns_sound_vro\sfx\weapons\chaingun_1111" />
+      <volume start="1.0" distance="6" />
+      <effects>
+        <fade out="0.1" />
+      </effects>
+    </sound>
+</replace>
+
+
+	<!-- Fusion repeater-->
+<replace sel="//sound[@id='wpn_fusion_repeater_shoot']">
+    <sound id="wpn_fusion_repeater_shoot" description="fusion_repeater shooting" repeat="1" is3d="1" preload="1">
+      <sample selection="random">
+        <select start="extensions\replace_guns_sound_vro\sfx\weapons\fusion_repeater_1" />
+      </sample>
+      <volume start="1.0" distance="8" />
+    </sound>
+</replace>
+
+
+    <!-- Split Neutron Heavy Gatling-->
+<replace sel="//sound[@id='wpn_neutheavy_shoot']">
+    <sound id="wpn_neutheavy_shoot" description="wpn_neutheavy_shoot" repeat="-1" is3d="1" preload="1">
+      <sample loop="extensions\replace_guns_sound_vro\sfx\weapons\hev_neutron_loop" />
+      <volume start="0.1" distance="8" />
+      <effects>
+        <fade out="0.1"/>
+      </effects>
+    </sound>
+</replace>
+
+
+	<!-- Split Neutron S Gatling-->
+<replace sel="//sound[@id='spl_mg_firing']">	
+	<sound id="spl_mg_firing" description="Split Minigun firing loop" repeat="-1" is3d="1" preload="1">
+		<sample selection="random">
+        <select start="extensions\replace_guns_sound_vro\sfx\weapons\wpn_split_gatling_muzzle"/>
+      </sample>
+      <volume start="0.4" distance="5"/>
+      <effects>
+		<fade in="0.1"/>
+        <fade out="0.1"/>
+        <filter mode="lowpass" distance="5"> 
+          <distancecurve>
+           <point distance="0.0" volume="1.0"/>
+           <point distance="0.3" volume="0.5"/>
+           <point distance="0.6" volume="0.1"/>
+           <point distance="1.0" volume="0.05"/>
+          </distancecurve>
+         </filter>
+      </effects>
+    </sound>
+</replace>
+
+
+	<!-- Gatling Start Shooting-->
+<replace sel="//sound[@id='wpn_spl_gatling_startshooting']">
+    <sound id="wpn_spl_gatling_startshooting" description="Split Gatling Gun start shooting" repeat="1" is3d="1" preload="1">
+      <sample start="extensions\replace_guns_sound_vro\sfx\weapons\minigun_new_03_start"/>
+      <volume start="0.4" distance="1"/>
+    </sound>
+</replace>
+
+
+	<!-- Gatling Stop Shooting-->
+<replace sel="//sound[@id='wpn_spl_gatling_stopshooting']">
+    <sound id="wpn_spl_gatling_stopshooting" description="Split Gatling Gun stop shooting" repeat="1" is3d="1" preload="1">
+      <sample start="extensions\replace_guns_sound_vro\sfx\weapons\minigun_new_03_end"/>
+      <volume start="0.4" distance="1"/>
+    </sound>
+</replace>
+</diff>

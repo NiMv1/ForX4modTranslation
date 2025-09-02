@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+<replace sel="//set_value[@name='$illegalfound']">
+  <do_if value="$localtarget == player.occupiedship or $localtarget.owner == faction.player">
+    <write_to_logbook category="general" title="{314150, 1}" text="{314150, 4}.[this.ship.name, $localtarget.name]"/>
+    <remove_value name="$illegalfound"/>
+  </do_if>
+</replace>
+</diff>

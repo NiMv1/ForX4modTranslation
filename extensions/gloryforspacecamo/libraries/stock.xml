@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<diff> 
+	<add pos="prepend" sel="/stocks/stock[@id='default_trader']">
+		<ware ref="Eagle_Ferris" min="100" max="100" chance="100" />
+		<ware ref="Felon" min="100" max="100" chance="100" />
+		<ware ref="Felon_ALT" min="100" max="100" chance="100" />
+		<ware ref="Flanker" min="100" max="100" chance="100" />
+		<ware ref="Flanker_Grey" min="100" max="100" chance="100" />
+		<ware ref="Fullback" min="100" max="100" chance="100" />
+		<ware ref="Harrier_Hawker" min="100" max="100" chance="100" />
+		<ware ref="IDF_Desert" min="100" max="100" chance="100" />
+		<ware ref="IDF_Skyhawk" min="100" max="100" chance="100" />
+		<ware ref="JAP_Naval" min="100" max="100" chance="100" />
+		<ware ref="JAP_Tiger" min="100" max="100" chance="100" />
+		<ware ref="SK_Pixel" min="100" max="100" chance="100" />
+		<ware ref="checkmate_21" min="100" max="100" chance="100" />
+		<ware ref="checkmate_23" min="100" max="100" chance="100" />
+		<ware ref="checkmate_23_alt" min="100" max="100" chance="100" />
+		<ware ref="checkmate_pro" min="100" max="100" chance="100" />
+		<ware ref="checkmate_pro_max" min="100" max="100" chance="100" />
+		<ware ref="m346_ami" min="100" max="100" chance="100" />
+		<ware ref="tomcat_iriaf" min="100" max="100" chance="100" />
+		<ware ref="viper_aggressor" min="100" max="100" chance="100" />
+		<ware ref="almolivra" min="100" max="100" chance="100" />
+		<ware ref="asterhite" min="100" max="100" chance="100" />
+		<ware ref="blotdon" min="100" max="100" chance="100" />
+		<ware ref="icedragon" min="100" max="100" chance="100" />
+		<ware ref="lightromentar" min="100" max="100" chance="100" />
+		<ware ref="moonsite" min="100" max="100" chance="100" />
+		<ware ref="starrynight" min="100" max="100" chance="100" />
+		<ware ref="tomcat_aunwha" min="100" max="100" chance="100" />
+		
+	</add>
+</diff>

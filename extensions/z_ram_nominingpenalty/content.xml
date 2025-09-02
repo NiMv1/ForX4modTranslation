@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="z_ram_nominingpenalty" name="Ram: No Mining Penalty" description="Removes the hidden yet crippling 50% mining penalty" author="Ram" version="100" date="2025-03-10" save="0" enabled="1">
+</content>

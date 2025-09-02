@@ -1,0 +1,1309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="XenShipsResearch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="CheckXenEquipmentResearch" instantiate="true">
+      <conditions>
+	<check_any>
+ 		<event_cue_signalled cue="md.Setup.Start"/>
+          	<event_game_loaded/>
+	</check_any>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+	<do_if value="ware.research_equipment_xenon.research.unlocked"> 
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_f'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_se'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_pe'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_b'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_h'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_module_prod'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_module_def'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_module_stor'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_module_dock'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_module_wharf'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_module_shipyard'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_k'"/>
+            <add_encyclopedia_entry type="researchables" item="'research_xen_blueprint_i'"/>
+	</do_if>
+      </actions>
+    </cue>
+
+    <cue name="XenonFUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_f"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.ship_xen_s_heavyfighter_01_a" />
+            <add_blueprints wares="ware.ship_xen_s_fighter_01_a" />
+            <add_blueprints wares="ware.ship_xen_s_fighter_02_a" />
+            <add_blueprints wares="ware.ship_xen_s_scout_01_a" />
+            <add_blueprints wares="ware.engine_xen_s_combat_01_mk1"/>
+                    <add_blueprints wares="ware.shield_xen_s_standard_01_mk1"/>
+                    <add_blueprints wares="ware.shield_xen_s_standard_01_mk2"/>
+                    <add_blueprints wares="ware.weapon_xen_s_laser_01_mk1"/>
+      </actions>
+    </cue>
+
+    <cue name="XenonSEUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_se"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.ship_xen_m_miner_solid_01_a" />
+            <add_blueprints wares="ware.ship_arg_xl_builder_01_a" />
+            <add_blueprints wares="ware.engine_arg_xl_allround_01_mk1" />
+            <add_blueprints wares="ware.shield_arg_xl_standard_01_mk1" />
+      </actions>
+    </cue>
+
+    <cue name="XenonPEUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_pe"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.ship_xen_m_corvette_02_a" />
+	<set_faction_relation faction="faction.player" otherfaction="faction.terran" value="-0.01"/>
+	<set_faction_relation faction="faction.terran" otherfaction="faction.player" value="-0.01"/>
+      </actions>
+    </cue>
+
+    <cue name="XenonBUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_b"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.ship_xen_m_corvette_01_a" />
+	<set_faction_relation faction="faction.player" otherfaction="faction.terran" value="-0.01"/>
+	<set_faction_relation faction="faction.terran" otherfaction="faction.player" value="-0.01"/>
+      </actions>
+    </cue>
+
+
+    <cue name="XenonHUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_h"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.ship_xen_l_terraformer_01_a" />
+	    <set_faction_relation faction="faction.player" otherfaction="faction.terran" value="-0.032"/>
+   	    <set_faction_relation faction="faction.terran" otherfaction="faction.player" value="-0.032"/>
+      </actions>
+    </cue>
+
+    <cue name="XenonKUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_k"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+	    <set_value name="$HQ" exact="player.headquarters"/>
+        <create_position name="$attackpos" space="$HQ.sector" value="$HQ.position" object="$HQ.zone" />
+		<find_sector name="$GetsuFune" space="player.galaxy" macro="macro.cluster_48_sector001_macro" required="true"/>
+            <add_blueprints wares="ware.engine_xen_xl_allround_01_mk1" />
+            <add_blueprints wares="ware.shield_xen_xl_standard_01_mk1" />
+            <add_blueprints wares="ware.ship_xen_xl_destroyer_01_a" />
+	<set_faction_relation faction="faction.player" otherfaction="faction.alliance" value="-1"/>
+	<set_faction_relation faction="faction.alliance" otherfaction="faction.player" value="-1"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.argon" value="-1"/>
+	<set_faction_relation faction="faction.argon" otherfaction="faction.player" value="-1"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.boron" value="-0.32"/>
+	<set_faction_relation faction="faction.boron" otherfaction="faction.player" value="-0.32"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.split" value="-1"/>
+	<set_faction_relation faction="faction.split" otherfaction="faction.player" value="-1"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.paranid" value="-1"/>
+	<set_faction_relation faction="faction.paranid" otherfaction="faction.player" value="-1"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.antigone" value="-1"/>
+	<set_faction_relation faction="faction.antigone" otherfaction="faction.player" value="-1"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.pioneers" value="-0.1"/>
+	<set_faction_relation faction="faction.pioneers" otherfaction="faction.player" value="-0.1"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.freesplit" value="-0.32"/>
+	<set_faction_relation faction="faction.freesplit" otherfaction="faction.player" value="-0.32"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.teladi" value="-0.32"/>
+	<set_faction_relation faction="faction.teladi" otherfaction="faction.player" value="-0.32"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.ministry" value="-0.32"/>
+	<set_faction_relation faction="faction.ministry" otherfaction="faction.player" value="-0.32"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.loanshark" value="-0.1"/>
+	<set_faction_relation faction="faction.loanshark" otherfaction="faction.player" value="-0.1"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.scavenger" value="-0.1"/>
+	<set_faction_relation faction="faction.scavenger" otherfaction="faction.player" value="-0.1"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.holyorder" value="-1"/>
+	<set_faction_relation faction="faction.holyorder" otherfaction="faction.player" value="-1"/>
+		<set_faction_relation faction="faction.player" otherfaction="faction.trinity" value="-1"/>
+	<set_faction_relation faction="faction.trinity" otherfaction="faction.player" value="-1"/>
+	
+							<set_faction_relation faction="faction.boron" otherfaction="faction.argon" value="1"/>
+							<set_faction_relation faction="faction.argon" otherfaction="faction.boron" value="1"/>								
+							<set_faction_relation faction="faction.boron" otherfaction="faction.antigone" value="0.32"/>
+							<set_faction_relation faction="faction.antigone" otherfaction="faction.boron" value="0.32"/>								
+							<set_faction_relation faction="faction.boron" otherfaction="faction.terran" value="0.1"/>
+							<set_faction_relation faction="faction.terran" otherfaction="faction.boron" value="0.1"/>								
+							<set_faction_relation faction="faction.boron" otherfaction="faction.split" value="0.1"/>
+							<set_faction_relation faction="faction.split" otherfaction="faction.boron" value="0.1"/>
+							<set_faction_relation faction="faction.paranid" otherfaction="faction.boron" value="0.32"/>							
+							<set_faction_relation faction="faction.boron" otherfaction="faction.paranid" value="0.32"/>
+							<set_faction_relation faction="faction.argon" otherfaction="faction.terran" value="0.1"/>
+							<set_faction_relation faction="faction.terran" otherfaction="faction.argon" value="0.1"/>								
+							<set_faction_relation faction="faction.argon" otherfaction="faction.split" value="0.1"/>
+							<set_faction_relation faction="faction.split" otherfaction="faction.argon" value="0.1"/>
+							<set_faction_relation faction="faction.argon" otherfaction="faction.paranid" value="0.32"/>
+							<set_faction_relation faction="faction.paranid" otherfaction="faction.argon" value="0.32"/>	
+							<set_faction_relation faction="faction.terran" otherfaction="faction.split" value="0.1"/>
+							<set_faction_relation faction="faction.split" otherfaction="faction.terran" value="0.1"/>	
+							<set_faction_relation faction="faction.terran" otherfaction="faction.paranid" value="0.1"/>
+							<set_faction_relation faction="faction.paranid" otherfaction="faction.terran" value="0.1"/>
+							<set_faction_relation faction="faction.split" otherfaction="faction.paranid" value="0.1"/>
+							<set_faction_relation faction="faction.paranid" otherfaction="faction.split" value="0.1"/>							
+
+	<set_faction_relation_locked faction="faction.xenon" locked="false"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.xenon" value="-0.032"/>
+	<set_faction_relation faction="faction.xenon" otherfaction="faction.player" value="-0.032"/>
+	<set_faction_relation faction="faction.player" otherfaction="faction.yaki" value="0.01"/>
+	<set_faction_relation faction="faction.yaki" otherfaction="faction.player" value="0.01"/>
+        <!--Spawn Enemy Ships-->
+        <create_ship name="$ter_sapporo" macro="ship_ter_l_flagship_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="265500" y="0" z="-244000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$ter_sapporo" page="936009" line="1300" />
+        <create_order id="'Attack'" name="$attackOrder" object="$ter_sapporo" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$cw_colossus" macro="ship_arg_xl_carrier_02_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.argon" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.argon]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.argon]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="272500" y="0" z="-234000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$cw_colossus" page="936009" line="1101" />
+        <create_order id="'Attack'" name="$attackOrder" object="$cw_colossus" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$cw_raptor" macro="ship_spl_xl_carrier_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.split" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.split]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.split]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="272500" y="0" z="-218000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$cw_raptor" page="936009" line="1103" />
+        <create_order id="'Attack'" name="$attackOrder" object="$cw_raptor" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$cw_zeus" macro="ship_par_xl_carrier_02_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.paranid" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.paranid]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.paranid]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="272000" y="0" z="-224000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$cw_zeus" page="936009" line="1102" />
+        <create_order id="'Attack'" name="$attackOrder" object="$cw_zeus" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <set_value name="$borondestroyer_ship_count" exact="4" />
+        <do_while value="$borondestroyer_ship_count">
+          <create_ship name="$shipborondestroyer" macro="ship_bor_l_destroyer_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.boron" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.boron]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.boron]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="277000" y="0" z="-232000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipborondestroyer" page="936009" line="1104" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipborondestroyer" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+          <set_value name="$borondestroyer_ship_count" exact="$borondestroyer_ship_count - 1" />
+        </do_while>
+
+        <set_value name="$splitdestroyer_ship_count" exact="16" />
+        <do_while value="$splitdestroyer_ship_count">
+          <create_ship name="$shipsplitdestroyer" macro="ship_spl_l_destroyer_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.split" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.split]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.split]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="275000" y="0" z="-231000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipsplitdestroyer" page="936009" line="1105" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipsplitdestroyer" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+          <set_value name="$splitdestroyer_ship_count" exact="$splitdestroyer_ship_count - 1" />
+        </do_while>
+
+        <!--Spawn Xperimental Shuttles-->
+        <set_value name="$terxperimental_ship_count" exact="6" />
+        <do_while value="$terxperimental_ship_count">
+          <create_ship name="$shipterxperimental" macro="ship_ter_s_xperimental_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.terran" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.terran]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.terran]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="265000" y="0" z="-243000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipterxperimental" page="936009" line="1301" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipterxperimental" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipterxperimental" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$terxperimental_ship_count" exact="$terxperimental_ship_count - 1" />
+        </do_while>
+
+        <!--Spawn Ares-->
+        <set_value name="$parheavyfighter_ship_count" exact="48" />
+        <do_while value="$parheavyfighter_ship_count">
+          <create_ship name="$shipparheavyfighter" macro="ship_par_s_heavyfighter_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.paranid" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.paranid]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.paranid]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="267000" y="0" z="-242000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipparheavyfighter" page="936009" line="1202" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipparheavyfighter" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipparheavyfighter" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$parheavyfighter_ship_count" exact="$parheavyfighter_ship_count - 1" />
+        </do_while>
+
+        <!--Spawn Eclipses-->
+        <set_value name="$argheavyfighter_ship_count" exact="36" />
+        <do_while value="$argheavyfighter_ship_count">
+          <create_ship name="$shipargheavyfighter" macro="ship_arg_s_heavyfighter_02_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.argon" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.argon]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.argon]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="269000" y="0" z="-240000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipargheavyfighter" page="936009" line="1201" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipargheavyfighter" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipargheavyfighter" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$argheavyfighter_ship_count" exact="$argheavyfighter_ship_count - 1" />
+        </do_while>
+
+        <!--Spawn Chimeras-->
+        <set_value name="$splheavyfighter_ship_count" exact="122" />
+        <do_while value="$splheavyfighter_ship_count">
+          <create_ship name="$shipsplheavyfighter" macro="ship_spl_s_heavyfighter_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.split" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.split]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.split]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="272000" y="0" z="-248000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipsplheavyfighter" page="936009" line="1203" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipsplheavyfighter" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipsplheavyfighter" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$splheavyfighter_ship_count" exact="$splheavyfighter_ship_count - 1" />
+        </do_while>
+
+      </actions>
+    </cue>
+
+    <cue name="XenonIUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_i"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.ship_xen_xl_carrier_01_a" />
+            <add_blueprints wares="ware.shield_xen_m_standard_02_mk2" />
+      </actions>
+    </cue>
+
+    <cue name="XenonM0Unlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_m0"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+	    <set_value name="$HQ" exact="player.headquarters"/>
+        <create_position name="$attackpos" space="$HQ.sector" value="$HQ.position" object="$HQ.zone" />
+            <add_blueprints wares="ware.ship_xen_xl_mothership_01" />
+            <add_blueprints wares="ware.shield_xen_xl_mothership_01_mk1" />
+            <add_blueprints wares="ware.turret_xen_xl_battleship_01_mk1" />
+            <add_blueprints wares="ware.engine_xen_xl_mothership_01_allround_01_mk1" />
+            <add_blueprints wares="ware.weapon_xen_xl_battleship_01_mk1" />
+        <!--Spawn Enemy Ships-->
+        <create_ship name="$terasgard" macro="ship_atf_xl_battleship_01_a_macro"
+          sector="$GetsuFune" capturable="false">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+        <equipmentmods>
+          <engine ware="mod_engine_forwardthrust_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <shield ware="mod_shield_capacity_01_mk3" />
+          <ship ware="mod_ship_mass_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+          <weapon ware="mod_weapon_damage_01_mk3" />
+        </equipmentmods>
+          <position x="145500" y="0" z="-4000" />
+          <rotation yaw="180deg" />
+        </create_ship>
+	<set_object_name object="$terasgard" page="936009" line="1401" />
+        <create_order id="'Attack'" name="$attackOrder" object="$terasgard" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$ter_tokyo" macro="ship_ter_xl_carrier_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="252500" y="0" z="-204000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$ter_tokyo" page="936009" line="1001" />
+        <create_order id="'Attack'" name="$attackOrder" object="$ter_tokyo" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$ter_asgard" macro="ship_atf_xl_battleship_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="242500" y="0" z="-202000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$ter_asgard" page="936009" line="1002" />
+        <create_order id="'Attack'" name="$attackOrder" object="$ter_asgard" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$ter_asgard2" macro="ship_atf_xl_battleship_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="242500" y="0" z="-202000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$ter_asgard2" page="936009" line="1003" />
+        <create_order id="'Attack'" name="$attackOrder" object="$ter_asgard2" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <!--Spawn Gladiuses-->
+        <set_value name="$terheavyfighter_ship_count" exact="88" />
+        <do_while value="$terheavyfighter_ship_count">
+          <create_ship name="$shipterheavyfighter" macro="ship_ter_s_heavyfighter_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.terran" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.terran]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.terran]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="242500" y="0" z="-202000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipterheavyfighter" page="936009" line="1004" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipterheavyfighter" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipterheavyfighter" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$terheavyfighter_ship_count" exact="$terheavyfighter_ship_count - 1" />
+        </do_while>
+
+
+        <set_value name="$tersyn_ship_count" exact="24" />
+        <do_while value="$tersyn_ship_count">
+        <create_ship name="$tersyn" macro="ship_atf_l_destroyer_01_a_macro"
+          sector="$GetsuFune" capturable="false">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="155500" y="0" z="-6000" />
+          <rotation yaw="180deg" />
+        </create_ship>
+	<set_object_name object="$tersyn" page="936009" line="1402" />
+        <create_order id="'Attack'" name="$attackOrder" object="$tersyn" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+          <set_value name="$tersyn_ship_count" exact="$tersyn_ship_count - 1" />
+        </do_while>
+
+        <create_ship name="$tercarrier" macro="ship_ter_xl_carrier_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="265500" y="0" z="-244000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$tercarrier" page="936009" line="1403" />
+        <create_order id="'Attack'" name="$attackOrder" object="$tercarrier" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <!--Spawn Enemy Ships-->
+        <create_ship name="$ter_sapporo" macro="ship_ter_l_flagship_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="265500" y="0" z="-244000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$ter_sapporo" page="936009" line="1300" />
+        <create_order id="'Attack'" name="$attackOrder" object="$ter_sapporo" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$cw_colossus" macro="ship_arg_xl_carrier_02_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.argon" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.argon]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.argon]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="272500" y="0" z="-234000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$cw_colossus" page="936009" line="1101" />
+        <create_order id="'Attack'" name="$attackOrder" object="$cw_colossus" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$cw_raptor" macro="ship_spl_xl_carrier_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.split" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.split]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.split]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="272500" y="0" z="-218000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$cw_raptor" page="936009" line="1103" />
+        <create_order id="'Attack'" name="$attackOrder" object="$cw_raptor" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$cw_zeus" macro="ship_par_xl_carrier_02_a_macro"
+          sector="$GetsuFune" capturable="true">
+          <owner exact="faction.paranid" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.paranid]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.paranid]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="272000" y="0" z="-224000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$cw_zeus" page="936009" line="1102" />
+        <create_order id="'Attack'" name="$attackOrder" object="$cw_zeus" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <set_value name="$borondestroyer_ship_count" exact="12" />
+        <do_while value="$borondestroyer_ship_count">
+          <create_ship name="$shipborondestroyer" macro="ship_bor_l_destroyer_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.boron" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.boron]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.boron]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="277000" y="0" z="-232000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipborondestroyer" page="936009" line="1104" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipborondestroyer" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+          <set_value name="$borondestroyer_ship_count" exact="$borondestroyer_ship_count - 1" />
+        </do_while>
+
+        <set_value name="$splitdestroyer_ship_count" exact="24" />
+        <do_while value="$splitdestroyer_ship_count">
+          <create_ship name="$shipsplitdestroyer" macro="ship_spl_l_destroyer_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.split" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.split]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.split]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="275000" y="0" z="-231000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipsplitdestroyer" page="936009" line="1105" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipsplitdestroyer" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+          <set_value name="$splitdestroyer_ship_count" exact="$splitdestroyer_ship_count - 1" />
+        </do_while>
+
+        <!--Spawn Xperimental Shuttles-->
+        <set_value name="$terxperimental_ship_count" exact="12" />
+        <do_while value="$terxperimental_ship_count">
+          <create_ship name="$shipterxperimental" macro="ship_ter_s_xperimental_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.terran" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.terran]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.terran]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="265000" y="0" z="-243000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipterxperimental" page="936009" line="1301" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipterxperimental" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipterxperimental" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$terxperimental_ship_count" exact="$terxperimental_ship_count - 1" />
+        </do_while>
+
+        <!--Spawn Ares-->
+        <set_value name="$parheavyfighter_ship_count" exact="48" />
+        <do_while value="$parheavyfighter_ship_count">
+          <create_ship name="$shipparheavyfighter" macro="ship_par_s_heavyfighter_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.paranid" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.paranid]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.paranid]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="267000" y="0" z="-242000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipparheavyfighter" page="936009" line="1202" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipparheavyfighter" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipparheavyfighter" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$parheavyfighter_ship_count" exact="$parheavyfighter_ship_count - 1" />
+        </do_while>
+
+        <!--Spawn Eclipses-->
+        <set_value name="$argheavyfighter_ship_count" exact="36" />
+        <do_while value="$argheavyfighter_ship_count">
+          <create_ship name="$shipargheavyfighter" macro="ship_arg_s_heavyfighter_02_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.argon" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.argon]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.argon]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="269000" y="0" z="-240000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipargheavyfighter" page="936009" line="1201" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipargheavyfighter" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipargheavyfighter" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$argheavyfighter_ship_count" exact="$argheavyfighter_ship_count - 1" />
+        </do_while>
+
+        <!--Spawn Chimeras-->
+        <set_value name="$splheavyfighter_ship_count" exact="122" />
+        <do_while value="$splheavyfighter_ship_count">
+          <create_ship name="$shipsplheavyfighter" macro="ship_spl_s_heavyfighter_01_a_macro"
+          sector="$GetsuFune" capturable="true">
+            <owner exact="faction.split" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.split]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.split]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="272000" y="0" z="-248000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipsplheavyfighter" page="936009" line="1203" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipsplheavyfighter" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipsplheavyfighter" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$splheavyfighter_ship_count" exact="$splheavyfighter_ship_count - 1" />
+        </do_while>
+
+
+      </actions>
+    </cue>
+
+    <cue name="XenonProdUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_module_prod"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.module_xen_prod_energycells_01" />
+            <add_blueprints wares="ware.module_arg_conn_base_01" />
+            <add_blueprints wares="ware.module_arg_conn_base_02" />
+            <add_blueprints wares="ware.module_arg_conn_base_03" />
+            <add_blueprints wares="ware.module_arg_conn_cross_01" />
+            <add_blueprints wares="ware.module_arg_conn_vertical_01" />
+            <add_blueprints wares="ware.module_arg_conn_vertical_02" />
+      </actions>
+    </cue>
+
+    <cue name="XenonStorUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_module_stor"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.module_xen_stor_01" />
+            <add_blueprints wares="ware.module_xen_stor_01" />
+      </actions>
+    </cue>
+
+    <cue name="XenonDockUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_module_dock"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.module_xen_dock_m_01" />
+            <add_blueprints wares="ware.module_arg_pier_l_01" />
+            <add_blueprints wares="ware.module_arg_dock_m_01_lowtech" />
+            <add_blueprints wares="ware.module_arg_dock_m_02_lowtech" />
+      </actions>
+    </cue>
+
+    <cue name="XenonDefUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_module_def"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.module_xen_def_base_01" />
+            <add_blueprints wares="ware.module_arg_def_tube_01" />
+            <add_blueprints wares="ware.module_arg_def_disc_01" />
+            <add_blueprints wares="ware.shield_xen_m_standard_01_mk1" />
+            <add_blueprints wares="ware.shield_xen_m_standard_02_mk1" />
+            <add_blueprints wares="ware.turret_xen_l_xppc" />
+            <add_blueprints wares="ware.turret_xen_l_obliterator" />
+            <add_blueprints wares="ware.turret_xen_l_laser_01_mk1" />
+            <add_blueprints wares="ware.turret_xen_m_beam_02_mk1" />
+            <add_blueprints wares="ware.turret_xen_m_laser_01_mk1" />
+            <add_blueprints wares="ware.turret_xen_m_laser_02_mk1" />
+	<set_faction_relation faction="faction.player" otherfaction="faction.terran" value="-0.1"/>
+	<set_faction_relation faction="faction.terran" otherfaction="faction.player" value="-0.1"/>
+      </actions>
+    </cue>
+
+    <cue name="XenonWharfUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_module_wharf"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.module_gen_build_dockarea_m_01" />
+	<set_faction_relation faction="faction.player" otherfaction="faction.terran" value="-1"/>
+	<set_faction_relation faction="faction.terran" otherfaction="faction.player" value="-1"/>
+      </actions>
+    </cue>
+
+    <cue name="XenonShipyardUnlock" instantiate="true">
+      <conditions>
+                    <event_player_research_unlocked ware="ware.research_xen_blueprint_module_shipyard"/>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+            <add_blueprints wares="ware.module_xen_build_xl_01" />
+	    <set_value name="$HQ" exact="player.headquarters"/>
+        <create_position name="$attackpos" space="$HQ.sector" value="$HQ.position" object="$HQ.zone" />
+        <!--Spawn Enemy Ships-->
+        <create_ship name="$ter_tokyo" macro="ship_ter_xl_carrier_01_a_macro"
+          sector="$HQ.sector" capturable="true">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="252500" y="0" z="-204000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$ter_tokyo" page="936009" line="1001" />
+        <create_order id="'Attack'" name="$attackOrder" object="$ter_tokyo" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$ter_asgard" macro="ship_atf_xl_battleship_01_a_macro"
+          sector="$HQ.sector" capturable="true">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="242500" y="0" z="-202000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$ter_asgard" page="936009" line="1002" />
+        <create_order id="'Attack'" name="$attackOrder" object="$ter_asgard" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <create_ship name="$ter_asgard2" macro="ship_atf_xl_battleship_01_a_macro"
+          sector="$HQ.sector" capturable="true">
+          <owner exact="faction.terran" overridenpc="true" />
+          <loadout>
+            <level exact="1" />
+          </loadout>
+          <pilot>
+            <select race="[race.terran]" tags="tag.aipilot" />
+          </pilot>
+          <people>
+            <fillpercent exact="100" />
+            <person role="service" weight="100">
+              <select race="[race.terran]" tags="tag.service" />
+            </person>
+          </people>
+          <position x="242500" y="0" z="-202000" />
+          <rotation yaw="90deg" />
+        </create_ship>
+	<set_object_name object="$ter_asgard2" page="936009" line="1003" />
+        <create_order id="'Attack'" name="$attackOrder" object="$ter_asgard2" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+
+        <!--Spawn Gladiuses-->
+        <set_value name="$terheavyfighter_ship_count" exact="54" />
+        <do_while value="$terheavyfighter_ship_count">
+          <create_ship name="$shipterheavyfighter" macro="ship_ter_s_heavyfighter_01_a_macro"
+          sector="$HQ.sector" capturable="true">
+            <owner exact="faction.terran" overridenpc="true" />
+            <loadout>
+                <level exact="1" />
+            </loadout>
+            <pilot>
+              <select race="[race.terran]" tags="tag.aipilot" />
+            </pilot>
+            <people>
+              <fillpercent exact="100" />
+              <person role="service" weight="100">
+                <select race="[race.terran]" tags="tag.service" />
+              </person>
+            </people>
+          <position x="242500" y="0" z="-202000" />
+          <rotation yaw="90deg" />
+          </create_ship>
+	<set_object_name object="$shipterheavyfighter" page="936009" line="1004" />
+        <create_order id="'Attack'" name="$attackOrder" object="$shipterheavyfighter" immediate="true">
+          <param name="primarytarget" value="$HQ" />
+          <param name="pursuetargets" value="true" />
+          <param name="checkrelation" value="false" />
+        </create_order>
+          <create_order id="'AttackInRange'" object="$shipterheavyfighter" immediate="true">
+            <param name="destination" value="[$HQ.sector, $attackpos]" />
+          </create_order>
+
+          <set_value name="$terheavyfighter_ship_count" exact="$terheavyfighter_ship_count - 1" />
+        </do_while>
+
+      </actions>
+    </cue>
+
+    <cue name="XenonShipUnlockFinished" instantiate="true">
+      <conditions>
+	<check_any>
+ 		<event_cue_signalled cue="md.Setup.Start"/>
+          	<event_game_loaded/>
+	</check_any>
+      </conditions>
+      <delay exact="1ms"/>
+      <actions>
+	<do_if value="ware.research_xen_blueprint_f.research.unlocked"> 
+            <add_blueprints wares="ware.ship_xen_s_heavyfighter_01_a" />
+            <add_blueprints wares="ware.ship_xen_s_fighter_01_a" />
+            <add_blueprints wares="ware.ship_xen_s_fighter_02_a" />
+            <add_blueprints wares="ware.ship_xen_s_scout_01_a" />
+            <add_blueprints wares="ware.engine_xen_s_combat_01_mk1"/>
+                    <add_blueprints wares="ware.shield_xen_s_standard_01_mk1"/>
+                    <add_blueprints wares="ware.shield_xen_s_standard_01_mk2"/>
+                    <add_blueprints wares="ware.weapon_xen_s_laser_01_mk1"/>
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_se.research.unlocked"> 
+            <add_blueprints wares="ware.ship_xen_m_miner_solid_01_a" />
+            <add_blueprints wares="ware.ship_arg_xl_builder_01_a" />
+            <add_blueprints wares="ware.engine_arg_xl_allround_01_mk1" />
+            <add_blueprints wares="ware.shield_arg_xl_standard_01_mk1" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_pe.research.unlocked"> 
+            <add_blueprints wares="ware.ship_xen_m_corvette_02_a" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_b.research.unlocked"> 
+            <add_blueprints wares="ware.ship_xen_m_corvette_01_a" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_h.research.unlocked"> 
+            <add_blueprints wares="ware.ship_xen_l_terraformer_01_a" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_module_prod.research.unlocked"> 
+            <add_blueprints wares="ware.module_xen_prod_energycells_01" />
+            <add_blueprints wares="ware.module_arg_conn_base_01" />
+            <add_blueprints wares="ware.module_arg_conn_base_02" />
+            <add_blueprints wares="ware.module_arg_conn_base_03" />
+            <add_blueprints wares="ware.module_arg_conn_cross_01" />
+            <add_blueprints wares="ware.module_arg_conn_vertical_01" />
+            <add_blueprints wares="ware.module_arg_conn_vertical_02" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_module_stor.research.unlocked"> 
+            <add_blueprints wares="ware.module_xen_stor_01" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_module_dock.research.unlocked"> 
+            <add_blueprints wares="ware.module_xen_dock_m_01" />
+            <add_blueprints wares="ware.module_arg_pier_l_01" />
+            <add_blueprints wares="ware.module_arg_dock_m_01_lowtech" />
+            <add_blueprints wares="ware.module_arg_dock_m_02_lowtech" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_module_def.research.unlocked"> 
+            <add_blueprints wares="ware.module_xen_def_base_01" />
+            <add_blueprints wares="ware.module_arg_def_tube_01" />
+            <add_blueprints wares="ware.module_arg_def_disc_01" />
+            <add_blueprints wares="ware.shield_xen_m_standard_01_mk1" />
+            <add_blueprints wares="ware.shield_xen_m_standard_02_mk1" />
+            <add_blueprints wares="ware.turret_xen_l_xppc" />
+            <add_blueprints wares="ware.turret_xen_l_obliterator" />
+            <add_blueprints wares="ware.turret_xen_l_laser_01_mk1" />
+            <add_blueprints wares="ware.turret_xen_m_beam_02_mk1" />
+            <add_blueprints wares="ware.turret_xen_m_laser_01_mk1" />
+            <add_blueprints wares="ware.turret_xen_m_laser_02_mk1" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_module_wharf.research.unlocked"> 
+            <add_blueprints wares="ware.module_gen_build_dockarea_m_01" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_module_shipyard.research.unlocked"> 
+	 <add_blueprints wares="ware.module_xen_build_xl_01" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_k.research.unlocked"> 
+            <add_blueprints wares="ware.engine_xen_xl_allround_01_mk1" />
+            <add_blueprints wares="ware.shield_xen_xl_standard_01_mk1" />
+            <add_blueprints wares="ware.ship_xen_xl_destroyer_01_a" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_i.research.unlocked"> 
+            <add_blueprints wares="ware.ship_xen_xl_carrier_01_a" />
+            <add_blueprints wares="ware.shield_xen_m_standard_02_mk2" />
+        </do_if>
+	<do_if value="ware.research_xen_blueprint_m0.research.unlocked">
+            <add_blueprints wares="ware.ship_xen_xl_mothership_01" />
+            <add_blueprints wares="ware.shield_xen_xl_mothership_01_mk1" />
+            <add_blueprints wares="ware.turret_xen_xl_battleship_01_mk1" />
+            <add_blueprints wares="ware.engine_xen_xl_mothership_01_allround_01_mk1" />
+            <add_blueprints wares="ware.weapon_xen_xl_battleship_01_mk1" />
+        </do_if>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

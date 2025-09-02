@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="SectorSatellitesConfig" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="E:\Modding\xsds\comb\md.xsd">
+  <cues>
+    <library name="SSC_ConfigBase">
+      <actions>
+        <!--
+        ##############################
+        ########### CONFIG ###########
+        
+        =============== NORMAL SATELLITES ==================
+        
+        Detection Probes For Normal Satellites
+        Should normal satellites spawn Detection Probes to uncover stations? 
+        Set true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$sats.$detectionProbes" exact="false"/>
+
+        
+        <!--
+        Gate Detection For Normal Satellites
+        Should normal satellites spawn Detection Probes to uncover gates and highways?
+        Set true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$sats.$detectGates" exact="false"/>
+
+        
+        <!--
+        Hostile Station Detection for Normal Satellites
+        Should normal Satellites spawn Detection Probes to uncover hostile stations? (Requires detection probes to be enabled)
+        Set true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$sats.$detectHostileStations" exact="false" />
+
+        
+        <!--
+        =============== ADVANCED SATELLITES ==================
+         
+        Detection Probes for Advanced Satellites
+        Should Advanced Satellites spawn Detection Probes to uncover stations? 
+        Set true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$advSats.$detectionProbes" exact="true" />
+        
+        
+        <!--
+        Gate Detection for Advanced Satellites
+        Should Advanced Satellites spawn Detection Probes to uncover gates and highways? 
+        Set true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$advSats.$detectGates" exact="false" />
+
+        
+        <!--
+        Hostile Station detection for Advanced Satellites
+        Should Advanced Satellites spawn Detection Probes to uncover hostile stations? (Requires detection probes to be enabled) 
+        Set true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$advSats.$detectHostileStations" exact="false" />
+        
+        
+        <!--
+        =============== HOSTILE DETECTION SATELLITES ==================
+        
+        
+        Detection Probes For Hostile Detection Satellites
+        Should Hostile Detection Satellites spawn Detection Probes to uncover stations? 
+        Set true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$hds.$detectionProbes" exact="true" />
+        
+        
+        <!--
+        Gate Detection For Hostile Detection Satellites
+        Should Hostile Detection Satellites spawn Detection Probes to uncover gates? 
+        Set true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$hds.$detectGates" exact="false" />
+
+
+        <!--
+        Hostile Station Detection for Hostile Detection Satellites
+        Should Hostile Detection Satellites spawn Detection Probes to uncover hostile stations? 
+        Set true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$hds.$detectHostileStations" exact="false" />
+
+
+        <!--
+        Active Radar
+        Main functionality for HDS to switch to active radar and show ships on the map, if an enemy is closeby.
+        If disabled, no notifications will be issued and the satellite won't have active radar on the map. 
+        It would basicly just update trade prices but not show any ships.
+        (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$hds.$activeRadar" exact="true" />
+        
+
+        <!--
+        Enable or disable Notifications about hostile ships
+        Relay intel on hostile ships in the hostile satellite's proximity. Requires active radar to be enabled.
+        (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$hds.$relayShipInfo" exact="true" />
+
+
+        <!--
+        Set relation value when hostile ships should be detected
+        
+        UI value mapping:
+          -1.0       = -30
+          -0.32      = -25
+          -0.1       = -20
+          -0.032     = -15
+          -0.01      = -10
+       
+        Set between -0.01 and -1 (Default: -0.01)
+        -->
+        <set_value name="$ss_cue.$options.$hds.$reportRelationValue" exact="-0.01" />
+
+        
+        <!--
+        Purpose types of ships intel should be provided of
+        Remove lines of entries you do not want to be informed of. Requires active radar and messages to be enabled for this setting to matter.
+        (Default: [
+          purpose.fight, 
+          purpose.build, 
+          purpose.mine, 
+          purpose.trade, 
+          purpose.auxiliary,
+          ])
+        -->
+        <set_value name="$ss_cue.$options.$hds.$relayShipInfoPurpose" exact="[
+          purpose.fight, 
+          purpose.build, 
+          purpose.mine, 
+          purpose.trade, 
+          purpose.auxiliary,
+        ]" />
+
+        
+        <!--
+        =============== SURVEY UNITS ==================
+        
+        
+        Have Survey Unit's Probes detect data vaults? They will only be visiable while the probes are active. 
+        Set true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$surveyProbes.$activities.$surveyVaults" exact="true" />
+        
+        
+        <!--
+        Have Survey Unit's Probes detect ownerless ships?
+        Set true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$surveyProbes.$activities.$surveyShips" exact="true" />
+        
+        
+        <!--
+        Have Survey Unit's Probes detect undiscovered gates?
+        Set true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$surveyProbes.$activities.$surveyGates" exact="true" />
+
+        
+        <!--
+        Have Survey Unit's Probes detect undiscovered highways?
+        Set true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$surveyProbes.$activities.$surveyHighways" exact="true" />
+
+
+        <!--
+        Have Survey Unit's Probes detect undiscovered stations?
+        Set true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$surveyProbes.$activities.$surveyStations" exact="true" />
+
+        
+        <!--
+        Have Survey Unit's Probes detect lockboxes?
+        Set true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$surveyProbes.$activities.$surveyLockboxes" exact="false" />
+
+
+        <!--
+        Have Survey Unit's Probes detect wormhole anomalies and place a nav beacon there if one doesn't exist yet?
+        Set true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$surveyProbes.$activities.$surveyWormholes" exact="true" />
+
+
+        <!--
+        The Survey Unit's Probes lifetime in seconds
+        Set between 80 and 600 (Default: 160)
+        -->
+        <set_value name="$ss_cue.$options.$surveyProbes.$lifetime" exact="160" />
+
+        
+        <!--
+        =============== RESOURCE SURVEY UNITS ==================
+        
+        
+        Set an estimate of predefined categoryies for what kind of resource yields should be found by resource survey probes.
+        Set to a higher definition to stop probes from finding low value yields. Definitions can be looked up in the game files at libraries\regionyields.xml
+        Following values are supported: 'verylow', 'low', 'medium', 'high' (Default: 'verylow')
+        -->
+        <set_value name="$ss_cue.$options.$resourceSurveyUnits.$minResourceAvailability" exact="'verylow'" />
+
+        
+        <!--
+        Should the report (logbook entry) also include resources which yield falls below the above set $minResourceAvailability yield?
+        Less information will be logged compared to findings that cause probe deployments.
+        Only relevant if the above setting is above 'verylow' and would exclude certain yields.
+        Set to true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$resourceSurveyUnits.$ignoreMinResourceAvailabilityForReport" exact="true" />
+
+        
+        <!--
+        Should the deployment of a Resource Survey Unit clear previously deployed Resource Survey Probes within the sector before deploying new ones?
+        This option does only include Resource Survey Probes generated by the Resource Survey Unit, not vanilla resource probes.
+        Set to true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$resourceSurveyUnits.$removeExistingResourceSurveyProbes" exact="true" />
+
+        
+        <!--
+        Should the deployment of a Resource Survey Unit clear vanilla resource probes within in the sector before deploying new ones?
+        This option does only include vanilla resource probes, not Resource Survey Probes generated by the Resource Survey Unit.
+        Set to true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$resourceSurveyUnits.$removeExistingVanillaResourceProbes" exact="false" />
+
+        
+        <!--
+        Should a small grid of probes be spawned around the central location of the highest yield to reveal a wider area for miners? 
+        However the position detection will only be based on the yield of the central resource 'cube' (32km * 32km * 32km), 
+        the space around them for additinal probes is not evaluated. If additional probes do not register any yields, they remove themselfs.
+        
+        This is the small version and only adds an additional probe in each positive and negative axis direction, basically like a star shape.
+        Set to true or false (Default: true)
+        -->
+        <set_value name="$ss_cue.$options.$resourceSurveyUnits.$spawnGrid" exact="true" />
+
+        
+        <!--
+        Should a full grid of probes be spawned around the central location of the highest yield to reveal a wider area for miners? 
+        This is the full version and adds the full cube of 27 probes around the central location. Requires the $spawnGrid option to be enabled.
+        Set to true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$resourceSurveyUnits.$spawnFullGrid" exact="false" />
+
+        
+        <!--
+        Which resources should probes scan for? You can remove the lines of resources u do not wish to scan for or add additional resources that may be added by other mods.
+        (Default: [
+          ware.silicon, 
+          ware.ore, 
+          ware.ice, 
+          ware.nividium, 
+          ware.helium, 
+          ware.hydrogen, 
+          ware.methane,
+        ]
+        )-->
+        <set_value name="$ss_cue.$options.$resourceSurveyUnits.$resourcesToScan" exact="[
+          ware.silicon, 
+          ware.ore, 
+          ware.ice, 
+          ware.nividium, 
+          ware.helium, 
+          ware.hydrogen, 
+          ware.methane,
+        ]"/>
+
+
+        <!--
+        Set the threshhold to skip further probe deployment, if a probe already exists for that resource at the best location.
+        If the difference is higher then the threshhold, a new probe grid will be spawned. 
+        The settings takes a raw value of resources within a probes scan range (32km x 32km x 32km), so to calculate the per km³ value, you need to devide it by 32768.
+        Which would mean our default threshhold of 1000 equals about 0.03 / km³, when reading the value of a probe.
+        Set to 0 or higher (Default: 1000)
+        -->
+        <set_value name="$ss_cue.$options.$resourceSurveyUnits.$skipResProbeThreshhold" exact="1000" />
+
+
+        <!--
+        =============== PIRATE DETECTION / UNCOVER ==================
+        
+        
+        When enabled, this setting allows your advanced satellites and your hostile detection satellites to uncover 
+        ships with neutral or worse relations in systems you have a station in.
+        The 'systems with player station' restriction exists to avoid issues that may arise with cover in plot quests.
+        There aren't any known cases yet, it's just a preemptive measure.
+        To enable this feature, set it to true (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$allowUncover" exact="false" />
+
+        
+        <!--
+        Set whether detected ships, that are neutral (SCA for example) should be temporarily set to hostile, 
+        so stations may fire at them with the according turret settings. Only affects relations to the ship temporarily, 
+        it does not affect the faction relation itself (although ur station killing a ship might)
+        Set to true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$setUncoveredHostile" exact="false" />
+
+        
+        <!--
+        Should the entire sector be scanned? False leads to only the actual scan area (75km) of the satellite(s) in system to uncover ships.
+        Set to true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$uncoverFullSector" exact="false" />
+
+        
+        <!--
+        =============== OTHER ==================
+        
+        
+        Specify what owned objects your pilots can permanently disable (destroy), when you comm them.
+        Add or remove macro names from the list below.
+        A few generally helpful macros: 
+        
+        macro.eq_arg_satellite_01_macro - vanilla satellite
+        macro.eq_arg_satellite_02_macro - vanilla advanced satellite
+        macro.eq_arg_resourceprobe_01_macro - vanilla resource probe
+        macro.resource_survey_probe_macro - resource survey probe
+        macro.hostile_detection_satellite_off_macro - hostile detection satellite
+        macro.interdiction_probe_macro - interdiction probe
+        
+        -->
+        <set_value name="$ss_cue.$options.$specifiedObjectsToDestroy" exact="[
+                   macro.resource_survey_probe_macro,
+                   macro.eq_arg_resourceprobe_01_macro,
+                   ]" />
+
+
+        <!--
+        This option allows, for mod compatibility reasons with other mods, to disable the conversation option for captains of your ships, which then can clear up resource probes or resource survey probes that are no longer needed in the sector.
+        Set to true or false (Default: false)
+        -->
+        <set_value name="$ss_cue.$options.$disableConversationOption" exact="false" />
+
+        
+        <!--
+        =============== MOD SETTINGS ==================
+        
+        
+        Uninstallation Option: Remove permanent subscriptions from sectors where satellites are installed
+        If wanted set to true before deinstalling
+        -->
+        <set_value name="$ss_cue.$options.$deinstall" exact="false" />
+        
+        <!--
+        ######### CONFIG END #########
+        ##############################-->
+
+
+
+      </actions>
+    </library>
+  </cues>
+</mdscript>

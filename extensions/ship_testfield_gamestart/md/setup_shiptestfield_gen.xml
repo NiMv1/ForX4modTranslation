@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="Setup_shiptestfield_gen" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="Shiptestfield_interaction_info" instantiate="true">
+      <conditions>
+        <event_cue_signalled cue="md.Interact_Menu_API.Get_Actions" />
+        <check_value value="player.galaxy.macro==macro.shiptest_gen_universe_macro" />
+        <check_value value="@event.param.$object.ismodular" />
+      </conditions>
+      <actions>
+        <signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param="table[
+              $id         = 'shiptestfield_instantbuild',
+              $section    = 'main',
+              $text       = {1001,11919},
+              $callback   = Shiptestfield_instantbuild,
+              ]" />
+      </actions>
+    </cue>
+    <cue name="Shiptestfield_instantbuild" >
+      <conditions>
+        <event_cue_signalled />
+      </conditions>
+      <actions>
+        <raise_lua_event name="'shiptestfield_lualib.instant_build'" param="'%s'.[event.param.$object]" />
+        <reset_cue cue="this" />
+      </actions>
+    </cue>
+
+    <cue name="Shiptestfield_gen_inisetup" module="shiptestfield_gen_gamestart">
+      <conditions>
+        <event_cue_signalled cue="md.Setup.GameStart" />
+      </conditions>
+      <actions>
+        <!-- Add paintjobs and blueprints -->
+        <get_factions_by_tag tag="tag.economic" result="$BPFactions" />
+        <get_ware_definition flags="allowplayerblueprint" faction="$BPFactions" tags="tag.module" result="$MBlueprints" />
+        <get_ware_definition flags="allowplayerblueprint" faction="$BPFactions" tags="tag.equipment" result="$EBlueprints" />
+        <get_ware_definition flags="allowplayerblueprint" faction="$BPFactions" tags="tag.ship" result="$SBlueprints" />
+        <add_blueprints wares="$MBlueprints" />
+        <add_blueprints wares="$SBlueprints" />
+        <add_blueprints wares="$EBlueprints" />
+        <get_ware_definition tags="tag.paintmod" result="$Paintmods" />
+        <do_all exact="$Paintmods.count" counter="$i">
+          <add_inventory ware="$Paintmods.{$i}" exact="10000" />
+        </do_all>
+        <!-- Add a shipyard -->
+        <create_station name="$station" macro="macro.station_gen_factory_base_01_macro" owner="faction.player" zone="player.zone" rawname="'{20102,2021}'" state="componentstate.operational" constructionplan="'shiptest_gen_player_shipfactory'">
+          <position x="0" y="0" z="0" />
+        </create_station>
+        <create_control_entity name="$manager" object="$station" post="controlpost.manager">
+          <select tags="controlpost.manager.tag" />
+          <owner exact="$station.owner" />
+        </create_control_entity>
+        <set_skill entity="$manager" type="skilltype.management" exact="15" />
+        <set_skill entity="$manager" type="skilltype.morale" exact="15" />
+        <create_control_entity name="$shiptrader" object="$station" post="controlpost.shiptrader">
+          <select tags="controlpost.shiptrader.tag" />
+          <owner exact="$station.owner" />
+        </create_control_entity>
+        <add_default_production_wares object="$station" lowerlimit="100" upperlimit="100" />
+        <add_workforce object="$station" race="race.argon" exact="100000" />
+        <add_units object="$station" category="unitcategory.build" mk="1" exact="$station.units.maxcount" />
+        <!-- Add an anomaly -->
+        <create_object name="$Anomaly_1" groupname="$Anomalies" macro="macro.wormhole_v1_macro" zone="player.zone">
+          <position x="8000" y="0" z="0" />
+        </create_object>
+        <!-- Add a custom station -->
+        <create_station name="$station_c" macro="macro.station_gen_factory_base_01_macro" owner="faction.xenon" zone="player.zone" state="componentstate.operational" constructionplan="'shiptest_gen_player_custom'" rawname="'{20102,1401}'" >
+          <position x="-50000" y="0" z="0" />
+        </create_station>
+        <signal_objects object="player.galaxy" param="'init station'" param2="$station_c" param3="false" comment="Add control entities."/>
+        <create_object macro="macro.eq_arg_satellite_02_macro" owner="faction.player" sector="$station_c.sector">
+          <safepos max="15km" object="$station_c"/>
+        </create_object>
+        <set_known object="$station_c" known="true" updatesnapshot="true" />
+        <set_object_scanned object="$station_c" />
+      </actions>
+    </cue>
+
+    <cue name="Shiptestfield_gen_loadsetup" module="shiptestfield_gen_gamestart">
+      <conditions>
+        <event_game_loaded />
+      </conditions>
+      <actions>
+        <!-- Unlock all blueprints -->
+        <!-- do it upon each load in case player adds new wares -->
+        <get_factions_by_tag tag="tag.economic" result="$BPFactions" />
+        <get_ware_definition flags="allowplayerblueprint" faction="$BPFactions" tags="tag.module" result="$MBlueprints" />
+        <get_ware_definition flags="allowplayerblueprint" faction="$BPFactions" tags="tag.equipment" result="$EBlueprints" />
+        <get_ware_definition flags="allowplayerblueprint" faction="$BPFactions" tags="tag.ship" result="$SBlueprints" />
+        <add_blueprints wares="$MBlueprints" />
+        <add_blueprints wares="$SBlueprints" />
+        <add_blueprints wares="$EBlueprints" />
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

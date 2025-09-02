@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<content name="Secret Stash" id="ws_1683359513" author="Assailer" version="112" date="2024-04-04" save="0" enabled="1" description="Secret Stash&#13;&#10;Version 1.12" sync="false" lastupdate="1712246973">
+  <text language="7" name="Secret Stash" description="Secret Stash"/>
+  <text language="33" name="Secret Stash" description="Secret Stash"/>
+  <text language="44" name="Secret Stash" description="Secret Stash"/>
+  <text language="49" name="Secret Stash" description="Schmuggel- und illegale Waren werden im Inventar / Frachtraum durch Polizeiscanns nicht als solche erkannt."/>
+</content>

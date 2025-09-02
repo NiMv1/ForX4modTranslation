@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<diff>
+  <add sel="//cue[@name='Research_Finished']/actions">
+                    <add_blueprints wares="ware.ship_xen_s_fightingdrone_01"/>
+  </add>
+  <add sel="//cue[@name='Research_Finished_Patch']/actions/do_if">
+                    <add_blueprints wares="ware.ship_xen_s_fightingdrone_01"/>
+  </add>
+</diff>

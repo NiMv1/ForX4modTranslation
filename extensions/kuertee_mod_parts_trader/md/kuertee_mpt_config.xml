@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="kuertee_mpt_config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="StartSMO" instantiate="true">
+			<conditions>
+				<event_cue_signalled cue="md.Simple_Menu_Options.Reloaded"/>
+			</conditions>
+			<actions>
+				<!-- <debug_text text="'signal_cue_instantly ' + @md.Simple_Menu_API.Register_Options_Menu" /> -->
+				<signal_cue_instantly cue="md.Simple_Menu_API.Register_Options_Menu"
+					param="table[
+						$id = 'kuertee_mpt_extension_options_menu',
+						$columns = 2,
+						$title = {11131620, 1},
+						$onOpen = BuildOptionsMenu
+					]" />
+				<cancel_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="BuildOptionsMenu" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<!-- <t id="4">Sell to traders?</t>
+				<t id="5">Sale value multiplier</t>
+				<t id="4">Buy from traders?</t>
+				<t id="5">Purchase value multiplier</t> -->
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={11131620, 4}]"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'isTradeForMoney',
+						$checked = md.kuertee_mod_parts_trader.UserSettings.$isTradeForMoney,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$default = false,
+						$mouseOverText = {1001, 2661} + ': ' + {1001, 2649},
+						$onClick = OnSMOCheckboxChange
+					]" comment="2661 = Defaults, 2649 = 'off', 2648 = 'on'"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row" />
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={11131620, 5}]" />
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_Slider"
+					param = "table[
+						$id = 'tradeForMoneyMult',
+						$start = md.kuertee_mod_parts_trader.UserSettings.$tradeForMoneyMult,
+						$col = 2,
+						$text = table[$text=''],
+						$min = 0.1, $max = 200, $step = 0.1, $suffix='%',
+						$default = 10,
+						$mouseOverText = {1001, 2661} + ': 10',
+						$onSliderCellChanged = OnSMOSliderChange
+					]" />
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={11131620, 6}]"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'isMoneyForTrade',
+						$checked = md.kuertee_mod_parts_trader.UserSettings.$isMoneyForTrade,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$default = false,
+						$mouseOverText = {1001, 2661} + ': ' + {1001, 2649},
+						$onClick = OnSMOCheckboxChange
+					]" comment="2661 = Defaults, 2649 = 'off', 2648 = 'on'"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row" />
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={11131620, 7}]" />
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_Slider"
+					param = "table[
+						$id = 'moneyForTradeMult',
+						$start = md.kuertee_mod_parts_trader.UserSettings.$moneyForTradeMult,
+						$col = 2,
+						$text = table[$text=''],
+						$min = 0.1, $max = 200, $step = 0.1, $suffix='%',
+						$default = 90,
+						$mouseOverText = {1001, 2661} + ': 90',
+						$onSliderCellChanged = OnSMOSliderChange
+					]" />
+				<!--
+					d8888b. d88888b d8888b. db    db  d888b
+					88  `8D 88'     88  `8D 88    88 88' Y8b
+					88   88 88ooooo 88oooY' 88    88 88
+					88   88 88~~~~~ 88~~~b. 88    88 88  ooo
+					88  .8D 88.     88   8D 88b  d88 88. ~8~
+					Y8888D' Y88888P Y8888P' ~Y8888P'  Y888P
+				 -->
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={11131620, 2}, $color='Helper.color.red']"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'debugChance',
+						$checked = if md.kuertee_mod_parts_trader.UserSettings.$debugChance == 100 then true else false,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$bgColor = 'Helper.color.red',
+						$onClick = OnSMOCheckboxChange
+					]"/>
+			</actions>
+		</cue>
+		<cue name="OnSMOSliderChange" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<!-- <debug_text text="event.param.$id + ' to: ' + @event.param.$value + ' or ' + @event.param.$checked" /> -->
+				<set_value name="$value_pre" exact="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" />
+				<debug_text text="event.param.$id + ' pre: ' + $value_pre" chance="md.kuertee_mod_parts_trader.UserSettings.$debugChance"/>
+				<set_value name="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" exact="event.param.$value" />
+				<set_value name="$value_post" exact="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" />
+				<debug_text text="event.param.$id + ' post: ' + $value_post" chance="md.kuertee_mod_parts_trader.UserSettings.$debugChance"/>
+				<do_if value="not md.kuertee_ssac.UserSettings.$isOptionsChanged">
+					<set_value name="md.kuertee_ssac.UserSettings.$isOptionsChanged" exact="$value_pre != $value_post" />
+				</do_if>
+				<cancel_cue cue = "this" />
+			</actions>
+		</cue>
+		<cue name="OnSMOCheckboxChange" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<!-- <debug_text text="event.param.$id + ' to: ' + @event.param.$value + ' or ' + @event.param.$checked" /> -->
+				<set_value name="$value_pre" exact="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" />
+				<debug_text text="event.param.$id + ' pre: ' + $value_pre" chance="md.kuertee_mod_parts_trader.UserSettings.$debugChance"/>
+				<do_if value="event.param.$id == 'debugChance'">
+					<set_value name="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" exact="if event.param.$checked then 100 else 0" />
+					<debug_text text="event.param.$id + ' post: ' + md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" chance="md.kuertee_mod_parts_trader.UserSettings.$debugChance"/>
+					<signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu"/>
+				</do_if>
+				<do_else>
+					<set_value name="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" exact="event.param.$checked" />
+					<set_value name="$value_post" exact="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" />
+					<debug_text text="event.param.$id + ' post: ' + $value_post" chance="md.kuertee_mod_parts_trader.UserSettings.$debugChance"/>
+					<do_if value="not md.kuertee_ssac.UserSettings.$isOptionsChanged">
+						<set_value name="md.kuertee_ssac.UserSettings.$isOptionsChanged" exact="$value_pre != $value_post" />
+					</do_if>
+				</do_else>
+				<cancel_cue cue = "this" />
+			</actions>
+		</cue>
+		<cue name="onDropDownConfirmed" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<debug_text text="event.param.$id + ' to: ' + @event.param.$option.$text + ' value: ' + @event.param.$option.$value" chance="md.kuertee_mod_parts_trader.UserSettings.$debugChance" />
+				<set_value name="$value_pre" exact="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" />
+				<debug_text text="event.param.$id + ' pre: ' + $value_pre" chance="md.kuertee_mod_parts_trader.UserSettings.$debugChance"/>
+				<set_value name="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" exact="(event.param.$option.$value)" />
+				<set_value name="$value_post" exact="md.kuertee_mod_parts_trader.UserSettings.{'$' + event.param.$id}" />
+				<debug_text text="event.param.$id + ' post: ' + $value_post" chance="md.kuertee_mod_parts_trader.UserSettings.$debugChance"/>
+				<do_if value="not md.kuertee_ssac.UserSettings.$isOptionsChanged">
+					<set_value name="md.kuertee_ssac.UserSettings.$isOptionsChanged" exact="$value_pre != $value_post" />
+				</do_if>
+				<cancel_cue cue = "this" />
+			</actions>
+		</cue>
+	</cues>
+</mdscript>

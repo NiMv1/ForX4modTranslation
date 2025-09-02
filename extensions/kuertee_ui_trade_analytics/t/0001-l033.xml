@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- french -->
+<language>
+	<!-- "kuertee trade analytics" = "kta" = "11 20 1" = "11201" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="11201" voice="no">
+		<t id="1">Interface utilisateur : Analyse commerciale</t>
+		<t id="2">Journal de débug</t>
+		<t id="3">Supprimer les données des commerçants détruits</t>
+		<t id="7">Profil d'entrepôt : %s.</t>
+		<t id="8">Profils de station</t>
+		<t id="9">Définissez le comportement de cette station en cliquant sur l'un des profils. Un profil définit les prix et les restrictions commerciales de cette station pour les ressources, les produits intermédiaires, les produits de production et les produits commerciaux.</t>
+		<t id="10">Usine</t>
+		<t id="11">Prix d'achat : %s. Prix de vente : %s. Les usines vendent à nos Centres de Distribution, nos Entrepôts de Fournitures et nos Magasins d'Usine.</t>
+		<t id="12">Achat : %s %s. Vente : %s, %s.</t>
+		<t id="13">Définir le profil de l'usine</t>
+		<t id="20">Centre de Distribution</t>
+		<t id="21">Prix d'achat : %s. Prix de vente : %s. Les Centres de Distribution achètent auprès de nos Usines. Ils vendent à nos Entrepôts de Fournitures, à nos Magasins d'Usine, à nos Stations de Commerce, à nos projets de station et à nos projets de construction.</t>
+		<t id="23">Définir le profil du Centre de Distribution</t>
+		<t id="30">Entrepôt de Fournitures</t>
+		<t id="31">Prix d'achat : %s. Prix de vente : %s. Les Entrepôts de Fournitures achètent auprès de nos Usines et de nos Centres de Distribution. Ils vendent à nos projets de station et à nos projets de construction.</t>
+		<t id="33">Définir le profil de l'Entrepôt de Fournitures</t>
+		<t id="40">Magasin d'Usine</t>
+		<t id="41">Prix d'achat : %s. Prix de vente : %s. Les Magasins d'Usine achètent auprès de nos Usines et de nos Centres de Distribution. Ils vendent à toutes les factions, à nos projets de station et à nos projets de construction.</t>
+		<t id="43">Définir le profil du Magasin d'Usine</t>
+		<t id="50">Station de Commerce</t>
+		<t id="51">Prix d'achat : %s. Prix de vente : %s. Les Stations de Commerce achètent à tous et vendent à tous.</t>
+		<t id="53">Définir le profil de la Station de Commerce</t>
+		<t id="54">désactivé</t>
+		<t id="55">automatique</t>
+		<t id="56">illimité</t>
+		<t id="57">restreint</t>
+<!-- ui -->
+		<t id="101">Analyse Commerciale</t>
+<!-- catégories -->
+		<t id="1001">Exploitation minière</t>
+		<t id="1002">Achats</t>
+		<t id="1003">Ventes</t>
+		<t id="1004">D'autres factions</t>
+		<t id="1005">De sa propre faction</t>
+		<t id="1006">De Toute faction</t>
+		<t id="1007">À d'autres factions</t>
+		<t id="1008">À sa propre faction</t>
+		<t id="1009">À toute faction</t>
+		<t id="1010">Filtres :</t>
+		<t id="1011">Achats et Ventes</t>
+		<t id="1012">Achats, Ventes et Exploitation minière</t>
+		<t id="1013">À/De d'autres factions</t>
+		<t id="1014">À/De sa propre faction</t>
+		<t id="1015">À/De toute faction</t>
+		<t id="1016">De %s(faction)</t>
+		<t id="1017">À %s(faction)</t>
+		<t id="1018">À/De %s(faction)</t>
+		<t id="1019">Réparations</t>
+		<t id="1020">Activités</t>
+		<t id="1021">Activités : %s(actions shown)</t>
+<!-- modes -->
+		<t id="2001">Par Totaux</t>
+		<t id="2002">Par Tout Produit</t>
+		<t id="2003">Par Vaisseau de Commerce</t>
+		<t id="2004">Échanges avec :</t>
+		<t id="2005">Par %s(nom du produit)</t>
+<!-- colonnes -->
+		<t id="3001">Partenaire Commercial</t>
+		<t id="3002">Distance de %s(nom du secteur)</t>
+		<t id="3003">Échanges</t>
+		<t id="3004">Total d'unités.</t>
+		<t id="3005">Total Cr.</t>
+		<t id="3006">unités &#216; échanger</t>
+		<t id="3007">Cr. &#216; échanger</t>
+		<t id="3008">Produit</t>
+		<t id="3009">Secteur</t>
+		<t id="3010">Vaisseau</t>
+		<t id="3011">Total</t>
+<!-- par segment de temps -->
+		<t id="4001">Dissocier par temps</t>
+		<t id="4002">Grouper par heure</t>
+		<t id="4003">Jusqu'à une heure auparavant</t>
+		<t id="4004">De $FROM$:00 à $TO$:59 heures auparavant</t>
+		<t id="4005">Totaux horaires</t>
+<!-- divers -->
+		<t id="10001">%s(distance du portail) \(%s(secteur)\)</t>
+		<t id="10002">n'existe plus</t>
+		<t id="10003">Chargement de l'Analyse Commerciale ...</t>
+		<t id="10004">Il n'y a pas d'échanges pour cette catégorie.</t>
+		<t id="10005">Il n'y a pas encore d'analyses pour ce commerçant.</t>
+		<t id="10006">(navigateur de navire sans affectation de station)agent libre</t>
+		<t id="10007">(aucune donnée enregistrée)inconnu</t>
+		<t id="10008">%s(nom du produit ou du navire) \(Unités : %s(compte)\)</t>
+<!-- raccourcis de renommage avancés pour les commerçants divers -->
+		<t id="20001">(non utilisé)</t>
+		<t id="20002">(non utilisé)</t>
+		<t id="20003">(non utilisé)</t>
+		<t id="20004">(non utilisé)</t>
+		<t id="20005">(non utilisé)</t>
+		<t id="20006">(non utilisé)</t>
+		<t id="20101">(nom du profil - complet)$kTAP</t>
+		<t id="20102">(nom du profil - acronyme)$kTAp</t>
+		<t id="20103">F</t>
+		<t id="20104">DC</t>
+		<t id="20105">SW</t>
+		<t id="20106">FO</t>
+		<t id="20107">TS</t>
+<!-- mschf's Finance Hub: Transfers -->
+		<t id="30001">Listez tous les transferts dans une seule entrée du journal de bord{1001,120}(colon)</t>
+		<t id="30140">Joueur vers $COUNT$ x Stations: $AMOUNT$</t>
+		<t id="30190">Joueur à $COUNT$ x Bâtiment: $AMOUNT$</t>
+		<t id="301010">$COUNT$ x stations vers le joueur: $AMOUNT$</t>
+		<t id="301020">$COUNT$ x stations vers 6 x bâtiments: $AMOUNT$</t>
+		<t id="301030">$COUNT$ x Construction vers Joueur: $AMOUNT$</t>
+		<t id="301040">$COUNT$ x construction vers 6 x stations: $AMOUNT$</t>
+	</page>
+</language>

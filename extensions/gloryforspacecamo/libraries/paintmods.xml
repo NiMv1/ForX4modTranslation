@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+
+<diff>
+ <add sel="/paintmods">
+ 
+	<!--	IF HIGHLIGHT DETAILS ARNT SHOWING, TRY ADJUSTING STRENGTH
+			EXTRA DIRT and DIRT can be removed with -1 -->
+<!-->paint  ware="warename" quality="1-3" hue="float" brightness="float" saturation="float" metal="float" smooth="float" dirt="float" extradirt="float"
+              pattern="path+filename" scale="float" strength="float" sharpness="float" invert="bool" red="float" green="float" blue="float" alpha="float" personal="texture from personal folder?"-->
+
+	<!-- Common quality paintjobs -->
+	<paint ware="Eagle_Ferris" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\eagle_ferris" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="Felon" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\felon" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="Felon_ALT" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\felon_alt" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="Flanker" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\flanker" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="Fullback" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\fullback" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="Harrier_Hawker" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\harrier_hawker" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="IDF_Desert" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\idf_desert" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="IDF_Skyhawk" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\idf_skyhawk" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="JAP_Naval" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\jap_naval" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="JAP_Tiger" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\jap_tiger" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="SK_Pixel" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\sk_pixel" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="Flanker_Grey" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\flanker_grey" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="checkmate_21" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\checkmate_21" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="checkmate_23" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\checkmate_23" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="checkmate_23_alt" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\checkmate_23_alt" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="checkmate_pro" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\checkmate_pro" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="checkmate_pro_max" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\checkmate_pro_max" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="m346_ami" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\m346_ami" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="tomcat_iriaf" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\tomcat_iriaf" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="viper_aggressor" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\viper_aggressor" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="almolivra" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\almolivra" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="asterhite" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\asterhite" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="blotdon" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\blotdon" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="icedragon" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\icedragon" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="lightromentar" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\lightromentar" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="moonsite" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\moonsite" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="starrynight" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\starrynight" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	<paint ware="tomcat_aunwha" quality="1" hue="0" brightness="-0.7" saturation="1" metal="-1" pattern="extensions\gloryforspacecamo\assets\textures\patterns\tomcat_aunwha" strength="1" scale="20" sharpness="100" invert="0" red="150" green="150" blue="150" alpha="255"/>
+	
+</add>
+</diff>

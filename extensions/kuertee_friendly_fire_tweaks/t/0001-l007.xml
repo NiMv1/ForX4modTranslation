@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+	<!-- russian by leonkillerua -->
+	<!-- "kuertee fft" = "kfft" = "11 6 6 20" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="116620" voice="no">
+		<!-- config -->
+		<t id="1">kuertee: Изменения в дружественном огне</t>
+		<t id="2">Debug log</t>
+		<t id="3">Штрафовать за дружественный огонь в следующих случаях:</t>
+		<t id="4">Жертва в цели</t>
+		<t id="5">Отключено для любой жертвы</t>
+		<t id="6">Щиты жертвы находятся на уровне 25% или менее</t>
+		<t id="7">Отключено для любого уровня щитов</t>
+		<t id="8">Урон нанесен основными орудиями</t>
+		<t id="9">Отключено для любого оружия</t>
+		<t id="10">Debug log \(многословный\)</t>
+		<t id="11">Debug log \(только незарегистрированный ответ\)</t>
+	</page>
+</language>

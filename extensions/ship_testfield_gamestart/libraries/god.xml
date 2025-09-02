@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+
+  <add sel="/god">
+    <gamestart ref="shiptestfield_gen_gamestart">
+    </gamestart>
+  </add>
+
+</diff>

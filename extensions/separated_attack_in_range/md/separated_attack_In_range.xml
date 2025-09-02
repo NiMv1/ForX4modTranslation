@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="SeparatedAttackInRange" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+    <cue name="Add_Interact_Actions" instantiate="true">
+      <conditions>
+        <event_cue_signalled cue="md.Interact_Menu_API.Get_Actions" />
+      </conditions>
+      <actions>
+        <set_value name="$target" exact="event.param.$object" />
+
+        <debug_text text="'target = %s'.[$target]" filter="scripts" context="true"/>
+        <debug_text text="'target.class = %s'.[$target.class]" filter="scripts" context="true"/>
+
+        <do_if value="$target.isclass.{class.sector}">
+          <signal_cue_instantly
+            cue="md.Interact_Menu_API.Add_Action"
+            param="table[
+              $id         = 'attack_in_range_s_m',
+              $text       = {61285104, 1},
+              $text2      = '',
+              $icon       = 'order_attackinrange',
+              $section    = 'selected_orders',
+              $callback   = Interact_Attack_In_Range,
+              $echo       = [class.ship_s, class.ship_m],
+            ]" 
+          />
+          <signal_cue_instantly
+            cue="md.Interact_Menu_API.Add_Action"
+            param="table[
+              $id         = 'attack_in_range_l_xl',
+              $text       = {61285104, 2},
+              $text2      = '',
+              $icon       = 'order_attackinrange',
+              $section    = 'selected_orders',
+              $callback   = Interact_Attack_In_Range,
+              $echo       = [class.ship_l, class.ship_xl]
+            ]" 
+          />
+        </do_if>
+      </actions>
+    </cue>
+    <cue name="Interact_Attack_In_Range" instantiate="true">
+      <conditions>
+        <event_cue_signalled />
+      </conditions>
+      <actions>
+        <set_value name="$ships" exact="event.param.$selectedplayerships"/>
+        <set_value name="$targetpos" exact="event.param.$offset"/>
+        <set_value name="$targetsector" exact="event.param.$offsetcomponent"/>
+        <set_value name="$targetclasses" exact="event.param.$echo"/>
+
+        <debug_text text="'targetpos = %s'.[$targetpos]" filter="scripts" context="true"/>
+        <debug_text text="'targetsector = %s'.[$targetsector.name]" filter="scripts" context="true"/>
+        <debug_text text="'targetclasses = %s'.[$targetclasses]" filter="scripts" context="true"/>
+        <debug_text text="'ships = %s'.[$ships]" filter="scripts" context="true"/>
+
+        <do_for_each name="$ship" in="$ships" counter="$i">
+          <debug_text text="'ship = %s'.[$ship.name]" filter="scripts" context="true"/>
+          
+          <create_order object="$ship" id="'AttackInRange'">
+            <param name="destination" value="[$targetsector, $targetpos]"/>
+            <param name="targetclasses" value="$targetclasses" />
+          </create_order>
+        </do_for_each>
+      </actions>
+    </cue>
+  </cues>
+</mdscript>

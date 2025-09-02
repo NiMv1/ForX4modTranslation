@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<diff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../#modding/xsd/diff.xsd">
+    <!-- Ship under attack -->
+    <add sel="/mdscript/cues/cue[@name='PlayerOwnedAttacked_Conv']/actions/do_if/add_player_choice[2]" pos="after">
+        <add_player_choice position="bottom_right" text="{15447, 100}" choiceparam="event.param2" section="g_playerownedattacked_show" comment="Show ship on map"/>
+    </add>
+
+    <!-- Found abandoned ship -->
+    <add sel="//do_elseif[contains(@value, 'g_playerownedship_foundabandonedship')]" pos="prepend">
+        <add_player_choice position="bottom_right" text="{15447, 100}" choiceparam="event.param2" section="g_playerownedobject_show" comment="Show ship on map"/>
+    </add>
+
+    <!-- Found lockbox -->
+    <add sel="//do_elseif[contains(@value, 'g_playerownedship_foundlockbox')]" pos="prepend">
+        <add_player_choice position="bottom_right" text="{15447, 100}" choiceparam="event.param2" section="g_playerownedobject_show" comment="Show ship on map"/>
+    </add>
+
+    <!-- Player owned ship out of ammo -->
+    <add sel="//do_elseif[contains(@value, 'g_playerownedship_attacking_outofammo')]" pos="prepend">
+        <add_player_choice position="bottom_right" text="{15447, 100}" choiceparam="event.param2" section="g_playerownedobject_show" comment="Show ship on map"/>
+    </add>
+
+    <!-- Pirate ship harassment -->
+    <add sel="//do_elseif[contains(@value, 'g_playership_plundered')]" pos="prepend">
+        <add_player_choice position="bottom_right" text="{15447, 100}" choiceparam="event.param2" section="g_playerownedobject_show" comment="Show ship on map"/>
+    </add>
+
+    <!-- Player owned ship inspected -->
+    <add sel="//do_elseif[contains(@value, 'g_playerownedship_inspected')]" pos="prepend">
+        <add_player_choice position="bottom_right" text="{15447, 100}" choiceparam="event.param2" section="g_playerownedobject_show" comment="Show ship on map"/>
+    </add>
+
+    <!-- Resolvers -->
+    <add sel="/mdscript/cues/cue[@name='SectionHandler']/actions/do_elseif[31]" pos="before">
+        <do_elseif value="event.param == 'g_playerownedattacked_show'">
+            <open_menu menu="MapMenu" param="[0, 0, false]" />
+            <signal_cue_instantly cue="md.ShowConversationOnMap.SCM_Main" param="event.param2.$attacked" />
+        </do_elseif>
+        <do_elseif value="event.param == 'g_playerownedobject_show'">
+            <open_menu menu="MapMenu" param="[0, 0, false]" />
+            <signal_cue_instantly cue="md.ShowConversationOnMap.SCM_Main" param="event.object.ship" />
+        </do_elseif>
+    </add>
+</diff>

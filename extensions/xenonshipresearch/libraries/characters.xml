@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+	<replace sel="/characters/character[@id='trader_yaki_random']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='fighter_yaki_random']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='manager_yaki_random']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='service_yaki_random_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='marine_yaki_random_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='fighter_yaki_regular_random']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='manager_yaki_regular_random']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='passenger_yaki_random_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='prisoner_yaki_random_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='service_yaki_random_rookie_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='marine_yaki_random_rookie_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='fighter_yaki_random_rookie']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='service_yaki_random_veteran_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='marine_yaki_random_veteran_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='service_yaki_random_elite_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='marine_yaki_random_elite_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='platform_trader_yaki_random_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='ship_trader_yaki_random_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='shadyguy_yaki_random_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='yaki_casual_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='marine_yaki_random_elite_dlc_terran']/category/@faction">[yaki, faction.player]</replace>
+	<replace sel="/characters/character[@id='xenon_generic']/category/@faction">[xenon, faction.player]</replace>
+</diff>

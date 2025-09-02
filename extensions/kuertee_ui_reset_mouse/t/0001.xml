@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+	<!-- "kuertee reset mouse" = "krm" = "11 18 13" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="111813" voice="no">
+		<!-- config -->
+		<t id="688900">kuertee: UI: Reset mouse</t>
+		<t id="688901">Debug log</t>
+		<t id="688902">On fullscreen menu close, reset mouse to</t>
+		<t id="688903">Centre</t>
+		<t id="688904">Top-left</t>
+		<t id="688905">Top-right</t>
+		<t id="688906">Bottom-right</t>
+		<t id="688907">Bottom-left</t>
+		<t id="688908">On controller, reset mouse to</t>
+		<t id="688909">On mouse AFTER controller, reset mouse to</t>
+		<t id="688910">Return to previous</t>
+		<t id="688911">On auto-pilot stop, reset mouse to</t>
+	</page>
+</language>

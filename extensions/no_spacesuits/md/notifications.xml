@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <!-- <remove sel="/mdscript[@name='Notifications']/cues/cue[@name='Init']/cues/cue[@name='PlayerOwnedKilled']/do_if[@value='event.param.sector and event.param.isclass.ship and not @event.param.pilot.$donotbail']"> -->
+
+  <remove sel="//cue[@name='PlayerOwnedKilled']/actions/do_if[@value='event.param.sector and event.param.isclass.ship and not @event.param.pilot.$donotbail']"/>
+</diff>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <!-- 6.20-->
+  <replace sel="//group[@name='sca_pirate_l']/select[@macro='ship_arg_l_destroyer_01_a_macro']/@weight">9</replace>
+  <replace sel="//group[@name='sca_pirate_l']/select[@macro='ship_arg_l_destroyer_01_b_macro']/@weight">9</replace>
+  <replace sel="//group[@name='sca_pirate_l']/select[@macro='ship_tel_l_destroyer_01_a_macro']/@weight">9</replace>
+  <replace sel="//group[@name='sca_pirate_l']/select[@macro='ship_tel_l_destroyer_01_b_macro']/@weight">9</replace>
+  
+  <!-- 7.00-->
+  <replace sel="//group[@name='sca_pirate_l']/select[@macro='ship_arg_l_destroyer_02_a_macro']/@weight">8</replace>
+  <replace sel="//group[@name='sca_pirate_l']/select[@macro='ship_tel_l_destroyer_02_a_macro']/@weight">7</replace>
+  
+
+  <!-- others and DLC -->
+  <add sel="//group[@name='sca_pirate_l']">
+    
+    <select macro="ship_par_l_destroyer_01_a_macro" weight="6"/>
+    <select macro="ship_par_l_destroyer_02_a_macro" weight="6"/>
+    <select macro="ship_pir_l_scavenger_01_a_macro" weight="9"/>
+    <select macro="ship_spl_l_destroyer_01_a_macro" weight="9"/>
+    <select macro="ship_atf_l_destroyer_01_a_macro" weight="9"/>
+    <select macro="ship_ter_l_destroyer_01_a_macro" weight="9"/>
+    <select macro="ship_bor_l_destroyer_01_a_macro" weight="9"/>
+    
+  </add>
+</diff>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+	<add sel="/soundlibrary">
+
+
+		<sound id="toggle_button_on" description="ui rfm ON" repeat="1" is3d="1" preload="0">
+			<sample start="extensions\upb_lsr_fleet_management\sfx\togglebuttonon"/>
+			<volume start="0.6" distance="0.3"/>
+		</sound>
+		<sound id="toggle_button_off" description="ui rfm OFF" repeat="1" is3d="1" preload="0">
+			<sample start="extensions\upb_lsr_fleet_management\sfx\togglebuttonoff"/>
+			<volume start="0.6" distance="0.2"/>
+		</sound>
+
+		<sound id="rfm_button_click_1" description="rfm_button_click_1" repeat="1" is3d="1" preload="0">
+			<sample start="extensions\upb_lsr_fleet_management\sfx\rfmbuttonclick1"/>
+			<volume start="0.5" distance="0.1"/>
+		</sound>		
+		<sound id="rfm_button_click_2" description="rfm butons click 2" repeat="1" is3d="1" preload="0">
+			<sample start="extensions\upb_lsr_fleet_management\sfx\rfmbuttonclick2"/>
+			<volume start="0.4" />
+		</sound>
+		
+		<sound id="kblip" description="rfm click respond" repeat="1" is3d="1" preload="0">
+			<sample start="extensions\upb_lsr_fleet_management\sfx\kblip"/>
+			<volume start="0.5" distance="0.1"/>
+		</sound>
+
+		<sound id="rfm_enable" description="rfm enable sound" repeat="1" is3d="1" preload="0" tag="rfmsfx_eventm2">
+			<sample start="extensions\upb_lsr_fleet_management\sfx\rfmenable"/>
+			<volume start="0.5" distance="0.1"/>
+		</sound>
+		<sound id="rfm_disable" description="rfm disable sound" repeat="1" is3d="1" preload="0" tag="rfmsfx_eventm3">
+			<sample start="extensions\upb_lsr_fleet_management\sfx\rfmdisable"/>
+			<volume start="0.5" distance="0.1"/>
+		</sound>
+
+	</add>
+</diff>

@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diff>		
+  <add sel="/wares/ware[@id='ship_pir_l_scavenger_01_a']">
+	<owner faction="scaleplate"/>		
+  </add>	
+  <add sel="/wares/ware[@id='ship_pir_s_fighter_01_a']">
+	<owner faction="scaleplate"/>		
+  </add>
+  <add sel="/wares/ware[@id='ship_pir_s_fighter_02_a']">
+	<owner faction="scaleplate"/>		
+  </add>
+  <add sel="/wares/ware[@id='ship_pir_s_heavyfighter_01_a']">
+	<owner faction="scaleplate"/>
+  </add>
+  <add sel="/wares/ware[@id='engine_ter_l_allround_01_mk1']">
+	<owner faction="yaki"/>
+  </add>
+  <add sel="/wares/ware[@id='engine_ter_l_travel_01_mk1']">
+	<owner faction="yaki"/>
+  </add>
+  <add sel="/wares/ware[@id='shield_par_l_standard_01_mk1']">
+	<owner faction="yaki"/>
+  </add>
+  <add sel="/wares/ware[@id='shield_par_l_standard_01_mk2']">
+	<owner faction="yaki"/>
+  </add>
+  
+	<!--STATION MODULES-->
+  <add sel="//wares">  	
+  </add>	
+	<!--TURRETS-->
+  <add sel="//wares">
+    <ware id="turret_pirate_l_ibl" name="{19530201,200}" description="{19530201,300}" group="turrets" transport="equipment" volume="1" tags="equipment turret">
+      <price min="647200" average="667200" max="687200" />
+      <production time="20" amount="1" method="default" name="{20206,101}">
+        <primary>
+          <ware ware="advancedelectronics" amount="35" />
+          <ware ware="energycells" amount="325" />
+          <ware ware="turretcomponents" amount="215" />
+        </primary>
+      </production>
+      <component ref="turret_pirate_l_ibl_macro" amount="1" />
+      <restriction licence="generaluseequipment" />
+      <use threshold="0.85" />
+      <owner faction="scaleplate" />
+    </ware> 
+    <ware id="turret_yak_m_burstray_01" name="{19530201,202}" description="{19530201,302}" group="turrets" transport="equipment" volume="1" tags="equipment turret">
+    <price min="22857" average="25397" max="27936" />
+      <production time="20" amount="1" method="default" name="{20206,101}">
+        <primary>
+          <ware ware="advancedelectronics" amount="3" />
+          <ware ware="energycells" amount="26" />
+          <ware ware="turretcomponents" amount="13" />
+        </primary>
+      </production>
+      <component ref="turret_yak_m_burstray_01_macro" amount="1" />
+      <restriction licence="militaryship" />
+      <use threshold="0.5" />
+      <owner faction="yaki" />
+    </ware>
+    <ware id="turret_yak_m_burstray_02" name="{19530201,202}" description="{19530201,302}" group="turrets" transport="equipment" volume="1" tags="equipment turret">
+    <price min="22857" average="25397" max="27936" />
+      <production time="20" amount="1" method="default" name="{20206,101}">
+        <primary>
+          <ware ware="advancedelectronics" amount="3" />
+          <ware ware="energycells" amount="26" />
+          <ware ware="turretcomponents" amount="13" />
+        </primary>
+      </production>
+      <component ref="turret_yak_m_burstray_02_macro" amount="1" />
+      <restriction licence="militaryship" />
+      <use threshold="0.5" />
+      <owner faction="yaki" />
+    </ware> 
+    <ware id="turret_yak_m_railslugger_01" name="{19530201,203}" description="{19530201,303}" group="turrets" transport="equipment" volume="1" tags="equipment turret">
+    <price min="22857" average="25397" max="27936" />
+      <production time="20" amount="1" method="default" name="{20206,101}">
+        <primary>
+          <ware ware="advancedelectronics" amount="3" />
+          <ware ware="energycells" amount="26" />
+          <ware ware="turretcomponents" amount="13" />
+        </primary>
+      </production>
+      <component ref="turret_yak_m_railslugger_01_macro" amount="1" />
+      <restriction licence="militaryship" />
+      <use threshold="0.5" />
+      <owner faction="yaki" />
+    </ware> 		
+    <ware id="turret_yak_m_railslugger_02" name="{19530201,203}" description="{19530201,303}" group="turrets" transport="equipment" volume="1" tags="equipment turret">
+    <price min="22857" average="25397" max="27936" />
+      <production time="20" amount="1" method="default" name="{20206,101}">
+        <primary>
+          <ware ware="advancedelectronics" amount="3" />
+          <ware ware="energycells" amount="26" />
+          <ware ware="turretcomponents" amount="13" />
+        </primary>
+      </production>
+      <component ref="turret_yak_m_railslugger_02_macro" amount="1" />
+      <restriction licence="militaryship" />
+      <use threshold="0.5" />
+      <owner faction="yaki" />
+    </ware> 	 	 	
+  </add>
+	<!--WEAPONS-->
+  <add sel="//wares">
+    <ware id="weapon_pirate_s_ibm" name="{19530201,201}" description="{19530201,301}" group="weapons" transport="equipment" volume="1" tags="equipment weapon">
+	  <price min="115460" average="128382" max="141304" />
+      <production time="20" amount="1" method="default" name="{20206,101}">
+        <primary>
+		  <ware ware="advancedelectronics" amount="9" />
+		  <ware ware="energycells" amount="26" />
+		  <ware ware="weaponcomponents" amount="21" />
+        </primary>
+      </production>
+      <component ref="weapon_pirate_s_ibm_macro" amount="1" />
+      <restriction licence="generaluseequipment" />
+      <use threshold="0" />
+      <owner faction="scaleplate" />
+    </ware>    
+  </add>	
+	<!--SHIPS-->  
+  <add sel="//wares">
+    <ware id="ship_pirate_xl_galleon" name="{19530201,700}" description="{19530201,800}" group="ships_teladi" transport="ship" size="ship" volume="1" tags="ship">
+      <price min="11453215" average="13697900" max="15942585" />
+      <production time="492" amount="1" method="default" name="{20206,101}">
+        <primary>
+		  <ware ware="energycells" amount="2775" />
+		  <ware ware="hullparts" amount="8850" />
+        </primary>
+      </production>
+      <component ref="ship_pirate_xl_galleon_macro" amount="1" />
+      <restriction licence="capitalship" />
+      <owner faction="scaleplate" />
+    </ware>
+    <ware id="ship_pirate_s_blastclaw" name="{19530201,701}" description="{19530201,801}" group="ships_teladi" transport="ship" size="ship" volume="1" tags="ship">
+      <price min="192104" average="226005" max="259906" />
+      <production time="11" amount="1" method="default" name="{20206,101}">
+        <primary>
+          <ware ware="energycells" amount="90" />
+          <ware ware="hullparts" amount="210" />
+        </primary>
+      </production>
+      <component ref="ship_pirate_s_blastclaw_macro" amount="1" />
+      <restriction licence="generaluseship" />
+      <owner faction="scaleplate" />
+    </ware>
+    <ware id="ship_pirate_m_marauder" name="{19530201,704}" description="{19530201,804}" group="ships_argon" transport="ship" size="ship" volume="1" tags="ship">
+      <price min="442000" average="520000" max="598000" />
+      <production time="31" amount="1" method="default" name="{20206,101}">
+        <primary>
+          <ware ware="energycells" amount="180" />
+          <ware ware="hullparts" amount="420" />
+        </primary>
+      </production>
+      <component ref="ship_pirate_m_marauder_macro" amount="1" />
+      <restriction licence="generaluseship" />
+      <owner faction="scaleplate" />
+    </ware>
+    <ware id="ship_pirate_m_osprey_raider" name="{19530201,705}" description="{19530201,706}" group="ships_teladi" transport="ship" volume="1" tags="ship">
+      <price min="1074162" average="1263720" max="1453278" />
+      <production time="41" amount="1" method="default" name="{20206,101}">
+        <primary>
+          <ware ware="energycells" amount="226" />
+          <ware ware="hullparts" amount="1192" />
+        </primary>
+      </production>
+      <component ref="ship_pirate_m_osprey_raider_macro" />
+      <restriction licence="generaluseship" />
+      <owner faction="scaleplate" />
+    </ware>
+    <ware id="ship_pirate_m_vulture_raider" name="{19530201,706}" description="{19530201,806}" group="ships_teladi" transport="ship" volume="1" tags="ship">
+      <price min="226117" average="266020" max="305923" />
+      <production time="25" amount="1" method="default" name="{20206,101}">
+        <primary>
+          <ware ware="energycells" amount="138" />
+          <ware ware="hullparts" amount="244" />
+        </primary>
+      </production>
+      <component ref="ship_pirate_m_vulture_raider_macro" />
+      <restriction licence="generaluseship" />
+      <owner faction="scaleplate" />
+    </ware>
+	<ware id="ship_pirate_l_brigantine" name="{19530201,702}" description="{19530201,802}" group="ships_teladi" transport="ship" size="ship" volume="1" tags="ship">
+      <price min="11453215" average="13697900" max="15942585" />
+      <production time="180" amount="1" method="default" name="{20206,101}">
+        <primary>
+		  <ware ware="energycells" amount="2775" />
+		  <ware ware="hullparts" amount="8850" />
+        </primary>
+      </production>
+      <component ref="ship_pirate_l_brigantine_macro" amount="1" />
+      <restriction licence="capitalship" />
+      <owner faction="scaleplate" />
+    </ware>
+  </add> 	
+	<!--iSHIELDS-->
+  <add sel="//wares">
+	<ware id="ishield_pirate_xl_galleon" name="{19530201,900}" description="{19530201,900}" group="shields" transport="equipment" volume="1" tags="equipment shield">
+	  <price min="12" average="16" max="21"/>
+	  <component ref="ishield_pirate_xl_galleon_macro" amount="1"/>
+	  <production time="1" amount="1" method="default" name="{20206,101}">
+		<primary>
+		  <ware ware="energycells" amount="1"/>
+		</primary>
+	  </production>
+	  <use threshold="0"/>
+	</ware>
+	<ware id="ishield_pirate_s_blastclaw" name="{19530201,901}" description="{19530201,901}" group="shields" transport="equipment" volume="1" tags="equipment shield">
+	  <price min="12" average="16" max="21"/>
+	  <component ref="ishield_pirate_s_blastclaw_macro" amount="1"/>
+	  <production time="1" amount="1" method="default" name="{20206,101}">
+		<primary>
+		  <ware ware="energycells" amount="1"/>
+		</primary>
+	  </production>
+	  <use threshold="0"/>
+	</ware>  
+	<ware id="ishield_pirate_l_brigantine" name="{19530201,902}" description="{19530201,902}" group="shields" transport="equipment" volume="1" tags="equipment shield">
+	  <price min="12" average="16" max="21"/>
+	  <component ref="ishield_pirate_l_brigantine_macro" amount="1"/>
+	  <production time="1" amount="1" method="default" name="{20206,101}">
+		<primary>
+		  <ware ware="energycells" amount="1"/>
+		</primary>
+	  </production>
+	  <use threshold="0"/>
+	</ware>
+	<ware id="ishield_pirate_m_marauder" name="{19530201,904}" description="{19530201,904}" group="shields" transport="equipment" volume="1" tags="equipment shield">
+	  <price min="12" average="16" max="21"/>
+	  <component ref="ishield_pirate_m_marauder_macro" amount="1"/>
+	  <production time="1" amount="1" method="default" name="{20206,101}">
+		<primary>
+		  <ware ware="energycells" amount="1"/>
+		</primary>
+	  </production>
+	  <use threshold="0"/>
+	</ware> 	
+  </add>	
+</diff>

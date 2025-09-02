@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <remove sel="//groups/group[@name='bor_battleship_xl_lc4']"/>
+  <replace sel="//groups/group[@name='bor_battleship_xl']/select[@macro='ship_bor_xl_battleship_01_macro']/@macro">ship_bor_xl_battleship_lc4_01_macro</replace>  <!--VRO Meg for Lc's Meg-->    
+</diff>  

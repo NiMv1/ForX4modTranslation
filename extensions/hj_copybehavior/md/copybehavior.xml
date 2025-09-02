@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdscript xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="HJ_CopyBehavior" xsi:noNamespaceSchemaLocation="md.xsd">
+    <cues>
+        <cue name="Root" comment="Everything in this cue has the same Namespace">
+            <cues>
+                <cue name="Add_Interact_Actions" instantiate="true">
+                    <conditions>
+                        <event_cue_signalled cue="md.Interact_Menu_API.Get_Actions" />
+                    </conditions>
+                    <actions>
+                        <set_value name="$target" exact="@event.param.$object" />
+                        <set_value name="$ships" exact="@event.param.$selectedplayerships" />
+                        <do_if value="@$target.isclass.ship and $target.owner == faction.player" comment="Allow if we right click an owned ship">
+                            <do_if value="@$ships.{1} != null" comment="We have other selected ship">
+                                <signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param="table[
+                                $id         = 'hj_copypaste_copy_from',
+                                $section    = 'selected_orders',
+                                $text       = 'Копировать поведение',
+                                $callback   = CopyCall,
+                                ]" />
+                            </do_if>
+                        </do_if>
+
+                        <cancel_cue cue="this" />
+                    </actions>
+                </cue>
+                <cue name="CopyCall">
+                    <conditions>
+                        <event_cue_signalled/>
+                      </conditions>
+                    <actions>
+                        <set_value name="player.entity.$hj_ordersData" exact="table[
+                            $ships = @event.param.$selectedplayerships
+                        ]" />
+                        <raise_lua_event name="'CopyBehavior.CopyParams'" param="@event.param.$object"></raise_lua_event>
+                        <reset_cue cue="this" comment="to enable further calls since i dont want to instantiate this one"/>
+                    </actions>
+                </cue>
+                <cue name="MenuMap_Close">
+                    <conditions>
+                        <event_ui_triggered screen="'MapMenu'" control="'menu_close'" />
+                    </conditions>
+                    <actions>
+                        <set_value name="player.entity.$hj_ordersData" exact="null" />
+                        <reset_cue cue="this" />
+                    </actions>
+                </cue>
+            </cues>
+        </cue>
+    </cues>
+</mdscript>

@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<aiscript name="inventorycollector" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+	<order id="InventoryCollector" name="Inventory Collector" description="Inventory Collector" category="trade" infinite="true">
+		<params>
+			<param name="fs_small_ships" default="false" type="bool" text="{314153, 6}"/>
+			<param name="fs_medium_ships" default="true" type="bool" text="{314153, 7}"/>
+			<param name="fs_capital_ships" default="true" type="bool" text="{314153, 8}"/>
+			<param name="fs_globalbl" default="false" type="bool" text="{314153, 9}"/>
+			<param name="fs_blacklist" default="[]" type="list" text="{314153, 10}" comment="Do not visit ships located in blacklisted sectors.">
+				<input_param name="type" value="'object'"/>
+				<input_param name="class" value="[class.sector]"/>
+			</param>
+			<param name="fs_deposit_to_hq" default="false" type="bool" text="{314153, 11}"/>
+			<param name="fs_deposit_to_player" default="true" type="bool" text="{314153, 12}"/>
+			<param name="fs_revisit_interval" type="time" default="480s" text="{314153, 13}">
+				<input_param name="min" value="240s"/>
+				<input_param name="max" value="1200s"/>
+				<input_param name="step" value="30s"/>
+			</param>
+		</params>
+		<requires>
+			<match shiptype="shiptype.lasertower" negate="true"/>
+		</requires>
+	</order>
+
+	<interrupts>
+		<handler ref="AttackHandler" />
+		<handler ref="MissileLockHandler" />
+		<handler ref="ScannedHandler" />
+		<handler ref="InspectedHandler"/>
+		<handler ref="FoundAbandonedHandler"/>
+		<handler ref="FoundLockboxHandler"/>
+		<handler ref="ResupplyHandler" />
+		<handler ref="TargetInvalidHandler"/>
+	</interrupts>
+	<init>
+		<include_interrupt_actions ref="GetBlacklistgroup"/>
+		<do_if value="$fs_blacklist == null">
+			<create_list name="$fs_blacklist" />
+		</do_if>
+		<set_order_syncpoint_reached order="this.ship.order"/>
+		<set_command_action commandaction="commandaction.standingby"/>
+	</init>
+
+	<include_interrupt_actions ref="GetBlacklistgroup"/>
+
+<attention min="unknown">
+	<actions>
+
+		<!-- START ******************************************************************************* -->
+		<label name="start"/>
+		<wait min="1s" max="2s"/>
+
+		<!-- SEARCH ******************************************************************************* -->
+		<label name="search"/>
+		<wait min="1s" max="2s"/>
+
+		<set_value name="this.$inv_target" exact="null"/>
+		<debug_to_file directory="'fs_inv'" name="'debug'" text="'%s: %s search'.[player.age, this.ship.knownname]" output="false" append="true"/>
+
+		<!-- SEARCH_LOOP ************************************************************************** -->
+		<label name="search_loop"/>
+		<debug_to_file directory="'fs_inv'" name="'debug'" text="'%s: %s search_loop'.[player.age, this.ship.knownname]" output="false" append="true"/>
+		
+		<do_if value="not $fs_deposit_to_hq?">
+			<set_value name="$fs_deposit_to_hq" exact="false"/>
+		</do_if>
+
+		<do_if value="not $fs_deposit_to_player?">
+			<set_value name="$fs_deposit_to_player" exact="true"/>
+		</do_if>
+
+		<do_if value="$fs_deposit_to_player and $fs_deposit_to_hq">
+			<set_value name="$fs_deposit_to_hq" exact="false"/>
+		</do_if>
+
+		<set_command command="command.patrol"/>
+		<set_command_action commandaction="commandaction.standingby"/>
+
+		<set_value name="this.$mrs_time" exact="player.age"/>
+
+		<wait min="5s" max="6s"/>
+
+		<do_if value="$fs_deposit_to_hq and (this.ship.pilot.inventory.count gt 20)">
+			<create_order id="'DepositInventory'" object="this.ship" immediate="true" />
+		</do_if>
+
+		<set_value name="$target" exact="null"/>
+		<set_value name="$distance" exact="-2"/>
+
+		<create_list name="$ships"/>
+
+		<do_if value="$fs_small_ships">
+			<find_ship name="$ships" space="player.galaxy" owner="faction.player" class="class.ship_s" multiple="true" append="true"/>
+		</do_if>
+
+		<do_if value="$fs_medium_ships">
+			<find_ship name="$ships" space="player.galaxy" owner="faction.player" class="class.ship_m" multiple="true" append="true"/>
+		</do_if>
+
+		<do_if value="$fs_capital_ships">
+			<find_ship name="$ships" space="player.galaxy" owner="faction.player" class="[class.ship_l, class.ship_xl]" multiple="true" append="true"/>
+		</do_if>
+
+		<do_all exact="$ships.count" counter="$si">
+			<wait min="5ms" max="10ms"/>
+
+			<set_value name="$ship" exact="$ships.{$si}"/>
+
+			<set_value name="$indanger" exact="false"/>
+			<set_value name="$allowed" exact="true"/>
+			<do_if value="@$fs_blacklist.count">
+				<do_all exact="$fs_blacklist.count" counter="$bi">
+					<do_if value="$fs_blacklist.{$bi} == $ship.sector">
+						<set_value name="$allowed" exact="false"/>
+					</do_if>
+					<do_if value="$fs_blacklist.{$bi} == this.ship.sector">
+						<set_value name="$indanger" exact="true"/>
+					</do_if>
+				</do_all>
+			</do_if>
+
+			<do_if value="$allowed and $fs_globalbl and $ship.sector.isblacklisted.{blacklisttype.sectoractivity}.{$blacklistgroup}.{this.assignedcontrolled}">
+				<set_value name="$allowed" exact="false"/>
+			</do_if>
+
+			<do_if value="$allowed and (not $indanger)">
+				<do_if value="this.ship.sector != $ship.sector and @$fs_blacklist.count">
+					<debug_to_file directory="'fs_inv'" name="'debug'" text="'%s: %s searching route %s -> %s'.[player.age, this.ship.knownname, this.ship.sector.knownname, $ship.sector.knownname]" output="false" append="true"/>
+					<get_jump_path component="$jumppath" multiple="true" uselocalhighways="false" refobject="this.assignedcontrolled" useblacklist="if $fs_globalbl then $blacklistgroup else null">
+						<start object="this.ship"/>
+						<end object="$ship.sector"/>
+					</get_jump_path>
+					<set_value name="$last_sector" exact="null"/>
+					<do_all exact="$jumppath.count" counter="$pi">
+						<set_value name="$pe" exact="$jumppath.{$pi}"/>
+						<do_if value="$pe.isclass.gate or $pe.isclass.highwayentrygate">
+							<do_if value="$last_sector != $pe.destination.sector">
+								<set_value name="$last_sector" exact="$pe.sector"/>
+								<debug_to_file directory="'fs_inv'" name="'debug'" text="'%s %s -> %s'.[$pi, $pe.sector.knownname, $pe.destination.sector.knownname]" output="false" append="true"/>
+								<do_all exact="$fs_blacklist.count" counter="$bi">
+									<do_if value="$fs_blacklist.{$bi} == $pe.destination.sector">
+										<set_value name="$allowed" exact="false"/>
+										<break/>
+									</do_if>
+								</do_all>
+							</do_if>
+						</do_if>
+						<do_if value="not $allowed">
+							<debug_to_file directory="'fs_inv'" name="'debug'" text="'not allowed'" output="false" append="true"/>
+							<break/>
+						</do_if>
+					</do_all>
+				</do_if>
+			</do_if>
+
+			<do_if value="$allowed and (not $ship.iswreck) and ($ship.isoperational) and ($ship.pilot.exists) and ($ship.pilot != player.entity) and ($ship != this.ship) and ($ship.shieldpercentage gt 80) and ($ship.pilot.inventory.count gt 0)">
+
+				<do_if value="$ship.defaultorder.id == 'InventoryCollector'">
+					<continue/>
+				</do_if>
+
+				<do_if value="$ship.pilot.$fs_inv_skip?">
+					<do_if value="player.age gt $ship.pilot.$fs_inv_skip">
+						<remove_value name="$ship.pilot.$fs_inv_skip"/>
+					</do_if>
+				</do_if>
+				<do_elseif value="this.ship.sector == $ship.sector">
+					<set_value name="$dist" exact="this.ship.distanceto.{$ship}"/>
+					<do_if value="($distance lt 0) or ($dist lt $distance)">
+						<set_value name="$target" exact="$ship"/>
+						<set_value name="$distance" exact="$dist"/>
+					</do_if>
+				</do_elseif>
+				<do_elseif value="($distance lt -1)">
+					<set_value name="$target" exact="$ship"/>
+					<set_value name="$distance" exact="-1"/>
+				</do_elseif>
+			</do_if>
+		</do_all>
+
+		<do_if value="$distance == -1">
+			<set_value name="this.$mrs_distance" exact="-1"/>
+			<set_value name="this.$inv_target" exact="$target"/>
+			<set_value name="this.$mrs_time" exact="player.age"/>
+			<set_value name="$target.pilot.$fs_inv_skip" exact="player.age + 480"/>
+			<resume label="travel_loop"/>
+		</do_if>
+
+		<do_if value="$distance ge 0">
+			<set_value name="this.$mrs_distance" exact="$distance"/>
+			<set_value name="this.$inv_target" exact="$target"/>
+			<set_value name="this.$mrs_time" exact="player.age"/>
+			<set_value name="$target.pilot.$fs_inv_skip" exact="player.age + 120"/>
+			<resume label="approach_loop"/>
+		</do_if>
+
+		<do_if value="$fs_deposit_to_hq and (this.ship.pilot.inventory.count gt 0)">
+			<debug_to_file directory="'fs_inv'" name="'debug'" text="'%s: %s depositing to HQ'.[player.age, this.ship.knownname]" output="false" append="true"/>
+			<create_order id="'DepositInventory'" object="this.ship" immediate="true" />
+		</do_if>
+
+		<resume label="search_loop"/>
+
+		<!-- TRAVEL_LOOP ********************************************************************************* -->
+		<label name="travel_loop" />
+
+		<set_value name="$target" exact="this.$inv_target"/>
+		<debug_to_file directory="'fs_inv'" name="'debug'" text="'%s: %s travel_loop to %s'.[player.age, this.ship.knownname, $target.sector.knownname]" output="false" append="true"/>
+
+		<set_command command="command.move" param="$target.sector"/>
+		<set_command_action commandaction="commandaction.flying"/>
+
+		<get_safe_pos result="$pos" zone="$target.zone" radius="this.ship.size" min="1km" max="35km"/>
+		<set_value name="$destination" exact="$pos"/>
+		<move_to object="this.ship" destination="$target.zone" travel="true" forceposition="false" finishonapproach="true" commandaction="false" useblacklist="if $fs_globalbl then $blacklistgroup else null">
+			<position value="$destination" min="5km" max="6km"/>
+		</move_to>
+
+		<wait min="4s" max="5s"/>
+
+		<set_value name="this.$mrs_time" exact="player.age"/>
+
+		<resume label="approach_loop"/>
+
+		<!-- APPROACH_LOOP ************************************************************************ -->
+		<label name="approach_loop"/>
+
+		<set_value name="$target" exact="this.$inv_target"/>
+		<debug_to_file directory="'fs_inv'" name="'debug'" text="'%s: %s approach_loop'.[player.age, this.ship.knownname]" output="false" append="true"/>
+
+		<set_command command="command.move" param="$target"/>
+		<set_command_action commandaction="commandaction.flying"/>
+
+		<do_if value="(not $target.exists) or ($target.zone.isclass.highway) or ($target.sector != this.ship.sector) or ($target.pilot == player.entity)"> 
+			<resume label="search"/> 
+		</do_if>
+
+		<set_value name="$distance" exact="this.ship.distanceto.{$target}"/>
+
+		<do_if value="player.age gt (this.$mrs_time + 120)">
+			<set_value name="this.$mrs_time" exact="player.age"/>
+			<set_value name="this.$mrs_distance" exact="this.$mrs_distance * 0.75"/>
+
+			<do_if value="$distance gt this.$mrs_distance">
+				<set_value name="$target.pilot.$mrs_skip" exact="player.age + 120"/>
+				<resume label="search"/>
+			</do_if>
+		</do_if>
+
+		<set_value name="$limit" exact="750 + this.ship.size + $target.size"/>
+
+		<do_if value="$distance gt $limit">
+			<set_command_action commandaction="commandaction.flyingto" param="$target"/>
+
+			<get_safe_pos object="$target" zone="$target.zone" radius="this.ship.size / 2.0" allowyaxis="true" result="$pos" ignored="this.ship"/>
+			<set_value name="$destination" exact="$pos"/>
+			<move_to object="this.ship" destination="$target.zone" boost="true" travel="true" forceposition="false" finishonapproach="true" commandaction="false">
+				<position value="$destination" max="this.ship.size + $target.size"/>
+				<interrupt_after_time time="15s"/>
+			</move_to>
+
+			<resume label="approach_loop"/>
+		</do_if>
+
+		<!-- MAINTENANCE ************************************************************************ -->
+		<label name="maintenance"/>
+		<debug_to_file directory="'fs_inv'" name="'debug'" text="'%s: %s maintenance'.[player.age, this.ship.knownname]" output="false" append="true"/>
+
+		<stop_moving object="this.ship"/>
+
+		<set_command command="command.trade" param="$target"/>
+		<set_command_action commandaction="commandaction.flying"/>
+
+		<wait min="1s" max="2s"/>
+
+		<set_value name="$message" exact="''"/>
+
+		<do_if value="$target.pilot == player.entity"> 
+			<resume label="search"/>
+		</do_if>
+
+		<do_all exact="$target.pilot.inventory.count" counter="$i" reverse="true">
+			<set_value name="$ware" exact="$target.pilot.inventory.{$i}"/>
+			<do_if value="$ware and $target.pilot.inventory.{$ware}.exists and $target.pilot.inventory.{$ware}.count">
+				<set_value name="$amount" exact="$target.pilot.inventory.{$ware}.count"/>
+				<set_value name="$message" exact="$message + {314153, 5}.[$ware.name, ($amount)i]"/>
+
+				<do_if value="$fs_deposit_to_player">
+					<add_inventory ware="$ware" exact="$amount" entity="player.entity"/>
+				</do_if>
+				<do_else>
+					<add_inventory ware="$ware" exact="$amount" entity="this.ship.pilot"/>
+				</do_else>
+
+				<remove_inventory ware="$ware" exact="$amount" entity="$target.pilot"/>
+			</do_if>
+		</do_all>
+		
+		<do_if value="$message != ''">
+			<write_to_logbook category="general" title="{314153, 1}" text="{314153, 2}.[this.ship.name, $target.name, $message]"/>
+		</do_if>
+			
+		<apply_experience entity="this.ship.pilot" experience="'fs_inv'" factor="1.0"/>
+
+		<wait min="(16 - [this.ship.pilot.skill.piloting, 15f].min)s" max="(18 - [this.ship.pilot.skill.piloting, 15f].min)s"/>
+		
+		<do_if value="$target.exists and $target.pilot.exists"> 
+			<set_value name="$target.pilot.$fs_inv_skip" exact="player.age + $fs_revisit_interval"/>
+		</do_if>
+
+		<resume label="search"/>
+	</actions>
+</attention>
+</aiscript>

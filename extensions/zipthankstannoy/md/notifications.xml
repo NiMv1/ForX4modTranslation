@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diff>
+  <remove sel="/mdscript/cues/cue[@name='Init']/cues/cue[@name='StationAnnouncements']"/>
+  <!-- cut this from usescases deffs instead.  This culls the trigger, the usecase and the reward cues all in one.
+  <remove sel="/mdscript/cues/cue[@name='Init']/cues/cue[@name='IllegalActivity']/cues/cue[@name='ReputationTriggerStart']/cues/cue[@name='ReputationTrigger']/actions/do_if/do_if/signal_cue_instantly[@cue='md.NPC_UseCases.UseCase']"/>
+  -->
+
+</diff>

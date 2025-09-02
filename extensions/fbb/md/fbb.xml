@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<mdscript name="fbb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+<cues>
+<cue name="fbb_cue" instantiate="true" checkinterval="10s" namespace="this">
+	<conditions>
+		<check_value value="player.ship.exists"/>
+		<check_value value="not player.zone.isclass.highway"/>
+		<check_value value="player.activity != activity.scan"/>
+	</conditions>
+	<actions>
+		<do_if value="md.Story_Paranid.Lockbox_Approach_Dal_Speak.state == cuestate.waiting and md.Story_Paranid.Lockbox_Bombs_Collected.state == cuestate.complete">
+			<cancel_cue cue="md.Story_Paranid.Lockbox_Approach_Dal_Speak"/>
+			<cancel_cue cue="md.Story_Paranid.Paranid_Monument_Generic_Guard_Response"/>
+			<signal_cue cue="md.Story_Paranid.Lockbox_Destroyed_Dal_Speak"/>
+		</do_if>
+
+		<do_if value="player.ship.isclass.[class.ship_xs]">
+			<set_value name="$range" exact="2000"/>
+		</do_if>
+		<do_elseif value="player.ship.isclass.[class.ship_s]">
+			<set_value name="$range" exact="4000"/>
+		</do_elseif>
+		<do_elseif value="player.ship.isclass.[class.ship_m]">
+			<set_value name="$range" exact="6000"/>
+		</do_elseif>
+		<do_elseif value="player.ship.isclass.[class.ship_l]">
+			<set_value name="$range" exact="8000"/>
+		</do_elseif>
+		<do_else>
+			<set_value name="$range" exact="10000"/>
+		</do_else>
+
+		<create_list name="$drops"/>
+		<find_object name="$drops" space="player.sector" class="class.lockbox" multiple="true">
+			<match_distance object="player.ship" max="$range"/>
+		</find_object>
+
+		<do_all exact="$drops.count" counter="$di">
+			<set_value name="$drop" exact="$drops.{$di}"/>			
+			<do_if value="$drop.isclass.lockbox">
+				<show_help custom="{314151, 3}"/>
+				<write_to_logbook category="general" title="{314151, 1}" text="{314151, 2}" />
+				<spawn_drop object="$drop"/>
+				<destroy_object object="$drop" explosion="false"/>
+			</do_if>
+		</do_all>
+
+		<find_object name="$vaults" space="player.sector" macro="[macro.landmarks_erlking_vault_01_macro, macro.landmarks_erlking_vault_02_macro, macro.landmarks_erlking_vault_03_macro, macro.landmarks_erlking_vault_04_macro, macro.landmarks_erlking_vault_05_macro, macro.landmarks_research_vault_01_macro, macro.landmarks_vault_01_macro, macro.landmarks_vault_02_macro, macro.landmarks_vault_03_macro, macro.landmarks_vault_04_macro]" multiple="true">
+			<match_distance object="player.ship" max="1000"/>
+		</find_object>
+
+		<do_all exact="$vaults.count" counter="$vi">
+			<set_value name="$vault" exact="$vaults.{$vi}"/>
+
+			<find_object_component name="$modules" object="$vault" class="class.destructible" multiple="true"/>
+
+			<do_all exact="$modules.count" counter="$mi">
+				<set_value name="$module" exact="$modules.{$mi}"/>
+
+				<set_object_hull object="$module" exact="100" />
+			</do_all>
+		</do_all>
+	</actions>
+</cue>
+</cues>
+</mdscript>

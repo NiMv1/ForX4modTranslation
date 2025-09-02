@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<language>
+    <page id="20811" voice="no">
+        <t id="100">Sector List</t>
+        <t id="101">Sort settings</t>
+        <t id="102">Sector list</t>
+
+        <t id="111">by property</t>
+        <t id="112">by resource</t>
+        <t id="113">by buy offers</t>
+        <t id="114">by sell offers</t>
+
+        <t id="120">Encyclopedia entry</t>
+
+        <t id="130">Properties</t>
+        <t id="131">Natural resources</t>
+        <t id="132">Top %s buy trade offers</t>
+        <t id="133">Top %s sell trade offers</t>
+
+        <t id="140">No data available</t>
+        <t id="141">Update data</t>
+        <t id="142">Center map on %s sector</t>
+
+        <t id="150">Last updated</t>
+        <t id="151">ago</t>
+        <t id="152">s</t>
+        <t id="153">min</t>
+
+        <t id="200">sector name</t>
+        <t id="201">owner faction</t>
+        <t id="202">sunlight</t>
+        <t id="203">known stations</t>
+        <t id="204">population</t>
+        <t id="205">station workforce</t>
+
+        <t id="250">helium</t>
+        <t id="251">hydrogen</t>
+        <t id="252">ice</t>
+        <t id="253">methane</t>
+        <t id="254">nividium</t>
+        <t id="255">ore</t>
+        <t id="256">silicon</t>
+        <t id="257">raw scrap</t>
+
+    </page>
+</language>

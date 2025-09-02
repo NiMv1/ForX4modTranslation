@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="deploy_all_military_consumeables" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="DepAllMC" namespace="this">
+			<conditions>
+				<check_any>
+					<event_cue_signalled cue="md.Setup.GameStart"/>
+					<event_game_loaded/>
+				</check_any>
+			</conditions>
+			<actions>
+				<debug_text text="event.name"/>
+				<set_value name="$debugChance" exact="100"/>
+			</actions>
+			<cues>
+				<cue name="Init">
+					<conditions>
+						<check_any>
+							<event_cue_signalled/>
+							<event_game_loaded/>
+						</check_any>
+					</conditions>
+					<actions>
+						<debug_text text="event.name"/>
+						<reset_cue cue="this"/>
+					</actions>
+				</cue>
+				<cue name="OnModInstall">
+					<actions>
+						<debug_text text="event.name"/>
+						<signal_cue cue="Init"/>
+					</actions>
+				</cue>
+				<cue name="InteractMenu_AddDeployAllMilitaryOrders" instantiate="true">
+					<conditions>
+						<event_cue_signalled cue="md.Interact_Menu_API.Get_Actions"/>
+					</conditions>
+					<actions>
+						<set_value name="$ship" exact="@event.param.$selectedplayerships.{1}"/>
+						<set_value name="$target" exact="@event.param.$object"/>
+						<do_if value="$ship and $ship.owner == faction.player">
+							<set_value name="$section" exact="'selected_orders'"/>
+							<set_value name="$text" exact="{41133, 2000}" comment="Laser Tower Mk1"/>
+							<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param="table[
+									$id = 'order_deploy_all_laser_mk1',
+									$section = $section,
+									$text = $text,
+									$icon = 'order_movewait',
+									$callback = InteractMenu_OnDeployAllLaserMk1,
+									$echo='Immediate'
+								]"/>
+							<set_value name="$section" exact="'selected_orders'"/>
+							<set_value name="$text" exact="{41133, 2001}" comment="Laser Tower Mk2"/>
+							<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param="table[
+									$id = 'order_deploy_all_laser_mk2',
+									$section = $section,
+									$text = $text,
+									$icon = 'order_movewait',
+									$callback = InteractMenu_OnDeployAllLaserMk2,
+									$echo='Immediate'
+								]"/>
+						</do_if>
+						<cancel_cue cue="this"/>
+					</actions>
+				</cue>
+				<cue name="InteractMenu_OnDeployAllLaserMk1">
+					<conditions>
+						<event_cue_signalled/>
+					</conditions>
+					<actions>
+						<set_value name="$orderships" exact="@event.param.$selectedplayerships"/>
+						<set_value name="$targetsector" exact="@event.param.$offsetcomponent"/>
+						<set_value name="$targetpos" exact="@event.param.$offset"/>
+						<do_for_each name="$ship" in="@$orderships">
+							<set_value name="$lasertowertypeamounts" exact="$ship.ammostorage.{macro.ship_gen_xs_lasertower_01_a_macro}.count"/>
+							<do_if value="$ship">
+								<set_value name="$shipposition" exact="@event.param.$select"/>
+								<do_all exact="$lasertowertypeamounts" counter="$i" reverse="true">
+									<launch_lasertower name="$lasertower" object="$ship" macro="macro.ship_gen_xs_lasertower_01_a_macro"/>
+								</do_all>
+							</do_if>
+						</do_for_each>
+						<reset_cue cue="this"/>
+					</actions>
+				</cue>
+				<cue name="InteractMenu_OnDeployAllLaserMk2">
+					<conditions>
+						<event_cue_signalled/>
+					</conditions>
+					<actions>
+						<set_value name="$orderships" exact="@event.param.$selectedplayerships"/>
+						<set_value name="$targetsector" exact="@event.param.$offsetcomponent"/>
+						<set_value name="$targetpos" exact="@event.param.$offset"/>
+						<do_for_each name="$ship" in="@$orderships">
+							<set_value name="$lasertowertypeamounts" exact="$ship.ammostorage.{macro.ship_gen_s_lasertower_01_a_macro}.count"/>
+							<do_if value="$ship">
+								<set_value name="$shipposition" exact="@event.param.$select"/>
+								<do_all exact="$lasertowertypeamounts" counter="$i" reverse="true">
+									<launch_lasertower name="$lasertower" object="$ship" macro="macro.ship_gen_s_lasertower_01_a_macro"/>
+								</do_all>
+							</do_if>
+						</do_for_each>
+						<reset_cue cue="this"/>
+					</actions>
+				</cue>
+				<cue name="OnModInstallComplete">
+					<actions>
+						<debug_text text="event.name"/>
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+	</cues>
+</mdscript>

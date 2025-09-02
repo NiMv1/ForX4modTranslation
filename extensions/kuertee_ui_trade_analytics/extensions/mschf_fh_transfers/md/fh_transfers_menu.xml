@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<!--
+		<cue name="mschf_fht_build_menu" instantiate="true" namespace="this">
+			...
+		<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Button" param="table[
+          $col=4,
+          $text=table[
+            $text={102104117,11050},
+            $halign = 'center',
+            $fontsize=9,
+          ],
+          $onClick=fht_button,
+          $onRightClick=fht_button]"/>
+	-->
+        <add pos="after" sel="//signal_cue_instantly[@cue=&quot;md.Simple_Menu_API.Make_Button&quot;]">
+        	<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+        	<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[
+        		$col=1,$colSpan=2,$fontsize=9,
+        		$text={11201,30001}]"/> 
+    		<signal_cue_instantly cue="md.Simple_Menu_API.Make_CheckBox" param="table[
+    			$id='isConsolidateLogbookEntries',
+    			$checked=@md.fh_transfers_config.fht_config.$isConsolidateLogbookEntries,
+    			$col=3,
+    			$width='Helper.standardButtonHeight', $height='Helper.standardButtonHeight',
+    			$onClick=fht_save_change]"/>
+        </add>
+</diff>

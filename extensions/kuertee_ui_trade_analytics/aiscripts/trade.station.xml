@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<!--
+		add:
+		<execute_trade tradeoffer="$finalbuyoffer" amount="$finalamount" tradepartner="this.station" result="$traderesult" resume="true">
+			<interrupt_after_time time="3h" />
+			<interrupt>
+				<conditions>
+					<event_trade_cancelled tradeoffer="$finalbuyoffer" />
+				</conditions>
+				<actions>
+					<debug_text text="player.age + ' trade %1 for %2 %3 got cancelled, interrupting execute_trade'.[$finalbuyoffer, $finalbuyoffer.amount, $finalbuyoffer.ware]" chance="$debugchance"/>      
+				</actions>
+			</interrupt>
+		</execute_trade>
+	-->
+	<add pos="after" sel="//execute_trade">
+		<do_if value="$traderesult">
+			<signal_objects object="player.galaxy" param="'kTAnalytics_trade'" param2="table[
+				$tradeOffer=$finalbuyoffer,
+				$tradePartner=this.station,
+				$amount=$finalamount,
+				$result=$traderesult,
+				$aiScriptId=@this.object.order.id
+			]" />
+		</do_if>
+	</add>
+</diff>

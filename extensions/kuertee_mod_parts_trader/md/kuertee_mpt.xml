@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="kuertee_mod_parts_trader" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="ResetAll" namespace="this">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<debug_text text="'reset_cue ' + kMPT" />
+				<reset_cue cue="kMPT" />
+			</actions>
+			<cues>
+				<cue name="ResetAll2">
+					<actions>
+						<debug_text text="'signal_cue ' + kMPT" />
+						<signal_cue cue="kMPT" />
+						<reset_cue cue="parent" />
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+		<cue name="UserSettings">
+			<conditions>
+				<check_any>
+					<event_cue_signalled />
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+				<check_value value="not @player.allmodules.{player.module}.isscenario" />
+			</conditions>
+			<actions>
+				<set_value name="UserSettings.$debugChance" exact="0" />
+				<set_value name="UserSettings.$isTradeForMoney" exact="false" />
+				<set_value name="UserSettings.$tradeForMoneyMult" exact="10.0" />
+				<set_value name="UserSettings.$isMoneyForTrade" exact="false" />
+				<set_value name="UserSettings.$moneyForTradeMult" exact="90.0" />
+			</actions>
+		</cue>
+		<cue name="kMPT" namespace="this" version="11">
+			<conditions>
+				<check_any>
+					<event_cue_signalled />
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+				<check_value value="not @player.allmodules.{player.module}.isscenario" />
+			</conditions>
+			<actions>
+				<set_value name="UserSettings.$debugChance" exact="0" />
+				<debug_text text="'event.name: ' + event.name + ', UserSettings.$debugChance: ' + UserSettings.$debugChance" />
+				<set_value name="kMPT.$tradersByStation" exact="table[]" />
+				<set_value name="kMPT.$station" exact="null" />
+				<set_value name="kMPT.$tradersMoneyByStation" exact="table[]" />
+				<set_value name="kMPT.$attentionNearbyAndNearer" exact="[attention.nearby, attention.adjacentroom, attention.inroom]" />
+			</actions>
+			<patch sinceversion="2">
+				<debug_text text="'patch sinceversion 2, state: ' + this.state" />
+				<set_value name="kMPT.$tradersMoneyByStation" exact="table[]" />
+			</patch>
+			<patch sinceversion="3">
+				<debug_text text="'patch sinceversion 3, state: ' + this.state" />
+				<set_value name="kMPT.$attentionNearbyAndNearer" exact="[attention.nearby, attention.adjacentroom, attention.inroom]" />
+			</patch>
+			<patch sinceversion="4">
+				<debug_text text="'patch sinceversion 4, state: ' + this.state" />
+				<set_value name="UserSettings.$isTradeForMoney" exact="false" />
+				<set_value name="UserSettings.$tradeForMoneyMult" exact="0.1" />
+			</patch>
+			<patch sinceversion="5">
+				<debug_text text="'patch sinceversion 5, state: ' + this.state" />
+				<reset_cue cue="K_ArriveAndLeaveStations" />
+			</patch>
+			<patch sinceversion="6">
+				<debug_text text="'patch sinceversion 6, state: ' + this.state" />
+				<set_value name="$station_patch" exact="kMPT.$station" />
+				<set_value name="$stations_delete" exact="[]" />
+				<do_for_each name="$station_inList" in="kMPT.$tradersByStation.keys.list">
+					<set_value name="$isOk" exact="true" />
+					<debug_text text="'$isOk: ' + $isOk + ' kMPT.$tradersByStation.{$station_inList}: ' + kMPT.$tradersByStation.{$station_inList}" />
+					<do_if value="$station_inList == kMPT.$station and DockedAtStation.state != cuestate.waiting">
+						<set_value name="$isOk" exact="false" />
+						<debug_text text="'isOk (in live station): ' + isOk" />
+					</do_if>
+					<do_if value="$isOk">
+						<append_to_list name="$stations_delete" exact="$station_inList" />
+					</do_if>
+				</do_for_each>
+				<do_for_each name="$station_inList" in="$stations_delete">
+					<set_value name="$npc_delete" exact="kMPT.$tradersByStation.{$station_inList}" />
+					<debug_text text="'$npc_delete: ' + $npc_delete" />
+					<destroy_object object="$npc_delete" />
+					<remove_value name="kMPT.$tradersByStation.{$station_inList}" />
+				</do_for_each>
+			</patch>
+			<patch sinceversion="7">
+				<debug_text text="'patch sinceversion 7, state: ' + this.state" />
+				<set_value name="UserSettings.$isMoneyForTrade" exact="false" />
+				<set_value name="UserSettings.$moneyForTradeMult" exact="0.1" />
+			</patch>
+			<patch sinceversion="8">
+				<debug_text text="'patch sinceversion 8, state: ' + this.state" />
+				<set_value name="UserSettings.$moneyForTradeMult" exact="0.9" />
+			</patch>
+			<patch sinceversion="9">
+				<debug_text text="'patch sinceversion 9, state: ' + this.state" />
+				<set_value name="UserSettings.$tradeForMoneyMult" exact="UserSettings.$tradeForMoneyMult * 100.0" />
+				<set_value name="UserSettings.$moneyForTradeMult" exact="UserSettings.$moneyForTradeMult * 100.0" />
+			</patch>
+			<patch sinceversion="11">
+				<debug_text text="'patch sinceversion 11, state: ' + this.state" />
+				<remove_value name="UserSettings.$isDoDebug1" />
+				<remove_value name="UserSettings.$isDoDebug2" />
+			</patch>
+			<cues>
+				<cue name="Init">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<event_game_loaded />
+						</check_any>
+						<check_value value="not @player.allmodules.{player.module}.isscenario" />
+					</conditions>
+					<actions>
+						<debug_text text="event.name" />
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="DockedAtStation" namespace="this">
+					<conditions>
+						<event_object_signalled object="player.entity" param="'K_ArriveAndLeaveStations'" />
+						<check_any>
+							<check_all>
+								<check_value value="@event.param2.$teleportTo.isclass.station" />
+								<check_value value="not @event.param2.$teleportTo.isplayerowned" />
+								<check_value value="@event.param2.$teleportTo.isshipyard or @event.param2.$teleportTo.iswharf or @event.param2.$teleportTo.isequipmentdock" />
+								<check_value value="@event.param2.$teleportTo != kMPT.$station" />
+							</check_all>
+							<check_all>
+								<check_value value="@event.param2.$dockAt.isclass.station" />
+								<check_value value="not @event.param2.$dockAt.isplayerowned" />
+								<check_value value="@event.param2.$dockAt.isshipyard or @event.param2.$dockAt.iswharf or @event.param2.$dockAt.isequipmentdock" />
+								<check_value value="@event.param2.$dockAt != kMPT.$station" />
+							</check_all>
+						</check_any>
+					</conditions>
+					<actions>
+						<set_value name="kMPT.$station" exact="@event.param2.$teleportTo" />
+						<do_if value="not @kMPT.$station.exists">
+							<set_value name="kMPT.$station" exact="@event.param2.$dockAt" />
+						</do_if>
+						<set_value name="$station_this" exact="kMPT.$station" />
+						<do_if value="(not kMPT.$tradersByStation.{$station_this}?) or (not @kMPT.$tradersByStation.{$station_this}.exists)">
+							<create_cue_actor name="$npc" cue="kMPT">
+								<select faction="$station_this.owner" />
+								<owner exact="$station_this.owner" />
+							</create_cue_actor>
+							<set_entity_type entity="$npc" type="entitytype.crowd"/>
+							<set_entity_traits entity="$npc" missionactor="true" />
+							<set_value name="$npc.$kMPT_isTrader" exact="true" />
+							<set_value name="kMPT.$tradersByStation.{$station_this}" exact="$npc" />
+						</do_if>
+						<do_else>
+							<set_value name="$npc" exact="kMPT.$tradersByStation.{$station_this}" />
+						</do_else>
+						<!-- <debug_text text="'$npc: ' + $npc + ' (' + $npc.name + ')'" chance="UserSettings.$debugChance" /> -->
+						<get_room_definition macro="$corridorMacro" race="$station_this.owner.primaryrace" tags="tag.corridor" />
+						<do_if value="not $corridorMacro">
+							<get_room_definition macro="$corridorMacro" race="faction.argon.primaryrace" tags="tag.corridor" />
+						</do_if>
+						<!-- <debug_text text="'$corridorMacro: ' + $corridorMacro" chance="UserSettings.$debugChance" /> -->
+						<get_room_definition macro="$roomMacro" race="$station_this.owner.primaryrace" tags="tag.office" />
+						<do_if value="not $roomMacro">
+							<get_room_definition macro="$roomMacro" race="faction.argon.primaryrace" tags="tag.office" />
+						</do_if>
+						<!-- <debug_text text="'$roomMacro: ' + $roomMacro" chance="UserSettings.$debugChance" /> -->
+						<set_value name="$roomName" exact="{11131620, 300}" />
+						<create_dynamic_interior object="$station_this"
+							name="$roomName"
+							corridor="$corridorMacro" room="$roomMacro"
+							interiorname="$interior" corridorname="$corridor" roomname="$room" roomtype="roomtype.office"
+							seed="$station_this.seed + lookup.roomtype.list.indexof.{roomtype.office}" />
+						<!-- <debug_text text="'$interior: ' + $interior" chance="UserSettings.$debugChance" /> -->
+						<!-- <debug_text text="'$corridor: ' + $corridor" chance="UserSettings.$debugChance" /> -->
+						<!-- <debug_text text="'$room: ' + $room" chance="UserSettings.$debugChance" /> -->
+						<do_if value="$interior and $corridor and $room">
+							<find_npc_slot name="$roomSlot" object="$room" tags="tag.control" />
+							<!-- <debug_text text="'$roomSlot: ' + $roomSlot" chance="UserSettings.$debugChance" /> -->
+							<do_if value="$roomSlot">
+								<add_actor_to_room actor="$npc" slot="$roomSlot" />
+							</do_if>
+							<set_value name="$interior" exact="$interior" />
+						</do_if>
+						<set_value name="$MissionThread" exact="null" />
+						<set_value name="$OfferType" exact="null" />
+						<signal_cue_instantly cue="md.LIB_Reward_Balancing.Reward_Money" param="[namespace, level.trivial, 1, $station_this.owner]" comment="basic reward credits"/>
+						<include_actions ref="md.LIB_Reward_Balancing.Apply_RewardMultiplier" comment="signal leak and mission thread bonus"/>
+						<set_value name="kMPT.$basePrice" exact="$Reward_Money__Result_Multiplied" />
+						<!-- <debug_text text="'kMPT.$basePrice: ' + kMPT.$basePrice" chance="UserSettings.$debugChance" /> -->
+						<signal_cue_instantly cue="md.LIB_Reward_Balancing.Reward_Money" param="[namespace, level.veryhard, 1, $station_this.owner]" comment="basic reward credits"/>
+						<include_actions ref="md.LIB_Reward_Balancing.Apply_RewardMultiplier" comment="signal leak and mission thread bonus"/>
+						<set_value name="kMPT.$tradersMoneyByStation.{$station_this}" exact="(($Reward_Money__Result_Multiplied)f * 0.5)ct" />
+						<!-- <debug_text text="'kMPT.$tradersMoneyByStation.{$station_this}: ' + kMPT.$tradersMoneyByStation.{$station_this}" chance="UserSettings.$debugChance" /> -->
+						<!-- <debug_text text="'player.money: ' + player.money" chance="UserSettings.$debugChance" /> -->
+					</actions>
+					<cues>
+						<cue name="UndockedFromStation">
+							<conditions>
+								<event_object_signalled object="player.entity" param="'K_ArriveAndLeaveStations'" />
+								<check_any>
+									<check_value value="@event.param2.$leaveFrom == $station_this" />
+									<check_value value="@event.param2.$undockFrom == $station_this" />
+								</check_any>
+							</conditions>
+							<actions>
+								<!-- <debug_text text="'$station_this: ' + $station_this + ' (' + $station_this.knownname + ')'" chance="UserSettings.$debugChance" /> -->
+								<do_if value="@kMPT.$tradersByStation.{$station_this}">
+									<do_if value="kMPT.$tradersByStation.{$station_this}.exists">
+										<remove_actor_from_room actor="kMPT.$tradersByStation.{$station_this}" />
+										<!-- <debug_text text="'kMPT.$tradersByStation.{$station_this}: ' + kMPT.$tradersByStation.{$station_this} + ' (' + kMPT.$tradersByStation.{$station_this}.exists + ')'" chance="UserSettings.$debugChance" /> -->
+										<destroy_object object="kMPT.$tradersByStation.{$station_this}" />
+										<remove_value name="kMPT.$tradersByStation.{$station_this}" />
+									</do_if>
+								</do_if>
+								<do_if value="@$interior.exists">
+									<remove_dynamic_interior object="$station_this" interior="$interior" />
+									<destroy_object object="$interior" />
+									<!-- <debug_text text="'$interior: ' + $interior + ' (' + @$interior.exists + ')'" chance="UserSettings.$debugChance" /> -->
+								</do_if>
+								<destroy_object object="$room" />
+								<set_value name="$station_this" exact="null" />
+								<set_value name="kMPT.$station" exact="null" />
+								<reset_cue cue="parent" />
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="Converstation">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<check_all>
+								<event_conversation_started conversation="default" />
+								<check_any>
+									<check_value value="@event.object.$kMPT_isTrader" />
+									<!-- <check_all>
+										<check_value value="@event.object.inventory.count" /> -->
+										<check_any>
+											<check_value value="@player.room.type == roomtype.bar" />
+											<check_value value="@player.room.macro == macro.room_gen_bar_01_macro" />
+											<check_value value="@player.station.isequipmentdock" />
+											<check_value value="@player.station.isshipyard" />
+											<check_value value="@player.station.iswharf" />
+										</check_any>
+									<!-- </check_all> -->
+								</check_any>
+								<check_value value="event.object.owner != faction.player" />
+							</check_all>
+						</check_any>
+					</conditions>
+					<actions>
+						<!-- <add_player_choice text="{11131620, 100}" section="kMPT_barter" />
+						<reset_cue cue="this" /> -->
+						<do_if value="event.name == 'event_cue_signalled'">
+							<set_value name="$npc" exact="event.param.$object" />
+							<set_value name="$isTrader" exact="event.param.$isTrader" />
+						</do_if>
+						<do_else>
+							<set_value name="$npc" exact="event.object" />
+							<set_value name="$isTrader" exact="@$npc.$kMPT_isTrader" />
+							<do_if value="not $isTrader">
+								<do_all counter="$i" exact="$npc.inventory.count">
+									<do_if value="$npc.inventory.{$i}.hastag.primarymodpart or $npc.inventory.{$i}.hastag.equipmentmodpart">
+										<set_value name="$isTrader" exact="true" />
+										<break />
+									</do_if>
+								</do_all>
+							</do_if>
+						</do_else>
+						<do_if value="event.name == 'event_conversation_started' and @md.ExtendedConversationMenu.Main.exists">
+							<do_if value="$isTrader">
+								<set_value name="md.ExtendedConversationMenu.Main.$convOptions.$kMPT_trader" exact="table[
+									$signalCue = Converstation,
+									$params = table[$object = @event.object, $isTrader = $isTrader]
+								]" />
+							</do_if>
+						</do_if>
+						<do_else>
+							<!-- <debug_text text="'$npc: ' + @$npc.name" chance="UserSettings.$debugChance" />
+							<debug_text text="'$npc.inventory.count: ' + $npc.inventory.count" chance="UserSettings.$debugChance" /> -->
+							<!-- <do_if value="@$npc.$kMPT_isTrader or $npc.inventory.count"> -->
+							<do_if value="$isTrader">
+								<add_player_choice text="{11131620, 100}" section="kMPT_barter" comment="Trade for parts?" />
+							</do_if>
+						</do_else>
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="Conversation_NextSection">
+					<conditions>
+						<event_conversation_next_section sectionprefix="kMPT_" />
+					</conditions>
+					<actions>
+						<do_if value="event.param == 'kMPT_barter'">
+							<signal_cue_instantly cue="SetBarterItems" param="table[$npc = event.object]" />
+							<open_menu menu="UserQuestionMenu" param="[0, 0, 'custom_barter']" />
+						</do_if>
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<library name="GetWareValue" purpose="run_actions">
+					<params>
+						<param name="Ware"/>
+					</params>
+					<actions>
+						<set_value name="$level" exact="5" />
+						<set_value name="$text" exact="$Ware.id" />
+						<!-- <debug_text text="'$text: ' + $text" chance="UserSettings.$debugChance" /> -->
+						<substitute_text text="$compare" source="$text">
+							<replace string="'_t2'" with="''"/>
+						</substitute_text>
+						<!-- <debug_text text="'$compare (for _t2): ' + $compare" chance="UserSettings.$debugChance" /> -->
+						<do_if value="$text != $compare">
+							<set_value name="$level" exact="10" />
+						</do_if>
+						<do_else>
+							<substitute_text text="$compare" source="$text">
+								<replace string="'_t3'" with="''"/>
+							</substitute_text>
+							<!-- <debug_text text="'$compare (for _t3): ' + $compare" chance="UserSettings.$debugChance" /> -->
+							<do_if value="$text != $compare">
+								<set_value name="$level" exact="25" />
+							</do_if>
+						</do_else>
+						<!-- <debug_text text="'$level: ' + $level" chance="UserSettings.$debugChance" /> -->
+						<!-- <set_value name="$value" exact="$level * ($Ware.averageprice)f * ($Ware.products.count * 0.25) * 1ct" /> -->
+						<!-- <debug_text text="'$Ware.products.count: ' + $Ware.products.count" chance="UserSettings.$debugChance" /> -->
+						<!-- rarity: the lower the number the more rare -->
+						<set_value name="$rarity" exact="[1, 50f - $Ware.products.count].max" />
+						<!-- <debug_text text="'$rarity: ' + $rarity" chance="UserSettings.$debugChance" /> -->
+						<!-- level counts to 3 times the value -->
+						<!-- rarity counts to only 0.25 times the value -->
+						<!-- <debug_text text="'$Ware.averageprice: ' + $Ware.averageprice" chance="UserSettings.$debugChance" /> -->
+						<do_if value="$Ware.averageprice gt 100">
+							<set_value name="$value" exact="(($level * 3) * ($Ware.averageprice)f * ($rarity * 0.25))ct" />
+						</do_if>
+						<do_else>
+							<!-- base price counts to only 0.25 times the value -->
+							<set_value name="$value" exact="(($level * 3) * ((kMPT.$basePrice)f * 0.05) * ($rarity * 0.25))ct" />
+						</do_else>
+						<!-- <debug_text text="'$value: ' + $value" chance="UserSettings.$debugChance" /> -->
+						<return value="$value" />
+					</actions>
+				</library>
+				<cue name="SetBarterItems">
+					<conditions>
+						<event_cue_signalled />
+					</conditions>
+					<actions>
+						<set_value name="$npc" exact="event.param.$npc" />
+						<set_value name="player.entity.$kMPT_barterData" exact="table[]" />
+						<set_value name="$inventory" exact="table[]" />
+						<!-- <debug_text text="'kMPT.$basePrice: ' + kMPT.$basePrice" chance="UserSettings.$debugChance" /> -->
+						<do_all counter="$i" exact="player.entity.inventory.count">
+							<set_value name="$ware" exact="player.entity.inventory.{$i}" />
+							<do_if value="$ware.hastag.primarymodpart or $ware.hastag.equipmentmodpart">
+								<!-- <debug_text text="'$ware: ' + $ware.name + ' (' + $ware.averageprice + ')'" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$ware.products.list: ' + $ware.products.list" chance="UserSettings.$debugChance" /> -->
+								<run_actions ref="GetWareValue" result="$value">
+									<param name="Ware" value="$ware" />
+								</run_actions>
+								<set_value name="$inventory.{$ware}" exact="table[
+									$name = $ware.name,
+									$count = player.entity.inventory.{$ware}.count,
+									$value = $value
+								]" />
+								<!-- <debug_text text="'$ware: ' + $ware" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$inventory.{$ware}: ' + $inventory.{$ware}" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$value: ' + $inventory.{$ware}.$value.formatted.{'%s %Cr'}" chance="UserSettings.$debugChance" /> -->
+							</do_if>
+						</do_all>
+						<set_value name="player.entity.$kMPT_barterData.$playerData" exact="table[
+							$entity = player,
+							$name = player.name,
+							$inventory = $inventory
+						]" />
+						<set_value name="$inventory" exact="table[]" />
+						<do_if value="@$npc.$kMPT_isTrader">
+							<do_if value="player.age gt @$npc.$kMPT_time + 1h or (not @$npc.$kMPT_time)">
+								<set_value name="$npc.$kMPT_time" exact="player.age" />
+								<get_ware_definition result="$modParts" tags="[tag.primarymodpart]" />
+								<get_ware_definition result="$modParts2" tags="[tag.equipmentmodpart]" />
+								<do_for_each name="$modPart" in="$modParts2">
+									<do_if value="not $modParts.indexof.{$modPart}">
+										<append_to_list name="$modParts" exact="$modPart" />
+									</do_if>
+								</do_for_each>
+								<shuffle_list list="$modParts" />
+								<do_all counter="$i" exact="[5, $modParts.count].min">
+									<do_if value="$modParts.{$i}.hastag.{tag.equipmentmodpart}" comment="more secondary parts">
+										<add_inventory entity="$npc" ware="$modParts.{$i}" min="6" max="20" />
+									</do_if>
+									<do_else>
+										<add_inventory entity="$npc" ware="$modParts.{$i}" min="3" max="10" />
+									</do_else>
+								</do_all>
+								<do_if value="$modParts.count ge 6">
+									<do_all counter="$i" min="6" max="[10, $modParts.count].min" comment="more secondary parts">
+										<do_if value="$modParts.{$i}.hastag.{tag.equipmentmodpart}">
+											<add_inventory entity="$npc" ware="$modParts.{$i}" min="6" max="20" />
+										</do_if>
+										<do_else>
+											<add_inventory entity="$npc" ware="$modParts.{$i}" min="3" max="10" />
+										</do_else>
+									</do_all>
+								</do_if>
+							</do_if>
+						</do_if>
+						<do_all counter="$i" exact="$npc.inventory.count">
+							<set_value name="$ware" exact="$npc.inventory.{$i}" />
+							<!-- <do_if value="$ware.hastag.primarymodpart or $ware.hastag.equipmentmodpart or (not @$npc.$kMPT_isTrader)"> -->
+							<do_if value="$ware.hastag.primarymodpart or $ware.hastag.equipmentmodpart">
+								<!-- <debug_text text="'$ware: ' + $ware" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$ware: ' + $ware.name + ' (' + $ware.averageprice + ')'" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$ware.products.list: ' + $ware.products.list" chance="UserSettings.$debugChance" /> -->
+								<run_actions ref="GetWareValue" result="$value">
+									<param name="Ware" value="$ware" />
+								</run_actions>
+								<set_value name="$inventory.{$ware}" exact="table[
+									$name = $ware.name,
+									$count = $npc.inventory.{$ware}.count,
+									$value = $value
+								]" />
+								<!-- <debug_text text="'$inventory.{$ware}: ' + $inventory.{$ware}" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$value: ' + $inventory.{$ware}.$value.formatted.{'%s %Cr'}" chance="UserSettings.$debugChance" /> -->
+							</do_if>
+						</do_all>
+						<set_value name="player.entity.$kMPT_barterData.$storeData" exact="table[
+							$entity = $npc,
+							$name = event.param.$npc.name,
+							$inventory = $inventory,
+							$money = kMPT.$tradersMoneyByStation.{kMPT.$station}
+						]" />
+						<set_value name="player.entity.$kMPT_barterData.$isTradeForMoney" exact="UserSettings.$isTradeForMoney" />
+						<set_value name="player.entity.$kMPT_barterData.$tradeForMoneyMult" exact="UserSettings.$tradeForMoneyMult / 100.0" />
+						<set_value name="player.entity.$kMPT_barterData.$isMoneyForTrade" exact="UserSettings.$isMoneyForTrade" />
+						<set_value name="player.entity.$kMPT_barterData.$moneyForTradeMult" exact="UserSettings.$moneyForTradeMult / 100.0" />
+						<reset_cue cue="CleanUpTradersAfter1hr" />
+						<!-- <reset_cue cue="this" /> -->
+					</actions>
+					<cues>
+						<cue name="SetBarterItems2">
+							<actions>
+								<signal_cue cue="CleanUpTradersAfter1hr" />
+								<reset_cue cue="parent" />
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="CleanUpTradersAfter1hr" namespace="this">
+					<conditions>
+						<event_cue_signalled />
+					</conditions>
+					<cues>
+						<cue name="CleanUpTraderAfter1hr2" checktime="player.age + 1h" checkinterval="10min" instantiate="true">
+							<actions>
+								<do_if value="(not @player.station.isequipmentdock) and (not @player.station.isshipyard) and (not @player.station.iswharf)">
+									<run_actions ref="CleanUpTraders" />
+									<reset_cue cue="parent" />
+								</do_if>
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<library name="CleanUpTraders" purpose="run_actions">
+					<actions>
+						<do_all counter="$i" exact="kMPT.$tradersByStation.keys.count" reverse="true">
+							<set_value name="$key" exact="kMPT.$tradersByStation.keys.{$i}" />
+							<set_value name="$npc" exact="kMPT.$tradersByStation.{$key}" />
+							<destroy_object object="$npc" />
+							<remove_value name="kMPT.$tradersByStation.{$key}" />
+							<do_if value="kMPT.$tradersMoneyByStation.{$key}?">
+								<remove_value name="kMPT.$tradersMoneyByStation.{$key}" />
+							</do_if>
+						</do_all>
+					</actions>
+				</library>
+				<cue name="UserQuestionMenu" instantiate="true">
+					<conditions>
+						<event_ui_triggered screen="'UserQuestionMenu'" />
+					</conditions>
+					<actions>
+						<!-- <debug_text text="'event.name: ' + event.name" chance="UserSettings.$debugChance" /> -->
+						<!-- <debug_text text="'event.param: ' + event.param" chance="UserSettings.$debugChance" /> -->
+						<!-- <debug_text text="'event.param2: ' + event.param2" chance="UserSettings.$debugChance" /> -->
+						<do_if value="event.param2 == 'menu_close'">
+							<set_value name="player.entity.$kMPT_barterData" exact="table[]" />
+						</do_if>
+						<!-- <debug_text text="'player.entity.$kMPT_barterData: ' + player.entity.$kMPT_barterData" chance="UserSettings.$debugChance" /> -->
+						<set_value name="UserSettings.$isOptionsChanged" exact="false" />
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="CompleteBarter">
+					<conditions>
+						<event_ui_triggered screen="'UserQuestionMenu'" control="'kMPT_complete_barter'" />
+					</conditions>
+					<actions>
+						<!-- at this time, trades are valid. e.g.:
+							trader has an advantage,
+							player has enough money to buy if that option is set,
+							etc.
+							there's no need to check if trade items are at a balance.
+							only do money transfers if buying and selling are enabled.
+						-->
+						<set_value name="$creditsToPlayer" exact="0ct" />
+						<set_value name="$creditsToTrader" exact="0ct" />
+						<do_all counter="$i" exact="player.entity.$kMPT_barterData.$playerData.$inventory.keys.count">
+							<set_value name="$key" exact="player.entity.$kMPT_barterData.$playerData.$inventory.keys.{$i}" />
+							<!-- <debug_text text="'$key: ' + $key" chance="UserSettings.$debugChance" /> -->
+							<!-- <debug_text text="'$inventory.{$key}: ' + player.entity.$kMPT_barterData.$playerData.$inventory.{$key}" chance="UserSettings.$debugChance" /> -->
+							<set_value name="$wareData" exact="player.entity.$kMPT_barterData.$playerData.$inventory.{$key}" />
+							<do_if value="$wareData.$barterAmount">
+								<!-- <debug_text text="'$wareData: ' + $wareData" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$playerData $key: ' + $key" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$playerData $wareData.$barterAmount: ' + $wareData.$barterAmount" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$playerData $wareData.$value: ' + $wareData.$value" chance="UserSettings.$debugChance" /> -->
+								<remove_inventory entity="player.entity" ware="ware.{$wareData.$id}" exact="$wareData.$barterAmount"/>
+								<add_inventory entity="player.entity.$kMPT_barterData.$storeData.$entity" ware="ware.{$wareData.$id}" exact="$wareData.$barterAmount"/>
+								<set_value name="$creditsToPlayer" exact="(($creditsToPlayer)f + $wareData.$barterAmount * ($wareData.$value * 100)f)ct" />
+							</do_if>
+						</do_all>
+						<do_all counter="$i" exact="player.entity.$kMPT_barterData.$storeData.$inventory.keys.count">
+							<set_value name="$key" exact="player.entity.$kMPT_barterData.$storeData.$inventory.keys.{$i}" />
+							<set_value name="$wareData" exact="player.entity.$kMPT_barterData.$storeData.$inventory.{$key}" />
+							<do_if value="$wareData.$barterAmount">
+								<!-- <debug_text text="'$wareData: ' + $wareData" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$storeData $key: ' + $key" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$storeData $wareData.$barterAmount: ' + $wareData.$barterAmount" chance="UserSettings.$debugChance" /> -->
+								<!-- <debug_text text="'$storeData $wareData.$value: ' + $wareData.$value" chance="UserSettings.$debugChance" /> -->
+								<remove_inventory entity="player.entity.$kMPT_barterData.$storeData.$entity" ware="ware.{$wareData.$id}" exact="$wareData.$barterAmount"/>
+								<add_inventory entity="player.entity" ware="ware.{$wareData.$id}" exact="$wareData.$barterAmount"/>
+								<set_value name="$creditsToPlayer" exact="(($creditsToPlayer)f - $wareData.$barterAmount * ($wareData.$value * 100)f)ct" />
+								<add_encyclopedia_entry type="inventory_wares" item="ware.{$wareData.$id}.id" />
+							</do_if>
+						</do_all>
+						<do_if value="$creditsToPlayer lt 0">
+							<set_value name="$creditsToTrader" exact="($creditsToPlayer)f * -1ct" />
+						</do_if>
+						<do_if value="UserSettings.$isMoneyForTrade and $creditsToTrader gt 0">
+							<set_value name="$creditsToTrader" exact="(($creditsToTrader)f * UserSettings.$moneyForTradeMult / 100.0)ct" />
+							<do_if value="$creditsToTrader le player.money">
+								<debug_text text="'transfer_money OUT: ' + $creditsToTrader" chance="UserSettings.$debugChance" />
+								<!-- <transfer_money from="faction.player" to="player.entity.$kMPT_barterData.$storeData.$entity.owner" amount="$creditsToTrader" /> -->
+								<do_if value="@md.VerboseTransactionLog.TransferMoney.exists">
+									<signal_cue_instantly cue="md.VerboseTransactionLog.TransferMoney" param="table[
+										$amount = $creditsToTrader,
+										$description = {11131620, 401},
+										$from = faction.player,
+										$to = player.entity.$kMPT_barterData.$storeData.$entity.container,
+									]" />
+								</do_if>
+								<do_else>
+									<transfer_money from="faction.player" to="player.entity.$kMPT_barterData.$storeData.$entity.owner" amount="$creditsToTrader" />
+								</do_else>
+								<set_value name="kMPT.$tradersMoneyByStation.{kMPT.$station}" exact="kMPT.$tradersMoneyByStation.{kMPT.$station} + $creditsToTrader" />
+							</do_if>
+						</do_if>
+						<do_elseif value="UserSettings.$isTradeForMoney and $creditsToPlayer gt 0">
+							<set_value name="$creditsToPlayer" exact="(($creditsToPlayer)f * UserSettings.$tradeForMoneyMult / 100.0)ct" />
+							<!-- <set_value name="$creditsToPlayer" exact="($creditsToPlayer)ct" /> -->
+							<!-- <debug_text text="'$creditsToPlayer: ' + $creditsToPlayer" chance="UserSettings.$debugChance" /> -->
+							<!-- <debug_text text="'trader has all the money? ' + ($creditsToPlayer le kMPT.$tradersMoneyByStation.{kMPT.$station})" chance="UserSettings.$debugChance" /> -->
+							<do_if value="$creditsToPlayer le kMPT.$tradersMoneyByStation.{kMPT.$station}">
+								<!-- <debug_text text="'transfer_money: ' + $creditsToPlayer" chance="UserSettings.$debugChance" /> -->
+								<debug_text text="'transfer_money IN: ' + $creditsToPlayer" chance="UserSettings.$debugChance" />
+								<!-- <transfer_money from="player.entity.$kMPT_barterData.$storeData.$entity.owner" to="faction.player" amount="$creditsToPlayer" /> -->
+								<do_if value="@md.VerboseTransactionLog.TransferMoney.exists">
+									<signal_cue_instantly cue="md.VerboseTransactionLog.TransferMoney" param="table[
+										$amount = $creditsToPlayer,
+										$description = {11131620, 401},
+										$from = player.entity.$kMPT_barterData.$storeData.$entity.container,
+										$to = faction.player,
+									]" />
+								</do_if>
+								<do_else>
+									<transfer_money from="player.entity.$kMPT_barterData.$storeData.$entity.owner" to="faction.player" amount="$creditsToPlayer" />
+								</do_else>
+								<set_value name="kMPT.$tradersMoneyByStation.{kMPT.$station}" exact="kMPT.$tradersMoneyByStation.{kMPT.$station} - $creditsToPlayer" />
+							</do_if>
+							<do_else>
+								<!-- <debug_text text="'transfer_money: ' + kMPT.$tradersMoneyByStation.{kMPT.$station}" chance="UserSettings.$debugChance" /> -->
+								<debug_text text="'transfer_money IN: ' + $kMPT.$tradersMoneyByStation.{kMPT.$station}" chance="UserSettings.$debugChance" />
+								<!-- <transfer_money from="player.entity.$kMPT_barterData.$storeData.$entity.owner" to="faction.player" amount="kMPT.$tradersMoneyByStation.{kMPT.$station}" /> -->
+								<do_if value="@md.VerboseTransactionLog.TransferMoney.exists">
+									<signal_cue_instantly cue="md.VerboseTransactionLog.TransferMoney" param="table[
+										$amount = kMPT.$tradersMoneyByStation.{kMPT.$station},
+										$description = {11131620, 401},
+										$from = player.entity.$kMPT_barterData.$storeData.$entity.container,
+										$to = faction.player,
+									]" />
+								</do_if>
+								<do_else>
+									<transfer_money from="player.entity.$kMPT_barterData.$storeData.$entity.owner" to="faction.player" amount="kMPT.$tradersMoneyByStation.{kMPT.$station}" />
+								</do_else>
+								<set_value name="kMPT.$tradersMoneyByStation.{kMPT.$station}" exact="0ct" />
+							</do_else>
+						</do_elseif>
+						<do_else>
+							<!-- traders are interested in mod parts, not in credits -->
+							<!-- <transfer_money from="faction.player" to="player.entity.$kMPT_barterData.$storeData.$entity.owner" amount="$creditsToPlayer" /> -->
+						</do_else>
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="K_ArriveAndLeaveStations" namespace="this">
+					<actions>
+						<set_value name="$attentionNearbyAndNearer" exact="[attention.nearby, attention.adjacentroom, attention.inroom]" />
+						<set_value name="$attentionInZoneAndNearer" exact="[attention.inzone, attention.nearby, attention.adjacentroom, attention.inroom]" />
+						<set_value name="md.Notifications.Init.$kuertee_station_new" exact="null" />
+						<set_value name="md.Notifications.Init.$kuertee_station_old" exact="null" />
+						<set_value name="md.Notifications.Init.$kuertee_station_current" exact="null" />
+						<set_value name="md.Notifications.Init.$kuertee_Cue_departOldStation" exact="null" />
+						<set_value name="md.Notifications.Init.$kuertee_debugChance" exact="0" />
+					</actions>
+					<cues>
+						<cue name="K_ArriveStation" instantiate="true">
+							<conditions>
+								<check_any>
+									<event_cue_signalled />
+									<check_all>
+										<!-- Event for the specified object changing attention level (object = attention changing object, param = new attention level, param2 = previous attention level) -->
+										<event_object_changed_attention group="md.NPC_Instantiation.Instantiation.$TrackedObjects" />
+										<check_value value="event.object.isclass.station" />
+										<check_value value="@event.object.macro != @macro.landmarks_par_monument_01_macro" />
+										<check_value value="@event.object.macro != @macro.torus_maze_macro" />
+									</check_all>
+									<check_all>
+										<!-- Event for when the player successfully teleports. (param = new room, param2 = old room, param3 = is shortcut instead of real teleport) -->
+										<event_player_teleport_successful />
+									</check_all>
+								</check_any>
+							</conditions>
+							<actions>
+								<set_value name="$isOk" exact="false" />
+								<set_value name="$isAlreadyActive" exact="false" />
+								<set_value name="$isTeleport" exact="false" />
+								<do_if value="event.name == 'event_cue_signalled'">
+									<set_value name="$station_this" exact="event.param.$station" />
+									<set_value name="$isAlreadyActive" exact="event.param.$isAlreadyActive" />
+									<set_value name="$isOk" exact="true" />
+								</do_if>
+								<do_elseif value="event.name == 'event_object_changed_attention'">
+									<do_if value="event.object.isclass.station">
+										<set_value name="$station_this" exact="event.object" />
+										<set_value name="$isOk" exact="
+											$attentionNearbyAndNearer.indexof.{event.param}
+											and
+											(not $attentionNearbyAndNearer.indexof.{event.param2})
+											and
+											$station_this != md.Notifications.Init.$kuertee_station_current
+										" />
+									</do_if>
+								</do_elseif>
+								<do_elseif value="event.name == 'event_player_teleport_successful'">
+									<set_value name="$isTeleport" exact="true" />
+									<do_if value="player.station">
+										<set_value name="$station_this" exact="player.station" />
+										<set_value name="$isOk" exact="
+											(
+												(not @md.Notifications.Init.$kuertee_station_current)
+												or
+												(not @param.hascontext.{@md.Notifications.Init.$kuertee_station_current})
+											)
+											and
+											$station_this != md.Notifications.Init.$kuertee_station_current
+										" />
+									</do_if>
+								</do_elseif>
+								<do_if value="$isOk">
+									<do_if value="not $isAlreadyActive">
+										<do_if value="md.Notifications.Init.$kuertee_Cue_departOldStation.exists">
+											<do_if value="md.Notifications.Init.$kuertee_Cue_departOldStation.state == cuestate.waiting">
+												<signal_cue_instantly cue="md.Notifications.Init.$kuertee_Cue_departOldStation" />
+											</do_if>
+										</do_if>
+										<set_value name="md.Notifications.Init.$kuertee_station_new" exact="$station_this" />
+										<set_value name="md.Notifications.Init.$kuertee_station_old" exact="md.Notifications.Init.$kuertee_station_current" />
+										<set_value name="md.Notifications.Init.$kuertee_station_current" exact="md.Notifications.Init.$kuertee_station_new" />
+									</do_if>
+									<do_else>
+										<set_value name="md.Notifications.Init.$kuertee_station_new" exact="$station_this" />
+										<set_value name="md.Notifications.Init.$kuertee_station_old" exact="md.Notifications.Init.$kuertee_station_current" />
+										<set_value name="md.Notifications.Init.$kuertee_station_current" exact="md.Notifications.Init.$kuertee_station_new" />
+										<raise_lua_event name="'Chat_Window_API.Print'" param="'K_ArriveStation $isAlreadyActive at: ' + @md.Notifications.Init.$kuertee_station_current.knownname" />
+										<debug_text text="'K_ArriveStation $isAlreadyActive at: ' + @md.Notifications.Init.$kuertee_station_current.knownname" />
+									</do_else>
+								</do_if>
+								<do_else>
+									<cancel_cue cue="this" />
+								</do_else>
+							</actions>
+							<cues>
+								<cue name="K_DepartStation">
+									<conditions>
+										<check_any>
+											<event_cue_signalled />
+											<event_object_changed_attention object="md.Notifications.Init.$kuertee_station_current" />
+										</check_any>
+									</conditions>
+									<actions>
+										<set_value name="$isOk" exact="false" />
+										<set_value name="$isOk" exact="
+											event.name == 'event_cue_signalled'
+											or
+											(
+												(not @$attentionNearbyAndNearer.indexof.{@event.param})
+												and
+												@$attentionNearbyAndNearer.indexof.{@event.param2}
+											)
+										" />
+										<do_if value="$isOk">
+											<set_value name="md.Notifications.Init.$kuertee_station_new" exact="null" />
+											<set_value name="md.Notifications.Init.$kuertee_station_old" exact="md.Notifications.Init.$kuertee_station_current" />
+											<signal_objects object="player.entity" param="'K_ArriveAndLeaveStations'" param2="table[$leaveFrom = md.Notifications.Init.$kuertee_station_old]" />
+											<set_value name="md.Notifications.Init.$kuertee_station_current" exact="md.Notifications.Init.$kuertee_station_new" />
+											<raise_lua_event name="'Chat_Window_API.Print'" param="'K_DepartStation new ' + @md.Notifications.Init.$kuertee_station_new.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+											<raise_lua_event name="'Chat_Window_API.Print'" param="'K_DepartStation old ' + @md.Notifications.Init.$kuertee_station_old.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+											<raise_lua_event name="'Chat_Window_API.Print'" param="'K_DepartStation current ' + @md.Notifications.Init.$kuertee_station_current.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+											<debug_text text="'kuertee K_DepartStation new ' + @md.Notifications.Init.$kuertee_station_new.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+											<debug_text text="'kuertee K_DepartStation old ' + @md.Notifications.Init.$kuertee_station_old.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+											<debug_text text="'kuertee K_DepartStation current ' + @md.Notifications.Init.$kuertee_station_current.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+											<cancel_cue cue="parent" />
+											<reset_cue cue="this" />
+										</do_if>
+										<do_else>
+											<reset_cue cue="this" />
+										</do_else>
+									</actions>
+								</cue>
+								<cue name="K_ArriveStation2">
+									<actions>
+										<set_value name="md.Notifications.Init.$kuertee_Cue_departOldStation" exact="K_DepartStation" />
+										<do_if value="$isTeleport">
+											<signal_objects object="player.entity" param="'K_ArriveAndLeaveStations'" param2="table[$teleportTo = md.Notifications.Init.$kuertee_station_new, $leaveFrom = md.Notifications.Init.$kuertee_station_old]" />
+										</do_if>
+										<do_else>
+											<signal_objects object="player.entity" param="'K_ArriveAndLeaveStations'" param2="table[$arriveAt = md.Notifications.Init.$kuertee_station_new, $leaveFrom = md.Notifications.Init.$kuertee_station_old]" />
+										</do_else>
+										<raise_lua_event name="'Chat_Window_API.Print'" param="'K_ArriveStation new ' + @md.Notifications.Init.$kuertee_station_new.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<raise_lua_event name="'Chat_Window_API.Print'" param="'K_ArriveStation old ' + @md.Notifications.Init.$kuertee_station_old.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<raise_lua_event name="'Chat_Window_API.Print'" param="'K_ArriveStation current ' + @md.Notifications.Init.$kuertee_station_current.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<debug_text text="'kuertee K_ArriveStation new ' + @md.Notifications.Init.$kuertee_station_new.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<debug_text text="'kuertee K_ArriveStation old ' + @md.Notifications.Init.$kuertee_station_old.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<debug_text text="'kuertee K_ArriveStation current ' + @md.Notifications.Init.$kuertee_station_current.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<cancel_cue cue="this" />
+									</actions>
+								</cue>
+								<cue name="K_DockedAtStation">
+									<conditions>
+										<!-- Event for the specified object docking (object = docking object, param = dock object, param2 = zone) -->
+										<event_object_docked group="global.$PlayerContainerGroup" />
+										<check_value value="event.param.isclass.station" />
+										<check_value value="@event.param.macro != @macro.landmarks_par_monument_01_macro" />
+										<check_value value="@event.param.macro != @macro.torus_maze_macro" />
+									</conditions>
+									<actions>
+										<!-- <raise_lua_event name="'Chat_Window_API.Print'" param="'K_DockedAtStation player.station ' + @$player.station.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" /> -->
+										<set_value name="md.Notifications.Init.$kuertee_station_current" exact="event.param" />
+										<signal_objects object="player.entity" param="'K_ArriveAndLeaveStations'" param2="table[$dockAt = md.Notifications.Init.$kuertee_station_current]" />
+										<raise_lua_event name="'Chat_Window_API.Print'" param="'K_DockedAtStation station_current ' + @md.Notifications.Init.$kuertee_station_current.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<debug_text text="'kuertee K_DockedAtStation current ' + @md.Notifications.Init.$kuertee_station_current.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<reset_cue cue="this" />
+									</actions>
+								</cue>
+								<cue name="K_UndockedFromStation">
+									<conditions>
+										<!-- Event for the specified object undocking (object = undocking object, param = dock, param2 = zone) -->
+										<event_object_undocked group="global.$PlayerContainerGroup" />
+										<check_value value="event.param.isclass.station" />
+										<check_value value="@event.param.macro != @macro.landmarks_par_monument_01_macro" />
+										<check_value value="@event.param.macro != @macro.torus_maze_macro" />
+									</conditions>
+									<actions>
+										<set_value name="md.Notifications.Init.$kuertee_station_current" exact="event.param" />
+										<signal_objects object="player.entity" param="'K_ArriveAndLeaveStations'" param2="table[$undockFrom = md.Notifications.Init.$kuertee_station_current]" />
+										<raise_lua_event name="'Chat_Window_API.Print'" param="'K_UndockedFromStation station_current ' + @md.Notifications.Init.$kuertee_station_current.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<debug_text text="'kuertee K_UndockedFromStation current ' + @md.Notifications.Init.$kuertee_station_current.knownname" chance="@md.Notifications.Init.$kuertee_debugChance" />
+										<reset_cue cue="this" />
+									</actions>
+								</cue>
+							</cues>
+						</cue>
+						<cue name="K_ArriveAndLeaveStations_Debug" namespace="this">
+							<conditions>
+								<event_ui_triggered screen="'Chat_Window_API'" control="'text_entered'" />
+								<check_value value="event.param3.$text == 'kuertee debug K_ArriveAndLeaveStations'" />
+							</conditions>
+							<actions>
+								<debug_text text="@event.param3" />
+								<raise_lua_event name="'Chat_Window_API.Print'" param="@event.param3.$text" />
+								<do_if value="@md.Notifications.Init.$kuertee_debugChance">
+									<set_value name="md.Notifications.Init.$kuertee_debugChance" exact="0" />
+								</do_if>
+								<do_else>
+									<set_value name="md.Notifications.Init.$kuertee_debugChance" exact="100" />
+								</do_else>
+								<reset_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="K_ArriveAndLeaveStations_Init2" namespace="this">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<event_game_loaded />
+						</check_any>
+						<check_value value="not @player.allmodules.{player.module}.isscenario" />
+					</conditions>
+					<actions>
+						<!-- save station current -->
+						<set_value name="$station_current" exact="@md.Notifications.Init.$kuertee_station_current" />
+						<do_if value="not @$station_current.exists">
+							<set_value name="$station_current" exact="@K_ArriveAndLeaveStations.$kuertee_station_current" />
+							<do_if value="not @$station_current.exists">
+								<set_value name="$station_current" exact="@K_ArriveAndLeaveStations.$station_current" />
+							</do_if>
+						</do_if>
+						<debug_text text="'$station_current: ' + $station_current + ' (' + @$station_current.knownname + ')'" />
+						<do_if value="@md.Notifications.Init.$kuertee_ArriveAndLeaveStations.exists">
+							<!-- deregister at every load -->
+							<remove_value name="md.Notifications.Init.$kuertee_ArriveAndLeaveStations" />
+						</do_if>
+						<set_value name="$initDelay" min="0.0s" max="1.0s" />
+						<debug_text text="'$initDelay: ' + $initDelay" />
+						<!-- reset cue at every load -->
+						<reset_cue cue="K_ArriveAndLeaveStations" />
+					</actions>
+					<cues>
+						<cue name="K_ArriveAndLeaveStations_Init3" checktime="player.age + $initDelay">
+							<actions>
+								<do_if value="not @md.Notifications.Init.$kuertee_ArriveAndLeaveStations.exists">
+									<!-- no K_ArriveAndLeaveStations registered -->
+									<!-- register this K_ArriveAndLeaveStations -->
+									<set_value name="md.Notifications.Init.$kuertee_ArriveAndLeaveStations" exact="K_ArriveAndLeaveStations" />
+									<debug_text text="'$kuertee_ArriveAndLeaveStations: ' + @md.Notifications.Init.$kuertee_ArriveAndLeaveStations" />
+								</do_if>
+								<do_else>
+									<!-- cancel this K_ArriveAndLeaveStations, so only one exists -->
+									<debug_text text="'cancel_cue ' + K_ArriveAndLeaveStations" />
+									<cancel_cue cue="K_ArriveAndLeaveStations" />
+									<reset_cue cue="parent" />
+								</do_else>
+							</actions>
+							<cues>
+								<cue name="K_ArriveAndLeaveStations_Init4">
+									<actions>
+										<do_if value="not @$station_current.exists">
+											<find_station name="$station" sortbydistanceto="player.entity" />
+											<do_if value="[attention.nearby, attention.adjacentroom, attention.inroom].indexof.{$station.attention}">
+												<set_value name="$station_current" exact="$station" />
+												<debug_text text="'$station_current (found nearby): ' + $station_current + ' (' + $station_current.knownname + ')'" />
+											</do_if>
+											<reset_cue cue="K_ArriveAndLeaveStations_Init2" />
+										</do_if>
+										<do_if value="@$station_current.exists">
+											<!-- if there was a $station_current, prepare K_ArriveAndLeaveStations with it -->
+											<!-- this is required so that K_DepartStation can continue with $station_current -->
+											<!-- <debug_text text="'$kuertee_ArriveAndLeaveStations setting for $station_current: ' + $station_current + ' (' + $station_current.knownname + ')'" /> -->
+											<!-- <signal_cue_instantly cue="K_ArriveStation" param="table[$station = $station_current, $isAlreadyActive = true]" /> -->
+											<!-- <reset_cue cue="K_ArriveAndLeaveStations_Init2" /> -->
+										</do_if>
+									</actions>
+									<cues>
+										<cue name="K_ArriveAndLeaveStations_Init5">
+											<actions>
+												<debug_text text="'$kuertee_ArriveAndLeaveStations setting for $station_current: ' + $station_current + ' (' + $station_current.knownname + ')'" />
+												<signal_cue_instantly cue="K_ArriveStation" param="table[$station = $station_current, $isAlreadyActive = true]" />
+												<reset_cue cue="K_ArriveAndLeaveStations_Init2" />
+											</actions>
+										</cue>
+									</cues>
+								</cue>
+							</cues>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="K_ArriveAndLeaveStations_FirstRun2">
+					<actions>
+						<signal_cue cue="K_ArriveAndLeaveStations_Init2" />
+					</actions>
+				</cue>
+				<cue name="OnModInstall">
+					<actions>
+						<!-- <debug_text text="'UserSettings.$debugChance: ' + UserSettings.$debugChance" /> -->
+						<signal_cue_instantly cue="Init" />
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="OnModInstallComplete" checktime="player.age + 1s">
+					<actions>
+						<set_value name="UserSettings.$debugChance" exact="0" />
+						<!-- <debug_text text="'UserSettings.$debugChance: ' + UserSettings.$debugChance" /> -->
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+		<cue name="DebugChat" namespace="this">
+			<conditions>
+				<event_ui_triggered screen="'Chat_Window_API'" control="'text_entered'" />
+				<check_any>
+					<check_value value="event.param3.$text == 'debug mpt wares'" />
+				</check_any>
+			</conditions>
+			<actions>
+				<debug_text text="event.param3" />
+				<do_if value="event.param3.$text == 'debug mpt wares'">
+					<get_ware_definition result="$modParts" tags="[tag.primarymodpart]" />
+					<do_for_each name="$ware" in="$modParts">
+						<debug_text text="'$ware: ' + $ware" />
+					</do_for_each>
+					<get_ware_definition result="$modParts" tags="[tag.equipmentmodpart]" />
+					<do_for_each name="$ware" in="$modParts">
+						<debug_text text="'$ware: ' + $ware" />
+					</do_for_each>
+				</do_if>
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+	</cues>
+</mdscript>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+<add sel="/experiences">
+  <experience id="fs_inv">
+    <skill ref="piloting">
+      <individual base="1.0" falloff="0.42" limit="15"/>
+    </skill>
+    <skill ref="management">
+      <individual base="1.0" falloff="0.21" limit="15"/>
+    </skill>
+    <skill ref="engineering">
+      <individual base="1.0" falloff="0.15" limit="15"/>
+    </skill>
+    <skill ref="morale">
+      <individual base="1.0" falloff="0.33" limit="15"/>
+    </skill>
+  </experience>
+</add>
+</diff>

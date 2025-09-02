@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<content id="SectorSatellites" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features."  author="iforgotmysocks" version="101" date="2018-12-26" save="0">
+  <text language="7" name="SectorSatellites" description="Позволяет спутникам получать цены со всех станций в секторе и добавляет дополнительные функции." author="iforgotmysocks" />
+  <text language="33" name="Satellites de Secteurs" description="Permet aux satellites de tirer les prix de toutes les stations dans un secteur et ajoute d'autres possibilités." author="iforgotmysocks" />
+  <text language="34" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features." author="iforgotmysocks" />
+  <text language="39" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features." author="iforgotmysocks" />
+  <text language="44" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features." author="iforgotmysocks" />
+  <text language="49" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features." author="iforgotmysocks" />
+  <text language="55" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features." author="iforgotmysocks" />
+  <text language="81" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features." author="iforgotmysocks" />
+  <text language="82" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features." author="iforgotmysocks" />
+  <text language="86" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features." author="iforgotmysocks" />
+  <text language="88" name="SectorSatellites" description="Allows satellites to pull prices from all stations in a sector and adds additional features." author="iforgotmysocks" />
+</content>

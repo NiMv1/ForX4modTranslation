@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="kuertee_amflb" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="OnUIXModLuaInit">
+			<conditions>
+				<event_ui_triggered screen="'Interact_Menu_API'" control="'reloaded'" />
+			</conditions>
+			<actions>
+				<raise_lua_event name="'kAMFLB_init_isAccessFsExists'" param="@md.kuertee_accessibility_features.kAccessFs.exists" />
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="kAMFLB" namespace="this" version="2">
+			<conditions>
+				<check_any>
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+				<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+			</conditions>
+			<actions>
+				<debug_text text="'event.name: ' + event.name" />
+				<set_value name="$debugChance" exact="100" />
+				<set_value name="$isDoDebug1" exact="false" />
+				<set_value name="$isDoDebug2" exact="false" />
+				<set_value name="kAMFLB.$missionCue_oldActive" exact="null" />
+				<set_value name="kAMFLB.$isMapMenuOpen" exact="false" />
+			</actions>
+			<cues>
+				<cue name="Init" version="2">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<event_game_loaded />
+						</check_any>
+						<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+					</conditions>
+					<actions>
+						<do_if value="not $debugChance?">
+							<set_value name="$debugChance" exact="0" />
+						</do_if>
+						<debug_text text="'$debugChance: ' + $debugChance" />
+						<set_value name="$isDoDebug1" exact="false" />
+						<set_value name="$isDoDebug2" exact="false" />
+					</actions>
+					<cues>
+						<cue name="Init2" checktime="player.age + 1s">
+							<actions>
+								<debug_text text="'md.kuertee_accessibility_features.kAccessFs.exists: ' + @md.kuertee_accessibility_features.kAccessFs.exists" />
+								<reset_cue cue="parent" />
+								<cancel_cue cue="this" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="OnMissionOfferAccepted">
+					<conditions>
+						<event_ui_triggered screen="'kAMFLB_ui_trigger'" control="'on_mission_offer_accepted'" />
+					</conditions>
+					<actions>
+						<debug_text text="'kAccessFs.exists: ' + @md.kuertee_accessibility_features.kAccessFs.exists" chance="kAMFLB.$debugChance" />
+						<do_if value="@md.kuertee_accessibility_features.kAccessFs.exists">
+							<reset_cue cue="this" />
+						</do_if>
+						<do_else>
+							<set_value name="$missionCue_oldActive" exact="event.param3" />
+							<debug_text text="'$missionCue_oldActive: ' + $missionCue_oldActive" chance="kAMFLB.$debugChance" />
+							<raise_lua_event name="'kAMFLB_continue_mission_offer_accept'" />
+							<debug_text text="'$isMapMenuOpen: ' + $isMapMenuOpen" chance="kAMFLB.$debugChance" />
+							<!-- <do_if value="(not $missionCue_oldActive) or (not $isMapMenuOpen)"> -->
+							<!-- <do_if value="(not $missionCue_oldActive) or (not $isMapMenuOpen)"> -->
+							<do_if value="not $isMapMenuOpen">
+								<reset_cue cue="this" />
+							</do_if>
+						</do_else>
+					</actions>
+					<cues>
+						<cue name="OnMissionOfferAccepted_TimeOut" checktime="player.age + 5s">
+							<actions>
+								<debug_text text="'event.name: ' + event.name" chance="kAMFLB.$debugChance" />
+								<reset_cue cue="parent" />
+							</actions>
+						</cue>
+						<cue name="GetActiveMission">
+							<conditions>
+								<event_cue_signalled />
+							</conditions>
+							<actions>
+								<debug_text text="'raise_lua_event kAMFLB_get_active_mission'" chance="kAMFLB.$debugChance" />
+								<raise_lua_event name="'kAMFLB_get_active_mission'" />
+								<reset_cue cue="this" />
+							</actions>
+						</cue>
+						<cue name="OnGetActiveMission">
+							<conditions>
+								<event_ui_triggered screen="'kAMFLB_ui_trigger'" control="'get_active_mission'" />
+							</conditions>
+							<actions>
+								<do_if value="@md.kuertee_accessibility_features.kAccessFs.exists">
+									<reset_cue cue="parent" />
+									<reset_cue cue="this" />
+								</do_if>
+								<do_else>
+									<set_value name="$missionCue_newActive" exact="event.param3" />
+									<debug_text text="'$missionCue_newActive: ' + $missionCue_newActive" chance="kAMFLB.$debugChance" />
+									<debug_text text="'$missionCue_oldActive ' + $missionCue_oldActive" chance="kAMFLB.$debugChance" />
+									<do_if value="$missionCue_newActive != $missionCue_oldActive">
+										<do_if value="@$missionCue_oldActive.exists">
+											<activate_mission cue="$missionCue_oldActive" />
+										</do_if>
+									</do_if>
+									<do_else>
+										<signal_cue cue="GetActiveMission" />
+										<reset_cue cue="this" />
+									</do_else>
+								</do_else>
+							</actions>
+							<cues>
+								<cue name="OnGetActiveMission2">
+									<actions>
+										<raise_lua_event name="'kAMFLB_on_reactivate_previous_mission'" />
+										<reset_cue cue="OnMissionOfferAccepted" />
+										<reset_cue cue="parent" />
+										<cancel_cue cue="this" />
+									</actions>
+								</cue>
+							</cues>
+						</cue>
+						<cue name="StartActiveMissionCheckLoop">
+							<actions>
+								<signal_cue cue="GetActiveMission" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="OnMapMenu">
+					<conditions>
+						<check_any>
+							<event_ui_triggered screen="'MapMenu'" />
+							<event_ui_triggered screen="'MissionBriefingMenu'" />
+						</check_any>
+					</conditions>
+					<actions>
+						<debug_text text="'event.param: ' + @event.param + ' event.param2: ' + @event.param2" chance="$debugChance" />
+						<set_value name="$isMapMenuOpen" exact="event.param2 != 'menu_close'" />
+						<debug_text text="'$isMapMenuOpen: ' + $isMapMenuOpen" chance="$debugChance" />
+						<do_if value="not $isMapMenuOpen">
+							<reset_cue cue="OnMissionOfferAccepted" />
+						</do_if>
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="OnModInstall">
+					<actions>
+						<debug_text text="'$debugChance: ' + $debugChance" />
+						<signal_cue_instantly cue="Init" />
+					</actions>
+				</cue>
+				<cue name="OnModInstallComplete" checktime="player.age + 1s">
+					<actions>
+						<set_value name="$debugChance" exact="0" />
+						<debug_text text="'$debugChance: ' + $debugChance" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+		<cue name="User_DebugEnableDisable" namespace="this">
+			<conditions>
+				<event_ui_triggered screen="'Chat_Window_API'" control="'text_entered'" />
+				<check_any>
+					<check_value value="event.param3.$text == 'amfl debug enable'" />
+					<check_value value="event.param3.$text == 'amfl debug disable'" />
+				</check_any>
+			</conditions>
+			<actions>
+				<do_if value="event.param3.$text == 'amfl debug enable'">
+					<set_value name="kAMFLB.$debugChance" exact="100" />
+				</do_if>
+				<do_else>
+					<set_value name="kAMFLB.$debugChance" exact="0" />
+				</do_else>
+				<debug_text text="'kAMFLB.$debugChance: ' + kAMFLB.$debugChance" />
+				<debug_text text="'OnMissionOfferAccepted.state: ' + OnMissionOfferAccepted.state" />
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+	</cues>
+</mdscript>

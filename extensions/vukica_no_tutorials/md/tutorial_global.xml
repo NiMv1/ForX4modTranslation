@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diff>
+  <replace sel="/mdscript/cues/cue/conditions/check_value/@value">player.galaxy.macro != macro.xu_ep2_universe_macro</replace>
+</diff>

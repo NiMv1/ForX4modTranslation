@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon name="kuertee_ui_trade_analytics" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../ui/core/addon.xsd">
+  <environment type="menus">
+    <file name="ui/kuertee_trade_analytics_profiles.lua" />
+    <file name="ui/kuertee_trade_analytics.lua" />
+    <dependency name="kuertee_ui_extensions" />
+    <savedvariable name="__userdata_kuertee_TAnalytics" storage="userdata" />
+  </environment>
+</addon>

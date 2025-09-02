@@ -1,0 +1,119 @@
+Modification parts trader
+https://www.nexusmods.com/x4foundations/mods/721
+by kuertee
+
+Updates
+=======
+v7.5.02, 3 Mar 2025:
+- Tweak: Russian localisation. Thanks bassted89!
+
+Mod effects
+===========
+Trade your mod parts for other mod parts. The traders are interested in mod parts and not in credits. You can barter mod parts with them or sell mod parts to them. You can't buy mod parts from them.
+
+Requirements
+============
+- SirNukes Mod Support APIs mod (https://www.nexusmods.com/x4foundations/mods/503) - for Lua Loader and Simple Menu Options
+- Kuertee's UI Extensions mod (https://www.nexusmods.com/x4foundations/mods/552) - Modded Lua files with callbacks to allow more than one mod to change the same UI element. Specifically for this mod, the custom barter menu uses the User Question Menu framework.
+
+Modifications parts trader
+==========================
+Traders are found (in their offices) at equipment docks, shipyards and wharves.
+They have between 5 and 10 different modification parts.
+
+At bars, you can also trade with NPCs who have modification parts in their inventory.
+Note that NPCs with modification parts either (1) is a VERY rare occurence or (2) never happens.
+But during my tests, I thought I saw one or two NPCs with modification parts.
+The availability to trade with them exists, anyway, in case any NPCs with modification parts exists.
+
+Install
+=======
+- Unzip to 'X4 Foundations/extensions/kuertee_mod_parts_trader/'.
+- Make sure the sub-folders and files are in 'X4 Foundations/extensions/kuertee_mod_parts_trader/' and not in 'X4 Foundations/extensions/kuertee_mod_parts_trader/kuertee_mod_parts_trader/'.
+
+Uninstall
+=========
+- Delete the mod folder.
+
+Troubleshooting
+===============
+(1) Do not change the file structure of the mod. If you do, you'll need to troubleshoot problems you encounter yourself.
+(2) Allow the game to log events to a text file by adding "-debug all -logfile debug.log" to its launch parameters.
+(3) Enable the mod-specific Debug Log in the mod's Extension Options.
+(4) Play for long enough for the mod to log its events.
+(5) Send me (at kuertee@gmail.com) the log found in My Documents\Egosoft\X4\(your player-specific number)\debug.log.
+
+Credits
+=======
+By kuertee.
+Chinese localisation by Tiomer.
+French localisation by Calvitix.
+German localisation by LeLeon.
+Russian localisation by bassted89.
+
+History
+=======
+v7.5.01, 21 Feb 2025:
+- Bug-fixes: 7.5 compatibility updates.
+
+v7.0.02, 29 Jun 2024:
+- Tweak: 7.00 hf 1 compatibility. Disabled in Timelines scenarios.
+
+v6.2.013, 25 Feb 2024:
+- Compatibility: With Mycu's Verbose Transaction Log mod, money transfers from this mod will be labeled: Modifications parts barter in the Transaction Log menu.
+
+v6.1.001, 28 Jun 2023:
+- Bug-fix: The room for the mod part trader was not getting created in Boron stations.
+
+v6.0.002, 13 Apr 2023:
+- Tweak: Version number update for consistency with my other mods. No internal changes since the last version.
+
+v5.1.0314, 06 Dec 2022:
+- New feature: Secondary modification equipment parts (e.g. High Energy Catalysts) are now stocked by the trader. Previously, only the primary parts were.
+
+v5.1.0306, 18 Sep 2022:
+- Tweak: More granular Extension Options sliders for cost and price multipliers.
+- New feature: German localisation.
+
+v5.0.0013, 30 Mar 2022:
+- New feature: Buy modifications part. Enable this in the Extension Options. It's disabled by default.
+
+v5.0.001, 18 Mar 2022:
+- Bug-fix: 5.0.x support: The custom trade UI was (maybe?) unresponsive.
+
+v4.2.071, 3 Jan 2022:
+- Bug-fix: The mod was creating its rooms and npcs when you arrive at the station instead of when you actually dock or teleport to it.
+
+v4.2.07, 2 Jan 2022:
+- Bug-fix: Teleporting in and out of stations wasn't detected, so the mod's custom rooms and NPCs were not created when teleporting into a station.
+
+v4.2.01, 13 Dec 2021:
+- Bug-fix: Standardised the event listeners for: arrive at station, dock, undock, leave station in my mods that need them with these events: attention change, dock, undock, teleport. In previous versions, these events were handled inconsistently that resulted in intermittent bugs like: (in Reputations and Professions) the Guild Network button become disabled after docking even if it was available before docking, (in High-security Rooms Are Locked) the mission NPC not getting moved to an unlocked room, (in several mods) mod NPCs, like the Mod-Parts Trader not getting spawned in their rooms, etc.
+
+v4.2.0, 10 Dec 2021:
+- New feature: By default, including this version, trade for cash is not available. Enable it in the Extensions Options.
+- Bug-fix: Clean-up mod-specific NPCs at stations after the player teleports. Previously, they were cleaned-up only when the player leaves the station's vicinity.
+
+v1.0.5, 25 Jul 2021:
+- Bug-fix: Trading with player's employees is disabled.
+
+v1.0.4, 11 Jul 2021:
+- Bug-fix: Docking at the previous station you undocked from prevented the creation of the trader NPC.
+
+For both v4.0 and v4.1beta1 of the game.
+This version may or may not work in other v4.1betaX versions.
+v1.0.3, 19 Jun 2021:
+- Compatibility: Update so the previous changes for v4.1beta1 of the game work in v4.0 of the game.
+
+For v4.1beta1 of the game:
+v1.0.2, 15 Jun 2021:
+- Compatibility: Station seed property used in creating rooms for 4.1beta1.
+- New features: Trade your mod parts for credits. But note that the traders are interested in mod parts and not in credits. You can barter mod parts with them or sell mod parts to them. You can't buy mod parts from them.
+- Bug-fix: The trader doesn't have inventory in new games that are less than 1 hour old.
+
+For v4.0 of the game:
+v1.0.1, 29 May 2021:
+- Bug-fix:Finding wares tagged with "eqiupmentmodpart". Previously, only wares tagged with "primarymodpart" was getting added to the barter system.
+
+v1.0.0, 11 May 2020:
+- Initial release.

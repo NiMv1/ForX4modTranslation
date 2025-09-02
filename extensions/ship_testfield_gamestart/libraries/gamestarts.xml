@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <add sel="/gamestarts">
+    <gamestart id="shiptestfield_gen_gamestart" name="{90105,0001}" description="{90105,0002}" image="gamestart_2" group="2">
+      <location galaxy="shiptest_gen_universe_macro" zone="shiptest_gen_zone00_sector00_cluster00_macro">
+        <position x="0" y="0" z="-4000" />
+        <rotation yaw="0" pitch="0" roll="0" />
+      </location>
+      <player macro="character_player_tutorial_macro" money="9000000000" name="Dr. WhoKnows">
+        <ship macro="ship_gen_s_fighter_01_a_macro">
+          <loadout>
+            <macros>
+              <engine macro="engine_par_s_combat_01_mk3_macro" path="../con_engine_03"/>
+              <engine macro="engine_par_s_combat_01_mk3_macro" path="../con_engine_02"/>
+              <engine macro="engine_par_s_combat_01_mk3_macro" path="../con_engine_01"/>
+              <shield macro="shield_par_s_standard_01_mk3_macro" path="../con_shield_01"/>
+              <weapon macro="weapon_gen_s_guided_01_mk2_macro" path="../con_weapon_01"/>
+              <weapon macro="weapon_gen_s_torpedo_01_mk2_macro" path="../con_weapon_02"/>
+            </macros>
+            <ammunition>
+              <ammunition macro="countermeasure_flares_01_macro" exact="4"/>
+              <ammunition macro="missile_interceptor_light_mk1_macro" exact="4"/>
+              <ammunition macro="missile_torpedo_light_mk1_macro" exact="4"/>
+              <ammunition macro="missile_smart_light_mk1_macro" exact="4"/>
+              <ammunition macro="missile_swarm_heavy_mk1_macro" exact="4"/>
+              <ammunition macro="missile_emp_mk1_macro" exact="4"/>
+            </ammunition>
+            <software>
+              <software ware="software_dockmk2"/>
+              <software ware="software_flightassistmk1"/>
+              <software ware="software_scannerlongrangemk2"/>
+              <software ware="software_scannerobjectmk2"/>
+              <software ware="software_targetmk1"/>
+              <software ware="software_trademk1"/>
+            </software>
+            <virtualmacros>
+              <thruster macro="thruster_gen_s_allround_01_mk3_macro"/>
+            </virtualmacros>
+            <crew>
+              <crew role="marine" />
+              <crew role="service"/>
+            </crew>
+          </loadout>
+        </ship>
+        <inventory>
+          <ware ware="inv_timewarp" amount="1" />
+          <ware ware="engine_gen_spacesuit_01_mk2" amount="1" />
+          <ware ware="weapon_gen_spacesuit_repairlaser_01_mk1" amount="1" />
+          <ware ware="weapon_gen_spacesuit_laser_02_mk1" amount="1" />
+          <ware ware="software_scannerobjectmk3" amount="1" />
+          <ware ware="weapon_gen_spacesuit_demolition_01_mk1" amount="1" />
+          <ware ware="bomb_player_limpet_emp_01_mk1" amount="500" />
+          <ware ware="bomb_player_limpet_mine_01_mk1" amount="500" />
+          <ware ware="modpart_enginefuelinjector_t1" amount="10000" />
+          <ware ware="modpart_enginefuelinjector_t2" amount="10000" />
+          <ware ware="modpart_enginefuelinjector_t3" amount="10000" />
+          <ware ware="modpart_extendedfuelcontainer" amount="90000" />
+          <ware ware="modpart_nividiumoxide" amount="90000" />
+          <ware ware="modpart_shieldgeneratorcoil_t1" amount="10000" />
+          <ware ware="modpart_shieldgeneratorcoil_t2" amount="10000" />
+          <ware ware="modpart_shieldgeneratorcoil_t3" amount="10000" />
+          <ware ware="modpart_tuningsoftware" amount="60000" />
+          <ware ware="modpart_shipnanoweave_t1" amount="10000" />
+          <ware ware="modpart_shipnanoweave_t2" amount="10000" />
+          <ware ware="modpart_shipnanoweave_t3" amount="10000" />
+          <ware ware="modpart_nividiumcrystallite" amount="90000" />
+          <ware ware="modpart_weaponchamber_t1" amount="10000" />
+          <ware ware="modpart_weaponchamber_t2" amount="10000" />
+          <ware ware="modpart_weaponchamber_t3" amount="10000" />
+          <ware ware="modpart_highenergycatalyst" amount="90000" />
+        </inventory>
+        <research>
+          <ware ware="research_radioreceiver" />
+          <ware ware="research_sensorbooster" />
+          <ware ware="research_tradeinterface" />
+          <ware ware="research_teleportation" />
+          <ware ware="research_mod_weapon_mk1" />
+          <ware ware="research_mod_weapon_mk2" />
+          <ware ware="research_mod_weapon_mk3" />
+          <ware ware="research_mod_engine_mk1" />
+          <ware ware="research_mod_engine_mk2" />
+          <ware ware="research_mod_engine_mk3" />
+          <ware ware="research_mod_shield_mk1" />
+          <ware ware="research_mod_shield_mk2" />
+          <ware ware="research_mod_shield_mk3" />
+          <ware ware="research_mod_ship_mk1" />
+          <ware ware="research_mod_ship_mk2" />
+          <ware ware="research_mod_ship_mk3" />
+        </research>
+      </player>
+      <universe ventures="false" visitors="false" />
+    </gamestart>
+  </add>
+</diff>

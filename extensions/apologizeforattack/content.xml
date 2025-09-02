@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="ApologizeForAttack" enabled="true" name="ApologizeForAttack" description="Player can stop unintented fights from escalation" author="iforgotmysocks" version="021" date="2019-12-24" save="false">
+  <text language="7" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="33" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="34" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="39" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="44" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="49" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="55" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="81" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="82" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="86" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+  <text language="88" name="ApologizeForAttack" description="ApologizeForAttack" author="iforgotmysocks" />
+</content>

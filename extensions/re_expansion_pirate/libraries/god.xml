@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <add sel="/god/stations">
+<!--039 Memory of Profit X-->
+	 <station id="sca_piratebase_cluster_39_sector001" race="teladi" owner="scaleplate" type="piratebase">
+	  <quotas>
+		<quota galaxy="1" />
+	  </quotas>
+	  <location class="sector" macro="cluster_39_sector001_macro" matchextension="false">	  
+		<corerange min="1.2" max="1.4"/>
+	  </location>
+	  <station>
+		<select faction="scaleplate" tags="[piratebase]" />
+	  </station>
+	</station>	
+<!--042 Hewa's Twin IV-->
+	<station id="sca_defence_cluster_42_sector002" race="teladi" owner="scaleplate" type="factory">
+	  <quotas>
+		<quota galaxy="1" />
+	  </quotas>
+	  <location class="sector" macro="cluster_42_sector002_macro" matchextension="false"/>	  
+	  <position  x="-95500" y="0" z="-17500" yaw="0" roll="0" pitch="0"/>		  
+	  <station>
+		<select faction="teladi" tags="[defence]" />
+        <loadout>
+          <level exact="1.0" />
+        </loadout>		
+	  </station>
+	</station>		
+<!--REM52 Danna's Chance-->
+	 <station id="sca_piratedock_cluster_REM52_sector001" race="teladi" owner="scaleplate" type="piratebase">
+	  <quotas>
+		<quota galaxy="1" sector="1" />
+	  </quotas>
+	  <location class="sector" macro="cluster_REM52_sector001_macro" matchextension="false"/>	  
+	  <position  x="-41500" y="0" z="78000" yaw="0" roll="0" pitch="0"/>
+	  <station>
+		<select faction="scaleplate" tags="[piratedock]" />
+        <loadout>
+          <level exact="1.0" />
+        </loadout>		
+	  </station>
+	</station>		
+	<station id="sca_defence_cluster_REM52_sector001" race="teladi" owner="scaleplate" type="factory">
+	  <quotas>
+		<quota galaxy="1" />
+	  </quotas>
+	  <location class="sector" macro="cluster_REM52_sector001_macro" matchextension="false"/>	  
+	  <position  x="55500" y="0" z="-97500" yaw="0" roll="0" pitch="0"/>		  
+	  <station>
+		<select faction="teladi" tags="[defence]" />
+        <loadout>
+          <level exact="1.0" />
+        </loadout>		
+	  </station>
+	</station>	
+  </add>	
+
+	
+  <add sel="/god/products">	
+<!--REM40 Ocracoke's Storm Cluster-->
+    <product id="sca_rem40_spacefuel" ware="spacefuel" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="1" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM40_Sector001_macro" faction="[ownerless]" matchextension="false">
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="spacefuel" race="argon"/>
+      </module>
+    </product>
+    <product id="sca_rem40_spaceweed" ware="spaceweed" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="2" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM40_Sector002_macro" faction="[ownerless]" matchextension="false">
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="spaceweed" race="teladi"/>
+      </module>
+    </product>
+<!--REM42 Bala Gi's Joy-->
+    <product id="sca_rem42_majadust" ware="majadust" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="1" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM42_Sector001_macro" faction="[ownerless]" matchextension="false">
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="majadust" race="paranid"/>
+      </module>
+    </product>
+    <product id="sca_rem42_spacefuel" ware="spacefuel" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="1" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM42_Sector001_macro" faction="[ownerless]" matchextension="false">
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="spacefuel" race="argon"/>
+      </module>
+    </product>
+<!--REM51 Fierce Clarity-->
+    <product id="sca_rem51_majadust" ware="majadust" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="2" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM51_Sector001_macro" faction="[ownerless]" matchextension="false">	
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="majadust" race="paranid"/>
+      </module>
+    </product>
+    <product id="sca_rem51_spacefuel" ware="spacefuel" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="1" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM51_Sector001_macro" faction="[ownerless]" matchextension="false">
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="spacefuel" race="argon"/>
+      </module>
+    </product>	
+<!--REM52 Danna's Chance-->
+    <product id="sca_rem52_majasnails" ware="majasnails" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="1" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM52_Sector001_macro" faction="[ownerless]" matchextension="false">
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="majasnails" race="teladi"/>
+      </module>
+    </product>	
+    <product id="sca_rem52_spaceweed" ware="spaceweed" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="2" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM52_Sector001_macro" faction="[ownerless]" matchextension="false">
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="spaceweed" race="teladi"/>
+      </module>
+    </product>	
+<!--REM58 Montalaar-->
+    <product id="sca_rem58_majasnails" ware="majasnails" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="1" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM58_Sector001_macro" faction="[ownerless]" matchextension="false">
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="majasnails" race="teladi"/>
+      </module>
+    </product>	
+    <product id="sca_rem58_spaceweed" ware="spaceweed" owner="scaleplate" type="factory">
+      <quotas>
+        <quota galaxy="1" />
+      </quotas>
+	  <location class="sector" macro="cluster_REM58_Sector001_macro" faction="[ownerless]" matchextension="false">
+		<corerange min="0.2" max="0.6"/>
+	  </location>	  
+      <module>
+        <select ware="spaceweed" race="teladi"/>
+      </module>
+    </product>		
+  </add>		
+</diff>	

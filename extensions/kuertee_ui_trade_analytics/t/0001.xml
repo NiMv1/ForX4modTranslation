@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- english -->
+<language>
+	<!-- "kuertee trade analytics" = "kta" = "11 20 1" = "11201" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="11201" voice="no">
+		<t id="1">kuertee: UI: Trade analytics</t>
+		<t id="2">Debug log</t>
+		<t id="3">Remove data of destroyed traders</t>
+		<t id="7">Ware profile: %s.</t>
+		<t id="8">Station profiles</t>
+		<t id="9">Set this station's behaviour by clicking on one of the profiles. A profile will set this station's prices, and trade restrictions of resources, intermediate wares, production wares and trade wares.</t>
+		<t id="10">Factory</t>
+		<t id="11">Buy prices: %s. Sale prices: %s. Factories sell to our Distribution Centres, Supply Warehouses, and Factory Outlets.</t>
+		<t id="12">Buy: %s %s. Sell: %s, %s.</t>
+		<t id="13">Set Factory profile</t>
+		<t id="20">Distribution Centre</t>
+		<t id="21">Buy prices: %s. Sale prices: %s. Distribution Centres buy from our Factories. Distribution Centres sell to our Supply Warehouses, to our Factory Outlets, to our Trading Stations, to our station projects, and to our construction projects.</t>
+		<t id="23">Set Distribution Centre profile</t>
+		<t id="30">Supply Warehouse</t>
+		<t id="31">Buy prices: %s. Sale prices: %s. Supply Warehouses buy from our Factories, and from our Distribution Centres. Supply Warehouses sell to our station projects, and to our construction projects.</t>
+		<t id="33">Set Supply Warehouse profile</t>
+		<t id="40">Factory Outlet</t>
+		<t id="41">Buy prices: %s. Sale prices: %s. Factory Outlets buy from our Factories, and from our Distribution Centres. Factory Outlets sell to all factions, to our station projects, and to our construction projects.</t>
+		<t id="43">Set Factory Outlet profile</t>
+		<t id="50">Trading Station</t>
+		<t id="51">Buy prices: %s. Sale prices: %s. Trading Stations buy from all and sell to all.</t>
+		<t id="53">Set Trading Station profile</t>
+		<t id="54">disabled</t>
+		<t id="55">auto</t>
+		<t id="56">unrestricted</t>
+		<t id="57">restricted</t>
+		<!-- ui -->
+		<t id="101">Trade Analytics</t>
+		<!-- categories -->
+		<t id="1001">Mining</t>
+		<t id="1002">Purchases</t>
+		<t id="1003">Sales</t>
+		<t id="1004">From Other Factions</t>
+		<t id="1005">From Own Faction</t>
+		<t id="1006">From Any Faction</t>
+		<t id="1007">To Other Factions</t>
+		<t id="1008">To Own Faction</t>
+		<t id="1009">To any Faction</t>
+		<t id="1010">Filters:</t>
+		<t id="1011">Purchases &#38; Sales</t>
+		<t id="1012">Purchases, Sales &#38; Mining</t>
+		<t id="1013">To/From Other Factions</t>
+		<t id="1014">To/From Own Faction</t>
+		<t id="1015">To/From Any Faction</t>
+		<t id="1016">From %s(faction)</t>
+		<t id="1017">To %s(faction)</t>
+		<t id="1018">To/From %s(faction)</t>
+		<t id="1019">Repairs</t>
+		<t id="1020">Activities</t>
+		<t id="1021">Activities: %s(actions shown)</t>
+		<!-- modes -->
+		<t id="2001">By Totals</t>
+		<t id="2002">By Any Ware</t>
+		<t id="2003">By Trading Ship</t>
+		<t id="2004">Trades with:</t>
+		<t id="2005">By %s(ware name)</t>
+		<!-- columns -->
+		<t id="3001">Trading Partner</t>
+		<t id="3002">Distance from %s(sector name)</t>
+		<t id="3003">Trades</t>
+		<t id="3004">Total units.</t>
+		<t id="3005">Total Cr.</t>
+		<t id="3006">units &#216; trade</t>
+		<t id="3007">Cr. &#216; trade</t>
+		<t id="3008">Product</t>
+		<t id="3009">Sector</t>
+		<t id="3010">Ship</t>
+		<t id="3011">Total</t>
+		<!-- by time segment -->
+		<t id="4001">Ungroup by time</t>
+		<t id="4002">Group by hour</t>
+		<t id="4003">Up to an hour ago</t>
+		<t id="4004">From $FROM$:00 to $TO$:59 hours ago</t>
+		<t id="4005">Hour totals</t>
+		<!-- misc -->
+		<t id="10001">%s(gate distance) \(%s(sector)\)</t>
+		<t id="10002">no longer exists</t>
+		<t id="10003">Loading Trade Analytics ...</t>
+		<t id="10004">There are no trades for this category.</t>
+		<t id="10005">There are no analytics for this trader (yet).</t>
+		<t id="10006">(ship trader with no station assignment)free agent</t>
+		<t id="10007">(no data recorded)unknown</t>
+		<t id="10008">%s(ware or ship name) \(Units.: %s(count)\)</t>
+		<!-- UniTrader's Advanced Renaming mod -->
+		<t id="20001">(not used)</t>
+		<t id="20002">(not used)</t>
+		<t id="20003">(not used)</t>
+		<t id="20004">(not used)</t>
+		<t id="20005">(not used)</t>
+		<t id="20006">(not used)</t>
+		<t id="20101">(profile name - full)$kTAP</t>
+		<t id="20102">(profile name - acronym)$kTAp</t>
+		<t id="20103">F</t>
+		<t id="20104">DC</t>
+		<t id="20105">SW</t>
+		<t id="20106">FO</t>
+		<t id="20107">TS</t>
+		<!-- mschf's Finance Hub: Transfers -->
+		<t id="30001">List all transfers in one Logbook entry{1001,120}(colon)</t>
+		<t id="30140">Player to $COUNT$ x Stations{1001,120}(colon) $AMOUNT$</t>
+		<t id="30190">Player to $COUNT$ x Build{1001,120}(colon) $AMOUNT$</t>
+		<t id="301010">$COUNT$ x Stations to Player{1001,120}(colon) $AMOUNT$</t>
+		<t id="301020">$COUNT$ x Stations to $COUNT$ x Build{1001,120}(colon) $AMOUNT$</t>
+		<t id="301030">$COUNT$ x Build to Player{1001,120}(colon) $AMOUNT$</t>
+		<t id="301040">$COUNT$ x Build to $COUNT$ x Stations{1001,120}(colon) $AMOUNT$</t>
+	</page>
+</language>

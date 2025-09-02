@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <replace sel="/wares/ware[@id='research_equipment_xenon']/@tags">research</replace>
+  <replace sel="//wares/ware[@id='research_equipment_xenon']/research/primary">
+    <primary>
+      <ware ware="computronicsubstrate" amount="12500" />
+      <ware ware="energycells" amount="80000" />
+      <ware ware="metallicmicrolattice" amount="27500" />
+      <ware ware="siliconcarbide" amount="30000" />
+      <ware ware="ore" amount="72000" />
+      <ware ware="silicon" amount="70000" />
+    </primary>
+  </replace>
+  <replace sel="//wares/ware[@id='research_warp_hq_02']/research/primary">
+    <primary>
+      <ware ware="energycells" amount="480000" />
+      <ware ware="ore" amount="36000" />
+      <ware ware="silicon" amount="40000" />
+    </primary>
+  </replace>
+    <add sel="/wares/ware[@id='ship_arg_xl_builder_01_a']">
+      <production time="439" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="4224" />
+          <ware ware="energycells" amount="2428" />
+          <ware ware="ore" amount="4640" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='engine_arg_xl_allround_01_mk1']">
+      <production time="20" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="540" />
+          <ware ware="energycells" amount="50" />
+          <ware ware="ore" amount="540" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='shield_arg_xl_standard_01_mk1']">
+      <production time="20" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="278" />
+          <ware ware="energycells" amount="77" />
+          <ware ware="ore" amount="278" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='module_arg_dock_m_01_lowtech']">
+      <production time="397" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="42" />
+          <ware ware="energycells" amount="101" />
+          <ware ware="ore" amount="144" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='module_arg_dock_m_02_lowtech']">
+      <production time="587" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="66" />
+          <ware ware="energycells" amount="150" />
+          <ware ware="ore" amount="200" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='module_arg_pier_l_01']">
+      <production time="750" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="442" />
+          <ware ware="energycells" amount="1083" />
+          <ware ware="ore" amount="1640" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='module_arg_conn_base_01']">
+      <production time="50" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="12" />
+          <ware ware="energycells" amount="27" />
+          <ware ware="ore" amount="40" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='module_arg_conn_base_02']">
+      <production time="50" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="12" />
+          <ware ware="energycells" amount="34" />
+          <ware ware="ore" amount="60" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='module_arg_conn_base_03']">
+      <production time="70" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="14" />
+          <ware ware="energycells" amount="37" />
+          <ware ware="ore" amount="70" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='module_arg_conn_cross_01']">
+      <production time="47" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="8" />
+          <ware ware="energycells" amount="24" />
+          <ware ware="ore" amount="33" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='module_arg_conn_vertical_01']">
+      <production time="35" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="2" />
+          <ware ware="energycells" amount="20" />
+          <ware ware="ore" amount="30" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares/ware[@id='module_arg_conn_vertical_02']">
+      <production time="50" amount="1" method="xenon" name="{20206,601}">
+        <primary>
+          <ware ware="silicon" amount="5" />
+          <ware ware="energycells" amount="26" />
+          <ware ware="ore" amount="40" />
+        </primary>
+      </production>
+    </add>
+    <add sel="/wares">
+    <ware id="research_xen_blueprint_f" name="{936009,1}" description="{936009,2}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="1200">
+        <primary>
+          <ware ware="computronicsubstrate" amount="4000" />
+          <ware ware="energycells" amount="80000" />
+          <ware ware="metallicmicrolattice" amount="14000" />
+          <ware ware="siliconcarbide" amount="10000" />
+          <ware ware="ore" amount="32000" />
+          <ware ware="silicon" amount="20000" />
+        </primary>
+        <research>
+        <ware ware="research_equipment_xenon" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_b" name="{936009,7}" description="{936009,8}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="1600">
+        <primary>
+          <ware ware="computronicsubstrate" amount="6000" />
+          <ware ware="energycells" amount="280000" />
+          <ware ware="metallicmicrolattice" amount="35000" />
+          <ware ware="siliconcarbide" amount="20000" />
+          <ware ware="ore" amount="66000" />
+          <ware ware="silicon" amount="40000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_f" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_pe" name="{936009,5}" description="{936009,6}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="1600">
+        <primary>
+          <ware ware="computronicsubstrate" amount="5500" />
+          <ware ware="energycells" amount="250000" />
+          <ware ware="metallicmicrolattice" amount="32000" />
+          <ware ware="siliconcarbide" amount="17500" />
+          <ware ware="ore" amount="55500" />
+          <ware ware="silicon" amount="44000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_f" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_se" name="{936009,3}" description="{936009,4}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="900">
+        <primary>
+          <ware ware="computronicsubstrate" amount="3000" />
+          <ware ware="energycells" amount="70000" />
+          <ware ware="metallicmicrolattice" amount="15000" />
+          <ware ware="siliconcarbide" amount="8000" />
+          <ware ware="ore" amount="15000" />
+          <ware ware="silicon" amount="10000" />
+        </primary>
+        <research>
+        <ware ware="research_equipment_xenon" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_h" name="{936009,9}" description="{936009,10}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="3200">
+        <primary>
+          <ware ware="computronicsubstrate" amount="60000" />
+          <ware ware="energycells" amount="1000000" />
+          <ware ware="metallicmicrolattice" amount="225000" />
+          <ware ware="siliconcarbide" amount="180000" />
+          <ware ware="ore" amount="300000" />
+          <ware ware="silicon" amount="200000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_b" />
+        <ware ware="research_xen_blueprint_pe" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_module_def" name="{936009,11}" description="{936009,12}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="240">
+        <primary>
+          <ware ware="energycells" amount="100000" />
+          <ware ware="ore" amount="30000" />
+          <ware ware="silicon" amount="20000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_h" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_module_stor" name="{936009,15}" description="{936009,16}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="240">
+        <primary>
+          <ware ware="energycells" amount="70000" />
+          <ware ware="ore" amount="20000" />
+          <ware ware="silicon" amount="15000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_h" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_module_prod" name="{936009,13}" description="{936009,14}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="480">
+        <primary>
+          <ware ware="energycells" amount="200000" />
+          <ware ware="ore" amount="40000" />
+          <ware ware="silicon" amount="55000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_h" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_module_dock" name="{936009,17}" description="{936009,18}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="600">
+        <primary>
+          <ware ware="energycells" amount="400000" />
+          <ware ware="ore" amount="60000" />
+          <ware ware="silicon" amount="60000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_h" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_module_wharf" name="{936009,19}" description="{936009,20}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="1800">
+        <primary>
+          <ware ware="energycells" amount="3000000" />
+          <ware ware="ore" amount="200000" />
+          <ware ware="silicon" amount="250000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_module_dock" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_module_shipyard" name="{936009,21}" description="{936009,22}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="2700">
+        <primary>
+          <ware ware="energycells" amount="5555555" />
+          <ware ware="ore" amount="555555" />
+          <ware ware="silicon" amount="555555" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_module_wharf" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_k" name="{936009,23}" description="{936009,24}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="3600">
+        <primary>
+          <ware ware="energycells" amount="3500000" />
+          <ware ware="ore" amount="325000" />
+          <ware ware="silicon" amount="300000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_module_shipyard" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_i" name="{936009,25}" description="{936009,26}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="4800">
+        <primary>
+          <ware ware="energycells" amount="6000000" />
+          <ware ware="ore" amount="500000" />
+          <ware ware="silicon" amount="450000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_k" />
+        </research>
+      </research>
+    </ware>
+    <ware id="research_xen_blueprint_m0" name="{936009,27}" description="{936009,28}" transport="research" volume="1" tags="research" sortorder="601">
+      <price min="1" average="1" max="1" />
+      <research time="12800">
+        <primary>
+          <ware ware="energycells" amount="45000000" />
+          <ware ware="ore" amount="2650000" />
+          <ware ware="silicon" amount="2480000" />
+          <ware ware="nividium" amount="2840000" />
+        </primary>
+        <research>
+        <ware ware="research_xen_blueprint_i" />
+        </research>
+      </research>
+    </ware>
+  <ware id="weapon_xen_xl_battleship_01_mk1" name="{936009,7001}" description="{936009,7002}" group="turrets" transport="equipment" volume="1" tags="equipment weapon">
+	<price min="4405644" average="4428494" max="4451343" />
+        <production time="20" amount="1" method="xenon" name="{20206,601}" >
+          <primary>
+            <ware ware="energycells" amount="2250" />
+            <ware ware="ore" amount="1330" />
+            <ware ware="silicon" amount="1330" />
+            <ware ware="nividium" amount="2400" />
+          </primary>
+	</production>
+	<component ref="weapon_xen_xl_battleship_01_mk1_a_macro" />
+	<restriction licence="capitalship" />
+	<use threshold="0"/>
+	<owner faction="xenon" />
+  </ware>
+   </add>
+
+  <replace sel="/wares/ware[@id='ship_xen_s_fightingdrone_01']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='ship_xen_s_fightingdrone_01']/@tags">drone equipment</replace>
+
+  <replace sel="/wares/ware[@id='module_xen_build_m_01']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='module_xen_build_m_01']/@tags">module</replace>
+
+  <replace sel="/wares/ware[@id='module_xen_build_s_01']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='module_xen_build_s_01']/@tags">module</replace>
+
+  <replace sel="/wares/ware[@id='module_xen_build_xl_01']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='module_xen_build_xl_01']/@tags">module</replace>
+
+<replace sel="/wares/ware[@id='module_gen_build_dockarea_m_01']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='module_arg_def_tube_01']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='module_arg_def_disc_01']/production[@name='{20206,601}']/@method">xenon</replace>
+
+  <replace sel="/wares/ware[@id='module_xen_def_base_01']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='module_xen_def_base_01']/@tags">module</replace>
+
+  <replace sel="/wares/ware[@id='module_xen_dock_m_01']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='module_xen_dock_m_01']/@tags">module</replace>
+
+  <replace sel="/wares/ware[@id='module_xen_prod_energycells_01']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='module_xen_prod_energycells_01']/@tags">module</replace>
+
+  <replace sel="/wares/ware[@id='module_xen_stor_01']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='module_xen_stor_01']/@tags">module</replace>
+
+  <replace sel="/wares/ware[@id='ship_xen_l_terraformer_01_a']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='ship_xen_s_heavyfighter_01_a']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='ship_xen_m_miner_solid_01_a']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='ship_xen_m_corvette_01_a']/production[@name='{20206,601}']/@method">default</replace>
+  <replace sel="/wares/ware[@id='ship_xen_m_corvette_02_a']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='thruster_gen_xl_allround_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_xl_allround_01_mk2']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_xl_allround_01_mk3']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_l_allround_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_l_allround_01_mk2']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_l_allround_01_mk3']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_m_allround_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_m_allround_01_mk2']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_m_allround_01_mk3']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_m_combat_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_m_combat_01_mk2']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_m_combat_01_mk3']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_s_combat_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_s_combat_01_mk2']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_s_combat_01_mk3']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_s_allround_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_s_allround_01_mk2']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='thruster_gen_s_allround_01_mk3']/production[@name='{20206,601}']/@method">xenon</replace>
+
+<replace sel="/wares/ware[@id='waypointmarker_01']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='weapon_gen_mine_01']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='weapon_gen_mine_02']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='weapon_gen_mine_03']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='resourceprobe_01']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='satellite_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='satellite_mk2']/production[@name='{20206,601}']/@method">xenon</replace>
+
+<replace sel="/wares/ware[@id='engine_xen_s_virtual_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='engine_xen_m_virtual_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='engine_xen_l_allround_02_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+
+<replace sel="/wares/ware[@id='engine_xen_xl_allround_01_mk1']/@tags">engine equipment</replace>
+<replace sel="/wares/ware[@id='engine_xen_xl_allround_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='engine_xen_xl_mothership_01_allround_mk1']/@tags">engine equipment</replace>
+<replace sel="/wares/ware[@id='engine_xen_xl_mothership_01_allround_mk1']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='engine_xen_s_combat_01_mk1']/@tags">engine equipment</replace>
+<replace sel="/wares/ware[@id='engine_xen_s_combat_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='shield_xen_xl_standard_01_mk1']/@tags">equipment shield</replace>
+<replace sel="/wares/ware[@id='shield_xen_xl_standard_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='shield_xen_s_standard_01_mk1']/@tags">equipment shield</replace>
+<replace sel="/wares/ware[@id='shield_xen_s_standard_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='shield_xen_s_standard_01_mk2']/@tags">equipment shield</replace>
+<replace sel="/wares/ware[@id='shield_xen_s_standard_01_mk2']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='shield_xen_m_standard_01_mk1']/@tags">equipment shield</replace>
+<replace sel="/wares/ware[@id='shield_xen_m_standard_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='shield_xen_m_standard_02_mk1']/@tags">equipment shield</replace>
+<replace sel="/wares/ware[@id='shield_xen_m_standard_02_mk1']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='shield_xen_m_standard_02_mk2']/@tags">equipment shield</replace>
+<replace sel="/wares/ware[@id='shield_xen_m_standard_02_mk2']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='shield_xen_xl_mothership_01_mk1']/@tags">equipment shield</replace>
+<replace sel="/wares/ware[@id='shield_xen_xl_mothership_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='shield_xen_l_standard_02_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='shield_xen_l_standard_02_mk2']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='shield_xen_m_standard_04_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='shield_xen_m_virtual_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='shield_xen_s_virtual_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+
+<replace sel="/wares/ware[@id='turret_xen_l_plasma_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='turret_xen_m_gatling_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='turret_xen_m_gatling_02_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='weapon_xen_m_beam_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='weapon_xen_m_laser_02_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='weapon_xen_m_mining_02_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='weapon_xen_s_gatling_01_mk1']/production[@name='{20206,601}']/@method">xenon</replace>
+
+<replace sel="/wares/ware[@id='turret_xen_xl_battleship_01_mk1']/@tags">equipment turret</replace>
+<replace sel="/wares/ware[@id='turret_xen_xl_battleship_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='turret_xen_l_xppc']/@tags">equipment turret</replace>
+<replace sel="/wares/ware[@id='turret_xen_l_xppc']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='turret_xen_l_obliterator']/@tags">equipment turret</replace>
+<replace sel="/wares/ware[@id='turret_xen_l_obliterator']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='turret_xen_l_laser_01_mk1']/@tags">equipment turret</replace>
+<replace sel="/wares/ware[@id='turret_xen_l_laser_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='turret_xen_m_beam_02_mk1']/@tags">equipment turret</replace>
+<replace sel="/wares/ware[@id='turret_xen_m_beam_02_mk1']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='turret_xen_m_laser_01_mk1']/@tags">equipment turret</replace>
+<replace sel="/wares/ware[@id='turret_xen_m_laser_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='turret_xen_m_laser_02_mk1']/@tags">equipment turret</replace>
+<replace sel="/wares/ware[@id='turret_xen_m_laser_02_mk1']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='weapon_xen_s_laser_01_mk1']/@tags">equipment weapon</replace>
+<replace sel="/wares/ware[@id='weapon_xen_s_laser_01_mk1']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='ship_xen_xl_destroyer_01_a']/@tags">ship</replace>
+<replace sel="/wares/ware[@id='ship_xen_xl_destroyer_01_a']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='ship_xen_xl_carrier_01_a']/@tags">ship</replace>
+<replace sel="/wares/ware[@id='ship_xen_xl_carrier_01_a']/production[@name='{20206,601}']/@method">default</replace>
+<replace sel="/wares/ware[@id='ship_xen_xl_mothership_01_a']/@tags">ship</replace>
+<replace sel="/wares/ware[@id='ship_xen_xl_mothership_01_a']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='ship_xen_s_fighter_01_a']/@tags">ship</replace>
+<replace sel="/wares/ware[@id='ship_xen_s_fighter_01_a']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='ship_xen_s_fighter_02_a']/@tags">ship</replace>
+<replace sel="/wares/ware[@id='ship_xen_s_fighter_02_a']/production[@name='{20206,601}']/@method">default</replace>
+
+<replace sel="/wares/ware[@id='ship_xen_s_scout_01_a']/@tags">ship</replace>
+<replace sel="/wares/ware[@id='ship_xen_s_scout_01_a']/production[@name='{20206,601}']/@method">default</replace>
+
+
+<replace sel="/wares/ware[@id='countermeasure_flares_01']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='ship_gen_xs_repairdrone_01_a']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='ship_gen_xs_cargodrone_empty_01_a']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='ship_gen_xs_buildingdrone_01_a']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='ship_gen_xs_lasertower_01_a']/production[@name='{20206,601}']/@method">xenon</replace>
+<replace sel="/wares/ware[@id='ship_gen_s_lasertower_01_a']/production[@name='{20206,601}']/@method">xenon</replace>
+
+  <replace sel="/wares/production/method[@id='xenon']/@tags"> </replace>
+</diff>

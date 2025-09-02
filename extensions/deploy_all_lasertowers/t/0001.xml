@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!-- english -->  
+<language>
+	<!-- "Deploy All Military Consumables" = "DAMC" = "4 1 13 3 " = "41133 " in  https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="41133" voice="no">
+		<t id="1">Deploy All Military Consumables</t>
+		<!-- config -->
+		<t id="2">Debug log</t>
+		<t id="3">Do debug function</t>
+		<!-- orders -->
+		<t id="2000">Deploy All Laser Towers Mk1</t>
+		<t id="2001">Deploy All Laser Towers Mk2</t>
+		<!-- Description -->		
+		<t id="3000">Deploy All Laser Towers Mk1</t>
+		<t id="3001">Deploy All Laser Towers Mk2</t>
+	</page>
+</language>

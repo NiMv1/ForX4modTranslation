@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diff>
+  <add sel="/icons">
+	<icon name="ship_*" texture="extensions\re_expansion_pirate\assets\fx\gui\textures\upgrades\*.tga" height="256" width="256"/>		
+	<icon name="upgrade_*" texture="extensions\re_expansion_pirate\assets\fx\gui\textures\upgrades\*.tga" height="256" width="256"/>
+	<icon name="ship_l_cruiser_sb" texture="extensions\re_expansion_pirate\assets\fx\gui\textures\shipicon\ship_l_cruiser.png" height="128" width="128"/> 		
+	<icon name="ship_m_bomber_sb" texture="extensions\re_expansion_pirate\assets\fx\gui\textures\shipicon\ship_m_bomber.tga" height="128" width="128"/>
+	<icon name="ship_s_bomber_sb" texture="extensions\re_expansion_pirate\assets\fx\gui\textures\shipicon\ship_s_bomber.png" height="128" width="128"/>	
+  </add>
+</diff>

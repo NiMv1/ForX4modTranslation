@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="ApologizeForAttack" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+    <cue name="AFA_Main_Base">
+      <conditions>
+        <check_any>
+          <event_cue_signalled cue="md.Setup.GameStart" />
+          <event_player_created/>
+          <event_cue_signalled/>
+        </check_any>
+      </conditions>
+      <actions>
+        <!-- UPDATE -->
+        <set_value name="$versionNumber" exact="0.21"/>
+      </actions>
+      <cues>
+
+        <cue name="AFA_Main_ConversationExtentionManagerSupport" instantiate="true">
+          <conditions>
+            <event_cue_signalled/>
+          </conditions>
+          <actions>
+            <set_conversation_return_section section="g_goodbye" />
+            <add_player_choice text="'Извините за атаку'" section="afa_Main_InContact"/>
+          </actions>
+        </cue>
+
+        <cue name="AFA_Main_Contact_Handler" instantiate="true">
+          <conditions>
+            <check_any>
+              <event_conversation_started conversation="default" />
+              <event_conversation_returned_to_section section="default"/>
+            </check_any>
+            <check_value value="event.object.container.isclass.[class.ship, class.station]"/>
+            <check_value value="event.object.container.hasrelation.enemy.{faction.player} and not event.object.owner.hasrelation.enemy.{faction.player}"/>
+          </conditions>
+          <actions>
+            <do_if value="@md.ExtendedConversationMenu.Main.exists">
+              <set_value name="md.ExtendedConversationMenu.Main.$convOptions.$apologizeForAttack" exact="table[ $signalCue = md.ApologizeForAttack.AFA_Main_ConversationExtentionManagerSupport, $params = [] ]"/>
+            </do_if>
+            <do_else>
+              <signal_cue_instantly cue="AFA_Main_ConversationExtentionManagerSupport"/>
+            </do_else>
+          </actions>
+        </cue>
+
+        <cue name="AFA_Main_InContact_Handler" instantiate="true">
+          <conditions>
+            <check_any>
+              <event_conversation_next_section section="afa_Main_InContact"/>
+              <event_conversation_returned_to_section section="afa_Main_InContact"/>
+            </check_any>
+          </conditions>
+          <actions>
+            <signal_cue_instantly cue="AFA_Main_ResetBoost" param="[event.object.owner, event.object.sector]"/>
+            <add_player_choice_return text="'Спасибо, до свидания'"/>
+          </actions>
+        </cue>
+
+        <cue name="AFA_Main_ResetBoost" instantiate="false">
+          <conditions>
+            <event_cue_signalled/>
+          </conditions>
+          <actions>
+            <set_value name="$owner" exact="event.param.{1}"/>
+            <set_value name="$sector" exact="event.param.{2}"/>
+            <set_value name="$checkCount" exact="0"/>
+            <set_value name="$maxCount" exact="15"/>
+          </actions>
+          <cues>
+            <cue name="AFA_Main_ResetBoost_Action" namespace="default" instantiate="true" checkinterval="2s">
+              <conditions>
+                <check_value value="$checkCount le $maxCount"/>
+              </conditions>
+              <actions>
+                <set_value name="$checkCount" operation="add"/>
+                <find_object groupname="$myShips" multiple="true" class="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]" owner="faction.player" space="$sector"/>
+                <do_all exact="$myShips.count" counter="$i">
+                  <set_value name="$myShip" exact="$myShips.{$i}"/>
+                  <find_gravidar_contact object="$myShip" functional="true" class="[class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]" multiple="false" owner="$owner" name="$result">
+                    <match_relation_to object="$myShip" relation="kill"/>
+                  </find_gravidar_contact>
+                  <do_if value="$result? and $result.exists">
+                    <do_if value="$myShip.defencenpc.exists">
+                      <signal_objects object="$myShip.defencenpc" param="'stop attack'"/>
+                    </do_if>
+                    <cease_fire object="$myShip"/>
+
+                    <find_dockingbay name="$bays" multiple="true" object="$myShip">
+                      <match_dock storage="false"/>
+                    </find_dockingbay>
+                    <do_all exact="$bays.count" counter="$j">
+                      <set_value name="$dockedShips" exact="$bays.{$j}.docked"/>
+                      <do_all exact="$dockedShips.count" counter="$k">
+                        <cease_fire object="$dockedShips.{$k}"/>
+                      </do_all>
+                    </do_all>
+                  </do_if>
+                </do_all>
+
+                <find_object class="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]" groupname="$ships" multiple="true" owner="$owner" space="$sector"/>
+                <do_all exact="$ships.count" counter="$i">
+
+                  <set_value name="$ship" exact="$ships.{$i}"/>
+                  <do_if value="$ship.hasrelation.enemy.{faction.player}">
+                    <reset_relation_boost object="$ship" faction="faction.player"/>
+                    <set_tolerance_boost delay="30s" decay="1" value="1" object="$ship" faction="faction.player" />
+                    <cease_fire object="$ship"/>
+                    <do_if value="$ship.isclass.[class.ship_l, class.ship_xl] and $ship.defencenpc.exists">
+                      <signal_objects object="$ship.defencenpc" param="'stop attack'"/>
+                    </do_if>
+                  </do_if>
+                  <find_dockingbay name="$bays" multiple="true" object="$ship">
+                    <match_dock storage="false"/>
+                  </find_dockingbay>
+                  <do_all exact="$bays.count" counter="$j">
+                    <set_value name="$dockedShips" exact="$bays.{$j}.docked"/>
+                    <do_all exact="$dockedShips.count" counter="$k">
+                      <do_if value="$dockedShips.{$k}.hasrelation.enemy.{faction.player}">
+                        <reset_relation_boost object="$dockedShips.{$k}" faction="faction.player"/>
+                        <set_tolerance_boost delay="30s" decay="1" value="1" object="$dockedShips.{$k}" faction="faction.player" />
+                        <cease_fire object="$dockedShips.{$k}"/>
+                      </do_if>
+                    </do_all>
+                  </do_all>
+                </do_all>
+
+                <clear_group group="$ships"/>
+                <clear_group group="$myShips"/>
+                <clear_list list="$bays"/>
+                <clear_list list="$dockedShips"/>
+                <remove_value name="$myShip"/>
+                <remove_value name="$ship"/>
+                <do_if value="$checkCount == $maxCount">
+                  <reset_cue cue="AFA_Main_ResetBoost"/>
+                </do_if>
+              </actions>
+            </cue>
+          </cues>
+        </cue>
+
+        <cue name="AFA_VersionCheck" instantiate="false">
+          <conditions>
+            <check_any>
+              <event_player_created/>
+              <event_game_loaded/>
+              <event_cue_signalled cue="md.Setup.GameStart" />
+              <event_cue_signalled/>
+            </check_any>
+          </conditions>
+          <actions>
+            <!--UPDATE-->
+            <set_value name="$newVersionNumber" exact="0.21"/>
+
+            <do_if value="$versionNumber != $newVersionNumber or $versionNumber == null or $versionNumber == 0">
+              <show_help custom="'Update complete!'" chance="100" duration="5s"/>
+              <signal_cue_instantly cue="AFA_KeepAlive" param="true"/>
+              <reset_cue cue="AFA_Main_Base"/>
+            </do_if>
+
+            <reset_cue cue="this"/>
+          </actions>
+        </cue>
+
+      </cues>
+    </cue>
+    <cue name="AFA_KeepAlive" instantiate="false">
+      <conditions>
+        <check_any>
+          <event_cue_signalled/>
+        </check_any>
+      </conditions>
+      <delay exact="2s"/>
+      <actions>
+        <do_if value="event.param">
+          <signal_cue_instantly cue="AFA_Main_Base" param="event.param"/>
+        </do_if>
+        <do_else>
+          <signal_cue cue="AFA_Main_Base"/>
+        </do_else>
+        <reset_cue cue="this"/>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

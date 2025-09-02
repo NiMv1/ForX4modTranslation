@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <add sel="/index">
+	<!--STATIONS/MODULES-->	
+	<entry name="struct_otas_cross_01_macro" value="extensions\otas_shippack\assets\structures\connectionmodules\macros\struct_otas_cross_01_macro"/>
+	<entry name="prod_otas_stimulants_macro" value="extensions\otas_shippack\assets\structures\production\macros\prod_otas_stimulants_macro"/>	  
+	<!--SHIPS-->
+	<entry name="ship_otas_xl_tempest_macro" value="extensions\otas_shippack\assets\units\size_xl\macros\ship_otas_xl_tempest_macro"/>
+	<entry name="ship_otas_xl_andaman_macro" value="extensions\otas_shippack\assets\units\size_xl\macros\ship_otas_xl_andaman_macro"/>	
+	<entry name="ship_otas_xl_vesuvius_macro" value="extensions\otas_shippack\assets\units\size_xl\macros\ship_otas_xl_vesuvius_macro"/>	
+	<entry name="ship_otas_xl_genthus_macro" value="extensions\otas_shippack\assets\units\size_xl\macros\ship_otas_xl_genthus_macro"/>		
+	<entry name="ship_otas_l_aquilo_macro" value="extensions\otas_shippack\assets\units\size_l\macros\ship_otas_l_aquilo_macro"/>
+	<entry name="ship_otas_l_astraeus_macro" value="extensions\otas_shippack\assets\units\size_l\macros\ship_otas_l_astraeus_macro"/>
+	<entry name="ship_otas_l_boreas_macro" value="extensions\otas_shippack\assets\units\size_l\macros\ship_otas_l_boreas_macro"/>
+	<entry name="ship_otas_l_mistral_macro" value="extensions\otas_shippack\assets\units\size_l\macros\ship_otas_l_mistral_macro"/>
+	<entry name="ship_otas_l_zephyrus_macro" value="extensions\otas_shippack\assets\units\size_l\macros\ship_otas_l_zephyrus_macro"/>
+	<entry name="ship_otas_m_sirokos_macro" value="extensions\otas_shippack\assets\units\size_m\macros\ship_otas_m_sirokos_macro"/>
+	<entry name="ship_otas_m_skiron_macro" value="extensions\otas_shippack\assets\units\size_m\macros\ship_otas_m_skiron_macro"/>	
+	<entry name="ship_otas_s_auster_macro" value="extensions\otas_shippack\assets\units\size_s\macros\ship_otas_s_auster_macro"/>
+	<entry name="ship_otas_s_eurus_macro" value="extensions\otas_shippack\assets\units\size_s\macros\ship_otas_s_eurus_macro"/>
+	<entry name="ship_otas_s_notus_macro" value="extensions\otas_shippack\assets\units\size_s\macros\ship_otas_s_notus_macro"/>
+	<entry name="ship_otas_s_solano_macro" value="extensions\otas_shippack\assets\units\size_s\macros\ship_otas_s_solano_macro"/>
+	<entry name="ship_otas_s_venti_macro" value="extensions\otas_shippack\assets\units\size_s\macros\ship_otas_s_venti_macro"/>		
+	<!--iSHIELDS-->	
+	<entry name="ishield_otas_xl_tempest_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_xl_tempest_macro"/>	
+	<entry name="ishield_otas_xl_andaman_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_xl_andaman_macro"/>	
+	<entry name="ishield_otas_xl_vesuvius_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_xl_vesuvius_macro"/>
+	<entry name="ishield_otas_xl_genthus_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_xl_genthus_macro"/>	
+	<entry name="ishield_otas_l_aquilo_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_l_aquilo_macro"/>
+	<entry name="ishield_otas_l_astraeus_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_l_astraeus_macro"/>
+	<entry name="ishield_otas_l_boreas_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_l_boreas_macro"/>
+	<entry name="ishield_otas_l_mistral_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_l_mistral_macro"/>
+	<entry name="ishield_otas_l_zephyrus_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_l_zephyrus_macro"/>
+	<entry name="ishield_otas_m_sirokos_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_m_sirokos_macro"/>
+	<entry name="ishield_otas_m_skiron_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_m_skiron_macro"/>
+	<entry name="ishield_otas_s_auster_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_s_auster_macro"/>
+	<entry name="ishield_otas_s_eurus_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_s_eurus_macro"/>	
+	<entry name="ishield_otas_s_notus_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_s_notus_macro"/>	
+	<entry name="ishield_otas_s_solano_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_s_solano_macro"/>	
+	<entry name="ishield_otas_s_venti_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\ishield_otas_s_venti_macro"/>		
+	<!--TURRETS/WEAPONS-->
+	<entry name="turret_otas_xl_firestorm_macro" value="extensions\otas_shippack\assets\props\weaponsystems\capital\macros\turret_otas_xl_firestorm_macro" />
+	<entry name="turret_otas_l_palc_macro" value="extensions\otas_shippack\assets\props\weaponsystems\energy\macros\turret_otas_l_palc_macro"/>		
+	<entry name="weapon_otas_s_gatling_macro" value="extensions\otas_shippack\assets\props\weaponsystems\heavy\macros\weapon_otas_s_gatling_macro" />
+	<entry name="weapon_otas_l_destroyer_macro" value="extensions\otas_shippack\assets\props\weaponsystems\heavy\macros\weapon_otas_l_destroyer_macro" />
+	<entry name="weapon_otas_s_notus_launcher_macro" value="extensions\otas_shippack\assets\props\weaponsystems\guided\macros\weapon_otas_s_notus_launcher_macro"/>	
+	<entry name="weapon_otas_s_notus_bomb_macro" value="extensions\otas_shippack\assets\props\weaponsystems\heavy\macros\weapon_otas_s_notus_bomb_macro"/>
+	<entry name="bullet_otas_s_notus_bomb_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\bullet_otas_s_notus_bomb_macro"/>
+	<entry name="turret_otas_l_missilefrigate_macro" value="extensions\otas_shippack\assets\props\weaponsystems\guided\macros\turret_otas_l_missilefrigate_macro"/>	
+	<!--MISC.ITEMS-->
+	<entry name="dock_gen_xs_ship_flat_macro" value="extensions\otas_shippack\assets\props\surfaceelements\macros\dock_gen_xs_ship_flat_macro" />
+	<entry name="dockingbay_flat_m_01_macro" value="extensions\otas_shippack\assets\structures\dock\macros\dockingbay_flat_m_01_macro" />
+	<entry name="dockarea_otas_xl_battleship_left_macro" value="extensions\otas_shippack\assets\structures\dock\macros\dockarea_otas_xl_battleship_left_macro" />
+	<entry name="dockarea_otas_xl_battleship_right_macro" value="extensions\otas_shippack\assets\structures\dock\macros\dockarea_otas_xl_battleship_right_macro" />
+	<entry name="bullet_otas_turret_xl_firestorm_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\bullet_otas_turret_xl_firestorm_macro"/>
+	<entry name="impact_otas_turret_xl_firestorm_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\impact_otas_turret_xl_firestorm_macro"/>
+	<entry name="muzzle_otas_turret_xl_firestorm_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\muzzle_otas_turret_xl_firestorm_macro"/>	
+	<entry name="missile_otas_l_anemoi_macro" value="extensions\otas_shippack\assets\props\weaponsystems\missile\macros\missile_otas_l_anemoi_macro"/>
+	<entry name="bullet_otas_turret_l_palc_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\bullet_otas_turret_l_palc_macro"/>
+	<entry name="impact_otas_turret_l_palc_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\impact_otas_turret_l_palc_macro"/>
+	<entry name="muzzle_otas_turret_l_palc_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\muzzle_otas_turret_l_palc_macro"/>		
+	<entry name="bullet_otas_s_gatling_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\bullet_otas_s_gatling_macro" />
+	<entry name="bullet_otas_notus_bomb_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\bullet_otas_notus_bomb_macro" />	
+	<entry name="bullet_otas_l_destroyer_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\bullet_otas_l_destroyer_macro" />	
+	<entry name="impact_otas_l_destroyer_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\impact_otas_l_destroyer_macro"/>
+	<entry name="muzzle_otas_l_destroyer_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\muzzle_otas_l_destroyer_macro"/>	
+	<entry name="bullet_rangefinder_28km_macro" value="extensions\otas_shippack\assets\fx\weaponfx\macros\bullet_rangefinder_28km_macro"/>
+	<entry name="weapon_rangefinder_28km_macro" value="extensions\otas_shippack\assets\props\weaponsystems\guided\macros\weapon_rangefinder_28km_macro"/>	
+	<!--STORAGE-->
+	<entry name="storage_otas_xl_tempest_macro" value="extensions\otas_shippack\assets\units\size_xl\macros\storage_otas_xl_tempest_macro"/>
+	<entry name="storage_otas_xl_andaman_macro" value="extensions\otas_shippack\assets\units\size_xl\macros\storage_otas_xl_andaman_macro"/>	
+	<entry name="storage_otas_xl_vesuvius_macro" value="extensions\otas_shippack\assets\units\size_xl\macros\storage_otas_xl_vesuvius_macro"/>	
+	<entry name="storage_otas_xl_genthus_macro" value="extensions\otas_shippack\assets\units\size_xl\macros\storage_otas_xl_genthus_macro"/>		
+	<entry name="storage_otas_l_aquilo_macro" value="extensions\otas_shippack\assets\units\size_l\macros\storage_otas_l_aquilo_macro"/>
+	<entry name="storage_otas_l_astraeus_macro" value="extensions\otas_shippack\assets\units\size_l\macros\storage_otas_l_astraeus_macro"/>	
+	<entry name="storage_otas_l_boreas_macro" value="extensions\otas_shippack\assets\units\size_l\macros\storage_otas_l_boreas_macro"/>
+	<entry name="storage_otas_l_mistral_macro" value="extensions\otas_shippack\assets\units\size_l\macros\storage_otas_l_mistral_macro"/>	
+	<entry name="storage_otas_l_zephyrus_macro" value="extensions\otas_shippack\assets\units\size_l\macros\storage_otas_l_zephyrus_macro"/>	
+	<entry name="storage_otas_m_sirokos_macro" value="extensions\otas_shippack\assets\units\size_m\macros\storage_otas_m_sirokos_macro"/>
+	<entry name="storage_otas_m_skiron_macro" value="extensions\otas_shippack\assets\units\size_m\macros\storage_otas_m_skiron_macro"/>
+	<entry name="storage_otas_s_auster_macro" value="extensions\otas_shippack\assets\units\size_s\macros\storage_otas_s_auster_macro"/>
+	<entry name="storage_otas_s_eurus_macro" value="extensions\otas_shippack\assets\units\size_s\macros\storage_otas_s_eurus_macro"/>
+	<entry name="storage_otas_s_notus_macro" value="extensions\otas_shippack\assets\units\size_s\macros\storage_otas_s_notus_macro"/>	
+	<entry name="storage_otas_s_solano_macro" value="extensions\otas_shippack\assets\units\size_s\macros\storage_otas_s_solano_macro"/>
+	<entry name="storage_otas_s_venti_macro" value="extensions\otas_shippack\assets\units\size_s\macros\storage_otas_s_venti_macro"/>			
+  </add>
+</diff>

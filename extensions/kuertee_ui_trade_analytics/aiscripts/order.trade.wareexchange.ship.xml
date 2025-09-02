@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<!--
+	add:
+	<execute_trade tradeoffer="$tradedeal" tradepartner="$tradepartner" amount="$tradedeal.amount" result="$traderesult" custom="true">
+		<interrupt_after_time time="121min / 5" />
+	</execute_trade>
+	-->
+	<add pos="after" sel="//execute_trade">
+		<do_if value="$traderesult">
+			<signal_objects object="player.galaxy" param="'kTAnalytics_trade'" param2="table[
+				$tradeOffer=$tradedeal,
+				$tradePartner=$tradepartner,
+				$amount=$tradedeal.amount,
+				$result=$traderesult,
+				$aiScriptId=this.object.order.id
+			]" />
+		</do_if>
+	</add>
+</diff>

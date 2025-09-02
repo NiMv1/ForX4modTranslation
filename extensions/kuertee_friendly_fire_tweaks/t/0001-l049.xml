@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+	<!-- "kuertee fft" = "kfft" = "11 6 6 20" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="116620" voice="no">
+		<!-- config -->
+		<t id="1">kuertee: Freundbeschuss-Tweaks</t>
+		<t id="2">Debug-Protokoll</t>
+		<t id="3">Bestrafe Freundbeschuss unter diesen Bedingungen:</t>
+		<t id="4">Opfer wurde aktiv anvisiert</t>
+		<t id="5">Aus bedeutet jeglicher Beschuss</t>
+		<t id="6">Schild des Opfers kleiner/gleich 25%</t>
+		<t id="7">Aus bedeutet jegliche Beschädigung am Schild</t>
+		<t id="8">Schaden durch Hauptgeschütze</t>
+		<t id="9">Aus bedeutet Schaden durch alle Waffen/Türme</t>
+		<t id="10">Debug-Protokoll \(weitschweifig\)</t>
+		<t id="11">Debug-Protokoll \(nur nicht ignorierte Antwort\)</t>
+	</page>
+</language>

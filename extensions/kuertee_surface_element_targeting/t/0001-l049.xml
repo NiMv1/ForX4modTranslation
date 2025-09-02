@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- english -->
+<language>
+	<!-- "kuertee surface element targeting" = "kset" = "11 19 5 20" = "19520" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="1119520" voice="no">
+		<!-- config -->
+		<t id="0">kuertee: Surface element targeting</t>
+		<t id="1">Debug-Protokoll</t>
+		<!-- interact menu -->
+		<t id="100">Finde alle: %1(Oberflächenobjektname)</t>
+		<t id="110">Kein intaktes Oberflächenelement gefunden.</t>
+		<t id="111">%s(Anzahl) intakte Oberflächenelemente gefunden.</t>
+		<t id="112">%s(Name): Intakt: %s%%(Rumpf).</t>
+		<t id="113">%s(Name): Außer Betrieb.</t>
+		<!-- mission -->
+		<t id="200">Oberflächenelemente anvisieren</t>
+	</page>
+</language>

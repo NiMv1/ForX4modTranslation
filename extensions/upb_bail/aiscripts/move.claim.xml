@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+	<replace sel="/aiscript/attention[@min='visible']/actions/do_if[5]/do_if[1]">
+		<set_value name="$tdebugchance" exact="0"/>
+		<do_if value="global.$upbBail.$class.{'$'+ $target.realclass}.$repairhull" >
+			<debug_text text="'Claimed %s %s'.[$target.knownname, $target.idcode]" chance="$tdebugchance"/>
+			<set_object_hull object="$target" exact="100"/>
+			<debug_text text="'  Hull Repaired..'.[]" chance="$tdebugchance"/>
+		</do_if>
+		<do_if value="global.$upbBail.$class.{'$'+ $target.realclass}.$repairshield" >
+			<debug_text text="'Claimed %s %s'.[$target.knownname, $target.idcode]" chance="$tdebugchance"/>
+			<set_object_shield object="$target" exact="100"/>
+			<debug_text text="'  Main Shield Fulled..'.[]" chance="$tdebugchance"/>
+		</do_if>
+		<do_if value="global.$upbBail.$class.{'$'+ $target.realclass}.$repairequipments" >
+            <find_object_component name="$PossibleElements" object="$target" class="class.destructible" checkoperational="false"  multiple="true" append="true">
+				<match class="class.adsign" negate="true"/>
+				<match_any>
+				  	<match restorable="true" comment="wrecked"/>
+				  	<match repairable="true" invulnerable="false"/>
+				</match_any>
+			</find_object_component>
+			<do_all exact="$PossibleElements.count" counter="$Counter" chance="100">
+				<set_value name="$CurrentElement" exact="$PossibleElements.{$Counter}"/>
+				<debug_text text="'  %s-) Destructible: &lt;%s&gt; %s [%s]'.[$Counter, $CurrentElement, $CurrentElement.knownname, $CurrentElement.macro.id]" chance="$tdebugchance"/>
+				<do_if value="$CurrentElement.iswreck">
+					<debug_text text="'    CurrentElement is now the wreck.'.[]" chance="$tdebugchance"/>
+					<restore_object object="$CurrentElement" hull="1" recursive="true" />
+					<debug_text text="'      Restored..'.[]" chance="$tdebugchance"/>
+					<set_object_hull object="$CurrentElement" exact="100" />
+					<debug_text text="'        Repaired..'.[]" chance="$tdebugchance"/>
+				</do_if>
+				<do_elseif value="$CurrentElement.isoperational">
+					<debug_text text="'    CurrentElement is now the damaged.'.[]" chance="$tdebugchance"/>
+					<set_object_hull object="$CurrentElement" exact="100" />
+					<debug_text text="'        Repaired..'.[]" chance="$tdebugchance"/>
+				</do_elseif>
+				<do_else>
+					<debug_text text="'    &lt;%s&gt; %s is neither wreck nor operational. Leaving it in its current state.'.[$CurrentElement, $CurrentElement.knownname]" chance="$tdebugchance"/>
+				</do_else>
+			</do_all>
+			<!-- <set_object_min_shield object="$CurrentElement" exact="100"/>-->
+		</do_if>
+	</replace>
+	<replace sel="/aiscript/attention[@min='unknown']/actions/do_if[4]/do_if[1]">
+		<set_value name="$tdebugchance" exact="0"/>
+		<do_if value="global.$upbBail.$class.{'$'+ $target.realclass}.$repairhull" >
+			<debug_text text="'Claimed %s %s'.[$target.knownname, $target.idcode]" chance="$tdebugchance"/>
+			<set_object_hull object="$target" exact="100"/>
+			<debug_text text="'  Hull Repaired..'.[]" chance="$tdebugchance"/>
+		</do_if>
+		<do_if value="global.$upbBail.$class.{'$'+ $target.realclass}.$repairshield" >
+			<debug_text text="'Claimed %s %s'.[$target.knownname, $target.idcode]" chance="$tdebugchance"/>
+			<set_object_shield object="$target" exact="100"/>
+			<debug_text text="'  Main Shield Fulled..'.[]" chance="$tdebugchance"/>
+		</do_if>
+		<do_if value="global.$upbBail.$class.{'$'+ $target.realclass}.$repairequipments" >
+            <find_object_component name="$PossibleElements" object="$target" class="class.destructible" checkoperational="false"  multiple="true" append="true">
+				<match class="class.adsign" negate="true"/>
+				<match_any>
+				  	<match restorable="true" comment="wrecked"/>
+				  	<match repairable="true" invulnerable="false"/>
+				</match_any>
+			</find_object_component>
+			<do_all exact="$PossibleElements.count" counter="$Counter" chance="100">
+				<set_value name="$CurrentElement" exact="$PossibleElements.{$Counter}"/>
+				<debug_text text="'  %s-) Destructible: &lt;%s&gt; %s [%s]'.[$Counter, $CurrentElement, $CurrentElement.knownname, $CurrentElement.macro.id]" chance="$tdebugchance"/>
+				<do_if value="$CurrentElement.iswreck">
+					<debug_text text="'    CurrentElement is now the wreck.'.[]" chance="$tdebugchance"/>
+					<restore_object object="$CurrentElement" hull="1" recursive="true" />
+					<debug_text text="'      Restored..'.[]" chance="$tdebugchance"/>
+					<set_object_hull object="$CurrentElement" exact="100" />
+					<debug_text text="'        Repaired..'.[]" chance="$tdebugchance"/>
+				</do_if>
+				<do_elseif value="$CurrentElement.isoperational">
+					<debug_text text="'    CurrentElement is now the damaged.'.[]" chance="$tdebugchance"/>
+					<set_object_hull object="$CurrentElement" exact="100" />
+					<debug_text text="'        Repaired..'.[]" chance="$tdebugchance"/>
+				</do_elseif>
+				<do_else>
+					<debug_text text="'    &lt;%s&gt; %s is neither wreck nor operational. Leaving it in its current state.'.[$CurrentElement, $CurrentElement.knownname]" chance="$tdebugchance"/>
+				</do_else>
+			</do_all>
+			<!-- <set_object_min_shield object="$CurrentElement" exact="100"/>-->
+		</do_if>
+	</replace>
+</diff>

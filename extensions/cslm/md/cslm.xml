@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<mdscript name="cslm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+<cues>
+<cue name="cslm_cue" instantiate="true" checkinterval="5s" namespace="this">
+	<actions>
+		<!--write_to_logbook category="general" title="'Loot Magnet'" text="'START %1'.[player.age]"/-->
+
+		<create_list name="$ships"/>
+		<find_ship name="$ships" space="player.galaxy" owner="faction.player" class="[class.ship_l, class.ship_xl]" multiple="true"/>
+
+		<do_all exact="$ships.count" counter="$si">
+			<set_value name="$ship" exact="$ships.{$si}"/>
+
+			<substitute_text text="$check" source="$ship.name">
+				<replace string="'[DP]'" with="''"/>
+			</substitute_text>
+
+			<!-- does the ship name contain the [DP] tag? -->
+			<do_if value="$check == $ship.name">
+				<do_if value="$ship.isclass.[class.ship_l]">
+					<set_value name="$limit" exact="2"/>
+					<set_value name="$range" exact="200000"/>
+				</do_if>
+				<do_else>
+					<set_value name="$limit" exact="3"/>
+					<set_value name="$range" exact="400000"/>
+				</do_else>
+				
+				<create_list name="$drops"/>
+				<find_object name="$drops" space="$ship.sector" class="class.collectable" multiple="true">
+					<match_distance object="$ship" max="$range"/>
+				</find_object>
+
+				<do_all exact="$drops.count" counter="$di">
+					<set_value name="$drop" exact="$drops.{$di}"/>
+					<set_value name="$allow" exact="true"/>
+					<set_value name="$wares" exact="$drop.wares.list"/>
+					<do_all exact="$wares.count" counter="$wi">
+						<do_if value="$wares.{$wi}.isammo">
+							<do_if value="$wares.{$wi}.isdeployable">
+								<set_value name="$allow" exact="false"/>
+								<!--write_to_logbook category="general" title="'Loot Magnet'" text="'%1 skip isdeployable \033R%2 (%3 - %4)'.[$ship.name, $wares.{$wi}.name, $di, $wi]"/-->
+							</do_if>
+							<do_elseif value="$wares.{$wi}.objectmacro.isclass.countermeasure">
+								<set_value name="$allow" exact="false"/>
+								<!--write_to_logbook category="general" title="'Loot Magnet'" text="'%1 skip countermeasure \033R%2 (%3 - %4)'.[$ship.name, $wares.{$wi}.name, $di, $wi]"/-->
+							</do_elseif>
+							<do_elseif value="$ship.ammostorage.{$wares.{$wi}}.free lt $wares.{$wi}.count">
+								<set_value name="$allow" exact="false"/>
+								<!--write_to_logbook category="general" title="'Loot Magnet'" text="'%1 skip ammo \033R%2 (%3) (%4 - %5)'.[$ship.name, $wares.{$wi}.name, $wares.{$wi}.count, $di, $wi]"/-->
+							</do_elseif>
+							<do_else>
+								<!--write_to_logbook category="general" title="'Loot Magnet'" text="'%1 picked up \033Y%2 (%3)'.[$ship.name, $wares.{$wi}.name, $wares.{$wi}.count]"/-->
+							</do_else>
+						</do_if>
+						<do_elseif value="not $wares.{$wi}.isinventory">
+							<set_value name="$allow" exact="false"/>
+							<!--write_to_logbook category="general" title="'Loot Magnet'" text="'%1 skip ??? \033R%2 (%3 - %4)'.[$ship.name, $wares.{$wi}.name, $di, $wi]"/-->
+						</do_elseif>
+						<do_else>
+							<!--write_to_logbook category="general" title="'Loot Magnet'" text="'%1 picked up \033Y%2'.[$ship.name, $wares.{$wi}.name]"/-->
+						</do_else>
+					</do_all>
+
+					<do_if value="$allow and ($wares.count gt 0)">
+						<collect_drop object="$ship" drop="$drop"/>
+
+						<set_value name="$limit" exact="$limit - 1"/>
+						<do_if value="$limit lt 1">
+							<break/>
+						</do_if>
+					</do_if>
+				</do_all>
+			</do_if>
+		</do_all>
+	</actions>
+</cue>
+</cues>
+</mdscript>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<language>
+    <page id="20918" voice="no">
+        <t id="100">Weapon Output</t>
+        <t id="101">Burst</t>
+        <t id="102">Sustained</t>
+        <t id="103">Rate of Heat Buildup</t>
+        <t id="104">RPS</t>
+        <t id="105">Strafe Thrust</t>
+        <t id="106">Horizontal</t>
+        <t id="107">Vertical</t>
+    </page>
+</language>

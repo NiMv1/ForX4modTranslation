@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<language id="86">
+  <page id="8008577" title="Chill Turrets T Files" descr="Chinese" voice="no">
+    <t id="100">已安装冷却炮塔。 将所有大型首都设为攻击首都，将中型设为导弹防御</t>
+    <t id="101">冷却炮塔设置</t>
+    <t id="102">攻击首都也以战士为目标</t>
+    <t id="103">如果没有其他合适的目标，大型炮塔就会向战斗机开火</t>
+    <t id="104">自动设置玩家炮塔模式</t>
+		<t id="105">所有船舶以及所有未来建造的船舶都将立即设置为此模组首选项。</t>
+		<t id="106"></t>
+		<t id="107"></t>
+    <t id="138">已启用</t>
+    <t id="139">已禁用</t>
+  </page>
+</language>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="DATOptions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="Init" instantiate="false">
+			<actions>
+				<!-- Initial variables -->
+				<set_value name="global.$DATweaks" exact="table[]"/>
+				<!-- Engineer -->
+				<set_value name="global.$DATweaks.$EngineerAI" exact="table[]"/>
+				<set_value name="global.$DATweaks.$EngineerAI.$HullDamageLimitTweak" exact="true"/>
+				<set_value name="global.$DATweaks.$EngineerAI.$InternalRepairDrones" exact="true"/>
+				<!-- Text Colors -->
+				<set_value name="$TextGreen" exact="'Color.text_success'"/>
+				<set_value name="$TextRed" exact="'Color.text_failure'"/>
+				<!-- Var Check -->
+				<set_value name="$LastVariableCheck" exact="0s"/>
+				<debug_text text="'MOD: KUDA DAT -- Initial options set.'" context="false" filter="scripts"/>
+			</actions>
+			<cues>
+				<cue name="CheckVariablesExist" instantiate="true" version="2">
+					<conditions>
+						<check_any>
+							<event_universe_generated/>
+							<event_game_loaded/>
+							<event_cue_signalled/>
+						</check_any>
+					</conditions>
+					<actions>
+						<set_value name="$MissingVarCount" exact="0"/>
+						<do_if value="not global.$DATweaks?">
+							<set_value name="global.$DATweaks" exact="table[]"/>
+							<set_value name="$MissingVarCount" exact="1" operation="add"/>
+						</do_if>
+						<!-- Engineer -->
+						<do_if value="not global.$DATweaks.$EngineerAI?">
+							<set_value name="global.$DATweaks.$EngineerAI" exact="table[]"/>
+							<set_value name="$MissingVarCount" exact="1" operation="add"/>
+						</do_if>
+						<do_if value="not global.$DATweaks.$EngineerAI.$HullDamageLimitTweak?">
+							<set_value name="global.$DATweaks.$EngineerAI.$HullDamageLimitTweak" exact="true"/>
+							<set_value name="$MissingVarCount" exact="1" operation="add"/>
+						</do_if>
+						<do_if value="not global.$DATweaks.$EngineerAI.$InternalRepairDrones?">
+							<set_value name="global.$DATweaks.$EngineerAI.$InternalRepairDrones" exact="true"/>
+							<set_value name="$MissingVarCount" exact="1" operation="add"/>
+						</do_if>
+						<!-- Text Colors -->
+						<do_if value="not $TextGreen?">
+							<set_value name="$TextGreen" exact="'Color.text_success'"/>
+							<set_value name="$TextRed" exact="'Color.text_failure'"/>
+							<set_value name="$MissingVarCount" exact="1" operation="add"/>
+						</do_if>
+						<!-- Output -->
+						<debug_text text="'MOD: KUDA DAT -- Number of missing variables set: %s.'.[$MissingVarCount]" context="false" filter="scripts"/>
+						<remove_value name="$MissingVarCount"/>
+						<set_value name="$LastVariableCheck" exact="player.age"/>
+					</actions>
+				</cue>
+				<cue name="Register_Options_Menu" instantiate="true">
+					<conditions>
+						<event_cue_signalled cue="md.Simple_Menu_API.Reloaded"/>
+					</conditions>
+					<actions>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Register_Options_Menu" param="table[$id = 'datoptions_menu', $columns = 8, $title   = {1111920,5000}, $onOpen  = Main_Menu ]"/>
+					</actions>
+				</cue>
+				<cue name="Main_Menu" instantiate="true">
+					<conditions>
+						<event_cue_signalled/>
+					</conditions>
+					<actions>
+						<set_value name="$KUDADATdebug" exact="true"/>
+						<do_if value="player.age gt (@$LastVariableCheck + 5s)">
+							<signal_cue_instantly cue="CheckVariablesExist"/>
+						</do_if>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+						<!-- All Set to active == {1001,2963} {1001,3406} -->
+						<set_value name="$LocText" exact="'%s %s'.[{1001,2963},{1001,3406}]"/>
+						<set_value name="$LocEnable" exact="1"/>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Make_Button" param="table[
+								$col = 1, 
+								$colSpan = 4,
+								$text = table[
+								  $text   = $LocText, 
+								  $color  = 'Color.text_success',
+								  $halign = 'center',
+								],
+								$onClick = Execute_ChangeAllOptions,
+								$onRightClick = Execute_ChangeAllOptions,
+								$echo = [$LocEnable]
+							]"/>
+						<remove_value name="$LocText"/>
+						<remove_value name="$LocEnable"/>
+						<!-- All Set to inactive == {1001,2963} {1001,3413} -->
+						<set_value name="$LocText" exact="'%s %s'.[{1001,2963},{1001,3413}]"/>
+						<set_value name="$LocEnable" exact="0"/>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Make_Button" param="table[
+								$col = 5, 
+								$colSpan = 4,
+								$text = table[
+								  $text   = $LocText, 
+								  $color  = $TextRed,
+								  $halign = 'center',
+								],
+								$onClick = Execute_ChangeAllOptions,
+								$onRightClick = Execute_ChangeAllOptions,
+								$echo = [$LocEnable]
+							]"/>
+						<remove_value name="$LocText"/>
+						<remove_value name="$LocEnable"/>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[
+								$col = 1,
+								$colSpan = 6,
+								$text = {1111920,5021},
+								$mouseOverText= {1111920,6021},
+							]"/>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Make_Button" param="table[
+								$col = 7, 
+								$colSpan = 2,
+								$text = table[
+								  $text   =  if global.$DATweaks.$EngineerAI.$HullDamageLimitTweak then {1001,4825} else {1001,8942}, 
+								  $color  =  if global.$DATweaks.$EngineerAI.$HullDamageLimitTweak then $TextGreen else $TextRed,
+								  $halign = 'center',
+								],
+								$onClick = Execute_DynamicEnable,
+								$onRightClick = Execute_DynamicEnable,
+								$echo = ['$EngineerAI','$HullDamageLimitTweak',global.$DATweaks.$EngineerAI.$HullDamageLimitTweak]
+							]"/>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[
+								$col = 1,
+								$colSpan = 6,
+								$text = {1111920,5022},
+								$mouseOverText= {1111920,6022},
+							]"/>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Make_Button" param="table[
+								$col = 7, 
+								$colSpan = 2,
+								$text = table[
+								  $text   =  if global.$DATweaks.$EngineerAI.$InternalRepairDrones then {1001,4825} else {1001,8942}, 
+								  $color  =  if global.$DATweaks.$EngineerAI.$InternalRepairDrones then $TextGreen else $TextRed,
+								  $halign = 'center',
+								],
+								$onClick = Execute_DynamicEnable,
+								$onRightClick = Execute_DynamicEnable,
+								$echo = ['$EngineerAI','$InternalRepairDrones',global.$DATweaks.$EngineerAI.$InternalRepairDrones]
+							]"/>
+					</actions>
+				</cue>
+				<cue name="Execute_DynamicEnable" instantiate="true">
+					<conditions>
+						<event_cue_signalled/>
+					</conditions>
+					<actions>
+						<do_if value="event.param.$echo?">
+							<do_if value="global.$DATweaks.{event.param.$echo.{1}}.{event.param.$echo.{2}}?">
+								<set_value name="global.$DATweaks.{event.param.$echo.{1}}.{event.param.$echo.{2}}" exact="not event.param.$echo.{3}"/>
+								<debug_text text="'MOD: KUDA DAT -- Updated global.$DATweaks.%s.%s from %s to %s'.[event.param.$echo.{1},event.param.$echo.{2},event.param.$echo.{3},global.$DATweaks.{event.param.$echo.{1}}.{event.param.$echo.{2}}]" context="false" filter="scripts"/>
+							</do_if>
+							<do_else>
+								<debug_text text="'MOD: KUDA DAT -- ERROR -- could not find global.$DATweaks.%s.%s'.[event.param.$echo.{1},event.param.$echo.{2}]" context="false" filter="error"/>
+							</do_else>
+						</do_if>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu"/>
+					</actions>
+				</cue>
+				<cue name="Execute_DynamicSlider" instantiate="true">
+					<conditions>
+						<event_cue_signalled/>
+					</conditions>
+					<actions>
+						<do_if value="event.param.$echo?">
+							<do_if value="global.$DATweaks.{event.param.$echo.{1}}.{event.param.$echo.{2}}?">
+								<set_value name="global.$DATweaks.{event.param.$echo.{1}}.{event.param.$echo.{2}}" exact="event.param.$value"/>
+								<debug_text text="'MOD: KUDA DAT -- Updated global.$DATweaks.%s.%s from %s to %s'.[event.param.$echo.{1},event.param.$echo.{2},event.param.$echo.{3},global.$DATweaks.{event.param.$echo.{1}}.{event.param.$echo.{2}}]" context="false" filter="scripts"/>
+							</do_if>
+							<do_else>
+								<debug_text text="'MOD: KUDA DAT -- ERROR -- could not find global.$DATweaks.%s.%s'.[event.param.$echo.{1},event.param.$echo.{2}]" context="false" filter="error"/>
+							</do_else>
+						</do_if>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu"/>
+					</actions>
+				</cue>
+				<cue name="Execute_ChangeAllOptions" instantiate="true">
+					<conditions>
+						<event_cue_signalled/>
+					</conditions>
+					<actions>
+						<do_if value="event.param.$echo?">
+							<do_if value="((typeof event.param.$echo.{1}) == datatype.integer) and ((event.param.$echo.{1} == 1) or (event.param.$echo.{1} == 0))">
+								<set_value name="$LocBool" exact="event.param.$echo.{1}"/>
+							</do_if>
+							<do_if value="global.$DATweaks? and global.$DATweaks.keys.count">
+								<set_value name="$KeyList" exact="global.$DATweaks.keys.list"/>
+								<do_for_each name="$Key" in="$KeyList">
+									<do_if value="global.$DATweaks.{$Key}?">
+										<do_if value="(typeof global.$DATweaks.{$Key}) == datatype.table">
+											<set_value name="$EmbeddedKeyList" exact="global.$DATweaks.{$Key}.keys.list"/>
+											<do_for_each name="$EmbeddedKey" in="$EmbeddedKeyList">
+												<do_if value="global.$DATweaks.{$Key}.{$EmbeddedKey}?">
+													<do_if value="((typeof global.$DATweaks.{$Key}.{$EmbeddedKey}) == datatype.integer) and ((global.$DATweaks.{$Key}.{$EmbeddedKey} == 1) or (global.$DATweaks.{$Key}.{$EmbeddedKey} == 0))">
+														<do_if value="global.$DATweaks.{$Key}.{$EmbeddedKey} != $LocBool">
+															<set_value name="global.$DATweaks.{$Key}.{$EmbeddedKey}" exact="$LocBool"/>
+															<debug_text text="'MOD: KUDA DAT -- Updated global.$DATweaks.%s.%s to %s'.[$Key,$EmbeddedKey,global.$DATweaks.{$Key}.{$EmbeddedKey}]" context="false" filter="scripts"/>
+														</do_if>
+													</do_if>
+													<do_elseif value="(typeof global.$DATweaks.{$Key}.{$EmbeddedKey}) == datatype.integer">
+														<!-- Some interger types that will not change -->
+													</do_elseif>
+													<do_else>
+														<debug_text text="'MOD: KUDA DAT -- ERROR -- unexpected datatype in global.$DATweaks.%s.%s -- Data: %s'.[$Key,$EmbeddedKey,@global.$DATweaks.{$Key}.{$EmbeddedKey}]" context="false" filter="error"/>
+													</do_else>
+												</do_if>
+											</do_for_each>
+											<remove_value name="$EmbeddedKeyList"/>
+										</do_if>
+										<do_elseif value="((typeof global.$DATweaks.{$Key}) == datatype.integer) and ((global.$DATweaks.{$Key} == 1) or (global.$DATweaks.{$Key} == 0))">
+											<do_if value="global.$DATweaks.{$Key} != $LocBool">
+												<set_value name="global.$DATweaks.{$Key}" exact="$LocBool"/>
+												<debug_text text="'MOD: KUDA DAT -- Updated global.$DATweaks.%s to %s'.[$Key,global.$DATweaks.{$Key}]" context="false" filter="scripts"/>
+											</do_if>
+										</do_elseif>
+										<do_elseif value="(typeof global.$DATweaks.{$Key}) == datatype.integer">
+											<!-- Some interger types that will not change -->
+										</do_elseif>
+										<do_else>
+											<debug_text text="'MOD: KUDA DAT -- ERROR -- unexpected datatype in global.$DATweaks.%s -- Data: %s'.[$Key,@global.$DATweaks.{$Key}]" context="false" filter="error"/>
+										</do_else>
+									</do_if>
+								</do_for_each>
+								<remove_value name="$KeyList"/>
+							</do_if>
+							<remove_value name="$LocBool"/>
+						</do_if>
+						<signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu"/>
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+	</cues>
+</mdscript>

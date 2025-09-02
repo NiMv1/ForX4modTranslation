@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <add sel="/index">
+	<!--SHIPS-->
+	<entry name="ship_pirate_xl_galleon" value="extensions\re_expansion_pirate\assets\units\size_xl\ship_pirate_xl_galleon"/>	
+	<entry name="ship_pirate_s_blastclaw" value="extensions\re_expansion_pirate\assets\units\size_s\ship_pirate_s_blastclaw"/>	
+	<entry name="ship_pirate_l_brigantine" value="extensions\re_expansion_pirate\assets\units\size_l\ship_pirate_l_brigantine"/>	
+	<entry name="ship_pirate_m_marauder" value="extensions\re_expansion_pirate\assets\units\size_m\ship_pirate_m_marauder"/>
+	<entry name="ship_pirate_m_vulture_raider" value="extensions\re_expansion_pirate\assets\units\size_m\ship_pirate_m_vulture_raider"/>
+	<entry name="ship_pirate_m_osprey_raider" value="extensions\re_expansion_pirate\assets\units\size_m\ship_pirate_m_osprey_raider"/>	
+	<!--iSHIELDS-->	
+	<entry name="ishield_pirate_xl_galleon" value="extensions\re_expansion_pirate\assets\props\surfaceelements\ishield_pirate_xl_galleon"/>	
+	<entry name="ishield_pirate_s_blastclaw" value="extensions\re_expansion_pirate\assets\props\surfaceelements\ishield_pirate_s_blastclaw"/>		
+	<entry name="ishield_pirate_l_brigantine" value="extensions\re_expansion_pirate\assets\props\surfaceelements\ishield_pirate_l_brigantine"/>	
+	<entry name="ishield_pirate_m_marauder" value="extensions\re_expansion_pirate\assets\props\surfaceelements\ishield_pirate_m_marauder"/>		
+	<!--TURRETS/WEAPONS-->
+	<entry name="turret_pirate_l_ibl" value="extensions\re_expansion_pirate\assets\props\weaponsystems\heavy\turret_pirate_l_ibl" />
+	<entry name="weapon_pirate_s_ibm" value="extensions\re_expansion_pirate\assets\props\weaponsystems\heavy\weapon_pirate_s_ibm" />	
+	<!--MISC.ITEMS-->
+	<entry name="bullet_pirate_turret_l_ibl" value="extensions\re_expansion_pirate\assets\fx\weaponfx\bullet_pirate_turret_l_ibl"/>		
+	<entry name="impact_pirate_turret_l_ibl" value="extensions\re_expansion_pirate\assets\fx\weaponfx\impact_pirate_turret_l_ibl"/>
+	<entry name="muzzle_pirate_turret_l_ibl" value="extensions\re_expansion_pirate\assets\fx\weaponfx\muzzle_pirate_turret_l_ibl"/>	
+	<entry name="bullet_pirate_s_ibm" value="extensions\re_expansion_pirate\assets\fx\weaponfx\bullet_pirate_s_ibm"/>		
+	<entry name="impact_pirate_s_ibm" value="extensions\re_expansion_pirate\assets\fx\weaponfx\impact_pirate_s_ibm"/>
+	<entry name="muzzle_pirate_s_ibm" value="extensions\re_expansion_pirate\assets\fx\weaponfx\muzzle_pirate_s_ibm"/>	
+	<!--DOCKAREAS-->	
+	<entry name="dockarea_pirate_s_galleon" value="extensions\re_expansion_pirate\assets\structures\dock\dockarea_pirate_s_galleon"/>	
+  </add>
+</diff>

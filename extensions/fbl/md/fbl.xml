@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<mdscript name="fbl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+<cues>
+<cue name="fbl_cue" instantiate="true" checkinterval="10s" namespace="this">
+	<conditions>
+		<check_value value="player.ship.exists"/>
+		<check_value value="not player.zone.isclass.highway"/>
+		<check_value value="player.activity != activity.scan"/>
+	</conditions>
+	<actions>
+		<do_if value="player.ship.isclass.[class.ship_xs]">
+			<set_value name="$range" exact="2500"/>
+		</do_if>
+		<do_elseif value="player.ship.isclass.[class.ship_s]">
+			<set_value name="$range" exact="4500"/>
+		</do_elseif>
+		<do_elseif value="player.ship.isclass.[class.ship_m]">
+			<set_value name="$range" exact="6500"/>
+		</do_elseif>
+		<do_elseif value="player.ship.isclass.[class.ship_l]">
+			<set_value name="$range" exact="8500"/>
+		</do_elseif>
+		<do_else>
+			<set_value name="$range" exact="10500"/>
+		</do_else>
+
+		<create_list name="$drops"/>
+		<find_object name="$drops" space="player.sector" class="class.collectable" multiple="true">
+			<match_distance object="player.ship" max="$range"/>
+		</find_object>
+
+		<do_all exact="$drops.count" counter="$di">
+			<set_value name="$drop" exact="$drops.{$di}"/>
+
+			<do_if value="$drop.isclass.collectableammo">
+				<do_if value="$drop.ammo.macro.isclass.missile and player.ship.ammostorage.missile.free">
+					<collect_drop object="player.ship" drop="$drop"/>
+				</do_if>
+			</do_if>
+			<do_elseif value="@$drop.money and $drop.money gt 0">
+				<collect_drop object="player.ship" drop="$drop"/>
+			</do_elseif>
+			<do_else>
+				<set_value name="$allow" exact="true"/>
+				<set_value name="$wares" exact="$drop.wares.list"/>
+				<do_all exact="$wares.count" counter="$wi">
+					<do_if value="$wares.{$wi}.isammo">
+						<do_if value="$wares.{$wi}.isdeployable">
+							<set_value name="$allow" exact="false"/>
+						</do_if>
+						<do_elseif value="$wares.{$wi}.objectmacro.isclass.countermeasure and not player.ship.ammostorage.countermeasure.free">
+							<set_value name="$allow" exact="false"/>
+						</do_elseif>
+						<do_elseif value="not player.ship.ammostorage.{$wares.{$wi}}.free">
+							<set_value name="$allow" exact="false"/>
+						</do_elseif>
+					</do_if>
+					<do_elseif value="not $wares.{$wi}.isinventory">
+						<set_value name="$allow" exact="false"/>
+					</do_elseif>
+				</do_all>
+				<do_if value="$allow and ($wares.count gt 0)">
+					<collect_drop object="player.ship" drop="$drop"/>
+				</do_if>
+			</do_else>
+		</do_all>
+	</actions>
+</cue>
+</cues>
+</mdscript>

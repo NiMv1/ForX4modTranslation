@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+  <page id="314151" voice="no">
+    <t id="1">Lockbox</t>
+    <t id="2">The locks on a nearby crate were opened and its content was spawned.</t>
+    <t id="3">Opening a lockbox.</t>
+  </page>
+</language>

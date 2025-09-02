@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<add sel="//params">
+		<param name="dontexplore" type="bool" default="false" text="{867530966, 101}" comment="Don't wait at end of this order"/>
+	</add>
+
+	<add sel="//run_script[@name=&quot;'order.move.recon'&quot;]" type="@chance">(not $dontexplore) * 100</add>
+
+</diff>

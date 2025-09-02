@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="Sladernimo_SphericalLongRangeScan" name="SphericalLongRangeScan" date="2018-12-12" version="100" save="false" enabled="true">
+  <dependency id="increased_longrange_scan" optional="true" />
+  <text language="07" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+  <text language="33" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+  <text language="34" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+  <text language="39" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+  <text language="44" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+  <text language="49" name="Kugelförmiger Langstreckenscan" description="Diese Mod ersetzt den gerichteten Langstreckenscan mit einer kugelförmigen Variante." author="Sladernimo" />
+  <text language="55" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+  <text language="81" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+  <text language="82" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+  <text language="86" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+  <text language="88" name="Spherical Long Range Scan" description="This mod replaces the directional long range scan with a spherical scan." author="Sladernimo" />
+</content>

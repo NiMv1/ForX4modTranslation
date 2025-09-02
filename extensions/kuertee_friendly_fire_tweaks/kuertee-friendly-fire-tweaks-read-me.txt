@@ -1,0 +1,115 @@
+Friendly fire tweaks
+https://www.nexusmods.com/x4foundations/mods/708
+by kuertee
+
+Updates
+=======
+v7.5.01, 21 Feb 2025:
+-Bug-fixes: 7.5 compatibility updates.
+-Tweak: NPCs won't complain about player's friendly fire that they ignore.
+-Bug-fix: NPCs were still not obeying rules for friendly fire from player-owned NPCs.
+-Tweak: Expanded rules to NPC-owned capital and medium-sized ships. Previously, these ships ignored the rules except when friendly fire was from the player, but not from player-owned NPC ships. In this version, L, XL, M ships now obey the rules on friendly fire from player-owned NPC ships.
+
+Mod effects
+===========
+Friendly fire penalties on these conditions:
+(1) the victim is targeted,
+(2) their shields are less than 25%,
+(3) the damage is from your main gun(s).
+
+Toggle any of these in the Extensions Options.
+
+All three conditions work on player-attacks.
+Conditions (1) and (2) work on player-owned NPC attacks.
+
+Debugging
+=========
+In case you think the mod was preventing your enemies from responding:
+(1) Open the chat window with the left-single-quote (`) key. That's the key above the Tab key.
+(2) Enable the mod-specific Debug Log in the mod's the Extension Options.
+(3) Target and attack a friendly with your main guns.
+(4) "kFFT: attack detected." will appear in the chat window. This means that your target has detected your attack.
+(5) "kFFT: attack acknowledged." means that your target has acknowledged your attack and will respond to it.
+(6) How their AI responds (whether to ignore it or attack you) is out of the scope of this mod. Remember that the scope of this mod is to limit which of your attacks are sent to the AI for them to evaluate. I.e.: These two notifications will not be listed if you fire on an untargeted friendly - which means that they will ignore your attack.
+
+Install
+=======
+-Unzip to 'X4 Foundations/extensions/kuertee_friendly_fire_tweaks/'.
+-Make sure the sub-folders and files are in 'X4 Foundations/extensions/kuertee_friendly_fire_tweaks/' and not in 'X4 Foundations/extensions/kuertee_friendly_fire_tweaks/kuertee_friendly_fire_tweaks/'.
+
+Uninstall
+=========
+-Delete the mod folder.
+
+Troubleshooting
+===============
+(1) Do not change the file structure of the mod. If you do, you'll need to troubleshoot problems you encounter yourself.
+(2) Allow the game to log events to a text file by adding "-debug all -logfile debug.log" to its launch parameters.
+(3) Enable the mod-specific Debug Log in the mod's Extension Options.
+(4) Play for long enough for the mod to log its events.
+(5) Send me (at kuertee@gmail.com) the log found in My Documents\Egosoft\X4\(your player-specific number)\debug.log.
+
+Credits
+=======
+By kuertee.
+Chinese localisation by Tiomer.
+French localisation by Calvitix.
+German localisation by LeLeon.
+
+History
+=======
+v7.1.13, 02 Nov 2024:
+-Bug-fix: Stations were not ignoring the player's friendly fire.
+
+v7.1.10, 17 Oct 2024:
+-Bug-fix: The previous version only worked on player attacks. All player-owned NPC ignored the rules selected in the Extension Options.
+-Tweak: Recoded all tests (for both player attack and played-owned NPC attacks) that is more-optimised. (I've learnt soo much more since the 6.2 version of the base game. :D)
+
+v7.0.02, 29 Jun 2024:
+-Tweak: 7.00 hf 1 compatibility. Disabled in Timelines scenarios.
+-Localisation: Russian localisation by Leonkillerua
+
+v6.2.011, 18 Feb 2024:
+-Tweak: When in a battle area, friendly NPCs skip the shield test (i.e. less than 25%) in determining on whether to respond to friendly fire from your NPCs. i.e. In battles, friendly NPCs will not respond to friendly fire unless they are actually targeted by your NPCs. Note that this doesn't apply to player's attacks on NPCs. Player's attacks are tested as normal.
+-Tweak: Prevented player-owned ships getting aggressive on friendly fire hits. From this version on, all NPCs ship do not react to friendly fire. Previously, only NPC-owned ships didn't aggro, while player-owned ships did - which can still lead to escalating aggro that is difficult to stop.
+
+v6.2.007, 4 Dec 2023:
+-Bug-fix: NPCs were still aggressively reacting to player-owned NPC friendly fire.
+
+v6.0.002, 13 Apr 2023:
+-Tweak: Version number update for consistency with my other mods. No internal changes since the last version.
+
+v5.1.0314, 06 Dec 2022:
+-Bug-fix: Attacks on laser towers now follow the same rules as attacks on ships and stations.
+
+v5.1.0303, 1 Sep 2022:
+-Bug-fix: The friendly fire tweaks for stations added in the last update (v5.1.0009, 23 May 2022) broke the mod.
+
+v5.1.0009, 23 May 2022:
+-Bug-fix: Stations were not ignoring friendly fire. Bug introduced in 5.0.0013, 30 Mar 2022.
+-New feature: Friendly AIs will use "Victim is targeted" and the "Victim's shields are 25% or less" on player-owned NPC ships. I.e. Friendly AIs will only respond to your NPC's friendly fire against them if your NPCs have an attack order against them or if their shields are less than 25%. I discovered how this could be done on my work on my other mod, Attack AI Tweaks .
+-Tweak: The debugging tool will show its result in the chat window. There's no need to enable the game to export debug logs. Simply open the chat window to test player-friendly-fire results. Read more in the section Debugging below.
+
+v5.1.0001-beta-01, 15 Apr 2022:
+-New feature: Friendly AIs will use "Victim is targeted" and the "Victim's shields are 25% or less" on player-owned NPC ships. I.e. Friendly AIs will only respond to your NPC's friendly fire against them if your NPCs have an attack order against them or if their shields are less than 25%. I discovered how this could be done on my work on my other mod, Attack AI Tweaks .
+-Tweak: The debugging tool will show its result in the chat window. There's no need to enable the game to export debug logs. Simply open the chat window to test player-friendly-fire results. Read more in the section Debugging below.
+
+v5.0.0013, 30 Mar 2022:
+-Potential bug-fix: Just in case the previous query on what you have targeted fails, I changed it to another method. But code-wise, they produce the same result.
+-New feature: A debugging tool to check if the mod works or not. Read the Debugging section below.
+
+For both v4.0 and v4.1beta1 of the game.
+This version may or may not work in other v4.1betaX versions.
+v1.0.3, 19 Jun 2021:
+-Bug-fix: Targeting/attacking a surface element of an object wasn't triggering the friendly fire response.
+
+For v4.0 and v4.1beta1 of the game:
+v1.0.2, 15 Jun 2021:
+-Bug-fix: The game has a bug that executes the change target event with a null target when the mission pings WITHOUT removing the actual lock on the target. This bug prevents this mod's targeted vicitim condition from working when your target is also the mission target. This update works around this quirk by ignoring the null target specified in the change target event and querying the game's internal code for the target.
+
+v1.0.1, 29 May 2021:
+-Bug-fix: The targeted victim condition was broken. Previously, when enabled, which was by default, attacks on targeted friendlies would always be ignored.
+-Tweak: Low shields condition is now off by default. Note that this only affects when the mod is newly installed. Those who are updating the mod can disable this in the Extensions Options.
+
+v1.0.0, 11 May 2020:
+-Initial release.

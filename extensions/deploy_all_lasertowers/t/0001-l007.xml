@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- russian -->
+<language>
+    <!-- "Deploy All Military Consumables" = "DAMC" = "4 1 13 3 " = "41133 " in  https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+    <page id="41133" voice="no">
+        <t id="1">Развернуть все военные расходники</t>
+        <!-- config -->
+        <t id="2">Отладка</t>
+        <t id="3">Выполнить функцию отладки</t>
+        <!-- orders -->
+        <t id="2000">Развернуть все лазерные турели Mk1</t>
+        <t id="2001">Развернуть все лазерные турели Mk2</t>
+        <!-- Description -->
+        <t id="3000">Развернуть все лазерные турели Mk1</t>
+        <t id="3001">Развернуть все лазерные турели Mk2</t>
+    </page>
+</language>

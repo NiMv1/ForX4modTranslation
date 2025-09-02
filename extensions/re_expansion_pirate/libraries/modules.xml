@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../libraries/libraries.xsd">
+  <add sel="//modules">
+	<module id="prod_sca_spacefuel" group="prod_arg_spacefuel">
+	  <category ware="spacefuel" tags="[production, module]" race="argon" faction="scaleplate"/>
+	  <compatibilities>
+		<limits production="3"/>
+		<production ware="spacefuel" chance="100"/>
+	  </compatibilities>
+	</module>	
+  </add>
+</diff>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+	<!-- remove
+	purpose: allow more than one active mission thread
+	<cue name="Thread_Accepted" instantiate="true">
+		<do_all exact="$Threads.count" counter="$i" reverse="true">
+	-->
+	<remove sel="//cue[@name=&quot;Thread_Accepted&quot;]//do_all[@exact=&quot;$Threads.count&quot;]" />
+</diff>

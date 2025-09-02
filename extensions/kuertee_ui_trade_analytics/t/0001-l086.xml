@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- chinese -->
+<language id="86">
+	<!-- "kuertee trade analytics" = "kta" = "11 20 1" = "11201" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="11201" voice="no">
+		<t id="1">kuertee: UI: 贸易分析</t>
+		<t id="2">调试日志</t>
+		<t id="3">删除已销毁交易商的数据</t>
+		<t id="7">器简介：</t>
+		<t id="8">空间站模式</t>
+		<t id="9">通过点击其中的一个模式来设置这个空间站的行为。将根据模式来设置空间站的购销价格、生产和贸易产品的贸易限制。</t>
+		<t id="10">工厂。</t>
+		<t id="11">购买价格：%s。销售价格：%s。工厂出售给我们的分销中心、供应仓库和工厂直销店。</t>
+		<t id="12">购买：%s, %s。 卖：%s，%s。</t>
+		<t id="13">设置工厂预设。</t>
+		<t id="20">分销中心</t>
+		<t id="21">购买价格：%s。销售价格：%s。分销中心从我们的工厂购买。分销中心向我们的供应仓库、我们的工厂出口、我们的贸易站、我们的车站项目和我们的建筑项目出售。</t>
+		<t id="23">设置分配中心预设</t>
+		<t id="30">供应仓库</t>
+		<t id="31">购买价格：%s。销售价格：%s。供应仓库从我们的工厂，和我们的分销中心购买。供应仓库出售给我们的车站项目，以及我们的建筑项目。</t>
+		<t id="33">设置供应仓库的预设值。</t>
+		<t id="40">工厂出口。</t>
+		<t id="41">购买价格：%s。销售价格：%s。工厂直销店从我们的工厂和我们的分销中心购买。工厂直销店向所有派别、我们的车站项目和我们的建筑项目出售。</t>
+		<t id="43">设置工厂直销预设</t>
+		<t id="50">交易站</t>
+		<t id="51">购买价格：%s。销售价格：%s。贸易站从所有人那里购买，并向所有人出售。</t>
+		<t id="53">设置交易站预设。</t>
+		<t id="54">禁用</t>
+		<t id="55">汽车</t>
+		<t id="56">无限制</t>
+		<t id="57">受限</t>
+		<!-- ui -->
+		<t id="101">贸易分析</t>
+		<!-- categories -->
+		<t id="1001">采矿</t>
+		<t id="1002">购买</t>
+		<t id="1003">销售</t>
+		<t id="1004">从其他势力</t>
+		<t id="1005">从我的势力</t>
+		<t id="1006">从所有势力</t>
+		<t id="1007">到其他势力</t>
+		<t id="1008">到我的势力</t>
+		<t id="1009">到所有势力</t>
+		<t id="1010">筛选:</t>
+		<t id="1011">销售和购买</t>
+		<t id="1012">销售、购买和挖矿</t>
+		<t id="1013">到/从其他派系</t>
+		<t id="1014">到/从自己的阵营</t>
+		<t id="1015">到/从任何派系</t>
+		<t id="1016">来自 %s(派别)</t>
+		<t id="1017">致%s(派别)</t>
+		<t id="1018">收件人/收件人 %s(faction)</t>
+		<t id="1019">修复</t>
+		<t id="1020">活动</t>
+		<t id="1021">活动： %s(actions shown)</t>
+		<!-- modes -->
+		<t id="2001">按总计</t>
+		<t id="2002">按商品</t>
+		<t id="2003">按贸易飞船</t>
+		<t id="2004">交易对象：</t>
+		<t id="2005">经过 %s(ware name)</t>
+		<!-- columns -->
+		<t id="3001">贸易伙伴</t>
+		<t id="3002">从 %s(sector name) 计算距离</t>
+		<t id="3003">次数</t>
+		<t id="3004">交易总数量</t>
+		<t id="3005">交易总金额</t>
+		<t id="3006">单次数量</t>
+		<t id="3007">单次金额</t>
+		<t id="3008">产品</t>
+		<t id="3009">星区</t>
+		<t id="3010">飞船</t>
+		<t id="3011">总计</t>
+		<!-- by time segment -->
+		<t id="4001">未按时间分组</t>
+		<t id="4002">按小时分组</t>
+		<t id="4003">一小时前</t>
+		<t id="4004">从 $FROM$:00 到 $TO$:59 小时前。</t>
+		<t id="4005">小时总数</t>
+		<!-- misc -->
+		<t id="10001">%s(gate distance) \(%s(sector)\)</t>
+		<t id="10002">已不存在</t>
+		<t id="10003">加载贸易分析 ...</t>
+		<t id="10004">此类别没有交易.</t>
+		<t id="10005">目前还没有针对该交易员的分析 (yet).</t>
+		<t id="10006">(ship trader with no station assignment)自有交易员</t>
+		<t id="10007">(no data recorded)未知</t>
+		<t id="10008">%s(ware or ship name) \(已交付: %s(count)\)</t>
+		<!-- misc unitraders advanced renaming shortcuts -->
+		<t id="20001">(not used)</t>
+		<t id="20002">(not used)</t>
+		<t id="20003">(not used)</t>
+		<t id="20004">(not used)</t>
+		<t id="20005">(not used)</t>
+		<t id="20006">(not used)</t>
+		<t id="20101">(profile name - full)$kTAP</t>
+		<t id="20102">(profile name - acronym)$kTAp</t>
+		<t id="20103">GC</t>
+		<t id="20104">FXZX</t>
+		<t id="20105">GYCK</t>
+		<t id="20106">GCCK</t>
+		<t id="20107">JYZ</t>
+		<!-- mschf's Finance Hub: Transfers -->
+		<t id="30001">在一个日志条目中列出所有转账{1001,120}(colon)</t>
+		<t id="30140">玩家呼叫 $COUNT$ 个站{1001,120}(colon) $AMOUNT$</t>
+		<t id="30190">玩家到 $COUNT$ x 建造{1001,120}(colon) $AMOUNT$</t>
+		<t id="301010">玩家呼叫 $COUNT$ 个站台{1001,120}(colon) $AMOUNT$</t>
+		<t id="301020">从 $COUNT$ x 驿站到 $COUNT$ x 建筑{1001,120}(colon) $AMOUNT$</t>
+		<t id="301030">从 $COUNT$ x 建造到玩家{1001,120}(colon) $AMOUNT$</t>
+		<t id="301040">从 $COUNT$ x 建造到 $COUNT$ x 车站{1001,120}(colon) $AMOUNT$</t>
+	</page>
+</language>

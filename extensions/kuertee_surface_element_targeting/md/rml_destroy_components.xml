@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+<!-- add. purpose: guidance enable/disable
+	<library name="DestroyComponents" version="6">
+		<cues>
+-->
+	<add sel="//library[@name=&quot;DestroyComponents&quot;]/cues">
+		<cue name="GuidanceDisabledEnabled" instantiate="true">
+			<conditions>
+				<check_any>
+					<event_guidance_disabled cue="$MissionCue" />
+					<event_guidance_enabled cue="$MissionCue" />
+				</check_any>
+			</conditions>
+			<actions>
+				<debug_text text="'kuertee_set: event.name: ' + event.name" chance="md.kuertee_surface_element_targeting.UserSettings.$debugChance" />
+				<do_if value="event.name == 'event_guidance_disabled'">
+					<debug_text text="'kuertee_set: from surfaceElements: ' + event.name" chance="md.kuertee_surface_element_targeting.UserSettings.$debugChance" />
+					<!-- <set_value name="md.kuertee_surface_element_targeting.TargetDefensible.$se_group" exact="md.kuertee_surface_element_targeting.TargetDefensible.$surfaceElements" /> -->
+					<set_value name="md.kuertee_surface_element_targeting.kSET.$mission_active" exact="null" />
+					<reset_cue cue="md.kuertee_surface_element_targeting.DestroyListener_20220905" />
+					<cancel_cue cue="this" />
+				</do_if>
+			</actions>
+			<cues>
+				<cue name="GuidanceDisabledEnabled_Enabled" checktime="player.age + 1s">
+					<actions>
+						<debug_text text="'kuertee_set: from rmlTargets'" chance="md.kuertee_surface_element_targeting.UserSettings.$debugChance" />
+						<!-- <set_value name="md.kuertee_surface_element_targeting.TargetDefensible.$se_group" exact="$Targets" /> -->
+						<set_value name="md.kuertee_surface_element_targeting.kSET.$mission_active" exact="$MissionCue" />
+						<set_value name="md.kuertee_surface_element_targeting.kSET.$rmlTargets" exact="$Targets" />
+						<reset_cue cue="md.kuertee_surface_element_targeting.DestroyListener_20220905" />
+						<do_if value="@md.kuertee_surface_element_targeting.TargetDefensible.$se_group">
+							<run_actions ref="md.kuertee_surface_element_targeting.TargetNextSE">
+								<param name="Group" value="md.kuertee_surface_element_targeting.TargetDefensible.$se_group" />
+							</run_actions>
+						</do_if>
+						<cancel_cue cue="parent" />
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+	</add>
+<!-- add: purpose to set the var in kSET
+	<cue name="ChooseTarget" instantiate="true">
+		<do_if value="$Targets.count ge ($EndObjectAmount + 1) or $TriggerEndCue">
+-->
+	<add sel="//cue[@name=&quot;ChooseTarget&quot;]//do_if[@value=&quot;$Targets.count ge ($EndObjectAmount + 1) or $TriggerEndCue&quot;]">
+		<set_value name="md.kuertee_surface_element_targeting.kSET.$rmlTargets" exact="$Targets" />
+	</add>
+<!-- add: clean-up
+	<cue name="Cleanup">
+		<actions>
+-->
+	<add sel="//cue[@name=&quot;Cleanup&quot;]/actions">
+		<remove_value name="md.kuertee_surface_element_targeting.kSET.$rmlTargets" />
+	</add>
+</diff>

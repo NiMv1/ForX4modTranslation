@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language id="44">
+
+<page id="1134010" title="netUpb's Replacement Fleets Mod Text" descr="Text for the missions created by netUpb" voice="no">
+
+   <t id="1">{1134010, 1000} {1134010, 1030} {1134010, 1040} {1134010, 1051}</t>
+   <t id="2">{1134010, 1030} {1134010, 1040}</t>
+   <t id="500">(Fleet Tag){1134010, 1010}M</t>
+
+   <t id="1000">Upb</t>
+   <t id="1010">(Fleet Tag)RF</t>
+   <t id="1011">Key</t>
+   <t id="1020">Enable</t>
+   <t id="1021">Disable</t>
+   <t id="1022">Restart</t>
+   <t id="1023">Rebuild</t>
+   <t id="1024">Build</t>
+   <t id="1030">{1134010, 1031} {1134010, 1032}</t>
+   <t id="1031">Lost Ship</t>
+   <t id="1032">Replacement</t>
+   <t id="1040">Fleet</t>
+   <t id="1041">Fleets</t>
+   <t id="1050">Management</t>
+   <t id="1051">Manager</t>
+   <t id="1055">Fleets &amp; Stations</t>
+   <t id="1060">Options</t>
+   <t id="1070">Back</t>
+   <t id="1071">Previous</t>
+   <t id="1072">Next</t>
+   <t id="1073">Confirm</t>
+   <t id="1074">Cancel</t>
+   <t id="1080">From</t>
+   <t id="1090">More</t>
+   <t id="1100">0</t>
+   <t id="1101">1</t>
+   <t id="1102">2</t>
+   <t id="1103">3</t>
+   <t id="1104">4</t>
+   <t id="1105">5</t>
+   <t id="1106">6</t>
+   <t id="1107">7</t>
+   <t id="1108">8</t>
+   <t id="1109">9</t>
+
+   <t id="1160">Recorded Information</t>
+   <t id="1170">Class</t>
+   <t id="1180">Chassis</t>
+   <t id="1190">Faction</t>
+   <t id="1200">Stations</t>
+   <t id="1201">Station</t>
+   <t id="1202">Building Container</t>
+   <t id="1210">Sector</t>
+   <t id="1211">Location</t>
+   <t id="1220">Unknown</t>
+   <t id="1230">Equipments</t>
+   <t id="1240">Crew</t>
+   <t id="1250">Helper</t>
+   <t id="1260">Attention!</t>
+   <t id="1270">None</t>
+   <t id="1280">Record</t>
+
+   <t id="1300">Installed</t>
+   <t id="1301">Not Installed</t>
+   <t id="1310">Updated</t>
+   <t id="1320">Reset</t>
+   <t id="1330">Complete</t>
+
+   <t id="1340">ON</t>
+   <t id="1341">OFF</t>
+   <t id="1345">OK</t>
+
+   <t id="1400">Globals Is Setting to Defaults</t>
+
+   <!-- Conversation Menu Texts-->
+   <t id="1500">Upb Lost Ship Replacement</t>
+   <t id="1510">Enable Lost Ship Replacement</t>
+   <t id="1520">Enable Clone From {1134010, 500}</t>
+   <t id="1521">Enable Clone From NPC</t>
+
+   <t id="1530">Produce for Lost Ships</t>
+   <t id="1540">Production signal sent..</t>
+
+   <t id="1550">Restart All Fleets</t>
+   <t id="1560">Disable All Fleets</t>
+
+   <!-- Options Screen Texts-->
+
+   <t id="3000">Weapons</t>
+   <t id="3001">Turrets</t>
+   <t id="3002">Drones</t>
+   <t id="3003">Subordinate Groups</t>
+   <t id="3004">Shields</t>
+   <t id="3005">Shield Groups</t>
+   <t id="3006">Engines</t>
+   <t id="3007">Engine Groups</t>
+
+   <t id="3100">Pilot</t>
+   <t id="3101">Crew</t>
+   <t id="3102">Level</t>
+
+   <t id="5000">Restore Default Settings</t>
+   <t id="5001">Show Blacklist Yards</t>
+   <t id="5002">Show stations list.</t>
+   <t id="5003">Show Enemy or Hostile</t>
+   <t id="5004">Show stations with restricted docking permission in the list.</t>
+   <t id="5005">Show Unknown</t>
+   <t id="5006">Show unknown stations in list.</t>
+   <t id="5007">Marked stations will be ignored for ship production.</t>
+   <t id="5008">Production Stations</t>
+   <t id="5009">Player Yards</t>
+   <t id="5010">Player shipyards will be checked first for the production of destroyed ships.</t>
+   <t id="5011">NPC Yards</t>
+   <t id="5012">NPC shipyards will be included for the production of destroyed ships.</t>
+   <t id="5013">Valid Updates for Ship Loadout Records</t>
+   <t id="5014">It updates the ship's changing 'equipments record' during equipment change or repair at a supply player station.</t>
+   <t id="5015">It updates the ship's changing 'equipments record' during equipment change or repair at a supply npc station.</t>
+   <t id="5016">It updates the ship's changing 'peoples record' during equipment change or repair at a supply player station.</t>
+   <t id="5017">It updates the ship's changing 'peoples record' during equipment change or repair at a supply npc station.</t>
+   <t id="5018">Show Help</t>
+   <t id="5019">Reports the destroy information of {1134010, 500} ships on the Show Help popup window.</t>
+   <t id="5020">Write to logbook</t>
+   <t id="5021">{1134010, 500}'s exploding ships and production result reports will be written in the logbook.</t>
+   <t id="5022">Auto Rebuilds</t>
+   <t id="5023">Retry Time</t>
+   <t id="5024">How long will it take for ships that failed to be produced to be attempted again automatically?</t>
+   <t id="5025">Fleet Cloning</t>
+   <t id="5026">Start Build After Cloning</t>
+   <t id="5027">If approved, the production process of the new {1134010, 500} will automatically start after the {1134010, 500} cloning is done.</t>
+   <t id="5028"></t>
+   <t id="5029">It creates the same %s ranks as in the {1134010, 500} record of the produced ship. If not selected, random low-level %s will be created.</t>
+   <t id="5030">Monetary Restrictions</t>
+   <t id="5031">Player Money Threshold</t>
+   <t id="5032">Never rebuild ships which reduces player money below this amount.</t>
+   <t id="5033">Max Allowed Ship Price</t>
+   <t id="5034">Maximum price allowed for ship production. If the value requested for the ship's production fee at NPC stations exceeds this value, the ship will not be produced. To deactivate, set the value to 0.</t>
+   <t id="5035">If the game is opened in Debug Mode and the options here are activated;</t>
+   <t id="5036">Depending on the number of RFMs and the size of the Fleets, the screen may freeze until the logs are written to file.</t>
+   <t id="5037">Debugs</t>
+   <t id="5038">Debug Chance</t>
+   <t id="5039">Debug Mod. It is only effective when running the game with debug mod support.</t>
+   <t id="5040">Deep Debug</t>
+   <t id="5041">Deep Debug Mod.</t>
+   <t id="5042">Changes On Fleet Debug</t>
+   <t id="5043">It displays the changes on the fleet \(addition, removal, assigment change, explosion, undock, etc.\) in the debug text file. DebugChance must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5044">Fleet Lock Status</t>
+   <t id="5045">It displays the changes on the fleet lock status  in the debug text file. DebugChance must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5046">Debug Files</t>
+   <t id="5047">Debug File Mode</t>
+   <t id="5048">Enable debug files mode. It is only effective when running the game with debug mod support.</t>
+   <t id="5049">All Commands</t>
+   <t id="5050">Detailed dump in '_RestockMain' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5051">All RebuildCues</t>
+   <t id="5052">Detailed dump in '_RebuildCues' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5053">Fleets</t>
+   <t id="5054">Detailed dump in 'RFM_Fleets' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5055">Records</t>
+   <t id="5056">Detailed dump in 'RFM_xx_FleetRecord' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5057">Loadout Plans</t>
+   <t id="5058">Detailed dump in 'RFM_xx_FleetRecord _tShipPlan' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5059">Individual Instructions</t>
+   <t id="5060">Detailed dump in 'RFM_xx_FleetRecord _tIndividualInstructions' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5061">Personels</t>
+   <t id="5062">Detailed dump in 'RFM_xx_FleetRecord _tBulkCrew' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5063">Command</t>
+   <t id="5064">Detailed dump in 'RFM_xx_Command' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5065">reBuildCue</t>
+   <t id="5066">Detailed dump in 'RFM_xx_RebuildCues' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5067">reBuild</t>
+   <t id="5068">Detailed dump in 'RFM_xx_reBuild' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5069">reAssignment</t>
+   <t id="5070">Detailed dump in 'RFM_xx_reAssignment' debugfile. Debug File Mode must be turned on. It is only effective when running the game with debug mod support.</t>
+   <t id="5071">Build Tasks</t>
+   <t id="5072">Detailed dump in '_BuildTaskIDs' debugfile. It is only effective when running the game with debug mod support.</t>
+
+
+   <t id="6000">Active Replacement Fleets</t>
+   <t id="6005">Sort by</t>
+   <t id="6010">{1134010, 500} Key</t>
+   <t id="6011">Size</t>
+   <t id="6012">Name</t>
+   <t id="6013">Damaged</t>
+   <t id="6014">Autobuild</t>
+   <t id="6015">Rebuild Timer</t>
+   <t id="6016">Close {1134010, 500}</t>
+   <t id="6017">Clone</t>
+   <t id="6018">Remove Ship</t>
+
+   <t id="6020">All Ships are DEAD</t>
+   <t id="6021">Alert Status</t>
+   <t id="6022">Recorded Ships Tree</t>
+   <t id="6023">Ship In Construction</t>
+   <t id="6024">Lost Ship.</t>
+   <t id="6025">Remove {1134010, 1010} From Managers</t>
+   <t id="6026">Autobuild Status</t>
+   <t id="6027">When the ship belonging to this {1134010, 500} destroyed, the Rebuild process will be started automatically.</t>
+   <t id="6028">When the ship belonging to this {1134010, 500} destroyed, the Rebuild process will NOT be started automatically.</t>
+   <t id="6029">{1134010, 500} to be cloned</t>
+   <t id="6030">Show on map.</t>
+   <t id="6031">Removes the selected ship from the Replacement Fleet Records.\n ! Only valid for exploded ships that cannot be produced.</t>
+   <t id="6032">Remove {1134010, 500}_%s From Managers</t>
+   <t id="6033">Are you sure you want to remove this?</t>
+   <t id="6034">Do not show again</t>
+   <t id="6035">Remove Ship From {1134010, 500}'s Records</t>
+   <t id="6036">Are you sure you want to remove this ship record?</t>
+   <t id="6037">Need 'Rebuild' proccess..</t>
+   <t id="6038">Waiting for next rebuild check</t>
+   <t id="6039"></t>
+   <t id="6040">Cancel Construction</t>
+   <t id="6041">Once confirmed, this option will appear again when the settings are reset to default.</t>
+   <t id="6042">Construction Status</t>
+   <t id="6043">Attempts</t>
+   <t id="6044">Remaining Check Time</t>
+   <t id="6045">Total Elapsed Time</t>
+   <t id="6046">Cancell Rebuild Timer</t>
+   <t id="6047">Rebuild cancelled.</t>
+   <t id="6048">Construct build cancelled.</t>
+   <t id="6049">%s was destroyed.</t>
+   <t id="6050">Rebuild Timer Status</t>
+   <t id="6051">Rebuild check timers are active. If it is turned off, Stops the rebuilding process of ships that have found a station among {1134010, 500} ships and are queued or have an active countdown timer.</t>
+   <t id="6052">Rebuild check timers are disabled. If turned on, The rebuild process is started for all ships within the {1134010, 500} whose production control has not started or has found a station and is queued or whose countdown timer is active.</t>
+   <t id="6053">Via lost ship replacement is used.</t>
+   <t id="6054">Use only one method.</t>
+   <t id="6055">Show only compatible ones</t>
+   
+   <t id="6060">Use RFM Tag</t>
+   <t id="6061">Whether to use the RFM tag on the rfm fleet commander name.</t>
+
+   <t id="6100">Object Price</t>
+   <t id="6101">Crews Price</t>
+   <t id="6102">Player Money</t>
+   <t id="6103">Build Price</t>
+   <t id="6104">Ship Price</t>
+   <t id="6105">After Reducing</t>
+   <t id="6106">Threshold Money</t>
+   <t id="6107">Allowed Money</t>
+
+   <t id="6120">Remove all listed respond ware(s)</t>
+   <t id="6121">When checked, the 'Build' button takes action by Removing all problematic ware(s)\n</t>
+   <t id="6122">The ship's loadout record will NOT change.</t>
+   <t id="6130">Replace engine(s) from station's defined engines</t>
+   <t id="6131">If it is checked, when the 'Build' process is done, it selects a suitable engine(s) from the station's defined engines instead of incompatible engines.</t>
+   <t id="6140">Rebuild process for this ship</t>
+   <t id="6141">Build process for this ship</t>
+   <t id="6150">Respond Message</t>
+   <t id="6160">Need 'Rebuild' or 'Build' proccess..</t>
+   <t id="6165">No Waiting for Rebuild..</t>
+
+   <t id="6500">Fleet Commander</t>
+   <t id="6510">Promoted Commander</t>
+   <t id="6520">Promoted</t>
+   <t id="6530">Real</t>
+   <t id="6540">Order Location</t>
+   <t id="6550">Default Order</t>
+   <t id="6560">Ship Details</t>
+   <t id="6570">Commander</t>
+   <t id="6571">Ship</t>
+   <t id="6580">Sub. Group</t>
+   <t id="6590">Assignment</t>
+   <t id="6600">Record Status</t>
+   <t id="6610">Produces Chassis</t>
+   <t id="6620">Destroyed</t>
+   <t id="6630">Destroyed Ship Replacement Status</t>
+   
+
+   <t id="7000">%dd %Hh %Mm ago</t>
+   <t id="7001">%mm %Ss ago</t>
+   <t id="7002">%hh %Mm ago</t>
+
+   <t id="7005">%dd %Hh %Mm %Ss</t>
+   <t id="7006">%mm %Ss</t>
+   <t id="7007">%hh %Mm %Ss</t>
+   
+   <t id="7500">This category shows all {1134010, 500} stations and ships.</t>
+   <t id="7501">This category shows options.</t>
+   
+   <!-- ReadText(1134010, 8562) -->   
+   <t id="8000">Information</t>
+   <t id="8001">Information about a selected object, including its name in the {1134010, 500} record, commander and subordinate information, and produce factions.</t>
+   <t id="8002">Replacement Status</t>
+   <t id="8003">To monitor the situation after the re-production request for destroyed ships.</t>
+   <t id="8004">Crews</t>
+   <t id="8005">Observes crew information in the {1134010, 500} record of a selected object.</t>
+   <t id="8006">Loadouts</t>
+   <t id="8007">Observes loadout information in the {1134010, 500} record of a selected object.</t>
+   <t id="8008">Individual Instructions</t>
+   <t id="8009">Observes standing orders information in the {1134010, 500} record of a selected object.</t>
+   
+   <t id="8010">Paint Mod</t>
+   <t id="8011">The player has it.</t>
+   <t id="8012">The player doesn't have it.</t>
+   <t id="8013">The %s paintmod will be applied after production.</t>
+   
+   <t id="8020">Record structure is corrupt.</t>
+   <t id="8021">To fix, wait for the ship to be produced.</t>
+
+   <t id="8046">Missing Resources</t>
+   <t id="8398">%s($GROUP_DESIGNATION_GREEK_LETTER$) Group</t>
+   <t id="8562"></t>
+   <t id="8563">There is currently no functional build module for this ship \(this may be due to a conventional or hacking attack\). The build or upgrade could take longer than expected.</t>
+
+
+   <t id="9000">There is no compatible shipyard for construction.</t>
+   <t id="9001">No shipyard could be found that could produce this class.</t>
+   <t id="9002">No shipyard could be found that could produce this chassis.</t>
+   <t id="9003">The station located is in an unknown sector.</t>
+   <t id="9004">Relationship level is low.</t>
+   <t id="9005">Couldnt find any station with shiptrader.</t>
+   <t id="9006">No have [ %s ] %s for this faction.</t>
+   <t id="9007">No have [ %s ] %s for this faction.</t>
+   <t id="9008">Wrong installed ware(s) for this station.</t>
+   <t id="9009">No have %s for this faction.</t>
+   <t id="9010">Can not select any possible Best Station in compability yards.</t>
+   <t id="9011">Insufficient funds.</t>
+   <t id="9012">The calculated ship cost (%s Cr) exceeded the players available funds (%s Cr).</t>
+   <t id="9013">The calculated ship cost (%s Cr) exceeded the ship production allowed cost (%s Cr).</t>
+   <t id="9014">After the calculated ship fee (%s Cr) is deducted from the player\'s money, (%s Cr) the remaining amount is less than the set money threshold %s Cr.</t>
+
+   <t id="9050">Normal</t>
+   <t id="9051">{1134010, 500} Commander no have a Pilot.</t>
+   <t id="9052">Build process queued ship(s) found.</t>
+   <t id="9053">There are ship(s) that cannot find a valid shipyard.</t>
+   <t id="9054">There are ship(s) that require manual Rebuild.</t>
+   <t id="9055">There are ship(s) being processed.</t>
+   <t id="9056">Adding a build task.</t>
+   <t id="9057">Added a build task.</t>
+   <t id="9058">Removing build task.</t>
+
+   <t id="11200">--</t>
+   <t id="11210">Different Installation</t>
+   <t id="11228">Construction Drones</t>
+   <t id="11229">Active(Drones)</t>
+   <t id="11230">Recorded</t>
+
+   <t id="4010">Commander has ordered replacement for ship from shipyard.\n
+      Destroyed : $SHIP$\n
+      Commander : $COMMANDER$\n
+      Shipyard  : $SHIPYARD$\n
+      Sector    : $SECTOR$
+      </t>
+   <t id="4011">Commander failed to replace ship due to insufficient funds.. Waiting for Rebuild..\n
+      Destroyed : $SHIP$\n
+      Commander : $COMMANDER$\n
+      Need Price : $PRICE$\n
+      Player Money : $MONEY$
+   </t>
+   <t id="4012">Commander failed to replace ship because can not Find any possible Best Shipyard.. Waiting for Rebuild..\n
+      Destroyed : $SHIP$\n
+      Commander : $COMMANDER$
+   </t>
+   <t id="4013">Commander failed to replace ship because $STATUS$.. Waiting for Rebuild..\n
+      Destroyed : $SHIP$\n
+      Commander : $COMMANDER$
+   </t>
+   <t id="4014">Commander has ordered rebuild ship but $STATUS$..\n
+      Destroyed : $SHIP$\n
+      Commander : $COMMANDER$\n
+      Shipyard  : $SHIPYARD$\n
+      Sector    : $SECTOR$
+   </t>
+   <t id="4015">Commander failed to replace ship because $STATUS$.. \n
+      Destroyed : $SHIP$\n
+      Commander : $COMMANDER$
+   </t>
+   <t id="4016">Since $COMMANDER$ has been closed, the ship under construction will be at the station where it was produced after production.\n
+      Constructions : \n$SHIP$
+      Shipyard  : $SHIPYARD$\n
+      Sector    : $SECTOR$
+   </t>
+
+
+</page>
+
+</language>

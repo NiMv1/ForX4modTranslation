@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<add sel="//jobs">
+<!--FAF-->
+  <!--409 Tharka's Ravine XXIV-->
+<!--  
+  <job id="faf_home_fleet" name="{20204,6201}">
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+        <param name="organizesubordinates" value="true" />
+        <param name="defences_maxgatedistance" value="3" />		
+      </order>
+	</orders>
+	<category faction="fallensplit" tags="[military]" />
+	<quota galaxy="1" maxgalaxy="1" cluster="1" sector="1"/>
+	<location class="sector" macro="Cluster_REM66_Sector001_macro" faction="freesplit" relation="neutral" comparison="ge" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+	<ship>
+	  <select faction="fallensplit" tags="[military, fleet, faf]" />
+	  <loadout>
+		<level exact="1.0"/>
+	  </loadout>
+	  <owner exact="fallensplit" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	</subordinates>
+  </job> 
+-->  
+  
+<!--SCA-->
+  <!--042 Hewa's Twin IV-->
+  <job id="sca_042_patrol_galleon" name="{20204,6201}">
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+        <param name="stayinspace" value="true"/>
+        <param name="defences_maxgatedistance" value="1" />
+        <param name="defences_includedassignments" value="[assignment.attack]" />		
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_xl"/>
+	<quota galaxy="1" maxgalaxy="1" cluster="1" sector="1"/>
+	<location class="sector" macro="Cluster_42_Sector002_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+	<time galaxy="0" interval="1800"/>	
+	<ship>
+	  <select faction="scaleplate" tags="[military, extralarge, sca]" size="ship_xl"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	  <people>
+		<fillpercent min="85" max="95" />
+		<person role="service" weight="30">
+		  <select faction="faction.scaleplate" tags="tag.crew"/>
+		</person>
+		<person role="marine" weight="90">
+		  <select faction="faction.scaleplate" tags="tag.marine"/>
+		</person>
+	  </people>	  
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_galleon_large" assignment="defence" group="1"/>
+	  <subordinate job="sca_escort_galleon_fighters" assignment="defence" group="2"/> 
+	  <subordinate job="sca_escort_galleon_fighters" assignment="defence" group="3"/>
+	</subordinates>
+  </job>  
+  <job id="sca_042_patrol_large" name="{20204,5301}">
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_l"/>
+	<quota galaxy="2"/>
+	<location class="sector" macro="Cluster_42_Sector002_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="120"/>	
+	<ship>
+	  <select faction="scaleplate" tags="[military, large, sca]" size="ship_l"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_large" assignment="defence"/>
+	  <subordinate job="sca_escort_medium" assignment="defence"/>		  
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>
+  <job id="sca_042_patrol_medium" name="{20204,5301}" >
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_m"/>
+	<quota galaxy="3" />
+	<location class="sector" macro="Cluster_42_Sector002_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="100"/>
+	<ship>
+	  <select faction="scaleplate" tags="[military, medium, sca]" size="ship_m"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>
+  <!--044 Silent Witness XI-->
+  <job id="sca_044_patrol_large" name="{20204,5301}">
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_l"/>
+	<quota galaxy="1"/>
+	<location class="sector" macro="Cluster_44_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="120"/>	
+	<ship>
+	  <select faction="scaleplate" tags="[military, large, sca]" size="ship_l"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_large" assignment="defence"/>
+	  <subordinate job="sca_escort_medium" assignment="defence"/>	  
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>
+  <job id="sca_044_patrol_medium" name="{20204,5301}" >
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_m"/>
+	<quota galaxy="2" />
+	<location class="sector" macro="Cluster_44_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="100"/>
+	<ship>
+	  <select faction="scaleplate" tags="[military, medium, sca]" size="ship_m"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>    
+  <!--REM42 Bala Gi's Joy-->
+  <job id="sca_REM42_patrol_large" name="{20204,5301}">
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_l"/>
+	<quota galaxy="1"/>
+	<location class="sector" macro="Cluster_REM42_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="120"/>	
+	<ship>
+	  <select faction="scaleplate" tags="[military, large, sca]" size="ship_l"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_large" assignment="defence"/>
+	  <subordinate job="sca_escort_medium" assignment="defence"/>	  
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>
+  <job id="sca_REM42_patrol_medium" name="{20204,5301}" >
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_m"/>
+	<quota galaxy="2" />
+	<location class="sector" macro="Cluster_REM42_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="100"/>
+	<ship>
+	  <select faction="scaleplate" tags="[military, medium, sca]" size="ship_m"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>  
+  <!--REM51 Fierce Clarity-->
+  <job id="sca_REM51_patrol_large" name="{20204,5301}">
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_l"/>
+	<quota galaxy="1"/>
+	<location class="sector" macro="Cluster_REM51_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="120"/>	
+	<ship>
+	  <select faction="scaleplate" tags="[military, large, sca]" size="ship_l"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_large" assignment="defence"/>
+	  <subordinate job="sca_escort_medium" assignment="defence"/>	  
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>
+  <job id="sca_REM51_patrol_medium" name="{20204,5301}" >
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_m"/>
+	<quota galaxy="2" />
+	<location class="sector" macro="Cluster_REM51_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="100"/>
+	<ship>
+	  <select faction="scaleplate" tags="[military, medium, sca]" size="ship_m"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>   
+  <!--REM52 Danna's Chance-->
+  <job id="sca_REM52_patrol_galleon" name="{20204,6201}">
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+        <param name="stayinspace" value="true"/>
+        <param name="defences_maxgatedistance" value="1" />
+        <param name="defences_includedassignments" value="[assignment.attack]" />		
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_xl"/>
+	<quota galaxy="1" maxgalaxy="1" cluster="1" sector="1"/>
+	<location class="sector" macro="Cluster_REM52_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+	<time galaxy="0" interval="1800"/>	
+	<ship>
+	  <select faction="scaleplate" tags="[military, extralarge, sca]" size="ship_xl"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	  <people>
+		<fillpercent min="85" max="95" />
+		<person role="service" weight="30">
+		  <select faction="faction.scaleplate" tags="tag.crew"/>
+		</person>
+		<person role="marine" weight="90">
+		  <select faction="faction.scaleplate" tags="tag.marine"/>
+		</person>
+	  </people>		  
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_galleon_large" assignment="defence" group="1"/>  
+	  <subordinate job="sca_escort_galleon_fighters" assignment="defence" group="2"/>
+	  <subordinate job="sca_escort_galleon_fighters" assignment="defence" group="3"/>	  
+	</subordinates>
+  </job>    
+  <job id="sca_REM52_patrol_large" name="{20204,5301}">
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_l"/>
+	<quota galaxy="2"/>
+	<location class="sector" macro="Cluster_REM52_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="120"/>
+	<ship>
+	  <select faction="scaleplate" tags="[military, large, sca]" size="ship_l"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_large" assignment="defence"/>
+	  <subordinate job="sca_escort_medium" assignment="defence"/>	  
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>
+  <job id="sca_REM52_patrol_medium" name="{20204,5301}" >
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_m"/>
+	<quota galaxy="3" />
+	<location class="sector" macro="Cluster_REM52_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="100"/>
+	<ship>
+	  <select faction="scaleplate" tags="[military, medium, sca]" size="ship_m"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>
+  <!--REM58 Montalaar--> 
+  <job id="sca_REM58_patrol_large" name="{20204,5301}">
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_l"/>
+	<quota galaxy="1"/>
+	<location class="sector" macro="Cluster_REM58_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="120"/>	
+	<ship>
+	  <select faction="scaleplate" tags="[military, large, sca]" size="ship_l"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_large" assignment="defence"/>
+	  <subordinate job="sca_escort_medium" assignment="defence"/>	  
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>
+  <job id="sca_REM58_patrol_medium" name="{20204,5301}" >
+	<modifiers commandeerable="true"/>
+	<orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="class.sector"/>
+      </order>
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_m"/>
+	<quota galaxy="2" />
+	<location class="sector" macro="Cluster_REM58_Sector001_macro" faction="[teladi, ownerless, khaak]" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="100"/>
+	<ship>
+	  <select faction="scaleplate" tags="[military, medium, sca]" size="ship_m"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_fighters" assignment="defence"/>
+	</subordinates>
+  </job>   
+  <!--Plunder Galleon--> 
+  <job id="sca_plunder_galleon" name="{20204,4101}">
+	<modifiers commandeerable="true"/>
+    <orders>
+      <order order="Plunder" default="true">
+        <param name="range_internal" value="'cluster'"/>
+        <param name="plundermode" value="0"/>
+      </order>
+    </orders>
+	<category faction="scaleplate" tags="[military]" size="ship_xl"/>
+	<quota galaxy="1" maxgalaxy="1" cluster="1" sector="1"/>
+	<location class="galaxy" macro="xu_ep2_universe_macro" faction="xenon" relation="self" comparison="lt" matchextension="false"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <time start="0" interval="10800"/>	
+    <basket basket="pirate_container"/>	
+	<ship>
+	  <select faction="scaleplate" tags="[military, extralarge, sca]" size="ship_xl"/>
+	  <loadout>
+		<level min="0.7" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/> 
+	  <people>
+		<fillpercent min="85" max="95" />
+		<person role="service" weight="30">
+		  <select faction="faction.scaleplate" tags="tag.crew"/>
+		</person>
+		<person role="marine" weight="90">
+		  <select faction="faction.scaleplate" tags="tag.marine"/>
+		</person>
+	  </people>		  
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_large" assignment="defence" group="1"/>  
+	  <subordinate job="sca_escort_large" assignment="defence" group="1"/> 	  
+	  <subordinate job="sca_escort_galleon_fighters" assignment="defence" group="2"/>
+	  <subordinate job="sca_escort_galleon_fighters" assignment="defence" group="3"/>	  
+	</subordinates>
+  </job>    
+<!--SCA Escorts-->
+  <job id="sca_escort_large" name="{20204,5301}" startactive="false">
+	<orders>
+	  <order order="Escort" default="true">
+        <param name="formation" value="formationshape.pointguard"/>
+        <param name="overrideformationskill" value="true"/>	
+      </order>		
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_l"/>
+	<quota wing="1" />
+	<location class="galaxy" macro="xu_ep2_universe_macro"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <modifiers subordinate="true"/>	
+	<ship>
+	  <select faction="scaleplate" tags="[military, large, sca]" size="ship_l"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+	<subordinates>
+	  <subordinate job="sca_escort_fighters"/>
+	</subordinates>
+  </job>
+  <job id="sca_escort_medium" name="{20204,5301}" startactive="false">
+	<orders>
+	  <order order="Escort" default="true">
+        <param name="formation" value="formationshape.pointguard"/>
+        <param name="overrideformationskill" value="true"/>	  
+      </order>		
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_m"/>
+	<quota wing="2" />
+	<location class="galaxy" macro="xu_ep2_universe_macro"/>
+	<environment buildatshipyard="false" gate="true"/>	
+    <modifiers subordinate="true"/>		
+	<ship>
+	  <select faction="scaleplate" tags="[military, medium, sca]" size="ship_m"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+  </job>   
+  <job id="sca_escort_fighters" name="{20204,5301}" startactive="false">
+	<orders>
+	  <order order="Escort" default="true">
+        <param name="formation" value="formationshape.xshapeback"/>
+        <param name="overrideformationskill" value="true"/>	  
+      </order>		
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_s"/>
+	<quota wing="4" variation="2"/>
+	<location class="galaxy" macro="xu_ep2_universe_macro"/>
+	<environment buildatshipyard="false" gate="true"/>	
+    <modifiers subordinate="true"/>		
+	<ship>
+	  <select faction="scaleplate" tags="[military, small, sca]" size="ship_s"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+  </job> 
+  <job id="sca_escort_galleon_large" name="{20204,5301}" startactive="false">
+	<orders>
+	  <order order="Escort" default="true">
+        <param name="formation" value="formationshape.pointguard"/>
+        <param name="overrideformationskill" value="true"/>	  
+      </order>		
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_s"/>
+	<quota wing="3" />
+	<location class="galaxy" macro="xu_ep2_universe_macro"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <modifiers subordinate="true"/>		
+	<ship>
+	  <select faction="scaleplate" tags="[military, large, sca]" size="ship_l"/>
+	  <loadout>
+		<level min="0.9" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+  </job> 
+  <job id="sca_escort_galleon_fighters" name="{20204,5301}" startactive="false">
+	<orders>
+	  <order order="Escort" default="true">
+        <param name="formation" value="formationshape.xshapeback"/>
+        <param name="overrideformationskill" value="true"/>	  
+      </order>		
+	</orders>
+	<category faction="scaleplate" tags="[military]" size="ship_s"/>
+	<quota wing="18" variation="6"/>
+	<location class="galaxy" macro="xu_ep2_universe_macro"/>
+	<environment buildatshipyard="false" gate="true"/>
+    <modifiers subordinate="true"/>		
+	<ship>
+	  <select faction="scaleplate" tags="[military, small, sca]" size="ship_s"/>
+	  <loadout>
+		<level min="0.9" max="1.0"/>
+	  </loadout>
+	  <owner exact="scaleplate" overridenpc="true"/>
+	</ship>
+  </job>    
+  <job id="scaleplate_plunderer_escort_l" name="{20204,3501}" startactive="false">
+    <orders>
+      <order order="Escort" default="true">
+        <param name="formation" value="formationshape.xshapeback"/>
+        <param name="overrideformationskill" value="true"/>
+      </order>
+    </orders>
+    <category faction="scaleplate" tags="[plunderer]" size="ship_l"/>
+    <quota wing="1" />
+    <location class="galaxy" macro="xu_ep2_universe_macro"/>
+    <environment buildatshipyard="false" gate="true"/>
+    <modifiers subordinate="true"/>
+    <ship>
+      <select faction="scaleplate" tags="[plunderer]" size="ship_l"/>
+      <loadout>
+        <level min="0.5" max="0.9"/>
+      </loadout>
+      <owner exact="scaleplate" overridenpc="true"/>
+    </ship>
+  </job> 
+
+
+<!--Yaki--> 
+  <job id="yaki_raider_l_SB" name="{20204,3401}">
+	<modifiers commandeerable="true"/>
+    <orders>
+      <order order="Patrol" default="true">
+        <param name="range" value="'class.sector'"/>
+        <param name="targetpurposes" value="[purpose.trade, purpose.mine]"/>
+        <param name="usebasket" value="true"/>		
+      </order>
+    </orders>
+	<category faction="yaki" tags="[factionlogic, military]" size="ship_l"/>
+	<quota galaxy="5" sector="1"/>
+    <time start="1800" interval="60"/>
+	<location class="galaxy" macro="xu_ep2_universe_macro" factionrace="[terran, xenon]" negatefactionrace="true" faction="yaki" relation="neutral" comparison="lt" matchextension="false"/>
+	<environment buildatshipyard="true"/>	
+    <basket basket="construction_ships"/>	
+	<ship>
+	  <select faction="yaki" size="ship_l"/>
+	  <loadout>
+		<level min="0.8" max="1.0"/>
+	  </loadout>
+	  <owner exact="yaki" overridenpc="true"/> 
+	</ship>
+	<subordinates>
+	  <subordinate job="yaki_fighter_escort_mixed" assignment="attack"/>  	  
+	</subordinates>
+  </job>
+</add>
+
+<!--Expanding Vanilla Jobs-->
+  <add sel="//jobs/job[@id='scaleplate_plunderer_l_cluster']">
+    <subordinates>
+      <subordinate job="scaleplate_plunderer_escort_l" assignment="defence"/>
+      <subordinate job="scaleplate_fighter_escort_s" assignment="defence"/>
+    </subordinates>
+  </add>
+  <add sel="//jobs/job[@id='scaleplate_scavenger_m_cluster']">
+    <subordinates>
+      <subordinate job="scaleplate_fighter_escort_s" assignment="defence"/>
+    </subordinates>
+  </add> 
+  <add sel="//jobs/job[@id='scaleplate_plunderer_m_cluster']">
+    <subordinates>
+      <subordinate job="scaleplate_fighter_escort_s" assignment="defence"/>
+    </subordinates>
+  </add> 
+  <add sel="//jobs/job[@id='scaleplate_mixed_trader_l']">
+    <subordinates>
+      <subordinate job="scaleplate_fighter_escort_s" assignment="defence"/>
+    </subordinates>
+  </add>   
+  <add sel="//jobs/job[@id='scaleplate_mixed_trader_m']">
+    <subordinates>
+      <subordinate job="scaleplate_fighter_escort_s" assignment="defence"/>
+    </subordinates>
+  </add>  
+</diff>

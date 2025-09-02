@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <add sel="/wares">
+    <ware id="Eagle_Ferris" name="Eagle Ferris" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="Felon" name="Felon" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="Felon_ALT" name="Felon ALT" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="Flanker" name="Flanker" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="Flanker_Grey" name="Flanker Grey" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="Fullback" name="Fullback" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="Harrier_Hawker" name="Harrier Hawker" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="IDF_Desert" name="IDF Desert" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+
+	<ware id="IDF_Skyhawk" name="IDF Skyhawk" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+
+	<ware id="JAP_Naval" name="JAP Naval" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="JAP_Tiger" name="JAP Tiger" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="SK_Pixel" name="SK Pixel" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="checkmate_21" name="Checkmate 21" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="checkmate_23" name="Checkmate 23" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="checkmate_23_alt" name="Checkmate 23 ALT" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="checkmate_pro" name="Checkmate Pro" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="checkmate_pro_max" name="Checkmate Pro Max" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="m346_ami" name="M345 AMI" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="tomcat_iriaf" name="Tomcat IRIAF" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	
+	<ware id="viper_aggressor" name="Viper Aggressor" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	<ware id="almolivra" name="Almolivra" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	<ware id="asterhite" name="Asterhite" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	<ware id="blotdon" name="Blotdon" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	<ware id="icedragon" name="Ice Dragon" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	<ware id="lightromentar" name="Lightromentar" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	<ware id="moonsite" name="Moonsite" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	<ware id="starrynight" name="Star Ry night" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+	<ware id="tomcat_aunwha" name="Tomcat Aunwha...?" description="Show everyone how invisible you are." transport="inventory" volume="1" tags="inventory paintmod">
+      <price min="1" average="1" max="1" />
+      <container ref="sm_gen_wares_common_01_macro" />
+      <icon video="ware_inventory_generic_macro" />
+      <sources>
+        <source type="{20224,41}" />
+      </sources>
+    </ware>
+  </add>
+</diff>

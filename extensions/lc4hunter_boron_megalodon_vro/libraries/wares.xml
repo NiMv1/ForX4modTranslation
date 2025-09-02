@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <remove sel="/wares/ware[@id='ship_bor_xl_battleship_01']" />
+</diff>

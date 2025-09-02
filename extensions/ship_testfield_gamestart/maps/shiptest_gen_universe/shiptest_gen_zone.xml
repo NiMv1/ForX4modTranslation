@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<macros xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <macro name="shiptest_gen_zone00_sector00_cluster00_macro" class="zone">
+    <component ref="standardzone" />
+    <connections>
+    </connections>
+  </macro>
+</macros>

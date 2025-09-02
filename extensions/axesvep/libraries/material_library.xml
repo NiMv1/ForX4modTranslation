@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diff>
+  <replace sel="/materiallibrary/collection[@name='p1split'][1]/material[@name='spl_engine_trim']/properties/property[@name='color_glowStr']/@value">6.0</replace>
+  <replace sel="/materiallibrary/collection[@name='p1paranid']/material[@name='par_engine_trim']/properties/property[@name='color_glowStr']/@value">6.0</replace>
+  <replace sel="/materiallibrary/collection[@name='p1teladi']/material[@name='tel_engine_trim']/properties/property[@name='color_glowStr']/@value">6.0</replace>
+  <replace sel="/materiallibrary/collection[@name='argon']/material[@name='arg_engine_trim']/properties/property[@name='color_glowStr']/@value">6.0</replace>
+  <replace sel="/materiallibrary/collection[@name='p1terran']/material[@name='ter_engine_trim']/properties/property[@name='color_glowStr']/@value">6.0</replace>
+</diff>

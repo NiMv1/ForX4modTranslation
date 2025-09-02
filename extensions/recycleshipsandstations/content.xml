@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="RecycleShipsAndStations" enabled="true" name="RecycleShipsAndStations" description="Player can disassemble his ships, recycle stations or sell stations to other factions." author="iforgotmysocks" version="055" date="2018-12-08" save="false">
+  <text language="7" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="33" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="34" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="39" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="44" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="49" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="55" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="81" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="82" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="86" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+  <text language="88" name="Recycle Ships And Stations" description="Recycle Ships And Stations" author="iforgotmysocks" />
+</content>

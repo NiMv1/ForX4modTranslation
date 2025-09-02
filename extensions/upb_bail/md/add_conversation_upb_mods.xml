@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mdscript name="Add_Conversation_Upb_MODs" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+
+	<cues>
+        <!--Main More conversation 
+            * ECM yalnızca section = default konuşmaları dikkate aldığı için section=mainmore kısmına direk ekleme yapacağız -->
+        <!-- Player pilot ya da managerlerin more konuşmasına -->
+        <cue name="Upb_MODs_Menu_Player_ai" instantiate="true">
+            <conditions>
+                <check_any>
+                    <event_conversation_next_section section="g_mainmore"/>
+                    <event_conversation_returned_to_section section="g_mainmore"/>
+                </check_any>
+                <check_value value="@event.object.isclass.entity"/>
+                <check_any>
+                    <check_value value="@event.object.assignedcontrolled.isclass.ship and @event.object.assignedcontrolled.pilot == event.object" />
+                    <check_value value="@event.object.assignedcontrolled.isclass.station and (@event.object.assignedcontrolled.tradenpc == event.object or @event.object.assignedcontrolled.shiptrader == event.object) " />
+                </check_any>
+                <check_value value="event.object.isplayerowned and @event.object.assignedcontrolled.isplayerowned" />
+            </conditions>
+            <actions>
+                <add_player_choice_sub text="'\33' + '#FF' + 'ffca18' + '#' + 'UPB MODs' + '\33x'" position="left" section="upb_MODs" comment="Installed other upb Mods alternative Menu"/>
+            </actions>
+        </cue>
+
+        <!--Main default conversation
+            Player pilotları için default conversation
+                ECM yoksa sadece sub gemi pilotlarının konuşmasına eklenecek
+                ECM varsa hem fleet commander hem de sublar için ekleme yapacağız(ECM menusu içine ekleyecek)
+        -->
+        <cue name="Upb_MODs_Menu_Player_universal_ai" instantiate="true">
+            <conditions>
+                <check_all>
+                    <check_any>
+                        <event_conversation_started conversation="default"/>
+                        <event_conversation_returned_to_section section="default"/>
+                    </check_any>
+                    <check_value value="@event.object.isclass.entity"/>
+                    <check_value value="event.object.isplayerowned" />
+                </check_all>
+            </conditions>
+            <actions>
+                <do_if value="@md.ExtendedConversationMenu.Main.exists">
+                    <set_value name="md.ExtendedConversationMenu.Main.$convOptions.$Upb_MODs_default" exact="table[
+                        $signalCue = md.Add_Conversation_Upb_MODs.Upb_MODs_DefaultConv_ECMSupport, 
+                        $params = [event.object] 
+                        ]" />
+                </do_if>
+                <do_else>
+                   <signal_cue_instantly cue="Upb_MODs_DefaultConv_ECMSupport" param="[event.object]" /> 
+                </do_else>
+            </actions>
+        </cue>
+
+        <cue name="Upb_MODs_DefaultConv_ECMSupport" instantiate="true">
+            <conditions>
+              <event_cue_signalled/>
+            </conditions>
+            <actions>
+                <set_value name="$object" exact="if event.param? and typeof event.param == datatype.list then event.param.{1} else event.param" />
+                <do_if value="@$object.assignedcontrolled.isplayerowned">
+                    <!-- eğer subordinate ise -->
+                    <do_if value="@$object.assignedcontrolled.commander">
+                        <!-- ECM varsa ECM içine eklenecek-->
+                        <do_if value="@md.ExtendedConversationMenu.Main.exists">
+                            <add_player_choice_sub text="'\33' + '#FF' + 'ffca18' + '#' + 'UPB MODs' + '\33x'" section="upb_MODs" comment="Installed other upb Mods alternative Menu"/>
+                        </do_if>
+                        <!-- ECM yoksa solalt slota eklenecek-->
+                        <do_else>
+                            <add_player_choice_sub text="'\33' + '#FF' + 'ffca18' + '#' + 'UPB MODs' + '\33x'" position="bottom_left" section="upb_MODs" comment="Installed other upb Mods alternative Menu"/>
+                        </do_else>
+                    </do_if>
+                    <do_else>
+                        <!-- Fleet comander ya da tek gemi için ECM varsa ekleyeceğiz. Yoksa eklemeyeceğiz çünkü solalt slot RFM için ayrıldı. -->
+                        <do_if value="@md.ExtendedConversationMenu.Main.exists">
+                            <add_player_choice_sub text="'\33' + '#FF' + 'ffca18' + '#' + 'UPB MODs' + '\33x'" section="upb_MODs" comment="Installed other upb Mods alternative Menu"/>
+                        </do_if>                         
+                    </do_else>
+                </do_if>
+            </actions>
+        </cue>
+
+	</cues>
+
+</mdscript>

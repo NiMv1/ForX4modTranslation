@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="kuertee_fft_config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="Config" namespace="this" version="6">
+			<actions>
+				<set_value name="$debugChance" exact="0" />
+				<set_value name="$debugChance_station" exact="0" />
+				<set_value name="$debugChance_verbose" exact="0" />
+				<set_value name="$debugChance_resultOnly" exact="0" />
+				<set_value name="$is_targeted" exact="true" />
+				<set_value name="$is_lowShields" exact="false" />
+				<set_value name="$is_mainGuns" exact="true" />
+				<set_value name="global.$kFFT" exact="this" />
+			</actions>
+			<patch sinceversion="2">
+				<debug_text text="'sinceversion 2, state: ' + this.state" />
+				<set_value name="global.$kFFT" exact="this" />
+			</patch>
+			<patch sinceversion="3">
+				<debug_text text="'sinceversion 3, state: ' + this.state" />
+				<set_value name="$debugChance" exact="0" />
+			</patch>
+			<patch sinceversion="4">
+				<debug_text text="'sinceversion 4, state: ' + this.state" />
+				<set_value name="$debugChance_station" exact="0" />
+				<set_value name="$debugChance_verbose" exact="0" />
+			</patch>
+			<patch sinceversion="6">
+				<debug_text text="'sinceversion 6, state: ' + this.state" />
+				<set_value name="$debugChance_resultOnly" exact="0" />
+			</patch>
+			<cue name="Config_GameLoaded">
+				<conditions>
+					<event_game_loaded />
+					<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+				</conditions>
+				<actions>
+					<set_value name="global.$kFFT" exact="this" />
+					<reset_cue cue="this" />
+				</actions>
+			</cue>
+		</cue>
+		<cue name="StartSMO" instantiate="true">
+			<conditions>
+				<event_cue_signalled cue="md.Simple_Menu_Options.Reloaded"/>
+			</conditions>
+			<actions>
+				<!-- <debug_text text="'signal_cue_instantly ' + @md.Simple_Menu_API.Register_Options_Menu" /> -->
+				<signal_cue_instantly cue="md.Simple_Menu_API.Register_Options_Menu"
+					param="table[
+						$id = 'kuertee_fft_extension_options_menu',
+						$columns = 2,
+						$title = {116620, 1},
+						$onOpen = BuildOptionsMenu
+					]" />
+				<cancel_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="BuildOptionsMenu" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={116620, 3}]" comment="Penalise friendly fire on these conditions:"/>
+
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={116620, 4}]" comment="Victim is targeted"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'is_targeted',
+						$checked = md.kuertee_fft_config.Config.$is_targeted,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$onClick = OnSMOCheckboxChange
+					]"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=2, $text={116620, 5}]" comment="Off is on any victim"/>
+
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={116620, 6}]" comment="Victim's shields are 25% or less"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'is_lowShields',
+						$checked = md.kuertee_fft_config.Config.$is_lowShields,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$onClick = OnSMOCheckboxChange
+					]"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=2, $text={116620, 7}]" comment="Off is at any shield level"/>
+
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={116620, 8}]" comment="Damage is from the main guns"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'is_mainGuns',
+						$checked = md.kuertee_fft_config.Config.$is_mainGuns,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$onClick = OnSMOCheckboxChange
+					]"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=2, $text={116620, 9}]" comment="Off is from any weapon"/>
+
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text='']"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={116620, 2}, $color='Helper.color.red']"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'debugChance',
+						$checked = if md.kuertee_fft_config.Config.$debugChance == 100 then true else false,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$bgColor = 'Helper.color.red',
+						$onClick = OnSMOCheckboxChange
+					]"/>
+
+				<!-- <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text='']"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={116620, 10}, $color='Helper.color.red']"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'debugChance_station',
+						$checked = if md.kuertee_fft_config.Config.$debugChance_station == 100 then true else false,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$bgColor = 'Helper.color.red',
+						$onClick = OnSMOCheckboxChange
+					]"/> -->
+
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={116620, 10}, $color='Helper.color.red']"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'debugChance_verbose',
+						$checked = if md.kuertee_fft_config.Config.$debugChance_verbose == 100 then true else false,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$bgColor = 'Helper.color.red',
+						$onClick = OnSMOCheckboxChange
+					]"/>
+
+				<signal_cue_instantly cue="md.Simple_Menu_API.Add_Row"/>
+				<signal_cue_instantly cue="md.Simple_Menu_API.Make_Text" param="table[$col=1, $text={116620, 11}, $color='Helper.color.red']"/>
+				<signal_cue_instantly
+					cue = "md.Simple_Menu_API.Make_CheckBox"
+					param = "table[
+						$id = 'debugChance_resultOnly',
+						$checked = if md.kuertee_fft_config.Config.$debugChance_resultOnly == 100 then true else false,
+						$col = 2,
+						$width = 'Helper.standardButtonHeight', $height = 'Helper.standardButtonHeight',
+						$bgColor = 'Helper.color.red',
+						$onClick = OnSMOCheckboxChange
+					]"/>
+			</actions>
+		</cue>
+		<cue name="OnSMOSliderChange" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<!-- <debug_text text="event.param.$id + ' to: ' + @event.param.$value + ' or ' + @event.param.$checked" /> -->
+				<debug_text text="event.param.$id + ' pre: ' + md.kuertee_fft_config.Config.{'$' + event.param.$id}" chance="md.kuertee_fft_config.Config.$debugChance"/>
+				<set_value name="md.kuertee_fft_config.Config.{'$' + event.param.$id}" exact="event.param.$value" />
+				<debug_text text="event.param.$id + ' post: ' + md.kuertee_fft_config.Config.{'$' + event.param.$id}" chance="md.kuertee_fft_config.Config.$debugChance"/>
+				<cancel_cue cue = "this" />
+			</actions>
+		</cue>
+		<cue name="OnSMOCheckboxChange" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<!-- <debug_text text="event.param.$id + ' to: ' + @event.param.$value + ' or ' + @event.param.$checked" /> -->
+				<debug_text text="event.param.$id + ' pre: ' + md.kuertee_fft_config.Config.{'$' + event.param.$id}" chance="[md.kuertee_fft_config.Config.$debugChance, md.kuertee_fft_config.Config.$debugChance].max"/>
+				<do_if value="event.param.$id == 'debugChance'">
+					<set_value name="md.kuertee_fft_config.Config.{'$' + event.param.$id}" exact="if event.param.$checked then 100 else 0" />
+					<signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu"/>
+				</do_if>
+				<do_elseif value="event.param.$id == 'debugChance_verbose'">
+					<set_value name="md.kuertee_fft_config.Config.{'$' + event.param.$id}" exact="if event.param.$checked then 100 else 0" />
+					<signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu"/>
+				</do_elseif>
+				<do_elseif value="event.param.$id == 'debugChance_resultOnly'">
+					<set_value name="md.kuertee_fft_config.Config.{'$' + event.param.$id}" exact="if event.param.$checked then 100 else 0" />
+					<signal_cue_instantly cue="md.Simple_Menu_API.Refresh_Menu"/>
+				</do_elseif>
+				<do_else>
+					<set_value name="md.kuertee_fft_config.Config.{'$' + event.param.$id}" exact="event.param.$checked" />
+				</do_else>
+				<debug_text text="event.param.$id + ' post: ' + md.kuertee_fft_config.Config.{'$' + event.param.$id}" chance="[md.kuertee_fft_config.Config.$debugChance, md.kuertee_fft_config.Config.$debugChance].max"/>
+				<cancel_cue cue = "this" />
+			</actions>
+		</cue>
+		<cue name="onDropDownConfirmed" instantiate="true">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<debug_text text="event.param.$id + ' to: ' + @event.param.$option.$text + ' value: ' + @event.param.$option.$value" chance="md.kuertee_fft_config.Config.$debugChance" />
+				<debug_text text="event.param.$id + ' pre: ' + md.kuertee_fft_config.Config.{'$' + event.param.$id}" chance="md.kuertee_fft_config.Config.$debugChance"/>
+				<set_value name="md.kuertee_fft_config.Config.{'$' + event.param.$id}" exact="(event.param.$option.$value)" />
+				<debug_text text="event.param.$id + ' post: ' + md.kuertee_fft_config.Config.{'$' + event.param.$id}" chance="md.kuertee_fft_config.Config.$debugChance"/>
+				<cancel_cue cue = "this" />
+			</actions>
+		</cue>
+	</cues>
+</mdscript>

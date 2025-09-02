@@ -1,0 +1,1503 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="Upb_Bail" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+
+        <cue name="SectionHandler_OtherUpbMods" instantiate="true" >
+            <conditions>
+                <check_any>
+                    <event_conversation_next_section sectionprefix="upb_" />
+                    <event_conversation_returned_to_section sectionprefix="upb_" />
+                </check_any>
+            </conditions>
+            <actions>
+                <set_value name="$tPg" exact="global.$upbBailDefault.$tPg" />
+
+                <do_if value="event.param == 'upb_MODs'" comment="ilerde sadece bu mod un satırı kalacak">
+                    <add_player_choice_sub text="readtext.{$tPg}.{1010}" section="upb_Bail_Mainmenu" position="top_right" comment="upb Bail"/>
+                    <add_player_choice_return position="bottom_right" text="'Back'"/>
+                </do_if>
+                <!-- ilerde sadece bu modun upb_.._MainMenu denetimi kalacak  -->
+                <do_elseif value="event.param == 'upb_Repair_Mainmenu'">
+                    <add_player_choice text="readtext.{$tPg}.{1070}" section="upb_Repair_underConstruct" selectable="false" position="top_left" />
+                    <add_player_choice_return position="bottom_right" text="'Back'"/>
+                </do_elseif>
+                <do_elseif value="event.param == 'upb_SRE_Mainmenu'">
+                    <add_player_choice text="readtext.{$tPg}.{1070}" section="upb_SRE_underConstruct" selectable="false" position="top_left" />
+                    <add_player_choice_return position="bottom_right" text="'Back'"/>
+                </do_elseif>
+
+                <do_elseif value="event.param == 'upb_Bail_Mainmenu'">
+                    <do_if value="event.param2 == 'bailed' and event.name == 'event_conversation_next_section'">
+                        <run_actions ref="md.Upb_Bail.Print_Logbook_CleanUpShips" />
+                        <play_sound object="player.entity" sound="'notification_danger'" />
+                    </do_if>
+                    <do_elseif value="event.param2 == 'abandoned' and event.name == 'event_conversation_next_section'">
+                        <run_actions ref="md.Upb_Bail.Print_Logbook_AbandonedShips" />
+                        <play_sound object="player.entity" sound="'notification_danger'" />
+                    </do_elseif>
+                    <add_player_choice_sub text="readtext.{$tPg}.{1020} + ' ' + readtext.{$tPg}.{1030}" section="upb_Bail_Manager" position="top_left" />
+                    <add_player_choice_sub text="readtext.{$tPg}.{1060}" section="upb_Bail_Options" position="top_right" />
+                    <!-- 
+                    <add_player_choice text="'Send Bailed Ships to Logbook'" section="upb_Bail_Mainmenu" choiceparam="'bailed'" position="left" />
+                    <add_player_choice text="'Send Abandoned Ships to Logbook'" section="upb_Bail_Mainmenu" choiceparam="'abandoned'" position="right" />
+                    -->
+                    <add_player_choice_return position="bottom_right" text="'Back'"/>
+                </do_elseif>
+
+                <do_elseif value="event.param == 'upb_Bail_Manager'">
+                    <run_actions ref="md.Upb_Bail.SetInformationsToPlayer" >
+                        <param name="OpenLuaMenu" value="true"/>
+                    </run_actions>
+                </do_elseif>
+
+                <do_elseif value="event.param == 'upb_Bail_Options'">
+                    <run_actions ref="md.Upb_Bail.SetInformationsToPlayer" >
+                        <param name="OpenLuaMenu" value="true"/>
+                        <param name="TableMode" value="'options'" />
+                    </run_actions>
+                </do_elseif>
+
+            </actions>
+        </cue>
+        
+        <cue name="OnLuaLoaderReady">
+            <conditions>
+                <event_ui_triggered screen="'Upb_Lua_Loader'" control="'Ready'" />
+            </conditions>
+            <actions>
+                <debug_text text="' Running code[raise_lua_event] name:[Upb_Lua_Loader.Load] param:[extensions.upb_bail.lua_bailmenu]  event.name = %s'.[event.name]" />
+                <raise_lua_event name="'Upb_Lua_Loader.Load'" param="'extensions.upb_bail.lua_bailmenu'"/>
+            </actions>
+        </cue>
+	    <cue name="OnLuaLoaderReadyCompleted">
+            <conditions>
+                <event_ui_triggered screen="'Upb_Lua_Loader'" 
+                    control="'Loaded extensions.upb_bail.lua_bailmenu'" />
+            </conditions>
+            <actions>
+                <debug_text text="'lua_bailmenu.lua yüklemesi TAMAMLANDI...'" />
+                <reset_cue cue="OnLuaLoaderReady" />
+                <reset_cue cue="this" />
+                <!-- Custom Game Editor gibi load olayı hemen sonrasında sisteme eklenebilecek değişiklikler için kontrol ediyoruz -->
+                <run_actions ref="CheckAbandonedShipList"/>
+                <include_actions ref="CheckingCleanupShips" />
+            </actions>
+        </cue>
+        
+        <cue name="Received_from_LUA" instantiate="true">
+            <conditions>
+                <event_ui_triggered screen="'BailMenu'" />
+            </conditions>
+            <actions>
+                <do_if value="event.param2 == 'upbbail.settings.set'">
+                    <set_value name="global.$upbBail" exact="event.param3.{1}" />
+                    <debug_text text="'Lua_bailmenuden ayarlar alındı... ' + event.param3.{2}" chance="global.$upbBail.$Debug.$Chance"/> 
+                    <!-- 
+                    <run_actions ref="DebugPrintValue">
+                        <param name="value" value="global.$upbBail" />
+                        <param name="recursiondepth" value="3" />
+                    </run_actions>
+                    -->
+                </do_if>
+
+                <do_elseif value="event.param2 == 'upbbail.Files.resetTime.set'">
+                    <set_value name="global.$upbBail.$Debug.$Files.$resetTime" exact="event.param3" />
+
+                    <set_value name="BailMain.$DebugFilesResetTime" exact="(global.$upbBail.$Debug.$Files.$resetTime)min"/>
+                    <include_actions ref="ResetFiles" />
+
+                    <debug_text text="'Resetting cue.Reset_DebugFiles... age = %s, lastrun = %s, [ checktime = %s second ]  ResetTime value = %s'.[
+                    player.age, BailMain.$FilesResetLastRun, BailMain.$FilesResetLastRun + BailMain.$DebugFilesResetTime , global.$upbBail.$Debug.$Files.$resetTime
+                    ]" chance="global.$upbBail.$Debug.$Chance"/> 
+                    
+                    <reset_cue cue="Reset_DebugFiles" />
+
+                </do_elseif>
+                
+                <do_elseif value="event.param2 == 'upbbail.settings.reset'">
+                    <signal_cue_instantly cue="BailSettings" param="'Reset Settings'" />
+                    
+                    <debug_text text="'Lua_bailmenu settings reset... '.[]" chance="global.$upbBail.$Debug.$Chance"/> 
+                    <!-- 
+                    <run_actions ref="DebugPrintValue">
+                        <param name="value" value="global.$upbBail" />
+                        <param name="recursiondepth" value="3" />
+                    </run_actions>
+                    -->
+                </do_elseif>
+                
+                <do_elseif value="event.param2 == 'upbbail.show_on_map_target'">
+                    <debug_text text="'lua_bailmenuden map konumlaması istendi... %s %s (%s) '.[event.param3.knownname, event.param3.idcode, event.param3]" chance="global.$upbBail.$Debug.$Chance"/> 
+                    <open_menu menu="MapMenu" param="[0, 0, true, event.param3]" />
+                </do_elseif>
+
+                <do_elseif value="event.param2 == 'upbbail.destroy_target'">
+                    <debug_text text="'lua_bailmenuden destroy target istendi... %s %s (%s) '.[event.param3.knownname, event.param3.idcode, event.param3]" chance="global.$upbBail.$Debug.$Chance"/> 
+                    <do_all exact="BailMain.$abandonedShipList.count" counter="$i">
+                        <set_value name="$entry" exact="md.Upb_Bail.BailMain.$abandonedShipList.{$i}" />
+                        <do_if value="$entry.$object == event.param3">
+                            <debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir"
+                            chance="global.$upbBail.$Debug.$LogChances.$Abandoned"
+                            append="global.$upbBail.$Debug.$isBailedShipsLogAppend"
+                            text="'%s === Manual Destroyed Ship %s %s'.[$i, $entry.$object.idcode, $entry.$object.name]  " />
+                            <destroy_object object="$entry.$object" explosion="false" />
+                            <remove_value name="BailMain.$abandonedShipList.{$i}" />
+                            <run_actions ref="Print_Debug_AbandonedShips" />
+                            <break />
+                        </do_if>
+                    </do_all>
+                </do_elseif>
+                
+                <do_elseif value="event.param2 == ''">
+                    <!-- Opened menu-->
+                </do_elseif>
+
+                <do_elseif value="event.param2 == 'menu_close'">
+                    <!-- Closed menu-->
+                    <remove_value name="player.entity.$md_AbandonedShipList" />
+                    <remove_value name="player.entity.$md_upbBail_DataChanged" />
+                    <remove_value name="player.entity.$BailMenu_Flag" />
+                    <signal_cue_instantly cue="md.Upb_Bail.CalculateCleanUpShips" param="[ true, true ]"/>
+                </do_elseif>
+
+                <do_else>
+                    <debug_text text="'Unknown ControlID &lt;%s&gt;'.[event.param2]" />
+                </do_else>
+
+            </actions>
+        </cue>
+        
+        <library name="SetInformationsToPlayer" purpose="run_actions">
+            <params>
+                <param name="OpenLuaMenu" default="true"/>
+                <param name="TableMode" default="'manager'" />
+            </params>
+            <actions>
+                <signal_cue_instantly cue="md.Upb_Bail.CalculateCleanUpShips" param="[ false, true ]"/>
+                <set_value name="player.entity.$md_AbandonedShipList" exact="md.Upb_Bail.BailMain.$abandonedShipList" chance="(($OpenLuaMenu)i or player.entity.$BailMenu_Flag?) * 100"/>
+                <set_value name="player.entity.$md_upbBail_DataChanged" exact="true" chance="(($OpenLuaMenu)i or player.entity.$BailMenu_Flag?) * 100"/>
+                <do_if value="$OpenLuaMenu">
+                    <set_value name="player.entity.$BailMenu_Flag" exact="true" />
+                    <open_conversation_menu menu="BailMenu" param="[0, 0 , [global.$upbBail, global.$upbBailDefault], $TableMode ]" />
+                </do_if>
+            </actions>
+        </library>
+
+
+		<cue name="BailMain" version="4"
+            comment="bu cue adı cue name='BailSettings' den önce geldiği için ve 
+                    yakalama olayları aynı olan cue name='BailMain' ilk önce çalışacak">
+            <conditions>
+                <check_any>
+					<event_cue_signalled />
+                    <event_cue_signalled cue="md.Setup.Start" />
+                    <event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+                </check_any>
+            </conditions>
+            <actions>
+
+                <remove_value name="global.$upbBail" chance="global.$upbBail? * 100" />
+                <run_actions ref="Get_Settings"/>
+
+                <create_list name="$abandonedShipList" />
+                <run_actions ref="CreateAbandonedShipList" result="BailMain.$abandonedShipList"/>
+                
+                <set_value name="$DebugFilesResetTime" exact="(if @global.$upbBail.$Debug.$Files.$resetTime then global.$upbBail.$Debug.$Files.$resetTime else 5)min"/>
+                <include_actions ref="ResetFiles" />
+                <reset_cue cue="Reset_DebugFiles" />
+
+                <show_help duration="7s" custom="'Installed upb Bail'"/>
+                <debug_text text="'INSTALLED upb Bail &lt;%s&gt; param = %s, param2 = %s, param3 = %s'.[event.name, event.param, event.param2, event.param3]" />
+
+            </actions>
+            <!-- lua içinde daha rahat çalışabilmek için table ye yeni keyler ekledik-->
+            <patch sinceversion="1">
+                <debug_text text="'PATCH version 1'.[]" />
+                <signal_cue_instantly cue="md.Upb_Bail.CalculateCleanUpShips" param="[ true, true ]"/>
+                <run_actions ref="Print_Debug_AbandonedShips" >
+                    <param name="debugchance" value="100" />
+                </run_actions>
+                <do_for_each name="$entry" in="$abandonedShipList" counter="$idx">
+                    <set_value name="$entry.$name"      exact="$entry.$object.knownname"/>
+                    <set_value name="$entry.$idcode"    exact="$entry.$object.idcode"/>
+                    <set_value name="$entry.$sectorid"  exact="$entry.$object.sector"/>
+                    <set_value name="$entry.$sector"    exact="$entry.$object.sector.knownname"/>
+                </do_for_each>
+            </patch>
+            <patch sinceversion="2">
+                <debug_text text="'PATCH version 2'.[]" />
+                <include_actions ref="Get_DefaultSettings" />
+
+                <set_value name="global.$upbBail.$class" exact="table[
+                    $ship_s = table[
+                        $validAttacks = table[
+                            $Player = if global.$upbBail.$validPlayerBail? then global.$upbBail.$validPlayerBail else true,
+                            $PlayerOwned = if global.$upbBail.$validPlayerOwnedBail? then global.$upbBail.$validPlayerOwnedBail else true,
+                            $NPC = if global.$upbBail.$validNPCBail? then global.$upbBail.$validNPCBail else true,
+                            $LaserTowers = if global.$upbBail.$validLaserTowers? then global.$upbBail.$validLaserTowers else true,
+                            $AttackOnEquipment = false
+                        ],
+                        $bailcriteria = table[
+                            $shieldpercent = if global.$upbBail.$targetshieldpercentagechk? then global.$upbBail.$targetshieldpercentagechk else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$shieldpercent,
+                            $hullpercent1 = if global.$upbBail.$targethullpercentagechk? then global.$upbBail.$targethullpercentagechk else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$hullpercent1,
+                            $basechance1 = if global.$upbBail.$basechance? then global.$upbBail.$basechance else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$basechance1,
+                            $hullpercent2 = if global.$upbBail.$targethullpercentagechk1? then global.$upbBail.$targethullpercentagechk1 else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$hullpercent2,
+                            $basechance2 = if global.$upbBail.$basechance1? then global.$upbBail.$basechance1 else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$basechance2,
+                            $hullpercent3 = if global.$upbBail.$targethullpercentagechk2? then global.$upbBail.$targethullpercentagechk2 else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$hullpercent3,
+                            $basechance3 = if global.$upbBail.$basechance2? then global.$upbBail.$basechance2 else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$basechance3,
+                            $ejectpercentage = table[
+                                $min = if global.$upbBail.$perejectminpercentageSM? then global.$upbBail.$perejectminpercentageSM else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$ejectpercentage.$min,
+                                $max = if global.$upbBail.$perejectmaxpercentageSM? then global.$upbBail.$perejectmaxpercentageSM else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$ejectpercentage.$max
+                            ],
+                            $critChk = table[
+                                $hullpercent = if global.$upbBail.$crit_hullpercentChk? then global.$upbBail.$crit_hullpercentChk else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$critChk.$hullpercent,
+                                $chance = if global.$upbBail.$crit_chanceChk? then global.$upbBail.$crit_chanceChk else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$critChk.$chance
+                            ],
+                            $nextcapturetimeinc = if global.$upbBail.$nextcapturechanceinc? then global.$upbBail.$nextcapturechanceinc else global.$upbBailDefault.$class.$ship_s.$bailcriteria.$nextcapturetimeinc
+                        ],
+                        $expiretime = if global.$upbBail.$expiretimes.$ship_s? then global.$upbBail.$expiretimes.$ship_s else global.$upbBailDefault.$class.$ship_s.$expiretime,
+                        $reports = table[
+                            $color = if global.$upbBail.$shipsizes.$ship_s? then global.$upbBail.$shipsizes.$ship_s.$color else global.$upbBailDefault.$class.$ship_s.$reports.$color,
+                            $short = if global.$upbBail.$shipsizes.$ship_s? then global.$upbBail.$shipsizes.$ship_s.$short else global.$upbBailDefault.$class.$ship_s.$reports.$short,
+                            $text = if global.$upbBail.$shipsizes.$ship_s? then global.$upbBail.$shipsizes.$ship_s.$text else global.$upbBailDefault.$class.$ship_s.$reports.$text,
+                            $report = if global.$upbBail.$shipsizes.$ship_s? then global.$upbBail.$shipsizes.$ship_s.$report else global.$upbBailDefault.$class.$ship_s.$reports.$report,
+                            $showhelp = if global.$upbBail.$showhelp? then global.$upbBail.$showhelp else global.$upbBailDefault.$class.$ship_s.$reports.$showhelp,
+                            $advsatellites = if global.$upbBail.$advsatellites? then global.$upbBail.$advsatellites else global.$upbBailDefault.$class.$ship_s.$reports.$advsatellites,
+                            $nonesatellites = if global.$upbBail.$nonesatellites? then global.$upbBail.$nonesatellites else global.$upbBailDefault.$class.$ship_s.$reports.$nonesatellites,
+                            $soundnotification = if global.$upbBail.$soundnotification? then global.$upbBail.$soundnotification else global.$upbBailDefault.$class.$ship_s.$reports.$soundnotification,
+                            $soundnotificationid = if global.$upbBail.$soundnotificationid? then global.$upbBail.$soundnotificationid else global.$upbBailDefault.$class.$ship_s.$reports.$soundnotificationid,
+                            $shownotification = if global.$upbBail.$shownotification? then global.$upbBail.$shownotification else global.$upbBailDefault.$class.$ship_s.$reports.$shownotification,
+                            $logbook = global.$upbBailDefault.$class.$ship_s.$reports.$logbook
+                        ],
+                        $removecargo = if global.$upbBail.$removecargo? then global.$upbBail.$removecargo else global.$upbBailDefault.$class.$ship_s.$removecargo,
+                        $repairhull = if global.$upbBail.$fullrepairhull? then global.$upbBail.$fullrepairhull else global.$upbBailDefault.$class.$ship_s.$repairhull,
+                        $repairshield = global.$upbBailDefault.$class.$ship_s.$repairshield,
+                        $repairequipments = if global.$upbBail.$repairequipments? then global.$upbBail.$repairequipments else global.$upbBailDefault.$class.$ship_s.$repairequipments
+                    ],
+                    $ship_m = table[
+                        $validAttacks = table[
+                            $Player = if global.$upbBail.$validPlayerBail? then global.$upbBail.$validPlayerBail else true,
+                            $PlayerOwned = if global.$upbBail.$validPlayerOwnedBail? then global.$upbBail.$validPlayerOwnedBail else true,
+                            $NPC = if global.$upbBail.$validNPCBail? then global.$upbBail.$validNPCBail else true,
+                            $LaserTowers = if global.$upbBail.$validLaserTowers? then global.$upbBail.$validLaserTowers else true,
+                            $AttackOnEquipment = false
+                        ],
+                        $bailcriteria = table[
+                            $shieldpercent = if global.$upbBail.$targetshieldpercentagechk? then global.$upbBail.$targetshieldpercentagechk else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$shieldpercent,
+                            $hullpercent1 = if global.$upbBail.$targethullpercentagechk? then global.$upbBail.$targethullpercentagechk else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$hullpercent1,
+                            $basechance1 = if global.$upbBail.$basechance? then global.$upbBail.$basechance else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$basechance1,
+                            $hullpercent2 = if global.$upbBail.$targethullpercentagechk1? then global.$upbBail.$targethullpercentagechk1 else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$hullpercent2,
+                            $basechance2 = if global.$upbBail.$basechance1? then global.$upbBail.$basechance1 else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$basechance2,
+                            $hullpercent3 = if global.$upbBail.$targethullpercentagechk2? then global.$upbBail.$targethullpercentagechk2 else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$hullpercent3,
+                            $basechance3 = if global.$upbBail.$basechance2? then global.$upbBail.$basechance2 else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$basechance3,
+                            $ejectpercentage = table[
+                                $min = if global.$upbBail.$perejectminpercentageSM? then global.$upbBail.$perejectminpercentageSM else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$ejectpercentage.$min,
+                                $max = if global.$upbBail.$perejectmaxpercentageSM? then global.$upbBail.$perejectmaxpercentageSM else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$ejectpercentage.$max
+                            ],
+                            $critChk = table[
+                                $hullpercent = if global.$upbBail.$crit_hullpercentChk? then global.$upbBail.$crit_hullpercentChk else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$critChk.$hullpercent,
+                                $chance = if global.$upbBail.$crit_chanceChk? then global.$upbBail.$crit_chanceChk else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$critChk.$chance
+                            ],
+                            $nextcapturetimeinc = if global.$upbBail.$nextcapturechanceinc? then global.$upbBail.$nextcapturechanceinc else global.$upbBailDefault.$class.$ship_m.$bailcriteria.$nextcapturetimeinc
+                        ],
+                        $expiretime = if global.$upbBail.$expiretimes.$ship_m? then global.$upbBail.$expiretimes.$ship_m else global.$upbBailDefault.$class.$ship_m.$expiretime,
+                        $reports = table[
+                            $color = if global.$upbBail.$shipsizes.$ship_m? then global.$upbBail.$shipsizes.$ship_m.$color else global.$upbBailDefault.$class.$ship_m.$reports.$color,
+                            $short = if global.$upbBail.$shipsizes.$ship_m? then global.$upbBail.$shipsizes.$ship_m.$short else global.$upbBailDefault.$class.$ship_m.$reports.$short,
+                            $text = if global.$upbBail.$shipsizes.$ship_m? then global.$upbBail.$shipsizes.$ship_m.$text else global.$upbBailDefault.$class.$ship_m.$reports.$text,
+                            $report = if global.$upbBail.$shipsizes.$ship_m? then global.$upbBail.$shipsizes.$ship_m.$report else global.$upbBailDefault.$class.$ship_m.$reports.$report,
+                            $showhelp = if global.$upbBail.$showhelp? then global.$upbBail.$showhelp else global.$upbBailDefault.$class.$ship_m.$reports.$showhelp,
+                            $advsatellites = if global.$upbBail.$advsatellites? then global.$upbBail.$advsatellites else global.$upbBailDefault.$class.$ship_m.$reports.$advsatellites,
+                            $nonesatellites = if global.$upbBail.$nonesatellites? then global.$upbBail.$nonesatellites else global.$upbBailDefault.$class.$ship_m.$reports.$nonesatellites,
+                            $soundnotification = if global.$upbBail.$soundnotification? then global.$upbBail.$soundnotification else global.$upbBailDefault.$class.$ship_m.$reports.$soundnotification,
+                            $soundnotificationid = if global.$upbBail.$soundnotificationid? then global.$upbBail.$soundnotificationid else global.$upbBailDefault.$class.$ship_m.$reports.$soundnotificationid,
+                            $shownotification = if global.$upbBail.$shownotification? then global.$upbBail.$shownotification else global.$upbBailDefault.$class.$ship_m.$reports.$shownotification,
+                            $logbook = global.$upbBailDefault.$class.$ship_m.$reports.$logbook
+                        ],
+                        $removecargo = if global.$upbBail.$removecargo? then global.$upbBail.$removecargo else global.$upbBailDefault.$class.$ship_m.$removecargo,
+                        $repairhull = if global.$upbBail.$fullrepairhull? then global.$upbBail.$fullrepairhull else global.$upbBailDefault.$class.$ship_m.$repairhull,
+                        $repairshield = global.$upbBailDefault.$class.$ship_m.$repairshield,
+                        $repairequipments = if global.$upbBail.$repairequipments? then global.$upbBail.$repairequipments else global.$upbBailDefault.$class.$ship_m.$repairequipments
+                    ],
+                    $ship_l = table[
+                        $validAttacks = table[
+                            $Player = if global.$upbBail.$validPlayerBail? then global.$upbBail.$validPlayerBail else true,
+                            $PlayerOwned = if global.$upbBail.$validPlayerOwnedBail? then global.$upbBail.$validPlayerOwnedBail else true,
+                            $NPC = if global.$upbBail.$validNPCBail? then global.$upbBail.$validNPCBail else true,
+                            $LaserTowers = if global.$upbBail.$validLaserTowers? then global.$upbBail.$validLaserTowers else true,
+                            $AttackOnEquipment = true
+                        ],
+                        $bailcriteria = table[
+                            $shieldpercent = if global.$upbBail.$targetshieldpercentagechk? then global.$upbBail.$targetshieldpercentagechk else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$shieldpercent,
+                            $hullpercent1 = if global.$upbBail.$targethullpercentagechk? then global.$upbBail.$targethullpercentagechk else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$hullpercent1,
+                            $basechance1 = if global.$upbBail.$basechance? then global.$upbBail.$basechance else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$basechance1,
+                            $hullpercent2 = if global.$upbBail.$targethullpercentagechk1? then global.$upbBail.$targethullpercentagechk1 else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$hullpercent2,
+                            $basechance2 = if global.$upbBail.$basechance1? then global.$upbBail.$basechance1 else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$basechance2,
+                            $hullpercent3 = if global.$upbBail.$targethullpercentagechk2? then global.$upbBail.$targethullpercentagechk2 else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$hullpercent3,
+                            $basechance3 = if global.$upbBail.$basechance2? then global.$upbBail.$basechance2 else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$basechance3,
+                            $ejectpercentage = table[
+                                $min = if global.$upbBail.$perejectminpercentageLXL? then global.$upbBail.$perejectminpercentageLXL else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$ejectpercentage.$min,
+                                $max = if global.$upbBail.$perejectmaxpercentageLXL? then global.$upbBail.$perejectmaxpercentageLXL else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$ejectpercentage.$max
+                            ],
+                            $critChk = table[
+                                $hullpercent = global.$upbBailDefault.$class.$ship_l.$bailcriteria.$critChk.$hullpercent,
+                                $chance = global.$upbBailDefault.$class.$ship_l.$bailcriteria.$critChk.$chance
+                            ],
+                            $nextcapturetimeinc = if global.$upbBail.$nextcapturechanceinc? then global.$upbBail.$nextcapturechanceinc else global.$upbBailDefault.$class.$ship_l.$bailcriteria.$nextcapturetimeinc
+                        ],
+                        $expiretime = if global.$upbBail.$expiretimes.$ship_l? then global.$upbBail.$expiretimes.$ship_l else global.$upbBailDefault.$class.$ship_l.$expiretime,
+                        $reports = table[
+                            $color = if global.$upbBail.$shipsizes.$ship_l? then global.$upbBail.$shipsizes.$ship_l.$color else global.$upbBailDefault.$class.$ship_l.$reports.$color,
+                            $short = if global.$upbBail.$shipsizes.$ship_l? then global.$upbBail.$shipsizes.$ship_l.$short else global.$upbBailDefault.$class.$ship_l.$reports.$short,
+                            $text = if global.$upbBail.$shipsizes.$ship_l? then global.$upbBail.$shipsizes.$ship_l.$text else global.$upbBailDefault.$class.$ship_l.$reports.$text,
+                            $report = if global.$upbBail.$shipsizes.$ship_l? then global.$upbBail.$shipsizes.$ship_l.$report else global.$upbBailDefault.$class.$ship_l.$reports.$report,
+                            $showhelp = if global.$upbBail.$showhelp? then global.$upbBail.$showhelp else global.$upbBailDefault.$class.$ship_l.$reports.$showhelp,
+                            $advsatellites = if global.$upbBail.$advsatellites? then global.$upbBail.$advsatellites else global.$upbBailDefault.$class.$ship_l.$reports.$advsatellites,
+                            $nonesatellites = if global.$upbBail.$nonesatellites? then global.$upbBail.$nonesatellites else global.$upbBailDefault.$class.$ship_l.$reports.$nonesatellites,
+                            $soundnotification = if global.$upbBail.$soundnotification? then global.$upbBail.$soundnotification else global.$upbBailDefault.$class.$ship_l.$reports.$soundnotification,
+                            $soundnotificationid = if global.$upbBail.$soundnotificationid? then global.$upbBail.$soundnotificationid else global.$upbBailDefault.$class.$ship_l.$reports.$soundnotificationid,
+                            $shownotification = if global.$upbBail.$shownotification? then global.$upbBail.$shownotification else global.$upbBailDefault.$class.$ship_l.$reports.$shownotification,
+                            $logbook = global.$upbBailDefault.$class.$ship_l.$reports.$logbook
+                        ],
+                        $removecargo = if global.$upbBail.$removecargo? then global.$upbBail.$removecargo else global.$upbBailDefault.$class.$ship_l.$removecargo,
+                        $repairhull = if global.$upbBail.$fullrepairhull? then global.$upbBail.$fullrepairhull else global.$upbBailDefault.$class.$ship_l.$repairhull,
+                        $repairshield = global.$upbBailDefault.$class.$ship_l.$repairshield,
+                        $repairequipments = if global.$upbBail.$repairequipments? then global.$upbBail.$repairequipments else global.$upbBailDefault.$class.$ship_l.$repairequipments
+                    ],
+                    $ship_xl = table[
+                        $validAttacks = table[
+                            $Player = if global.$upbBail.$validPlayerBail? then global.$upbBail.$validPlayerBail else true,
+                            $PlayerOwned = if global.$upbBail.$validPlayerOwnedBail? then global.$upbBail.$validPlayerOwnedBail else true,
+                            $NPC = if global.$upbBail.$validNPCBail? then global.$upbBail.$validNPCBail else true,
+                            $LaserTowers = if global.$upbBail.$validLaserTowers? then global.$upbBail.$validLaserTowers else true,
+                            $AttackOnEquipment = false
+                        ],
+                        $bailcriteria = table[
+                            $shieldpercent = if global.$upbBail.$targetshieldpercentagechk? then global.$upbBail.$targetshieldpercentagechk else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$shieldpercent,
+                            $hullpercent1 = if global.$upbBail.$targethullpercentagechk? then global.$upbBail.$targethullpercentagechk else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$hullpercent1,
+                            $basechance1 = if global.$upbBail.$basechance? then global.$upbBail.$basechance else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$basechance1,
+                            $hullpercent2 = if global.$upbBail.$targethullpercentagechk1? then global.$upbBail.$targethullpercentagechk1 else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$hullpercent2,
+                            $basechance2 = if global.$upbBail.$basechance1? then global.$upbBail.$basechance1 else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$basechance2,
+                            $hullpercent3 = if global.$upbBail.$targethullpercentagechk2? then global.$upbBail.$targethullpercentagechk2 else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$hullpercent3,
+                            $basechance3 = if global.$upbBail.$basechance2? then global.$upbBail.$basechance2 else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$basechance3,
+                            $ejectpercentage = table[
+                                $min = if global.$upbBail.$perejectminpercentageLXL? then global.$upbBail.$perejectminpercentageLXL else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$ejectpercentage.$min,
+                                $max = if global.$upbBail.$perejectmaxpercentageLXL? then global.$upbBail.$perejectmaxpercentageLXL else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$ejectpercentage.$max
+                            ],
+                            $critChk = table[
+                                $hullpercent = global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$critChk.$hullpercent,
+                                $chance = global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$critChk.$chance
+                            ],
+                            $nextcapturetimeinc = if global.$upbBail.$nextcapturechanceinc? then global.$upbBail.$nextcapturechanceinc else global.$upbBailDefault.$class.$ship_xl.$bailcriteria.$nextcapturetimeinc
+                        ],
+                        $expiretime = if global.$upbBail.$expiretimes.$ship_xl? then global.$upbBail.$expiretimes.$ship_xl else global.$upbBailDefault.$class.$ship_xl.$expiretime,
+                        $reports = table[
+                            $color = if global.$upbBail.$shipsizes.$ship_xl? then global.$upbBail.$shipsizes.$ship_xl.$color else global.$upbBailDefault.$class.$ship_xl.$reports.$color,
+                            $short = if global.$upbBail.$shipsizes.$ship_xl? then global.$upbBail.$shipsizes.$ship_xl.$short else global.$upbBailDefault.$class.$ship_xl.$reports.$short,
+                            $text = if global.$upbBail.$shipsizes.$ship_xl? then global.$upbBail.$shipsizes.$ship_xl.$text else global.$upbBailDefault.$class.$ship_xl.$reports.$text,
+                            $report = if global.$upbBail.$shipsizes.$ship_xl? then global.$upbBail.$shipsizes.$ship_xl.$report else global.$upbBailDefault.$class.$ship_xl.$reports.$report,
+                            $showhelp = if global.$upbBail.$showhelp? then global.$upbBail.$showhelp else global.$upbBailDefault.$class.$ship_xl.$reports.$showhelp,
+                            $advsatellites = if global.$upbBail.$advsatellites? then global.$upbBail.$advsatellites else global.$upbBailDefault.$class.$ship_xl.$reports.$advsatellites,
+                            $nonesatellites = if global.$upbBail.$nonesatellites? then global.$upbBail.$nonesatellites else global.$upbBailDefault.$class.$ship_xl.$reports.$nonesatellites,
+                            $soundnotification = if global.$upbBail.$soundnotification? then global.$upbBail.$soundnotification else global.$upbBailDefault.$class.$ship_xl.$reports.$soundnotification,
+                            $soundnotificationid = if global.$upbBail.$soundnotificationid? then global.$upbBail.$soundnotificationid else global.$upbBailDefault.$class.$ship_xl.$reports.$soundnotificationid,
+                            $shownotification = if global.$upbBail.$shownotification? then global.$upbBail.$shownotification else global.$upbBailDefault.$class.$ship_xl.$reports.$shownotification,
+                            $logbook = global.$upbBailDefault.$class.$ship_xl.$reports.$logbook
+                        ],
+                        $removecargo = if global.$upbBail.$removecargo? then global.$upbBail.$removecargo else global.$upbBailDefault.$class.$ship_xl.$removecargo,
+                        $repairhull = if global.$upbBail.$fullrepairhull? then global.$upbBail.$fullrepairhull else global.$upbBailDefault.$class.$ship_xl.$repairhull,
+                        $repairshield = global.$upbBailDefault.$class.$ship_xl.$repairshield,
+                        $repairequipments = if global.$upbBail.$repairequipments? then global.$upbBail.$repairequipments else global.$upbBailDefault.$class.$ship_xl.$repairequipments
+                    ]
+                ]" />
+                
+                <remove_value name="global.$upbBailDefault.$shipsizes" />
+                <remove_value name="global.$upbBail.$shipsizes" />
+
+                <remove_value name="global.$upbBailDefault.$validPlayerBail" />
+                <remove_value name="global.$upbBailDefault.$validPlayerOwnedBail" />
+                <remove_value name="global.$upbBailDefault.$validNPCBail" />
+                <remove_value name="global.$upbBailDefault.$validLaserTowers" />
+
+                <remove_value name="global.$upbBail.$validPlayerBail" />
+                <remove_value name="global.$upbBail.$validPlayerOwnedBail" />
+                <remove_value name="global.$upbBail.$validNPCBail" />
+                <remove_value name="global.$upbBail.$validLaserTowers" />
+
+                <remove_value name="global.$upbBailDefault.$targetshieldpercentagechk" />
+                <remove_value name="global.$upbBailDefault.$targethullpercentagechk" />
+                <remove_value name="global.$upbBailDefault.$basechance" />
+                <remove_value name="global.$upbBailDefault.$targethullpercentagechk1" />
+                <remove_value name="global.$upbBailDefault.$basechance1" />
+                <remove_value name="global.$upbBailDefault.$targethullpercentagechk2" />
+                <remove_value name="global.$upbBailDefault.$basechance2" />
+                <remove_value name="global.$upbBailDefault.$perejectminpercentageSM" />
+                <remove_value name="global.$upbBailDefault.$perejectmaxpercentageSM" />
+                <remove_value name="global.$upbBailDefault.$perejectminpercentageLXL" />
+                <remove_value name="global.$upbBailDefault.$perejectmaxpercentageLXL" />
+
+                <remove_value name="global.$upbBail.$targetshieldpercentagechk" />
+                <remove_value name="global.$upbBail.$targethullpercentagechk" />
+                <remove_value name="global.$upbBail.$basechance" />
+                <remove_value name="global.$upbBail.$targethullpercentagechk1" />
+                <remove_value name="global.$upbBail.$basechance1" />
+                <remove_value name="global.$upbBail.$targethullpercentagechk2" />
+                <remove_value name="global.$upbBail.$basechance2" />
+                <remove_value name="global.$upbBail.$perejectminpercentageSM" />
+                <remove_value name="global.$upbBail.$perejectmaxpercentageSM" />
+                <remove_value name="global.$upbBail.$perejectminpercentageLXL" />
+                <remove_value name="global.$upbBail.$perejectmaxpercentageLXL" />
+
+                <remove_value name="global.$upbBailDefault.$crit_hullpercentChk" />
+                <remove_value name="global.$upbBailDefault.$crit_chanceChk" />
+                <remove_value name="global.$upbBailDefault.$nextcapturechanceinc" />
+
+                <remove_value name="global.$upbBail.$crit_hullpercentChk" />
+                <remove_value name="global.$upbBail.$crit_chanceChk" />
+                <remove_value name="global.$upbBail.$nextcapturechanceinc" />
+
+               
+                <remove_value name="global.$upbBailDefault.$expiretimes" />
+                <remove_value name="global.$upbBail.$expiretimes" />
+
+
+                <remove_value name="global.$upbBailDefault.$showhelp" />
+                <remove_value name="global.$upbBailDefault.$advsatellites" />
+                <remove_value name="global.$upbBailDefault.$nonesatellites" />
+                <remove_value name="global.$upbBailDefault.$soundnotification" />
+                <remove_value name="global.$upbBailDefault.$soundnotificationid" />
+                <remove_value name="global.$upbBailDefault.$shownotification" />
+
+                <remove_value name="global.$upbBail.$showhelp" />
+                <remove_value name="global.$upbBail.$advsatellites" />
+                <remove_value name="global.$upbBail.$nonesatellites" />
+                <remove_value name="global.$upbBail.$soundnotification" />
+                <remove_value name="global.$upbBail.$soundnotificationid" />
+                <remove_value name="global.$upbBail.$shownotification" />
+
+                <remove_value name="global.$upbBailDefault.$removecargo" />
+                <remove_value name="global.$upbBailDefault.$fullrepairhull" />
+                <remove_value name="global.$upbBailDefault.$repairequipments" />
+
+                <remove_value name="global.$upbBail.$removecargo" />
+                <remove_value name="global.$upbBail.$fullrepairhull" />
+                <remove_value name="global.$upbBail.$repairequipments" />
+
+                
+                <run_actions ref="TableCopy" result="global.$upbBail.$Debug">
+                    <param name="t" value="global.$upbBailDefault.$Debug" />
+                </run_actions>
+
+            </patch>
+            <patch sinceversion="3">
+                <debug_text text="'PATCH version 3'.[]" />
+                <include_actions ref="Get_DefaultSettings" />
+
+                <run_actions ref="TableCopy" result="global.$upbBail.$Debug">
+                    <param name="t" value="global.$upbBailDefault.$Debug" />
+                </run_actions>
+
+                <run_actions ref="DebugPrintValue">
+                    <param name="value" value="global.$upbBailDefault" />
+                    <param name="recursiondepth" value="4" />
+                    <param name="nodename" value="'global.$upbBailDefault = '" />
+                </run_actions>
+                <run_actions ref="DebugPrintValue">
+                    <param name="value" value="global.$upbBail" />
+                    <param name="recursiondepth" value="4" />
+                    <param name="nodename" value="'global.$upbBail = '" />
+                </run_actions>
+
+            </patch>
+            <patch sinceversion="4">
+                <debug_text text="'PATCH version 4, mod 1.32'.[]" />
+                <include_actions ref="Get_DefaultSettings" />
+                
+                <do_for_each name="$index" valuename="$classKey" in="global.$upbBail.$class">
+                    <set_value name="$classKey.$validAttacks.$Hull"        exact="table[
+                        $Player = if $classKey.$validAttacks.$Player? then $classKey.$validAttacks.$Player else true, 
+                        $PlayerOwned = if $classKey.$validAttacks.$PlayerOwned? then $classKey.$validAttacks.$PlayerOwned else true, 
+                        $NPC = if $classKey.$validAttacks.$NPC? then $classKey.$validAttacks.$NPC else true
+                    ]" />
+                    <remove_value name="$classKey.$validAttacks.$Player" />
+                    <remove_value name="$classKey.$validAttacks.$PlayerOwned" />
+                    <remove_value name="$classKey.$validAttacks.$NPC" />
+
+                    <set_value name="$classKey.$validAttacks.$Equipment"   exact="table[
+                        $Player = if $classKey.$validAttacks.$AttackOnEquipment? then $classKey.$validAttacks.$AttackOnEquipment else false, 
+                        $PlayerOwned = if $classKey.$validAttacks.$AttackOnEquipment? then $classKey.$validAttacks.$AttackOnEquipment else false, 
+                        $NPC = if $classKey.$validAttacks.$AttackOnEquipment? then $classKey.$validAttacks.$AttackOnEquipment else false
+                    ]" />
+                    <remove_value name="$classKey.$validAttacks.$AttackOnEquipment" />
+                </do_for_each>
+                
+                <set_value name="global.$upbBail.$Debug.$Files.$resetTime" exact="global.$upbBailDefault.$Debug.$Files.$resetTime" />
+                <set_value name="$DebugFilesResetTime" exact="(global.$upbBail.$Debug.$Files.$resetTime)min"/>
+                <include_actions ref="ResetFiles" />
+                <reset_cue cue="Reset_DebugFiles" />
+
+                <run_actions ref="DebugPrintValue">
+                    <param name="value" value="global.$upbBailDefault" />
+                    <param name="recursiondepth" value="4" />
+                    <param name="nodename" value="'global.$upbBailDefault = '" />
+                </run_actions>
+                <run_actions ref="DebugPrintValue">
+                    <param name="value" value="global.$upbBail" />
+                    <param name="recursiondepth" value="4" />
+                    <param name="nodename" value="'global.$upbBail = '" />
+                </run_actions>
+
+            </patch>
+            
+            <cues>
+
+                <cue name="CleanUpAbandonedShips" checktime="player.age + 10s" instantiate="true" checkinterval="300s">
+                    <actions>
+                        <include_actions ref="CheckingCleanupShips" />
+                    </actions>
+                </cue>
+
+                <cue name="Reset_DebugFiles" checktime="player.age + BailMain.$DebugFilesResetTime" instantiate="true" checkinterval="15s" >
+                    <conditions>
+                        <check_value value="player.age ge (BailMain.$FilesResetLastRun + BailMain.$DebugFilesResetTime)"/>
+                    </conditions>
+                    <actions>
+                        
+                        <debug_text text="'Debug files resetted last = %s, time = %s'.[BailMain.$FilesResetLastRun, BailMain.$DebugFilesResetTime]" />
+
+                        <include_actions ref="ResetFiles" />
+                        
+                        <run_actions ref="CheckAbandonedShipList" comment="Sadece test ettik. Sorun yoksa liste boş olmalı"/>
+                        <include_actions ref="CheckingCleanupShips" />
+
+                    </actions>
+                </cue>
+                
+            </cues>
+        </cue>
+        
+        <cue name="PlayerChagedSector" instantiate="true">
+            <conditions>
+                <event_object_changed_sector object="player.entity"/>
+            </conditions>
+            <actions>
+                <include_actions ref="CheckingCleanupShips" />
+                <set_value name="player.entity.$md_upbBail_DataChanged" exact="false" chance="player.entity.$BailMenu_Flag? * 100"/>
+                <raise_lua_event name="'UpbBail.playerchangedsector'" chance="player.entity.$BailMenu_Flag? * 100"/>
+            </actions>
+        </cue>
+        
+        <library name="CheckingCleanupShips" purpose="include_actions">
+            <actions>
+                <signal_cue_instantly cue="md.Upb_Bail.CalculateCleanUpShips" param="[ true, true ]"/>
+                <run_actions ref="md.Upb_Bail.Print_Debug_AbandonedShips" />
+            </actions>
+        </library>
+
+        <cue name="CalculateCleanUpShips" instantiate="true" namespace="this">
+            <conditions>
+                <event_cue_signalled />
+            </conditions>
+            <actions>
+                <set_value name="$check_ownerless" exact="if event.param.{1}? then event.param.{1} else true"/>
+                <set_value name="$isPrintDebug" exact="if event.param.{2}? then event.param.{2} else false"/>
+
+                <debug_text text="'C A L C U L A T I N G   C L E A N U P    S H I P S  IS have LIST? %s , count = %s '.[BailMain.$abandonedShipList?, @BailMain.$abandonedShipList.count]" chance="global.$upbBail.$Debug.$Chance"/>
+                <debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir"
+                    chance="if $isPrintDebug then global.$upbBail.$Debug.$LogChances.$Abandoned else 0"
+                    append="global.$upbBail.$Debug.$isBailedShipsLogAppend"
+                    text="player.age + ' ### CALCULATING ABANDONED BAILED SHIPS CLEAN-UP ###' + player.systemtime.{'%F - %X'} " />
+                <do_if value="BailMain.$abandonedShipList?">
+                    <create_list name="$removeindexes" />
+                    <do_all exact="BailMain.$abandonedShipList.count" counter="$i">
+                        <do_if value="BailMain.$abandonedShipList.{$i}.$object.exists">
+                            <do_if value="BailMain.$abandonedShipList.{$i}.$object.owner != faction.ownerless">
+                                <do_if value="$check_ownerless" comment="bail olayı tamamlanmadan ownerless durumuna düşmüyor gemi">
+                                    <set_value name="BailMain.$abandonedShipList.{$i}.$desc" exact="'NEW OWNER'" />
+                                    <debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir"
+                                        chance="if $isPrintDebug then global.$upbBail.$Debug.$LogChances.$Abandoned else 0"
+                                        text="' === Removing from list %s %s in %s | NEW OWNER: %s'.[
+                                            BailMain.$abandonedShipList.{$i}.$object.idcode, BailMain.$abandonedShipList.{$i}.$object.knownname, 
+                                            BailMain.$abandonedShipList.{$i}.$object.sector.knownname, BailMain.$abandonedShipList.{$i}.$object.owner]"
+                                        />
+                                    <append_to_list name="$removeindexes" exact="$i" />
+                                </do_if>
+                            </do_if>
+                            <do_elseif value="not BailMain.$abandonedShipList.{$i}.$object.isoperational">
+                                <set_value name="BailMain.$abandonedShipList.{$i}.$desc" exact="'NOT OPERATIONAL'" />
+                                <debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir"
+                                    chance="if $isPrintDebug then global.$upbBail.$Debug.$LogChances.$Abandoned else 0"
+                                    text="' === Removing from list %s %s in %s | Ship is NOT OPERATIONAL'.[
+                                        BailMain.$abandonedShipList.{$i}.$object.idcode, BailMain.$abandonedShipList.{$i}.$object.knownname, BailMain.$abandonedShipList.{$i}.$object.sector.knownname]"
+                                    />
+                                <append_to_list name="$removeindexes" exact="$i" />
+                            </do_elseif>
+                            <do_elseif value="BailMain.$abandonedShipList.{$i}.$expiretime != null">
+                                <do_if value="(BailMain.$abandonedShipList.{$i}.$expiretime le player.age) and BailMain.$abandonedShipList.{$i}.$object.isoperational and (BailMain.$abandonedShipList.{$i}.$object.owner == faction.ownerless) and (BailMain.$abandonedShipList.{$i}.$object.sector != player.sector)">
+                                    <set_value name="BailMain.$abandonedShipList.{$i}.$desc" exact="'DESTROYING'" />
+                                    <debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir"
+                                    chance="if $isPrintDebug then global.$upbBail.$Debug.$LogChances.$Abandoned else 0"
+                                    text="' === DESTROYING %s %s in %s'.[
+                                        BailMain.$abandonedShipList.{$i}.$object.idcode, BailMain.$abandonedShipList.{$i}.$object.knownname, 
+                                        BailMain.$abandonedShipList.{$i}.$object.sector.knownname]"
+                                    />
+                                    <destroy_object object="BailMain.$abandonedShipList.{$i}.$object" explosion="false" />
+                                    <append_to_list name="$removeindexes" exact="$i" />
+                                    <set_value name="$anyDestroyed" />
+                                </do_if>
+                            </do_elseif>
+                        </do_if>
+                        <do_else>
+                            <set_value name="BailMain.$abandonedShipList.{$i}.$desc" exact="'INVALID OBJECT'" />
+                            <debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir"
+                            chance="if $isPrintDebug then global.$upbBail.$Debug.$LogChances.$Abandoned else 0"
+                            text="' [%s] === INVALID OBJECT &lt;%s&gt; %s %s in %s'.[
+                                $i, BailMain.$abandonedShipList.{$i}.$object,
+                                BailMain.$abandonedShipList.{$i}.$idcode, BailMain.$abandonedShipList.{$i}.$name, 
+                                BailMain.$abandonedShipList.{$i}.$sector]"
+                            />
+                            <append_to_list name="$removeindexes" exact="$i" />
+                        </do_else>
+                    </do_all>
+                    <!-- Clear list entries that were destroyed -->
+                    <set_value name="$removecounter" exact="0" />
+                    <do_all exact="$removeindexes.count" counter="$i">
+                        <set_value name="$removentry" exact="BailMain.$abandonedShipList.{$removeindexes.{$i} - $removecounter}" />
+                        <debug_text text="' Removing (%s %s %s) ... %s '.[$removentry.$name, $removentry.$idcode, $removentry.$sector , $removentry.$desc]" chance="global.$upbBail.$Debug.$Chance"/>
+                        <remove_value name="BailMain.$abandonedShipList.{$removeindexes.{$i} - $removecounter}" />
+                        <set_value name="$removecounter" exact="$removecounter + 1" />
+                    </do_all>
+                    <do_if value="$removecounter gt 0">
+                        <set_value name="player.entity.$md_AbandonedShipList" exact="md.Upb_Bail.BailMain.$abandonedShipList" chance="player.entity.$BailMenu_Flag? * 100"/>
+                        <set_value name="player.entity.$md_upbBail_DataChanged" exact="true" chance="player.entity.$BailMenu_Flag? * 100"/>
+                        <debug_text text="'SEND DATA BAIL SHIP LIST CHANGED... AFTER COUNT = %s'.[@BailMain.$abandonedShipList.count]" chance="global.$upbBail.$Debug.$Chance"/>
+                    </do_if>
+                    <remove_value name="$removeindexes"/>
+                    <remove_value name="$removecounter" />
+                </do_if>
+            
+            </actions>
+        </cue>
+        
+        <library name="Get_Settings" purpose="run_actions">
+            <params>
+                <param name="reset" default="false" />
+            </params>
+            <actions>
+
+                <include_actions ref="Get_DefaultSettings" />
+                <set_value name="$tPg" exact="global.$upbBailDefault.$tPg" />
+
+                <do_if value="( not global.$upbBail? ) or $reset">
+                    <do_if value="$global.$upbBail?">
+                        <show_help duration="7s" custom="readtext.{$tPg}.{1500}"/>
+                    </do_if>
+                    <run_actions ref="TableCopy" result="global.$upbBail">
+                        <param name="t" value="global.$upbBailDefault" />
+                    </run_actions>
+                    <debug_text text="'Bail Globals Is Setting to Defaults'.[]" />
+                </do_if>
+
+                <do_if value="player.entity.$BailMenu_Flag?">
+                    <set_value name="player.entity.$upbBailSettings" exact="[global.$upbBail, global.$upbBailDefault]" />
+                    <raise_lua_event name="'UpbBail.loadsettings'" />
+                </do_if>
+                <!-- 
+                <run_actions ref="DebugPrintValue">
+                    <param name="value" value="global.$upbBail" />
+                    <param name="recursiondepth" value="2" />
+                </run_actions>
+                -->
+            </actions>
+        </library>
+
+
+        <library name="ResetFiles" purpose="include_actions">
+            <actions>
+                
+                <set_value name="BailMain.$FilesResetLastRun" exact="player.age"/>
+
+                <set_value name="$text" exact="'RESET TIME  age = %s, next = %s, (value = %s sec)   %s
+                '.[
+                player.age, BailMain.$FilesResetLastRun + BailMain.$DebugFilesResetTime, BailMain.$DebugFilesResetTime, player.systemtime.{'%F - %X'}
+                ]" />
+
+                <debug_text text="'%s'.[$text]" />
+				<debug_to_file append="false" name="global.$upbBail.$Debug.$Files.$Player" directory="global.$upbBail.$Debug.$LogDir" text="$text" chance="global.$upbBail.$Debug.$LogChances.$Player"/>
+                <debug_to_file append="false" name="global.$upbBail.$Debug.$Files.$PlayerOwned" directory="global.$upbBail.$Debug.$LogDir" text="$text" chance="global.$upbBail.$Debug.$LogChances.$PlayerOwned"/>
+                <debug_to_file append="false" name="global.$upbBail.$Debug.$Files.$NPC" directory="global.$upbBail.$Debug.$LogDir" text="$text" chance="global.$upbBail.$Debug.$LogChances.$NPC"/>
+                <debug_to_file append="false" name="global.$upbBail.$Debug.$Files.$DetectAttacks.$NPC" directory="global.$upbBail.$Debug.$LogDir" text="$text" chance="global.$upbBail.$Debug.$LogChances.$DetectAttacks.$NPC"/>
+                <debug_to_file append="false" name="global.$upbBail.$Debug.$Files.$DetectAttacks.$PlayerOwned" directory="global.$upbBail.$Debug.$LogDir" text="$text" chance="global.$upbBail.$Debug.$LogChances.$DetectAttacks.$PlayerOwned"/>
+
+                <debug_to_file append="false" name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir" text="$text" chance="global.$upbBail.$Debug.$LogChances.$Abandoned"/>
+            </actions>
+        </library>
+
+        <library name="Get_DefaultSettings">
+            <actions>
+
+
+                <set_value name="global.$upbBailDefault" exact="table[]"/>
+                <set_value name="global.$upbBailDefault.$Debug" 
+                    exact="table[
+                        $LogDir                = 'upbBail',
+                        $Files = table[
+                                $Player         = 'Attacks_Player',
+                                $PlayerOwned    = 'Attacks_PlayerOwned',
+                                $NPC            = 'Attacks_NPC',
+                                $Abandoned      = 'AbandonedShips',
+                                $resetTime      = 5,
+                                $DetectAttacks  = table[ $NPC   = 'DetectAttacks_NPC', $PlayerOwned = 'DetectAttacks_PlayerOwned' ]
+                                ],
+                        $LogChances = table[
+                                $Player         = 0,
+                                $PlayerOwned    = 0,
+                                $NPC            = 0,
+                                $Abandoned      = 0,
+                                $DetectAttacks  = table[ $NPC   = 0, $PlayerOwned  = 0 ]
+                                ],
+                        $isBailedShipsLogAppend = true,
+                        $Chance     = 0,
+                        $Deep       = 0
+
+                    ]"/>
+
+                <set_value name="global.$upbBailDefault.$tPg" exact="1134020" />
+
+                <set_value name="global.$upbBailDefault.$class" exact="table[
+                    $ship_s = table[
+                        $validAttacks = table[
+                            $Hull = table[ 
+                                $Player = true, $PlayerOwned = true, $NPC = true 
+                            ],
+                            $Equipment = table[
+                                $Player = false, $PlayerOwned = false, $NPC = false
+                            ],
+                            $LaserTowers = true
+                        ],
+                        $bailcriteria = table[
+                            $shieldpercent = 20,
+                            $hullpercent1 = 75,
+                            $basechance1 = 10,
+                            $hullpercent2 = 40,
+                            $basechance2 = 11,
+                            $hullpercent3 = 10,
+                            $basechance3 = 12,
+                            $ejectpercentage = table[
+                                $min = 10,
+                                $max = 40
+                            ],
+                            $critChk = table[
+                                $hullpercent = 10,
+                                $chance = 5
+                            ],
+                            $nextcapturetimeinc = 5
+                        ],
+                        $expiretime = table[ $min = 10, $max = 360, $start =  30 ],
+                        $reports = table[
+                            $color = '#FF' + '8cfffb' + '#',
+                            $short = 'S',
+                            $text = 'Small', 
+                            $report = false,
+                            $showhelp = false,
+                            $advsatellites = true,
+                            $nonesatellites = false,
+                            $soundnotification = true,
+                            $soundnotificationid = 'notification_bail_created',
+                            $shownotification = true,
+                            $logbook = false
+                        ],
+                        $removecargo = true,
+                        $repairhull = true,
+                        $repairshield = true,
+                        $repairequipments = false
+                    ],
+                    $ship_m = table[
+                        $validAttacks = table[
+                            $Hull = table[ 
+                                $Player = true, $PlayerOwned = true, $NPC = true 
+                            ],
+                            $Equipment = table[
+                                $Player = false, $PlayerOwned = false, $NPC = false
+                            ],
+                            $LaserTowers = true
+                        ],
+                        $bailcriteria = table[
+                            $shieldpercent = 20,
+                            $hullpercent1 = 75,
+                            $basechance1 = 10,
+                            $hullpercent2 = 40,
+                            $basechance2 = 12,
+                            $hullpercent3 = 10,
+                            $basechance3 = 14,
+                            $ejectpercentage = table[
+                                $min = 10,
+                                $max = 40
+                            ],
+                            $critChk = table[
+                                $hullpercent = 8,
+                                $chance = 4
+                            ],
+                            $nextcapturetimeinc = 5
+                        ],
+                        $expiretime = table[ $min = 10, $max = 360, $start =  90 ],
+                        $reports = table[
+                            $color = '#FF' + '3f48cc' + '#',
+                            $short = 'M',
+                            $text = 'Medium',
+                            $report = false,
+                            $showhelp = false,
+                            $advsatellites = true,
+                            $nonesatellites = false,
+                            $soundnotification = true,
+                            $soundnotificationid = 'notification_bail_created',
+                            $shownotification = true,
+                            $logbook = true
+                        ],
+                        $removecargo = true,
+                        $repairhull = true,
+                        $repairshield = true,
+                        $repairequipments = false
+                    ],
+                    $ship_l = table[
+                        $validAttacks = table[
+                            $Hull = table[ 
+                                $Player = true, $PlayerOwned = true, $NPC = true 
+                            ],
+                            $Equipment = table[
+                                $Player = true, $PlayerOwned = false, $NPC = false
+                            ],
+                            $LaserTowers = true
+                        ],
+                        $bailcriteria = table[
+                            $shieldpercent = 20,
+                            $hullpercent1 = 75,
+                            $basechance1 = 10,
+                            $hullpercent2 = 40,
+                            $basechance2 = 15,
+                            $hullpercent3 = 10,
+                            $basechance3 = 20,
+                            $ejectpercentage = table[
+                                $min = 8,
+                                $max = 30
+                            ],
+                            $critChk = table[
+                                $hullpercent = 7,
+                                $chance = 2
+                            ],
+                            $nextcapturetimeinc = 3
+                        ],
+                        $expiretime = table[ $min = 10, $max = 360, $start = 240 ],
+                        $reports = table[
+                            $color = '#FF' + 'ffca18' + '#',
+                            $short = 'L',
+                            $text = 'Large',
+                            $report = true,
+                            $showhelp = true,
+                            $advsatellites = true,
+                            $nonesatellites = false,
+                            $soundnotification = true,
+                            $soundnotificationid = 'notification_bail_created',
+                            $shownotification = true,
+                            $logbook = true
+                        ],
+                        $removecargo = false,
+                        $repairhull = true,
+                        $repairshield = true,
+                        $repairequipments = true
+                    ],
+                    $ship_xl = table[
+                        $validAttacks = table[
+                            $Hull = table[ 
+                                $Player = true, $PlayerOwned = true, $NPC = true 
+                            ],
+                            $Equipment = table[
+                                $Player = true, $PlayerOwned = false, $NPC = false
+                            ],
+                            $LaserTowers = true
+                        ],
+                        $bailcriteria = table[
+                            $shieldpercent = 20,
+                            $hullpercent1 = 75,
+                            $basechance1 = 10,
+                            $hullpercent2 = 40,
+                            $basechance2 = 15,
+                            $hullpercent3 = 10,
+                            $basechance3 = 20,
+                            $ejectpercentage = table[
+                                $min = 8,
+                                $max = 30
+                            ],
+                            $critChk = table[
+                                $hullpercent = 5,
+                                $chance = 1
+                            ],
+                            $nextcapturetimeinc = 3
+                        ],
+                        $expiretime = table[ $min = 10, $max = 360, $start = 360 ],
+                        $reports = table[
+                            $color = '#FF' + 'ff7f27' + '#',
+                            $short = 'XL',
+                            $text = 'X Large',
+                            $report = true,
+                            $showhelp = true,
+                            $advsatellites = true,
+                            $nonesatellites = true,
+                            $soundnotification = true,
+                            $soundnotificationid = 'notification_bail_created',
+                            $shownotification = true,
+                            $logbook = true
+                        ],
+                        $removecargo = false,
+                        $repairhull = true,
+                        $repairshield = true,
+                        $repairequipments = true
+                    ]
+                ]" />
+
+            </actions>
+        </library>
+
+        <cue name="BailSettings" comment="settings olayını cue şeklinde ayarladık. Her load anında geliştirme zamanı default değerlerde ekleme veya çıkarmayı sağlayabiliriz.">
+			<conditions>
+				<check_any>
+					<event_cue_signalled />
+                    <event_cue_signalled cue="md.Setup.Start" />
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+			</conditions>
+            <actions>
+
+                <debug_text text="'SETTINGS %s param %s, param2 %s, param3 %s'.[event.name, event.param, event.param2, event.param3]" />
+                <set_value name="$reset" exact="false" />
+                <do_if value="(event.name == 'event_cue_signalled' and event.param == 'Reset Settings')">
+                    <set_value name="$reset" exact="true" />
+                </do_if>
+
+                <run_actions ref="Get_Settings">
+                    <param name="reset" value="$reset" />
+                </run_actions>
+
+                <include_actions ref="ResetFiles" />
+
+                <run_actions ref="CheckAbandonedShipList" comment="Sadece test ettik. Sorun yoksa liste boş olmalı"/>
+                <include_actions ref="CheckingCleanupShips" />
+                <!-- <run_actions ref="Print_Debug_AbandonedShips" />-->
+
+                <reset_cue cue="this" />
+            </actions>
+        </cue>
+
+        <library name="CreateAbandonedShipList" purpose="run_actions" namespace="this">
+            <actions>
+                <set_value name="$ShipList" exact="[]" />
+                <run_actions ref="GetAbandonedShips" result="$ships" />
+                <do_for_each name="$object" in="$ships">
+                    <run_actions ref="AppendToAbandonedShipList" result="$ShipList">
+                        <param name="ShipList" value="$ShipList" />
+                        <param name="object" value="$object" />
+                        <param name="expiretime" value="null" />
+                    </run_actions>
+                </do_for_each>
+                <return value="$ShipList"/>
+            </actions>
+        </library>
+
+        <library name="AppendToAbandonedShipList" purpose="run_actions" namespace="this">
+            <params>
+                <param name="ShipList" />
+                <param name="object" />
+                <param name="expiretime" default="null" />
+            </params>
+            <actions>
+                
+                <do_if value="typeof $ShipList != datatype.list">
+                    <debug_text text="'check ShipList param.  @fikret'.[]" />
+                    <create_list name="$ShipList" />
+                </do_if>
+                
+                <append_to_list name="$ShipList" exact="table[ 
+                    $object = $object, 
+                    $expiretime = $expiretime, 
+                    $name = $object.knownname, 
+                    $idcode = $object.idcode,
+                    $sectorid = $object.sector,
+                    $sector = $object.sector.knownname
+                    ]"/>
+                
+                <debug_text text="' A P P E N D   to BAILED Ship List %s %s in %s , Count = %s'.[$ShipList.{$ShipList.count}.$name, $ShipList.{$ShipList.count}.$idcode, $ShipList.{$ShipList.count}.$sector, $ShipList.count]" chance="global.$upbBail.$Debug.$Chance"/>
+
+                <set_value name="player.entity.$md_AbandonedShipList" exact="$ShipList" chance="player.entity.$BailMenu_Flag? * 100"/>
+                <raise_lua_event name="'UpbBail.addShip'" chance="player.entity.$BailMenu_Flag? * 100"/>
+
+                <return value="$ShipList" />
+
+            </actions>
+        </library>
+
+        <library name="GetAbandonedShips" purpose="run_actions">
+            <actions>
+                <find_ship name="$AbandonedShips" space="player.galaxy" multiple="true" append="true" >
+                    <match owner="faction.ownerless"/>
+                    <match negate="true" shiptype="shiptype.lasertower"/>
+                    <match negate="true" shiptype="shiptype.xsdrone"/>
+                    <match negate="true" shiptype="shiptype.escapepod"/>
+                    <match negate="true" shiptype="shiptype.police"/>
+                    <match negate="true" shiptype="shiptype.smalldrone"/>
+                </find_ship>
+                <return value="$AbandonedShips"/>
+            </actions>
+        </library>
+
+        <library name="Print_Debug_AbandonedShips"  purpose="run_actions">
+            <params>
+                <param name="debugchance" default="null" />
+            </params>
+            <actions>
+                <do_if value="$debugchance == null">
+                    <set_value name="$debugchance" exact="global.$upbBail.$Debug.$LogChances.$Abandoned"/>
+                </do_if>
+                
+                <debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir"
+                    chance="$debugchance"
+                    append="true"
+                    text="player.age + ' ###           ABANDONED SHIPS            ###' + player.systemtime.{'%F - %X'} "
+                />
+                <do_if value="BailMain.$abandonedShipList?">
+                    <do_all exact="BailMain.$abandonedShipList.count" counter="$i">
+                        <do_if value="BailMain.$abandonedShipList.{$i}.$expiretime == null">
+                            <debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir"
+                            chance="$debugchance"
+                            text="' %s === Ship: %s %s | Sector: %s | Player In Sector: %s '.[
+                                    $i, BailMain.$abandonedShipList.{$i}.$object.idcode, BailMain.$abandonedShipList.{$i}.$object.knownname, 
+                                    BailMain.$abandonedShipList.{$i}.$object.sector.knownname, 
+                                    if (BailMain.$abandonedShipList.{$i}.$object.sector == player.sector) then 'Yes' else 'No'
+                            ]" />
+                        </do_if>
+                        <do_else>
+                            <debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="global.$upbBail.$Debug.$LogDir"
+                            chance="$debugchance"
+                            text="' %s === Ship: %s %s | Sector: %s | Player In Sector: %s | Delete Time: %s (%s mins left)'.[
+                                    $i, BailMain.$abandonedShipList.{$i}.$object.idcode, BailMain.$abandonedShipList.{$i}.$object.knownname, 
+                                    BailMain.$abandonedShipList.{$i}.$object.sector.knownname, 
+                                    if (BailMain.$abandonedShipList.{$i}.$object.sector == player.sector) then 'Yes' else 'No',
+                                    BailMain.$abandonedShipList.{$i}.$expiretime, 
+                                    ((BailMain.$abandonedShipList.{$i}.$expiretime-player.age) / 60)
+                            ]" />
+                        </do_else>
+                    </do_all>
+                </do_if>
+            </actions>
+        </library>
+
+        <library name="CheckAbandonedShipList" purpose="run_actions">
+            <actions>
+                <set_value name="$testdebugchance" exact="100" />
+				<run_actions ref="GetAbandonedShips" result="$allabandoned" />
+                
+                <do_all exact="BailMain.$abandonedShipList.count" counter="$i" >
+                    <set_value name="$object" exact="BailMain.$abandonedShipList.{$i}.$object" />
+                    <set_value name="$is" exact="$allabandoned.indexof.{$object}" />
+                    <do_if value="$is gt 0">
+                        <remove_value name="$allabandoned.{$is}" />
+                        <continue />
+                    </do_if>
+                </do_all>
+                <do_if value="$allabandoned.count gt 0">
+                    <debug_text text="'! ! ! Dahil olamayan abandon gemiler var. Listeye dahil etme işlemi yapılacak..'.[]" />
+
+                    <run_actions ref="DebugPrintValue" chance="$testdebugchance">
+                        <param name="value" value="BailMain.$abandonedShipList" />
+                        <param name="recursiondepth" value="1" />
+                        <param name="nodename" value="'CHECK BEFORE BailMain.$abandonedShipList = '" />
+                    </run_actions>
+
+                    <run_actions ref="DebugPrintValue" chance="$testdebugchance">
+                        <param name="value" value="$allabandoned" />
+                        <param name="recursiondepth" value="1" />
+                        <param name="nodename" value="'BEFORE $allabandoned = '" />
+                    </run_actions>
+                    
+                    <!-- Listeye dahil edilsinler-->
+                    <do_for_each name="$object" in="$allabandoned">
+                        <run_actions ref="AppendToAbandonedShipList" >
+                            <param name="ShipList" value="BailMain.$abandonedShipList" />
+                            <param name="object" value="$object" />
+                            <param name="expiretime" value="null" />
+                        </run_actions>
+                    </do_for_each>
+
+                    <run_actions ref="DebugPrintValue" chance="$testdebugchance">
+                        <param name="value" value="BailMain.$abandonedShipList" />
+                        <param name="recursiondepth" value="1" />
+                        <param name="nodename" value="'AFTER BailMain.$abandonedShipList = '" />
+                    </run_actions>
+                    
+                </do_if>
+            </actions>
+        </library>
+
+        <library name="ShowReport" purpose="run_actions">
+            <params>
+                <param name="object" />
+                <param name="debugFile" />
+                <param name="debugFileChance" />
+            </params>
+            <actions>
+
+                <set_value name="$tPg" exact="global.$upbBailDefault.$tPg" />
+                <set_value name="$classKey" exact="'$' + $object.realclass" />
+
+                <do_if value="global.$upbBail.$class.{$classKey}.$reports.$report">
+
+                    <set_value name="$sound" exact="global.$upbBail.$class.{$classKey}.$reports.$soundnotificationid"/>
+                    <set_value name="$debugDir" exact="global.$upbBail.$Debug.$LogDir" />
+
+                    <find_object owner="faction.player" functional="true" name="$sat" space="$object.sector">
+                        <match_any>
+                            <match macro="macro.eq_arg_satellite_02_macro" />
+                        </match_any>
+                    </find_object>
+                    
+                    <set_value name="$shipnamecolor" exact="'#FF' + '585858' + '#'"/>
+									
+                    <set_value name="$textcolor" exact="'#FF' + '969696' + '#'"/>
+                    <set_value name="$neutralcolor" exact="'#FF' + 'ffffff' + '#'"/>
+                    <set_value name="$hostilecolor" exact="'#FF' + 'd53356' + '#'"/>
+                    
+                    <set_value name="$classcolor" exact="global.$upbBail.$class.{$classKey}.$reports.$color "/>
+                    <set_value name="$classshort" exact="global.$upbBail.$class.{$classKey}.$reports.$short "/>
+                    <set_value name="$ek" exact="'\033%s[\033%s%s\033%s]\033X'.[$textcolor, $classcolor, $classshort, $textcolor]"/>
+
+                    <set_value name="$shipnamecolor" exact="$classcolor"/>
+                    <set_value name="$shipname" exact="'%s \033%s%s (%s)\033X'.[$ek, $shipnamecolor, $object.macro.name, $object.idcode]"/>
+
+                    <set_value name="$sector" exact="$object.sector"/>
+                    <set_value name="$ishostiletome" exact="$sector.ishostileto.{faction.player}" />
+                    
+                    <set_value name="$sectortext" exact="'\033%s%s\033X'.[$textcolor, if $sector.isknown then '' else '' + readtext.{$tPg}.{3010} + ' ' ]"/>
+
+                    <do_if value="$ishostiletome" >
+                        <set_value name="$sectorname" exact="'\033%s%s\033X'.[$hostilecolor, $sector.knownname]"/>
+                    </do_if>
+                    <do_else>
+                        <set_value name="$sectorname" exact="'\033%s%s\033X'.[$neutralcolor, $sector.knownname]"/>
+                    </do_else>
+                
+                    <do_if value="$sat">
+                        <do_if value="global.$upbBail.$class.{$classKey}.$reports.$advsatellites">
+                            <debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'      Advanced Satellite present in sector send log to Player'" append="true" />
+                            <set_value name="$abandontext" exact="readtext.{$tPg}.{4020}" />
+                        </do_if>
+                    </do_if>
+                    <do_else>
+                        <do_if value="global.$upbBail.$class.{$classKey}.$reports.$nonesatellites">
+                            <debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'      No Have Advanced Satellite present in sector send log to Player'" append="true" />
+                            <set_value name="$abandontext" exact="readtext.{$tPg}.{4030}" />
+                        </do_if>
+                    </do_else>
+
+                    <do_if value="$abandontext?">
+
+                        <substitute_text text="$LogMsg" source="readtext.{$tPg}.{4100}">
+                            <replace string="'$INFO$'" with="$abandontext"/>
+                            <replace string="'$SHIP$'" with="$shipname"/>
+                            <replace string="'$SECTOR$'" with="$sectortext + $sectorname "/>
+                        </substitute_text>
+                        <write_to_logbook category="upkeep" title="readtext.{$tPg}.{4010}" text="$LogMsg" interaction="showonmap" object="$object" chance="global.$upbBail.$class.{$classKey}.$reports.$logbook * 100"/>
+
+                        <play_sound object="player.entity" sound="$sound" chance="global.$upbBail.$class.{$classKey}.$reports.$soundnotification * 100"/>
+                        <show_help custom="$LogMsg" duration="5s" chance="global.$upbBail.$class.{$classKey}.$reports.$showhelp * 100" />
+                    </do_if>
+
+                </do_if>
+
+            </actions>
+        </library>
+
+        <!-- <show_notification text="['Test:', 'test value Out Of Ammo', 'Second line', ['second line value Color Test', 255, 192, 126]  ]" sound="notification_generic" /> -->
+        <library name="ShowNotification" purpose="include_actions">
+            <actions>
+                <do_if value="global.$upbBail.$class.{'$'+ $target.realclass}.$reports.$shownotification">
+                    <do_if value="($attacker == player.occupiedship) and $basechance?">
+
+                        <set_value name="$tPg" exact="global.$upbBailDefault.$tPg" />
+
+                        <!-- (($target.people.count)f / ($target.people.capacity)f) lt ((16 - $target.pilot.skill.morale)f / 16.0) -->
+                        <!-- 
+                        <set_value name="$msg1" exact="'   Base+%.2s Crew%.2s HullShield+%.2s Size+%.2s'.[
+                            $basechance, $remainingcrewchance, $hullshieldchance, $sizechance]"/>
+                        <set_value name="$msg2" exact="'   PilotMorale-%.2s'.[$pilotmorale]"/>
+                        -->
+                        <set_value name="$valTagP" exact="' +$VAL$ '"/>
+                        <set_value name="$valTagE" exact="' -$VAL$ '"/>
+                        <set_value name="$colTxtL1" exact="'#FF00aafa#'"/>
+                        <set_value name="$colValL1" exact="'#FF5ac2fb#'"/>
+                        <set_value name="$colTxtL2" exact="'#FFfa3200#'"/>
+                        <set_value name="$colValL2" exact="'#FFed5642#'"/>
+                        
+                        <set_value name="$TxtLine1a" exact="'\033' + $colTxtL1 + readtext.{$tPg}.{3500} + '\033X' + '\033' + $colValL1 + $valTagP + '\033X' "/>
+                        <substitute_text text="$TxtLine1a" source="$TxtLine1a">
+                            <replace string="'$VAL$'" with="'%.2s'.[$basechance]"/>
+                        </substitute_text>
+                        <set_value name="$TxtLine1b" exact="'\033' + (if $remainingcrewchance > 0 then $colTxtL1 else $colTxtL2) + readtext.{$tPg}.{3510} + '\033X' + '\033' + (if $remainingcrewchance > 0 then $colValL1 else $colValL2) + (if $remainingcrewchance > 0 then $valTagP else $valTagE) + '\033X' "/>
+                        <substitute_text text="$TxtLine1b" source="$TxtLine1b">
+                            <replace string="'$VAL$'" with="'%.2s'.[$remainingcrewchance]"/>
+                        </substitute_text>
+                        <set_value name="$TxtLine1c" exact="'\033' + $colTxtL1 + readtext.{$tPg}.{3520} + '\033X' + '\033' + $colValL1 + $valTagP + '\033X' "/>
+                        <substitute_text text="$TxtLine1c" source="$TxtLine1c">
+                            <replace string="'$VAL$'" with="'%.2s'.[$hullshieldchance]"/>
+                        </substitute_text>
+                        <set_value name="$TxtLine1d" exact="'\033' + $colTxtL1 + readtext.{$tPg}.{3530} + '\033X' + '\033' + $colValL1 + $valTagP + '\033X' "/>
+                        <substitute_text text="$TxtLine1d" source="$TxtLine1d">
+                            <replace string="'$VAL$'" with="'%.2s'.[$sizechance]"/>
+                        </substitute_text>
+
+                        <set_value name="$TxtLine1" exact="$TxtLine1a + $TxtLine1b + $TxtLine1c + $TxtLine1d "/>
+                        <set_value name="$msg1" exact="$TxtLine1"/>
+        
+                        <set_value name="$TxtLine2" exact="'\033' + $colTxtL2 + readtext.{$tPg}.{3540} + '\033X' + '\033' + $colValL2 + $valTagE + '\033X' "/>
+                        <substitute_text text="$retValTxt" source="$TxtLine2">
+                            <replace string="'$VAL$'" with="'%.2s'.[$pilotmorale]"/>
+                        </substitute_text>
+                        <set_value name="$msg2" exact="$retValTxt"/>
+                        <remove_value name="$valTagP" />
+                        <remove_value name="$valTagE" />
+                        <remove_value name="$colTxtL1" />
+                        <remove_value name="$colTxtL2" />
+                        <remove_value name="$colValL1" />
+                        <remove_value name="$colValL2" />
+                        <remove_value name="$TxtLine1a" />
+                        <remove_value name="$TxtLine1b" />
+                        <remove_value name="$TxtLine1c" />
+                        <remove_value name="$TxtLine1d" />
+                        <remove_value name="$TxtLine1" />
+                        <remove_value name="$TxtLine2" />
+        
+                        <do_if value="$eject?">
+                            <do_if value="$pilotbail?">
+                                <do_if value="$isCritBail?" >
+                                    <show_notification text="[
+                                        [readtext.{$tPg}.{3600}, 70, 215, 20], ['%s %.2s'.[readtext.{$tPg}.{3550}, $ejectchance], 250, 140, 20], 
+                                        $msg1, '', 
+                                        $msg2, '' 
+                                    ]" timeout="1s" priority="3"/>
+                                </do_if>
+                                <do_else>
+                                    <show_notification text="[
+                                        [readtext.{$tPg}.{3610}, 70, 215, 20], ['%s %.2s'.[readtext.{$tPg}.{3550}, $ejectchance], 250, 140, 20], 
+                                        $msg1, '', 
+                                        $msg2, '' 
+                                    ]" timeout="1s" priority="3"/>
+                                </do_else>
+                            </do_if>
+                            <do_elseif value="$eject? and $numcrewbailing gt 0">
+                                <show_notification text="[ 
+                                    ['%s   %s / %s'.[readtext.{$tPg}.{3620}, $ejectedpeople, $target.people.count - $ejectedpeople], 50, 140, 20], ['%s %.2s'.[readtext.{$tPg}.{3550}, $ejectchance], 250, 140, 20], 
+                                    $msg1, '', 
+                                    $msg2, if $chkSurrender then [readtext.{$tPg}.{3651}, 50, 140, 20] else readtext.{$tPg}.{3652}
+                                ]" timeout="1s" priority="3"/>
+                            </do_elseif>
+                            <do_else>
+                                <show_notification text="[ 
+                                    ['%s  __ / %s'.[readtext.{$tPg}.{3630}, $target.people.count], 220, 190, 20], ['%s %.2s'.[readtext.{$tPg}.{3550}, $ejectchance], 250, 140, 20], 
+                                    $msg1, '', 
+                                    $msg2, '' 
+                                ]" timeout="1s" priority="3"/>
+                            </do_else>
+                        </do_if>
+                        <do_else>
+                            <show_notification text="[ 
+                                ['%s  __ / %s'.[readtext.{$tPg}.{3640}, $target.people.count], 0, 170, 250], ['%s %.2s'.[readtext.{$tPg}.{3550}, $ejectchance], 250, 140, 20], 
+                                $msg1, '', 
+                                $msg2, if $chkSurrender then [readtext.{$tPg}.{3651}, 50, 140, 20] else readtext.{$tPg}.{3652}
+                            ]" timeout="1s" priority="3"/>
+                        </do_else>
+                        <remove_value name="$msg1" />
+                        <remove_value name="$msg2" />
+                        <remove_value name="$tPg" />
+                    </do_if>
+                </do_if>
+            </actions>
+        </library>
+        
+
+        <library name="TableCopy" purpose="run_actions">
+            <params>
+                <param name="t" />
+            </params>
+            <actions>
+                <set_value name="$t2" exact="table[]" />
+                <do_for_each name="$k" valuename="$v" in="$t">
+                    <do_if value="typeof $v == datatype.table">
+                        <run_actions ref="TableCopy" result="$x">
+                            <param name="t" value="$v" />
+                        </run_actions>
+                        <set_value name="$t2.{$k}" exact="$x" />
+                    </do_if>
+                    <do_else>
+                        <set_value name="$t2.{$k}" exact="$v" />
+                    </do_else>
+                </do_for_each>
+                <return value="$t2"/>
+            </actions>
+        </library>
+
+
+        <!-- IN : value is a table or list value-->
+        <!-- OUT : none, to debug -->
+        <library name="DebugPrintValue" purpose="run_actions" >
+            <params>
+                <param name="value" />
+                <!-- Standart 2-->
+                <param name="recursiondepth" default="1" />
+                <param name="nodename" default="''" />
+                <param name="showindex" default="true" />
+                <param name="skipKeysList"  default="[]"/>
+                <!-- debug mode-->
+                <param name="DebugChance" default="100" />
+                <param name="debugToFile" default="false" />
+                <param name="debugFileName" default="''" />
+                <param name="debugFileDir" default="''" />
+                <!-- iç parametreler, dışardan parametre girme -->
+                <param name="indent" default="''" />
+                <param name="prefix" default="''" />
+                <param name="postfix" default="''" />
+                <param name="textindex" default="''"  comment="iç komut, dışardan parametre verme"/>
+            </params>
+            <actions>
+                <!-- <debug_text text="'nodename = _%s_ , indent = _%s_ nextindent = _%s _ -%s %s- recursiondepth = %s , $value = %s'.[$nodename, $indent, $nextindent, $debugToFile, $debugFileName, $recursiondepth, $value]" />-->
+
+                <do_if value="$recursiondepth" min="1">
+                    <do_if value="typeof $value == datatype.table">
+                        <do_if value="$value.keys.count">
+                            
+                            <do_if value="$debugToFile">
+
+                                <do_if value="$indent == ''">
+                                    <debug_to_file text="$nodename + $indent + $prefix + (if $showindex then $textindex else '') + 'table['" name="$debugFileName" directory="$debugFileDir" chance="$DebugChance"/>
+                                </do_if>
+                                <do_else>
+                                    <debug_to_file text="$indent + $prefix + 'table['" name="$debugFileName" directory="$debugFileDir" chance="$DebugChance"/>
+                                </do_else>
+                            
+                            </do_if>
+                            <do_else>
+                                <do_if value="$indent == ''">
+                                    <debug_text text="$nodename + $indent + $prefix + 'table['" context="false" chance="$DebugChance"/>
+                                </do_if>
+                                <do_else>
+                                    <debug_text text="$indent + $prefix + (if $showindex then $textindex else '') + 'table['" context="false" chance="$DebugChance"/>
+                                </do_else>
+                            </do_else>
+                            <set_value name="$nextindent" exact="$indent + '  '" />
+                            <do_for_each in="$value">
+                                <!-- <debug_text text="'loop.key = %s , type is string? = %s , skipKeysList = %s , isInList = %s'.[loop.key, (typeof loop.key == datatype.string), $skipKeysList, $skipKeysList.indexof.{loop.key} ]" />-->
+                                <do_if value="$skipKeysList.indexof.{loop.key} == 0">
+                                    <run_actions ref="DebugPrintValue">
+                                        <param name="recursiondepth" value="$recursiondepth - 1" />
+                                        <param name="indent" value="$nextindent" />
+                                        <param name="prefix" value="(if typeof loop.key == datatype.string then loop.key else '{' + loop.key + '}' ) + ' = '" />
+                                        <param name="value" value="loop.value" />
+                                        <param name="skipKeysList" value="$skipKeysList" />
+                                        <param name="postfix" value="','" />
+                                        <param name="showindex" value="$showindex" />
+                                        <param name="debugToFile" value="$debugToFile" />
+                                        <param name="debugFileName" value="$debugFileName" />
+                                        <param name="debugFileDir" value="$debugFileDir" />
+                                        <param name="DebugChance" value="$DebugChance" />
+                                    </run_actions>
+                                </do_if>
+                            </do_for_each>
+                            <do_if value="$debugToFile">
+                                <debug_to_file text="$indent + ']' + $postfix" name="$debugFileName" directory="$debugFileDir" chance="$DebugChance"/>
+                            </do_if>
+                            <do_else>
+                                <debug_text text="$indent + ']' + $postfix" context="false" chance="$DebugChance"/>
+                            </do_else>
+                            <return />
+                        </do_if>
+                    </do_if>
+                    <do_elseif value="typeof $value == datatype.list">
+                        <do_if value="$value.count and ($value.count gt 1 or typeof $value.{1} == datatype.table or typeof $value.{1} == datatype.list)" comment="Skip recursion for trivial content">
+
+                            <do_if value="$debugToFile">
+                                <do_if value="$indent == ''">
+                                    <debug_to_file text="$nodename + $indent + $prefix + '['" name="$debugFileName" directory="$debugFileDir" chance="$DebugChance"/>
+                                </do_if>
+                                <do_else>
+                                    <debug_to_file text="$indent + $prefix + '['" name="$debugFileName" directory="$debugFileDir" chance="$DebugChance"/>
+                                </do_else>
+                                
+                            </do_if>
+                            <do_else>
+                                <do_if value="$indent == ''">
+                                    <debug_text text="$nodename + $indent + $prefix + '['" context="false" chance="$DebugChance"/>
+                                </do_if>
+                                <do_else>
+                                    <debug_text text="$indent + $prefix + '['" context="false" chance="$DebugChance"/>
+                                </do_else>
+                                
+                            </do_else>
+
+                            <set_value name="$nextindent" exact="$indent + '  '" />
+                            <do_for_each in="$value">
+                                <run_actions ref="DebugPrintValue">
+                                    <param name="recursiondepth" value="$recursiondepth - 1" />
+                                    <param name="indent" value="$nextindent" />
+                                    <param name="value" value="loop.element" />
+                                    <param name="showindex" value="$showindex" />
+                                    <param name="textindex" value=" '[' + loop.index + ']=' " />
+                                    <param name="postfix" value="if loop.index == $value.count then '' else ','" />
+                                    <param name="debugToFile" value="$debugToFile" />
+                                    <param name="debugFileName" value="$debugFileName" />
+                                    <param name="debugFileDir" value="$debugFileDir" />
+                                    <param name="DebugChance" value="$DebugChance" />
+                                </run_actions>
+                            </do_for_each>
+                            <do_if value="$debugToFile">
+                                <debug_to_file text="$indent + ']' + $postfix" name="$debugFileName" directory="$debugFileDir" chance="$DebugChance"/>
+                            </do_if>
+                            <do_else>
+                                <debug_text text="$indent + ']' + $postfix" context="false" chance="$DebugChance"/>
+                            </do_else>
+                            <return />
+                        </do_if>
+                    </do_elseif>
+                    <!-- 
+                    <do_else>
+                        <debug_text text="$indent + $prefix + (if $showindex then $textindex else '') + (typeof $value) + $postfix" context="false" chance="$DebugChance"/>
+                        <return />
+                    </do_else>
+                    -->
+                </do_if>
+
+                <do_if value="typeof $value == datatype.string  ">
+                    <set_value name="$value" exact="'&quot;%s&quot;'.[$value]" />
+                </do_if>
+
+                <do_if value="$debugToFile">
+                    <do_if value="$indent == ''">
+                        <debug_to_file text="$nodename + $indent + $prefix + (if $showindex then $textindex else '') + $value + $postfix" name="$debugFileName" directory="$debugFileDir" chance="$DebugChance"/>
+                    </do_if>
+                    <do_else>
+                        <debug_to_file text="$indent + $prefix + (if $showindex then $textindex else '') + $value + $postfix" name="$debugFileName" directory="$debugFileDir" chance="$DebugChance"/>
+                    </do_else>
+                    
+                </do_if>
+                <do_else>
+                    <do_if value="$indent == ''">
+                        <debug_text text="$nodename + $indent + $prefix + (if $showindex then $textindex else '') + $value + $postfix" context="false" chance="$DebugChance"/>
+                    </do_if>
+                    <do_else>
+                        <debug_text text="$indent + $prefix + (if $showindex then $textindex else '') + $value + $postfix" context="false" chance="$DebugChance"/>
+                    </do_else>
+                    
+                </do_else>
+            </actions>
+        </library>
+
+	</cues>
+</mdscript>

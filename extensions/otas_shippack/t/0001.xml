@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../xmllib/diff.xsd">
+  <add sel="/language">
+  <page id="19530002" title="OTAS" descr="OTAS" voice="yes">	
+	<t id="100">OTAS</t>
+	<t id="101">The Optimised Technology, Armaments and Shielding Corporation, commonly known as OTAS, is a omnicorporation specialized in the design and manufacture of advanced spaceships heaquartered in Legend's Home. In the pre-Shutdown era, OTAS technologies and ships were highly advanced, often leading the cutting edge of Commonwealth scientific advancement, granting the corporation a prominent position on the political starscape of the old Commonweath of Planets.\n\nJust prior to the Great Collapse, OTAS launched an attack on Akeela's Beacon in an escalatory response to the passing of certain industry regulations by the Argon Federation. Seen as an act of terrorism by the Argon, the resulting Argon military response was cut short by Gate Shutdown. While the exact history of the period is lost to the chaos of the Great Dark, it is clear that the Argon response failed to bring OTAS to heel and the corporation now holds full administrative and military control of the formerly Argon sectors in their local region. \n\nHaving evolved beyond a simple technologies corporation, the massive OTAS commercial enterprise now operates as a fully independent star nation. Featuring locally appointed representatives from each controlled sector sitting on the board of directors and a functional state apparatus that earns generally favourable public sentiment, any scars of the hostile takeover have seemingly faded from memory.</t>
+	<t id="102">While very much still human, and thus biologically indistinguishable from Argon citizens, the citizens of the OTAS corporation-state have developed societally and culturally into a distinct people during their isolation. Following the reconnection, OTAS citizens have come to be seen by much of the Commonwealth as a mixture of both the Argon and Terrans in ambition, technology, and temperament. Only time will tell if they continue to carve their own path or are ultimately brought back into the fold.</t>
+	<t id="103">OTAS Capital Equipment Licence</t>
+	<t id="104">OTAS Capital Ship Licence</t>
+	<t id="105">Armaments Professional</t>
+	<t id="106">Security Specialist</t>
+	<t id="107">OTAS General Use Equipment Licence</t>
+	<t id="108">OTAS General Use Ship Licence</t>
+	<t id="109">OTAS Military Equipment Licence</t>
+	<t id="110">OTAS Military Ship Licence</t>
+	<t id="111">OTAS Police Licence</t>
+	<t id="112">OTAS Capital Ship Building Module Licence</t>
+	<t id="113">OTAS Ancillary Ship Building Module Licence</t>
+	<t id="114">OTAS Advanced Module Licence</t>
+	<t id="115">OTAS Basic Module Licence</t>
+	<t id="116">OTAS Intermediate Module Licence</t>
+	<t id="117">OTAS Trade Offer Subscription</t>
+	<t id="118">OTAS</t>
+	<t id="119">OTAS Ship Sale Contract</t>	
+	<!--TURRETS/WEAPONS-->
+	<t id="200">Anemoi Cruise Missile Launcher</t>
+	<t id="201">Anemoi Cruise Missile</t>
+	<t id="202">Phased Array Laser Cannon</t>		
+	<t id="203">Firestorm Artillery</t>
+	<t id="204">\033#97e19b23#SH\033X  M/AM Barrage Accelerator</t>		
+	<t id="205">\033#95e03b29#LM\033X M/AM Mass Driver</t>	
+	<t id="206">\033#95e03b29#BMB\033X\ Multi-Missile Launch Array</t>
+	<t id="207">\033#95e03b29#BMB\033X\ Cluster Bomb Launcher</t>
+	<t id="208">Rangefinder - 28km</t>	
+	<!--TURRETS/WEAPONS DESCRIPTIONS-->
+	<t id="300">Designed specifically for the Aquilo, this launcher is the only platform capable of deploying the OTAS Anemoi Cruise Missile.</t>
+	<t id="301">Properties: Cruise missile | Guided | Swarm | Target-seeking \nAI Launch Range: 30 km the many unique weapons developed in the isolation of the Shutdown era, the Anemoi Cruise Missile system swiftly gained notoriety among Commonwealth military observers during OTAS's initial wave of strikes against the Argon Federation. \n\nUnlike most comparable Commonwealth missile systems, the Anemoi utilizes an array of advanced passive and active tracking and guidance systems, able to achive effective target locks at ranges of 30km despite the prevalence of signal masking and jamming systems in the modern battlespace. This is paired with a distinctive quad-missile launch salvo that has taken many unprepared targets by surprise and greatly increases the difficulty of achieving effective missile interception.</t>		
+	<t id="302">Rather than traditional amplification oscillators and focusing chambers found on standard Commonwealth high-output beam weaponry, the OTAS Phased Array Laser Cannon uses an array of quickly-positionable tuning mirrors to rapidly concentrate and focus energy into a cohesive beam. While the PALC has significantly reduced raw power output and range compared to its peers, the design features much faster turret tracking and a shorter cycle time which lets it rapidly re-engage new targets with near-perfect accuracy, making it a deadly weapon against fighters.</t>	
+	<t id="303">\033#95e03b29#XL Turret\033X\ TEMPEST ONLY \nThe Firestorm Artillery is the result of a decades-long OTAS effort to replicate the Terran Point Singularity Projector, infamous for savaging even the high-tech OTAS-supported Argon Navy during the Terran Conflict era. Despite years of research and nigh-unlimited resources poured into the project, OTAS was ultimately forced to conclude that replicating and deploying the Terran technology in a viable manner was impossible due to the unique high-energy power architcture of Terran ships and systems. In the end, an alternative route was chosen- rather than imitate the Point Singularity Projector itself, OTAS would simply aim to replicate the weapon's destructive power.\n\nThus a surprisingly low-tech solution was found: by converting Firestorm torpedo warheads for use in ballistic shells fired from enormous oversized kinetic accelerators, OTAS could field a heavy siege weapon with superb range and devastating destructive potential. However, the design did require several compromises: the sheer size of the turret and munitions handling systems means it is slow to acquire targets and can only be mounted on specially designed hardpoints such as those on Tempest, while the relative sensitivity of the warhead payload enforces a low projectile velocity and further limits its ability to engage small or moving targets.</t>
+	<t id="304">Size: SMALL\n Weapon Class: HEAVY\n\nDeveloped from studying salvaged Terran Matter/Antimatter weapons technology, this fighter-class weapon fires a torrent of small M/AM warheads that can devastate targets in short order. However, the small scale of the warheads causes them to suffer faster payload containment destabilization, resulting in a severely limited effective range.</t>	
+	<t id="305">Size: LARGE\n Weapon Class: RAILGUN\n\nA devastating capital-class weapon based on a combination of pre-Shutdown Split kinetic weapons technology and salvaged Terran Matter/Antimatter weapons, the M/AM Mass Driver is regarded as one of the great triumphs of Dark-era OTAS research. Firing large-caliber shells carrying the heaviest and stablest matter/antimatter payload ever developed by the Commonwealth, the weapon delivers devastating firepower with lethal accuracy at long range.</t>	
+	<t id="306">Size: SMALL\n Weapon Class: BOMBER\n\nA modular, on-the-fly-reconfigurable universal launch system capable of loading and firing nearly any self-propelled missile system available throughout the gate network. \n\nOriginally developed by OTAS for their revolutionary Notus bomber, Terran observers were quick to realize the weapon's potential and the Protectorate soon developed their own version- identical in concept and operation, but created using Terran technology. OTAS' comparatively advanced technological base combined with vigorous counter-espionage efforts has thus far kept their version of the design safe from replication by the less sophisticated rival Commonwealth powers.</t>	
+	<t id="307">Size: SMALL\n Weapon Class: BOMBER\n\nThe result of a joint development effort by Split and OTAS scientists to produce a new weapon for the Notus and the newly-introduced Split Wolf, the Cluster Bomb Launcher is a specialized, single-payload variant of the standard Missile Launch Array that fires large volleys of unguided explosive projectiles. Intended to give bombers viable striking power against capital-class targets without being reliant on limited missile ammunition, the weapon is highly effective in it's intended role and is now a common sight among Split bomber forces. However, the wide spread and poor velocity of the projectiles along with a lack of proximity detonation ability renders the system largely ineffective against small craft.</t>
+	<t id="308">A sophisticated missile guidance and target tracking system forming a cornerstone of the Anemoi Cruise Missile's multi-faceted targeting package, designed for the Aquilo. \n\nWhile active laser designator systems are an ancient pre-spaceflight technology, simulated combat exercises with the early Aquilo testbeds revealed that the laser designator unit - nominally just a contingency backup system to the more advanced options built into the suite - proved extremely popular with Aquilo crews and the ship performed notably better when the system was enabled than when it was turned off. Additional testing revealed that the cause was twofold: the narrow-band wavelength cycling ability of the laser proved effective at defeating a variety of conventional missile countermeasures, and on several occasions the Aquilo was able to use the visible laser beam to force one opposing ship to take evasive manuevers while using different guidance option to engage a second ship, taking both opponents by surprise.</t>	
+	<!--STATION MODULES-->
+<!--<t id="400"></t>-->	
+	<!--SHIPS-->
+	<t id="700">Boreas</t>
+	<t id="701">Auster</t>
+	<t id="702">Aquilo</t>
+	<t id="703">Skiron</t>
+	<t id="704">Sirokos</t>
+	<t id="705">Solano</t>
+	<t id="706">Eurus</t>
+	<t id="707">Notus</t>
+	<t id="708">Venti</t>
+	<t id="709">Zephyrus</t>
+	<t id="710">Astraeus</t>
+	<t id="711">Mistral</t>
+	<t id="712">Tempest</t>
+	<t id="713">Vesuvius</t>
+	<t id="714">Genthus</t>	
+	<t id="715">Andaman</t>		
+	<!--SHIP DESCRIPTIONS-->
+	<t id="800">Once the linchpin of the OTAS fleet, the Boreas continues to serve as the organization's premier destroyer-class warship. Upon Reactivation the Boreas has undergone significant change to compete with existing destroyer class ships. The modern Boreas is now much more heavily armed and shielded than before while still retaining some of the signature speed.</t>
+	<t id="801">Completely redesigned following the Shutdown, the modern Auster retains the rank of a heavily shielded and lethal bomber while still retaining the now S-class fighter size.</t>
+	<t id="802">A descendent of the ship that first establised "M7M" Missile Frigate type designation, the modern Aquilo honors its lineage with an intimidating array of launch tubes capable of launching the signature Anemoi Cruise Missile, providing massively destructive long-range fire support against capital targets and stations during OTAS fleet actions. \n\nDespite the tremendous power of its main armament, proper usage of the Aquilo necessitates a sizable escort force and strong local battlespace control, as the ship's relatively poor mobility and limited defensive armament leave it highly vulnerable to direct attack despite its typically above-average OTAS shielding.</t>
+	<t id="803">The Skiron represented a significant step forward in OTAS corvette design. A further improvement on previous designs, the modern Skiron has evolved into a robust gunboat and is typically seen escorting capital class ships or as anchors in patrol fleets.</t>
+	<t id="804">Once nearly abandoned following the seizure of Argon space, the Sirokos "M7M" frigate has had a radical redesign into a modern strike corvette with S-class fighter storage and launching capabilities.</t>
+	<t id="805">The modern Solano is a highly advanced scout/interceptor hybrid. Its superb top speed and small size make it well-suited for swift reconnaisance in hostile space, and the above-average firepower packed onto the ship makes it a deadly counter to other scouting vessels, though it must rely on its speed to escape from larger threats.</t>			
+	<t id="806">The standard fighter type deployed by OTAS, the Eurus is a well-rounded and capable combatant with respectable firepower and excellent high-speed manueverability. While it has few truly stand-out features aside from the high top speed, the ship enjoys a general advantage over its Commonwealth peers thanks to the advanced nature of OTAS technologies. The Eurus is a common sight in any location with an OTAS presence, serving on the offensive frontline and enforcing police presence in secured sectors.</t>		
+	<t id="807">The Notus bomber was developed by OTAS during the isolation of the Great Dark. Initially just an exploratory testbed attempting to emulate the success of the M7M missile frigate- one of the many OTAS innovations of the pre-shutdown Commonwealth- the Notus performed well in simulations and exercises, promising to provide an immense amount of striking power with the ability to carry and deploy a wide variety of heavy ordnance in its modular side pods. When the gates abruptly reopened and OTAS resumed open hostilities against the Argon Federation, the Notus soon proved its worth and became notorious for savage lightning strikes capable of swiftly crippling Argon capital ships. \n\nSeeing an opportunity in their shared enemy, the Zyarth Patriarchy were quick to make diplomatic overtures towards OTAS, with the aim of procuring the Notus' technology for their own use. This effort culminated in the Split Wolf bomber and numerous improvements to the Notus, as well as new weapons that could take full advantage of the Notus-type ordnance hardpoint. The technology rapidly proliferated through the rest of the gate network, with the other Commonwealth powers and even the Terrans soon fielding their own bomber models- developed through espionage, battlefield salvage, or their own engineering efforts.</t>
+	<t id="808">Regarded as one of the most fear heavy fighters pre-Shutdown, OTAS as diligently worked to keep the Venti at the pinnacle of lethality. The Venti is able to bring a truly devastating array of weapons to bare on anything deemed an enemy of OTAS.</t>
+	<t id="809">OTAS completed a total redesign of the Zephyrus just after to the reactivation of local gates. Acknowledging they would require a strike carrier capable of projecting OTAS authority, the redesign maintained the core concept of the ship but brought it into the modern era with the new standardized S-class docking bays.</t>
+	<t id="810">Once a common sight in pre-Shutdown OTAS fleets, the venerable Astraeus saw continuous design changes and modifications during the Shutdown-era to fit an evolving combat role as OTAS reshaped its fleets. The modern Astraeus is a capable and versatile escort frigate: fast and reasonably shielded, fitting array of offensive and defensive turrets, and even possessing limited launch facilities for a handful of escort fighters. \n\nThough it lacks any forward-firing main armament, the unconventional shape of the hull and ample turret hardpoints allows the Astraeus to maintain surperb fields of fire all around itself, and it is often seen operating ahead or within formations of larger capital ships on anti-fighter picket duty.</t>
+	<t id="811">The life force of OTAS and long overshadowed, the Mistral is without a doubt the most important ship in the OTAS fleet. Following The Shutdown and takeover of the local Argon sectors large numbers of Mistrals would be seen transporting vast quantities of supplies across the new OTAS Exclusion Zone.</t>
+	<t id="812">Developed in total secrecy pre-Shutdown and unleashed during the OTAS hostile seizure of the local Argon sectors, the Tempest is an extremely formidable battleship even by modern standards. The design saw continual updates, improvements, and iterations during the Great Dark to maintain its ability to engage entire fleets with minimal support, and it is one of the few deployment platforms for the OTAS Firestorm Artillery batteries. \n\nRumors abound that the ship makes use of highly illegal and dangerous AGI technology, though this has never been firmly proven despite intense scrutiny from both Commonwealth rivals and the Terran Protectorate.</t>
+	<t id="813">Following their reconnection to the Commonwealth, OTAS quickly identified the immediate requirement for a new and modern construction ship in order for them to be able to expand outward and compete with the other powers. \n\nStolen in the same attack as many other Argon industrial ships, the Vesuvius is a near exact copy of the Mammoth; OTAS having seen little need to spend time and credits to further refine a humble construction vessel.</t>
+	<t id="814">Another design stolen from the Federation following OTAS's reconnection, the Genthus is a twin to the Nomad but with several unseen upgrades and improvements. Previously, OTAS had no need for long range or largescale fleet resuppling given their total control on their cluster of systems. Born more out of necessity than ambition, the Genthus is expected to fufill its role admirably.</t>	
+	<t id="815">Despite what the Federation has publicly stated,the Andaman's existence is proof that the rumors of OTAS successfully stealing ship designs was true. A heavily modified and arguably improved variant of the Colossus, OTAS quickly tasked their engineers with "resolving" the issues which they believed Federation engineers were incapable of correcting. Now flaunted openly as if to intentionally incite a hostile response, the Andaman has become a powerful addition to the OTAS fleet.</t>
+	<!--iSHIELDS-->
+	<t id="900">IG XL - Tempest Internal Generator</t>		
+	<t id="901">IG L - Aquilo Internal Generator</t>
+	<t id="902">IG L - Astraeus Internal Generator</t>
+	<t id="903">IG L - Boreas Internal Generator</t>
+	<t id="904">IG L - Mistral Internal Generator</t>
+	<t id="905">IG L - Zephyrus Internal Generator</t>
+	<t id="906">IG M - Sirokos Internal Generator</t>
+	<t id="907">IG M - Skiron Internal Generator</t>
+	<t id="908">IG S - Auster Internal Generator</t>
+	<t id="909">IG S - Eurus Internal Generator</t>
+	<t id="910">IG S - Notus Internal Generator</t>
+	<t id="911">IG S - Solano Internal Generator</t>		
+	<t id="912">IG S - Venti Internal Generator</t>
+	<t id="913">IG XL - Vesuvius Internal Generator</t>	
+	<t id="914">IG XL - Genthus Internal Generator</t>		
+	<t id="915">IG XL - Andaman Internal Generator</t>			
+  </page>		
+</add>
+  <replace sel="/language/page[@id='20221']/t[@id='3061']/text()[1]">Cruiser</replace>
+  <replace sel="/language/page[@id='20221']/t[@id='3062']/text()[1]">Heavier than a Destroyer, ships of this class are far better better against capital ships and stations but are extremely vulnerable to smaller ships.</replace>   
+</diff> 

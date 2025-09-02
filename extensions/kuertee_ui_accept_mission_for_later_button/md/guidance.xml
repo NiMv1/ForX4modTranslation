@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+	<!-- remove for: allow guidance to persist unless actually aborted. e.g.: switching active missions.
+		<cue name="EndGuidance" instantiate="true">
+			<do_else>
+				<remove_mission cue="GuidanceMission" activate="previous" />
+	-->
+	<remove sel="//cue[@name=&quot;EndGuidance&quot;]//do_else//remove_mission[@cue=&quot;GuidanceMission&quot;][@activate=&quot;previous&quot;]" />
+
+
+
+	<!-- remove for: auto-pilot not getting interrupted unless actually aborted.
+		<cue name="EndGuidance" instantiate="true">
+			<do_if value="@$Arguments">
+	-->
+	<remove sel="//cue[@name=&quot;EndGuidance&quot;]//signal_objects[@object=&quot;player.computer&quot;][@param=&quot;'guidance_ended'&quot;]" />
+	<!-- add for: auto-pilot not getting interrupted unless actually aborted.
+		<cue name="EndGuidance" instantiate="true">
+			<do_if value="@$Arguments">
+	-->
+	<add sel="//cue[@name=&quot;EndGuidance&quot;]//do_if[@value=&quot;@$Arguments&quot;]">
+		<signal_objects object="player.computer" param="'guidance_ended'" />
+	</add>
+
+
+
+	<!-- remove for: auto-pilot not getting interrupted unless actually aborted.
+		<cue name="UpdateTarget" instantiate="true">
+			<signal_objects object="player.computer" param="'guidance_updated'" param2="$Component" />
+	-->
+	<remove sel="//cue[@name=&quot;UpdateTarget&quot;]//signal_objects[@object=&quot;player.computer&quot;][@param=&quot;'guidance_updated'&quot;][@param2=&quot;$Component&quot;]" />
+
+
+
+	<!-- add for: auto-pilot not getting interrupted unless actually aborted.
+		<cue name="GuidanceLost">
+			<conditions>
+	-->
+	<add sel="//cue[@name=&quot;GuidanceLost&quot;]//conditions">
+		<check_value value="false" />
+	</add>
+
+	<!-- remove for: guidance marker shouldn't be removed when near
+	<cue name="CheckArrival">
+		<cue name="AtSpace" onfail="cancel">
+			<signal_cue_instantly cue="EndGuidance"/>
+		<cue name="ChangedSpace">
+			<signal_cue_instantly cue="EndGuidance"/>
+		<cue name="FlyToPosition" onfail="cancel">
+			<cue name="NearComponent" checkinterval="1s">
+				<signal_cue_instantly cue="EndGuidance"/>
+	-->
+	<remove sel="//cue[@name=&quot;AtSpace&quot;]//signal_cue_instantly[@cue=&quot;EndGuidance&quot;]" />
+	<remove sel="//cue[@name=&quot;ChangedSpace&quot;]//signal_cue_instantly[@cue=&quot;EndGuidance&quot;]" />
+	<remove sel="//cue[@name=&quot;NearComponent&quot;]//signal_cue_instantly[@cue=&quot;EndGuidance&quot;]" />
+</diff>

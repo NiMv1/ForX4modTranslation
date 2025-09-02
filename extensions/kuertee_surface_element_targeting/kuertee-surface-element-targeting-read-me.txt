@@ -1,0 +1,160 @@
+Surface element targeting
+https://www.nexusmods.com/x4foundations/mods/710
+by kuertee
+
+Updates
+=======
+v7.5.01, 21 Feb 2025:
+-Bug-fixes: 7.5 compatibility updates.
+
+Mod effects
+===========
+Auto-targets the next surface element after destruction of the last. "Find All" Interaction: finds all surface elements of the same type.
+
+Requirements
+============
+-SirNukes Mod Support APIs mod (https://www.nexusmods.com/x4foundations/mods/503) - for Lua Loader, Extensions Options and Interact Menu.
+
+Mission targets
+===============
+After destruction of a surface element that is mission target, the next nearest mission target will be auto-targeted. Note this only works for missions that use the "rml_destroy_components" MD - which the base game uses for these types of missions. Missions that don't use the "rml_destroy_components" MD (e.g. a custom mission from a mod) is not supported.
+
+"Find All" Interaction
+======================
+When a surface element is targeted, use the Interact Menu (key F) to create mission targets of all surface elements of the same type. After destruction of a mission target, the next nearest mission target will be auto-targeted.
+
+As with my other quality-of-life mods, the created mission is a Guidance Mission. By default, you can only have one Guidance Mission. If there are multiple (e.g. from mods), they will be listed in the Guidance Mission tab but you won't be able to switch between them. To make the Guidance Missions tab work like normal missions (i.e. "Set to active", "Set to inactive", etc.), install my other mod, UI Extensions (https://www.nexusmods.com/x4foundations/mods/552).
+
+Base game vs this mod
+=====================
+As per the base game, you target surface elements by using the Next/Previous Surface Element keys. I have those mapped to G and H. Without this mod, after a surface element is destroyed, the target is lost, requiring the ship or station to be retargeted. And the surface elements to be retargeted from the start of the internal list of the ship's or station's surface elements. With this mod, the next surface element is automatically targeted after the destruction of the last, allowing easier location of surface elements.
+
+Recommended companion mods
+==========================
+Here are all my quality-of-life mods. All these mods' missions are listed in the Guidance Missions tab. Use my mod, UI extensions (https://www.nexusmods.com/x4foundations/mods/552), to enable the Set Active and Set Inactive buttons in Guidance Missions. Otherwise, you won't be able to switch between them manually.
+-Loot mining (https://www.nexusmods.com/x4foundations/mods/511): During a player mining session, manually targeting loot activates the targeting AI to target all others of the same loot. After the destruction of a targeted mineable asteroid, the nearest mineable asteroid with the same loot is auto-targeted.
+-Ship scanner (https://www.nexusmods.com/x4foundations/mods/591): The Ship Scanner is a targeting AI that continually targets unscanned ships after the completion of a ship scan until all ships in your vicinity are scanned.
+-Signal leak hunter - increasing range (https://www.nexusmods.com/x4foundations/mods/498): Scans for and targets signal leaks and/or repair panels within an ever-increasing range.
+-Station scanner (https://www.nexusmods.com/x4foundations/mods/496): When using the spaceship scanner, modules that need the spacesuit scanner are targeted. When using the spacesuit scanner, the closest module with an incomplete scan is targeted. Follow this trail of targets to scan the station.
+-Surface element targeting (https://www.nexusmods.com/x4foundations/mods/710): Auto-targets the next surface element after destruction of the last. Find All surface elements of the same type.
+-Waypoint field for deployments (https://www.nexusmods.com/x4foundations/mods/585): Creates waypoints that you and your wingmen can follow to deployment equipment and weapons.
+
+Install
+=======
+-Unzip to 'X4 Foundations/extensions/kuertee_surface_element_targeting/'.
+-Make sure the sub-folders and files are in 'X4 Foundations/extensions/kuertee_surface_element_targeting/' and not in 'X4 Foundations/extensions/kuertee_surface_element_targeting/kuertee_surface_element_targeting/'.
+
+Uninstall
+=========
+-Delete the mod folder.
+
+Troubleshooting
+===============
+(1) Do not change the file structure of the mod. If you do, you'll need to troubleshoot problems you encounter yourself.
+(2) Allow the game to log events to a text file by adding "-debug all -logfile debug.log" to its launch parameters.
+(3) Enable the mod-specific Debug Log in the mod's Extension Options.
+(4) Play for long enough for the mod to log its events.
+(5) Send me (at kuertee@gmail.com) the log found in My Documents\Egosoft\X4\(your player-specific number)\debug.log.
+
+Credits
+=======
+By kuertee.
+Chinese localisation by Tiomer.
+French localisation by Calvitix.
+German localisation by LeLeon.
+Russian localisation by Leonkillerua.
+
+History
+=======
+v7.1.13, 02 Nov 2024:
+-Tweak: Moved the mod's custom Interation Menu from the Orders section to the Actions section.
+
+v7.1.01, 7 Jul 2024:
+-New feature: Additional Find All: Engines, Shields, Turrets functions are now available in the Interact Menu.
+
+v7.0.02, 29 Jun 2024:
+-Tweak: 7.00 hf 1 compatibility.
+-Maintenance update: use UI Extensions' new method to load mod-specific UIX lua(s)
+-Bug-fix: Right-click menu to find the same surface elements as the targeted surface element wasn't opening
+-Localisation: Russian localisation by Leonkillerua.
+
+v6.0.002, 13 Apr 2023:
+-Tweak: Version number update for consistency with my other mods. No internal changes since the last version.
+
+v6.0.0004, 18 Feb 2023:
+-Bug-fix: Targets was switching to a surface element even if you don't have the mod's mission that targets surface elements active.
+
+v5.1.0314, 06 Dec 2022:
+-Bug-fix: Only change targets when the targeted surface element is destroyed by the player.
+
+v5.1.0313, 31 Oct 2022:
+-Bug-fix: Mission targets were not getting auto-targeted properly after destruction of one.
+-Bug-fix: Surface elements destroyed by another ship were changing the player's currently targeted surface element.
+-Bug-fix: Notification of surface element counts when not necessary.
+
+v5.1.0308, 29 Sep 2022:
+-Bug-fix: Added more conditions (e.g. move to a new sector) to disable the targeting.
+
+v5.1.0305, 15 Sep 2022:
+-Bug-fix: Reprogrammed 90% of this mod. Hopefully, the bug that causes the mod to stop working after some time (then start working again later) is fixed.
+
+v4.2.0807, 28 Feb 2022:
+-Bug-fix: Set to the correct station/ship when the player's target changes. Previously, in some circumstances, the mod would keep the player's old targeted station/ship when the player's target changes.
+
+v4.2.0804, 02 Feb 2022:
+-Tweak: Notification if no operational surface elements is detected. Note that you can still select these disabled surface elements. They will not show any data on the target monitor. But it can be confusing if you choose to set find them as mission targets.
+-Tweak: Notification if any surface elements are detected to come online.
+-Bug-fix: "Find all" will now set the surface elements as mission targets. This was broken in the last 2 versions.
+
+v4.2.08, 20 Jan 2022:
+-Bug-fix: Prevent autotargeting untargetable surface elements. This bug caused the mod to target invalid objects that the UI interpreted as being many kms away on an unknown object.
+
+v4.2.074, 7 Jan 2022:
+-Reprogrammed: The previous version created a stacking bug that would eventually impact performance. Just install this over the top of the old version and those stacked threads will be cleaned up.
+
+v4.2.04, 22 Dec 2021:
+-Bug-fix: The targeted surface element will not change unless it is destroyed. In the previous version, ANY destroyed surface element targets would change your target.
+
+v4.1.01, 12 Nov 2021:
+-Bug-fix: Do not log null error.
+
+v4.1.0, 06 Nov 2021:
+-Bug-fix: Many. Also, the code is cleaned-up a bit more.
+
+v1.1.0, 11 Aug 2021:
+-Bug-fix: Made Mod Support APIs a requirement. Previously, this mod can be installed without Mod Support APIs. Without Mod Support APIs, the "Find All X" feature wouldn't work.
+
+v1.0.9, 25 Jul 2021:
+-Bug-fix: The mod's mission, after using the "Find All" interaction, was sometimes identifying itself as the last mission active - which prevented the "reactivate last mission active" feature from working properly.
+
+v1.0.8, 11 Jul 2021:
+-Tweak: Silence debug-logs unless enabled in Extensions Options.
+
+v1.0.7, 06 Jul 2021:
+-Bug-fix: The "Find All" interaction was broken.
+
+v1.0.6, 03 Jul 2021:
+-Tweak: Re-activates the last mission active when this mod's mission completes (e.g. when all targets have been destroyed).
+
+For v4.0 and v4.1beta1 of the game:
+v1.0.5, 6 Jun 2021:
+-Bug-fix: The last update prevented the mod from working on new games.
+
+v1.0.4, 29 May 2021:
+-Tweak: Removed requirement for Mod Support APIs.
+-Bug-fix: "Find All" was broken when a surface element is targeted while there is a Mission Guidance to it.
+
+v1.0.3, 4 May 2021:
+-Tweak: Stop the targeting sequence when the player exits the ship's controls.
+-Tweak: Doesn't target the next surface element when the player has no current target.
+
+v1.0.2, 1 May 2021:
+-New feature: After destruction of a surface element that is a mission target, the next nearest mission target will be auto-targeted. This only works for missions that use the "rml_destroy_components" MD - which is most, if not all, of these types of mission from the base game. Missions that don't use this MD (e.g. a custom mission from a mod) is not supported.
+-New feature: "Find All" Interaction: When a surface element is targeted, use the Interact Menu (F key) to create mission targets of all surface elements of the same type. After destruction of a mission target, the next nearest mission target will be auto-targeted.
+
+v1.0.1, 30 Apr 2021:
+-Tweak: Now works if you directly target a mission target that is a surface element.
+-Bug fix: Previously, you needed to actively deselect a target then select a new target for the mod to work.
+
+v1.0.0, 29 Apr 2021:
+-Initial release.

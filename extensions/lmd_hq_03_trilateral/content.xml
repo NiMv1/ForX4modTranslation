@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="lmd_hq_03_trilateral" name="Completed Headquarters - Trilateral" description="Modifies the Completed Headquarters mod to use three large sections rather than a single contiguous ring." author="LangyMD" save="false" version="200" date="2024-08-16">
+    <dependency id="lmd_hq_03" optional="false" name="Completed Headquarters" />
+</content>

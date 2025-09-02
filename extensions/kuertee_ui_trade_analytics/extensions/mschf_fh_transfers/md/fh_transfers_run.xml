@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<!--
+		consolidate all multiple logbook entries to one
+		<cue name="fht_process" instantiate="true" namespace="this">
+			...
+			<do_all exact="$stations_player.count" counter="$i">
+				...
+				<set_value name="$logbook_contents" exact="'\n' + {102104117,11020} + ' ' + $transfer_amount.formatted.{'%s%Cr'}" operation="add"/>
+				...
+				<set_value name="$logbook_contents" exact="'\n' + {102104117,11010} + ' ' + $station_money_available.formatted.{'%s%Cr'}" operation="add"/>
+				...
+				<set_value name="$logbook_contents" exact="'\n' + {102104117,11040} + ' ' + $transfer_amount.formatted.{'%s%Cr'}" operation="add"/>
+				...
+				<set_value name="$logbook_contents" exact="'\n' + {102104117,11030} + ' ' + $build_money_available.formatted.{'%s%Cr'}" operation="add"/>
+				...
+				<set_value name="$logbook_contents" exact="'\n' + {102104117,1140} + ' ' + $transfer_amount.formatted.{'%s%Cr'}" operation="add"/>
+				...
+				<set_value name="$logbook_contents" exact="'\n' + {102104117,1190} + ' ' + $transfer_amount.formatted.{'%s%Cr'}" operation="add"/>
+				...
+				<write_to_logbook title="{102104117,2000}" text="$logbook_contents" category="upkeep" chance="$logbook_display? * 100"/>
+				...
+	-->
+	<add pos="before" sel="//do_all[@exact=&quot;$stations_player.count&quot;][@counter=&quot;$i&quot;]">
+		<set_value name="$kuertee_hasTransfers" exact="false" />
+		<set_value name="$kuertee_sToB_count" exact="0" />
+		<set_value name="$kuertee_sToB_amount" exact="0" />
+		<set_value name="$kuertee_sToP_count" exact="0" />
+		<set_value name="$kuertee_sToP_amount" exact="0" />
+		<set_value name="$kuertee_bToS_count" exact="0" />
+		<set_value name="$kuertee_bToS_amount" exact="0" />
+		<set_value name="$kuertee_bToP_count" exact="0" />
+		<set_value name="$kuertee_bToP_amount" exact="0" />
+		<set_value name="$kuertee_pToS_count" exact="0" />
+		<set_value name="$kuertee_pToS_amount" exact="0" />
+		<set_value name="$kuertee_pToB_count" exact="0" />
+		<set_value name="$kuertee_pToB_amount" exact="0" />
+	</add>
+	<add pos="after" sel="//set_value[@name=&quot;$logbook_contents&quot;][@exact=&quot;'\n' + {102104117,11020} + ' ' + $transfer_amount.formatted.{'%s%Cr'}&quot;][@operation=&quot;add&quot;]">
+		<set_value name="$kuertee_hasTransfers" exact="true" />
+		<set_value name="$kuertee_sToB_count" operation="add" exact="1" />
+		<set_value name="$kuertee_sToB_amount" operation="add" exact="$transfer_amount" />
+	</add>
+	<add pos="after" sel="//set_value[@name=&quot;$logbook_contents&quot;][@exact=&quot;'\n' + {102104117,11010} + ' ' + $station_money_available.formatted.{'%s%Cr'}&quot;][@operation=&quot;add&quot;]">
+		<set_value name="$kuertee_hasTransfers" exact="true" />
+		<set_value name="$kuertee_sToP_count" operation="add" exact="1" />
+		<set_value name="$kuertee_sToP_amount" operation="add" exact="$station_money_available" />
+	</add>
+	<add pos="after" sel="//set_value[@name=&quot;$logbook_contents&quot;][@exact=&quot;'\n' + {102104117,11040} + ' ' + $transfer_amount.formatted.{'%s%Cr'}&quot;][@operation=&quot;add&quot;]">
+		<set_value name="$kuertee_hasTransfers" exact="true" />
+		<set_value name="$kuertee_bToS_count" operation="add" exact="1" />
+		<set_value name="$kuertee_bToS_amount" operation="add" exact="$transfer_amount" />
+	</add>
+	<add pos="after" sel="//set_value[@name=&quot;$logbook_contents&quot;][@exact=&quot;'\n' + {102104117,11030} + ' ' + $build_money_available.formatted.{'%s%Cr'}&quot;][@operation=&quot;add&quot;]">
+		<set_value name="$kuertee_hasTransfers" exact="true" />
+		<set_value name="$kuertee_bToP_count" operation="add" exact="1" />
+		<set_value name="$kuertee_bToP_amount" operation="add" exact="$build_money_available" />
+	</add>
+	<add pos="after" sel="//set_value[@name=&quot;$logbook_contents&quot;][@exact=&quot;'\n' + {102104117,1140} + ' ' + $transfer_amount.formatted.{'%s%Cr'}&quot;][@operation=&quot;add&quot;]">
+		<set_value name="$kuertee_hasTransfers" exact="true" />
+		<set_value name="$kuertee_pToS_count" operation="add" exact="1" />
+		<set_value name="$kuertee_pToS_amount" operation="add" exact="$transfer_amount" />
+	</add>
+	<add pos="after" sel="//set_value[@name=&quot;$logbook_contents&quot;][@exact=&quot;'\n' + {102104117,1190} + ' ' + $transfer_amount.formatted.{'%s%Cr'}&quot;][@operation=&quot;add&quot;]">
+		<set_value name="$kuertee_hasTransfers" exact="true" />
+		<set_value name="$kuertee_pToB_count" operation="add" exact="1" />
+		<set_value name="$kuertee_pToB_amount" operation="add" exact="$transfer_amount" />
+	</add>
+	<!-- <add pos="before" sel="//write_to_logbook[@title=&quot;{102104117,2000}&quot;][@text=&quot;$logbook_contents&quot;][@category=&quot;upkeep&quot;][@chance=&quot;$logbook_display? * 100&quot;]">
+		<do_if value="md.fh_transfers_config.fht_config.$isConsolidateLogbookEntries">
+			<set_value name="$kuertee_stationCount" operation="add" exact="1" />
+			<set_value name="$kuertee_transferAmount_total" operation="add" exact="$transfer_amount" />
+		</do_if>
+	</add> -->
+	<replace sel="//write_to_logbook[@title=&quot;{102104117,2000}&quot;][@text=&quot;$logbook_contents&quot;][@category=&quot;upkeep&quot;][@chance=&quot;$logbook_display? * 100&quot;]/@chance">if @md.fh_transfers_config.fht_config.$isConsolidateLogbookEntries then 0 else ($logbook_display? * 100)</replace>
+	<!-- <replace sel="//write_to_logbook[@title=&quot;{102104117,2000}&quot;][@text=&quot;$logbook_contents&quot;][@category=&quot;upkeep&quot;][@chance=&quot;$logbook_display? * 100&quot;]/@chance">if true then 0 else ($logbook_display? * 100)</replace> -->
+	<add pos="after" sel="//do_all[@exact=&quot;$stations_player.count&quot;][@counter=&quot;$i&quot;]">
+		<do_if value="@md.fh_transfers_config.fht_config.$isConsolidateLogbookEntries">
+			<do_if value="$kuertee_hasTransfers">
+				<set_value name="$logbook_contents" exact="''" />
+				<do_if value="@$kuertee_bToP_count">
+					<substitute_text text="$kuertee_bToP_logbook" source="{11201, 301020}">
+						<replace string="'$COUNT$'" with="$kuertee_bToP_count"/>
+					</substitute_text>
+					<substitute_text text="$kuertee_bToP_logbook" source="$kuertee_bToP_logbook">
+						<replace string="'$AMOUNT$'" with="$kuertee_bToP_amount.formatted.{'%s%Cr'}"/>
+					</substitute_text>
+					<debug_text text="'$logbook_contents: ' + $kuertee_bToP_logbook" chance="md.kuertee_trade_analytics.UserSettings.$debugChance" />
+					<set_value name="$logbook_contents" operation="add" exact="$kuertee_bToP_logbook + '\n'" />
+				</do_if>
+				<do_if value="@$kuertee_bToS_count">
+					<substitute_text text="$kuertee_bToS_logbook" source="{11201, 301010}">
+						<replace string="'$COUNT$'" with="$kuertee_bToS_count"/>
+					</substitute_text>
+					<substitute_text text="$kuertee_bToS_logbook" source="$kuertee_bToS_logbook">
+						<replace string="'$AMOUNT$'" with="$kuertee_bToS_amount.formatted.{'%s%Cr'}"/>
+					</substitute_text>
+					<debug_text text="'$logbook_contents: ' + $kuertee_bToS_logbook" chance="md.kuertee_trade_analytics.UserSettings.$debugChance" />
+					<set_value name="$logbook_contents" operation="add" exact="$kuertee_bToS_logbook + '\n'" />
+				</do_if>
+				<do_if value="@$kuertee_sToB_count">
+					<substitute_text text="$kuertee_sToB_logbook" source="{11201, 301040}">
+						<replace string="'$COUNT$'" with="$kuertee_sToB_count"/>
+					</substitute_text>
+					<substitute_text text="$kuertee_sToB_logbook" source="$kuertee_sToB_logbook">
+						<replace string="'$AMOUNT$'" with="$kuertee_sToB_amount.formatted.{'%s%Cr'}"/>
+					</substitute_text>
+					<debug_text text="'$logbook_contents: ' + $kuertee_sToB_logbook" chance="md.kuertee_trade_analytics.UserSettings.$debugChance" />
+					<set_value name="$logbook_contents" operation="add" exact="$kuertee_sToB_logbook + '\n'" />
+				</do_if>
+				<do_if value="@$kuertee_sToP_count">
+					<substitute_text text="$kuertee_sToP_logbook" source="{11201, 301030}">
+						<replace string="'$COUNT$'" with="$kuertee_sToP_count"/>
+					</substitute_text>
+					<substitute_text text="$kuertee_sToP_logbook" source="$kuertee_sToP_logbook">
+						<replace string="'$AMOUNT$'" with="$kuertee_sToP_amount.formatted.{'%s%Cr'}"/>
+					</substitute_text>
+					<debug_text text="'$logbook_contents: ' + $kuertee_sToP_logbook" chance="md.kuertee_trade_analytics.UserSettings.$debugChance" />
+					<set_value name="$logbook_contents" operation="add" exact="$kuertee_sToP_logbook + '\n'" />
+				</do_if>
+				<do_if value="@$kuertee_pToB_count">
+					<substitute_text text="$kuertee_pToB_logbook" source="{11201, 30140}">
+						<replace string="'$COUNT$'" with="$kuertee_pToB_count"/>
+					</substitute_text>
+					<substitute_text text="$kuertee_pToB_logbook" source="$kuertee_pToB_logbook">
+						<replace string="'$AMOUNT$'" with="$kuertee_pToB_amount.formatted.{'%s%Cr'}"/>
+					</substitute_text>
+					<debug_text text="'$logbook_contents: ' + $kuertee_pToB_logbook" chance="md.kuertee_trade_analytics.UserSettings.$debugChance" />
+					<set_value name="$logbook_contents" operation="add" exact="$kuertee_pToB_logbook + '\n'" />
+				</do_if>
+				<do_if value="@$kuertee_pToS_count">
+					<substitute_text text="$kuertee_pToS_logbook" source="{11201, 30190}">
+						<replace string="'$COUNT$'" with="$kuertee_pToS_count"/>
+					</substitute_text>
+					<substitute_text text="$kuertee_pToS_logbook" source="$kuertee_pToS_logbook">
+						<replace string="'$AMOUNT$'" with="$kuertee_pToS_amount.formatted.{'%s%Cr'}"/>
+					</substitute_text>
+					<debug_text text="'$logbook_contents: ' + $kuertee_pToS_logbook" chance="md.kuertee_trade_analytics.UserSettings.$debugChance" />
+					<set_value name="$logbook_contents" operation="add" exact="$kuertee_pToS_logbook + '\n'" />
+				</do_if>
+				<write_to_logbook title="{102104117,2000}" text="$logbook_contents" category="upkeep" />
+			</do_if>
+		</do_if>
+	</add>
+</diff>

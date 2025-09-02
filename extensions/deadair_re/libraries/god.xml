@@ -1,0 +1,713 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diff>
+	<!--Defense Station Max Loadout-->
+  <replace sel="/god/stations/station[@id='tradestation_argon_01'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <add sel="/god/stations/station[@id='arg_defence_cluster_06_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='arg_defence_cluster_06_sector002'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='arg_defence_cluster_07_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='arg_defence_cluster_08_sector001_01'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='arg_defence_cluster_08_sector001_02'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>  
+  <add sel="/god/stations/station[@id='arg_defence_cluster_29_sector002'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='arg_defence_cluster_30_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='arg_defence_cluster_46_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <replace sel="/god/stations/station[@id='tradestation_antigone'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <add sel="/god/stations/station[@id='ant_defence_cluster_13_sector001_01'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='ant_defence_cluster_13_sector001_02'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>  
+  <add sel="/god/stations/station[@id='ant_defence_cluster_40_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='ant_defence_cluster_41_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='ant_defence_cluster_27_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <replace sel="/god/stations/station[@id='tradestation_hatikvah_01'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='freeport_hatikvah_01'][@type='piratebase']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='freeport_hatikvah_02'][@type='piratebase']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='freeport_hatikvah_03'][@type='piratebase']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <add sel="/god/stations/station[@id='hat_defence_cluster_29_sector001_01'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='hat_defence_cluster_29_sector001_02'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>  
+  <replace sel="/god/stations/station[@id='tradestation_paranid'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <add sel="/god/stations/station[@id='par_defence_cluster_10_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='par_defence_cluster_18_sector001_01'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='par_defence_cluster_18_sector001_02'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>  
+  <add sel="/god/stations/station[@id='par_defence_cluster_47_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='par_defence_cluster_22_sector001_01'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='par_defence_cluster_22_sector001_02'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>  
+  <add sel="/god/stations/station[@id='par_defence_cluster_37_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='par_defence_cluster_38_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='par_defence_cluster_23_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <replace sel="/god/stations/station[@id='tradestation_holyorder'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <add sel="/god/stations/station[@id='hol_defence_cluster_11_sector001_01'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='hol_defence_cluster_11_sector001_02'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>  
+  <add sel="/god/stations/station[@id='hol_defence_cluster_12_sector001_01'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='hol_defence_cluster_12_sector001_02'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>  
+  <add sel="/god/stations/station[@id='hol_defence_cluster_24_sector001_01'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='hol_defence_cluster_24_sector001_02'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>  
+  <add sel="/god/stations/station[@id='hol_defence_cluster_35_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='hol_defence_cluster_36_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <replace sel="/god/stations/station[@id='ringstation_01'][@type='tradingstation']/station[@ref='tradestation_tel_ring']/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='ringstation_02'][@type='tradingstation']/station[@ref='tradestation_tel_ring']/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='ringstation_03'][@type='tradingstation']/station[@ref='tradestation_tel_ring']/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_01_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_01_sector002'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_01_sector003'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_05_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_09_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_15_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_15_sector002'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_19_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_42_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_43_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_19_sector002'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_20_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_02_sector001_01'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_02_sector001_02'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>  
+  <add sel="/god/stations/station[@id='tel_defence_cluster_03_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_39_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_34_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <replace sel="/god/stations/station[@id='tel_processing'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_25_sector001'][@type='defence']/quotas/quota/@galaxy">2</replace>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_25_sector001'][@type='defence']/quotas/quota/@zone">2</replace>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_32_sector001'][@type='defence']/quotas/quota/@galaxy">2</replace>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_32_sector001'][@type='defence']/quotas/quota/@zone">2</replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_400_sector001'][@type='factory']/location[@macro='cluster_400_sector001_macro']/@class">zone</replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_400_sector001'][@type='factory']/location[@macro='cluster_400_sector001_macro']/@macro">zone001_cluster_400_sector001_macro</replace>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_400_sector001'][@type='factory']/position"/>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_400_sector001'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_400_sector001'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_401_sector001'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_401_sector001'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_401_sector001_2'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_401_sector001_2'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_402_sector001'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_402_sector001'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_402_sector001_2'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_402_sector001_2'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_403_sector001'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_403_sector001'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_404_sector001'][@type='factory']/quotas/quota/@galaxy">2</replace>
+  <replace sel="/god/stations/station[@id='spl_defence_cluster_404_sector001'][@type='factory']/quotas/quota/@zone">2</replace>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_404_sector001'][@type='factory']/position"/>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_404_sector001'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_404_sector001'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_404_sector001_2'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_404_sector001_2'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_405_sector001'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_405_sector001'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <replace sel="/god/stations/station[@id='tradestation_split_01'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_406_sector001'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_406_sector001'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_406_sector001_2'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_406_sector001_2'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_418_sector001'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_418_sector001'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <remove sel="/god/stations/station[@id='spl_defence_cluster_418_sector001_2'][@type='factory']/station/loadout/@useplanloadout"/>
+  <add sel="/god/stations/station[@id='spl_defence_cluster_418_sector001_2'][@type='factory']/station/loadout">
+    <level exact="1.0"/>
+  </add>
+  <replace sel="/god/stations/station[@id='tradestation_freesplit_01'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <add sel="/god/stations/station[@id='frf_defence_cluster_407_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='frf_defence_cluster_408_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='frf_defence_cluster_408_sector002'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='frf_defence_cluster_409_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='frf_defence_cluster_410_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='frf_defence_cluster_411_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='frf_defence_cluster_412_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='frf_defence_cluster_421_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_419_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='tel_defence_cluster_420_sector001'][@type='factory']/station">
+    <loadout>
+      <level exact="1.0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='xen_defence_cluster_413_sector001'][@type='defence']/station">
+    <loadout>
+      <level exact="1.0"/>
+      <variation exact="0"/>
+    </loadout>
+  </add>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_414_sector001'][@type='defence']/quotas/quota/@galaxy">2</replace>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_414_sector001'][@type='defence']/quotas/quota/@zone">2</replace>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_414_sector001'][@type='defence']/location[@macro='zone001_cluster_414_sector001_macro']/@macro">zone005_cluster_414_sector001_macro</replace>
+  <add sel="/god/stations/station[@id='xen_defence_cluster_414_sector001'][@type='defence']/station">
+    <loadout>
+      <level exact="1.0"/>
+      <variation exact="0"/>
+    </loadout>
+  </add>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_415_sector001'][@type='defence']/quotas/quota/@galaxy">2</replace>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_415_sector001'][@type='defence']/quotas/quota/@zone">2</replace>
+  <replace sel="/god/stations/station[@id='xen_defence_cluster_415_sector001'][@type='defence']/location[@macro='zone001_cluster_415_sector001_macro']/@macro">zone004_cluster_415_sector001_macro</replace>
+  <add sel="/god/stations/station[@id='xen_defence_cluster_415_sector001'][@type='defence']/station">
+    <loadout>
+      <level exact="1.0"/>
+      <variation exact="0"/>
+    </loadout>
+  </add>
+  <replace sel="/god/stations/station[@id='shipyard_xenon_cluster_415'][@type='shipyard']/location[@macro='cluster_415_sector001_macro']/@class">zone</replace>
+  <replace sel="/god/stations/station[@id='shipyard_xenon_cluster_415'][@type='shipyard']/location[@macro='cluster_415_sector001_macro']/@macro">zone001_cluster_415_sector001_macro</replace>
+  <add sel="/god/stations/station[@id='xen_defence_cluster_424_sector001'][@type='defence']/station">
+    <loadout>
+      <level exact="1.0"/>
+      <variation exact="0"/>
+    </loadout>
+  </add>
+  <add sel="/god/stations/station[@id='xen_defence_cluster_424_sector002'][@type='defence']/station">
+    <loadout>
+      <level exact="1.0"/>
+      <variation exact="0"/>
+    </loadout>
+  </add>
+  <replace sel="/god/stations/station[@id='pio_defence_cluster_113_sector001'][@type='factory']/station/loadout/level[@exact='0.7']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='pio_defence_cluster_114_sector001'][@type='factory']/station/loadout/level[@exact='0.7']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='pio_processing'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='pio_defence_cluster_115_sector001'][@type='factory']/station/loadout/level[@exact='0.7']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_defence_602_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_trade_602_001'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_defence_603_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_wharf_603_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_trade_604_001'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_defence_606_003'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_tradingport_606_003'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_defence_606_002'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_alliancehub_606_002'][@type='tradingstation']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_defence_606_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_wharf_606_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_shipyard_606_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_defence_607_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_defence_608_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_defence_609_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace>
+  <replace sel="/god/stations/station[@id='boron_equipment_609_001'][@type='factory']/station/loadout/level[@exact='0.75']/@exact">1.0</replace> 
+  
+
+	<!--ANTIGONE-->  
+  <replace sel="/god/products/product[@id='ant_claytronics'][@type='factory']/quotas/quota/@galaxy">9</replace>  
+  
+  
+	<!--ARGON-->
+  <replace sel="/god/products/product[@id='arg_claytronics'][@type='factory']/quotas/quota/@galaxy">12</replace>  		
+
+
+	<!--HOLY ORDER-->
+  <replace sel="/god/products/product[@id='hol_claytronics'][@type='factory']/quotas/quota/@galaxy">12</replace> 	
+
+  <add sel="/god/products/product[@id='hol_advancedcomposites']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_advancedelectronics']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_antimattercells']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_antimatterconverters']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_claytronics']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_dronecomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_energycells']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_engineparts']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_fieldcoils']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_graphene']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_hullparts']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_majasnails']/location" type="@excludedtags">splitdlc</add>   
+  <add sel="/god/products/product[@id='hol_medicalsupplies']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_microchips']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_missilecomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_plasmaconductors']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_quantumtubes']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_refinedmetals']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_scanningarrays']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_shieldcomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_siliconwafers']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_smartchips']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_sojabeans']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_sojahusk']/location" type="@excludedtags">splitdlc</add>   
+  <add sel="/god/products/product[@id='hol_spices']/location" type="@excludedtags">splitdlc</add>  
+  <add sel="/god/products/product[@id='hol_superfluidcoolant']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_turretcomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_water']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='hol_weaponcomponents']/location" type="@excludedtags">splitdlc</add>
+  
+	
+	<!--PARANID-->
+  <replace sel="/god/products/product[@id='par_claytronics'][@type='factory']/quotas/quota/@galaxy">12</replace> 	
+
+  <add sel="/god/products/product[@id='par_advancedcomposites']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_advancedelectronics']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_antimattercells']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_antimatterconverters']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_claytronics']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_dronecomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_energycells']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_engineparts']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_fieldcoils']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_graphene']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_hullparts']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_majasnails']/location" type="@excludedtags">splitdlc</add>   
+  <add sel="/god/products/product[@id='par_medicalsupplies']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_microchips']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_missilecomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_plasmaconductors']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_quantumtubes']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_refinedmetals']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_scanningarrays']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_shieldcomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_siliconwafers']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_smartchips']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_sojabeans']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_sojahusk']/location" type="@excludedtags">splitdlc</add>   
+  <add sel="/god/products/product[@id='par_spices']/location" type="@excludedtags">splitdlc</add>  
+  <add sel="/god/products/product[@id='par_superfluidcoolant']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_turretcomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_water']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='par_weaponcomponents']/location" type="@excludedtags">splitdlc</add>
+   
+ 
+  
+	<!--TELADI-->
+  <replace sel="/god/products/product[@id='tel_claytronics'][@type='factory']/quotas/quota/@galaxy">22</replace>  	
+
+  <add sel="/god/products/product[@id='tel_advancedcomposites']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_advancedelectronics']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_antimattercells']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_antimatterconverters']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_claytronics']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_dronecomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_energycells']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_engineparts']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_fieldcoils']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_graphene']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_hullparts']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_medicalsupplies']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_microchips']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_missilecomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_nostropoil']/location" type="@excludedtags">splitdlc</add>  
+  <add sel="/god/products/product[@id='tel_plasmaconductors']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_quantumtubes']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_scanningarrays']/location" type="@excludedtags">splitdlc</add> 
+  <add sel="/god/products/product[@id='tel_shieldcomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_siliconwafers']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_smartchips']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_spaceweed']/location" type="@excludedtags">splitdlc</add>  
+  <add sel="/god/products/product[@id='tel_spices']/location" type="@excludedtags">splitdlc</add>  
+  <add sel="/god/products/product[@id='tel_sunriseflowers']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_superfluidcoolant']/location" type="@excludedtags">splitdlc</add>  
+  <add sel="/god/products/product[@id='tel_swampplant']/location" type="@excludedtags">splitdlc</add>    
+  <add sel="/god/products/product[@id='tel_teladianium']/location" type="@excludedtags">splitdlc</add>  
+  <add sel="/god/products/product[@id='tel_turretcomponents']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_water']/location" type="@excludedtags">splitdlc</add>
+  <add sel="/god/products/product[@id='tel_weaponcomponents']/location" type="@excludedtags">splitdlc</add>
+
+  
+	<!--SPLIT-->
+  <replace sel="/god/products/product[@id='spl_claytronics'][@type='factory']/quotas/quota/@galaxy">10</replace>
+
+  <add sel="/god/products/product[@id='spl_advancedcomposites']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_advancedelectronics']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_antimattercells']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_antimatterconverters']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_cheltmeat']/location" type="@excludedtags">splitcolony</add>  
+  <add sel="/god/products/product[@id='spl_claytronics']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_dronecomponents']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_energycells']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_engineparts']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_fieldcoils']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_graphene']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_hullparts']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_medicalsupplies']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_microchips']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_missilecomponents']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_plasmaconductors']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_quantumtubes']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_refinedmetals']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_scanningarrays']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_scruffinfruits']/location" type="@excludedtags">splitcolony</add>  
+  <add sel="/god/products/product[@id='spl_shieldcomponents']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_siliconwafers']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_smartchips']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_spices']/location" type="@excludedtags">splitcolony</add>  
+  <add sel="/god/products/product[@id='spl_superfluidcoolant']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_turretcomponents']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_water']/location" type="@excludedtags">splitcolony</add>
+  <add sel="/god/products/product[@id='spl_weaponcomponents']/location" type="@excludedtags">splitcolony</add>
+  
+
+  
+	<!--FREE FAMILIES-->
+  <replace sel="/god/products/product[@id='frf_claytronics'][@type='factory']/quotas/quota/@galaxy">10</replace>
+  
+
+	<!--TERRAN-->
+  <replace sel="/god/products/product[@id='ter_energycells'][@type='factory']/quotas/quota/@galaxy">40</replace> <!--Cut by 24 due to the Mercury Solar Power Plants-->
+  <replace sel="/god/products/product[@id='ter_energycells'][@type='factory']/location/sunlight/@min">0.5</replace> 
+  <replace sel="/god/products/product[@id='ter_computronicsubstrate'][@type='factory']/quotas/quota/@galaxy">16</replace>  
+  
+  
+	<!--PIONEERS-->
+  <add sel="/god/products/product[@id='pio_metallicmicrolattice'][@type='factory']/location[@macro='xu_ep2_universe_macro'][@faction='pioneers']" type="@matchextension">false</add>
+  <add sel="/god/products/product[@id='pio_computronicsubstrate'][@type='factory']/location[@macro='xu_ep2_universe_macro'][@faction='pioneers']" type="@matchextension">false</add>
+  <add sel="/god/products/product[@id='pio_siliconcarbide'][@type='factory']/location[@macro='xu_ep2_universe_macro'][@faction='pioneers']" type="@matchextension">false</add>
+  <add sel="/god/products/product[@id='pio_energycells'][@type='factory']/location[@macro='xu_ep2_universe_macro'][@faction='pioneers']" type="@matchextension">false</add>
+  <add sel="/god/products/product[@id='pio_medicalsupplies'][@type='factory']/location[@macro='xu_ep2_universe_macro'][@faction='pioneers']" type="@matchextension">false</add>
+  <add sel="/god/products/product[@id='pio_proteinpaste'][@type='factory']/location[@macro='xu_ep2_universe_macro'][@faction='pioneers']" type="@matchextension">false</add>
+  <add sel="/god/products/product[@id='pio_terranmre'][@type='factory']/location[@macro='xu_ep2_universe_macro'][@faction='pioneers']" type="@matchextension">false</add>
+  <add sel="/god/products/product[@id='pio_stimulants'][@type='factory']/location[@macro='xu_ep2_universe_macro'][@faction='pioneers']" type="@matchextension">false</add>
+
+  
+	<!--BORON-->
+  <replace sel="/god/products/product[@id='bor_claytronics'][@type='factory']/quotas/quota/@galaxy">10</replace>  
+
+  <add sel="/god/products/product[@id='bor_advancedcomposites']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_advancedelectronics']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_antimattercells']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_antimatterconverters']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_claytronics']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_dronecomponents']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_energycells']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_engineparts']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_fieldcoils']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_bofu']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_graphene']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_hullparts']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_bogas']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_medicalsupplies']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_microchips']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_missilecomponents']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_plasmaconductors']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_quantumtubes']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_refinedmetals']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_scanningarrays']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_shieldcomponents']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_siliconwafers']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_smartchips']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_superfluidcoolant']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_turretcomponents']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_water']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_weaponcomponents']/location" type="@excludedtags">boroncolony</add>
+  <add sel="/god/products/product[@id='bor_plankton']/location" type="@excludedtags">boroncolony</add>
+  
+  
+	<!--SPLIT DLC-->
+<!--
+  <remove sel="/god/stations/station[@id='wharf_split_02']/@startactive"/>
+  <remove sel="/god/stations/station[@id='arg_defence_cluster_416_sector001']/@startactive"/> 
+  <remove sel="/god/stations/station[@id='arg_defence_cluster_416_sector002']/@startactive"/>
+  <remove sel="/god/stations/station[@id='arg_wharf_cluster_416_sector002']/@startactive"/>
+  <remove sel="/god/stations/station[@id='arg_defence_cluster_417_sector001']/@startactive"/>
+  <remove sel="/god/stations/station[@id='par_defence_cluster_423_sector001']/@startactive"/>
+  <remove sel="/god/stations/station[@id='par_defence_cluster_423_sector002']/@startactive"/>
+  <remove sel="/god/stations/station[@id='par_defence_cluster_422_sector001']/@startactive"/>
+  <remove sel="/god/stations/station[@id='par_wharf_cluster_422_sector001']/@startactive"/>
+ -->
+  <remove sel="/god/products/product[@id='arg_dlc_split_energycells']/@startactive"/>
+  <remove sel="/god/products/product[@id='arg_dlc_split_foodrations']/@startactive"/>
+  <remove sel="/god/products/product[@id='arg_dlc_split_meat']/@startactive"/>
+  <remove sel="/god/products/product[@id='arg_dlc_split_medicalsupplies']/@startactive"/>
+  <remove sel="/god/products/product[@id='arg_dlc_split_spacefuel']/@startactive"/>
+  <remove sel="/god/products/product[@id='arg_dlc_split_spices']/@startactive"/>
+  <remove sel="/god/products/product[@id='arg_dlc_split_water']/@startactive"/>
+  <remove sel="/god/products/product[@id='arg_dlc_split_wheat']/@startactive"/>
+  <remove sel="/god/products/product[@id='par_dlc_split_antimatterconverters']/@startactive"/>
+  <remove sel="/god/products/product[@id='par_dlc_split_energycells']/@startactive"/>
+  <remove sel="/god/products/product[@id='par_dlc_split_engineparts']/@startactive"/>
+  <remove sel="/god/products/product[@id='par_dlc_split_hullparts']/@startactive"/>
+  <remove sel="/god/products/product[@id='par_dlc_split_shieldcomponents']/@startactive"/>
+  <remove sel="/god/products/product[@id='par_dlc_split_turretcomponents']/@startactive"/>
+  <remove sel="/god/products/product[@id='par_dlc_split_weaponcomponents']/@startactive"/>
+  <remove sel="/god/products/product[@id='tel_dlc_split_advancedelectronics']/@startactive"/>
+  <remove sel="/god/products/product[@id='tel_dlc_split_weaponcomponents']/@startactive"/>
+  <remove sel="/god/products/product[@id='tel_dlc_split_teladianium']/@startactive"/>
+  <remove sel="/god/products/product[@id='tel_dlc_split_siliconwafers']/@startactive"/>  
+
+
+  <add sel="//god/stations">
+<!--Mercury (Cluster 106)-->	
+    <station id="ter_mercury_spp" race="terran" owner="terran" type="factory">	<!--Added to make sure that Terrans start with good EC production, God engine seems to be skipping Mercury-->
+      <quotas>
+        <quota galaxy="2" sector="2" zone="1" />
+      </quotas>
+      <location class="sector" macro="cluster_106_sector001_macro" matchextension="false"/>
+      <station constructionplan="ter_mercury_spp">
+        <loadout>
+          <level exact="1.0" />
+        </loadout>
+      </station>
+    </station>	  
+  </add>    
+	<!--New DA Modules-->
+  <add sel="/god/products">
+	<!--OTAS-->
+    <product id="otas_da_adv_schematics" ware="da_adv_schematics" owner="otas" type="factory">
+      <quotas>
+        <quota galaxy="6" />
+      </quotas>
+      <location class="galaxy" macro="xu_ep2_universe_macro" faction="[otas]" relation="self" comparison="exact" matchextension="false"/>
+      <module>
+        <select ware="da_adv_schematics" race="otas" faction="otas"/>
+      </module>
+    </product>
+    <product id="otas_da_mil_schematics" ware="da_mil_schematics" owner="otas" type="factory">
+      <quotas>
+        <quota galaxy="6" />
+      </quotas>
+      <location class="galaxy" macro="xu_ep2_universe_macro" faction="[otas]" relation="self" comparison="exact" matchextension="false"/>
+      <module>
+        <select ware="da_mil_schematics" race="otas" faction="otas"/>
+      </module>
+    </product>
+    <product id="otas_da_laborunion_contracts" ware="da_laborunion_contracts" owner="otas" type="factory">
+      <quotas>
+        <quota galaxy="4" />
+      </quotas>
+      <location class="galaxy" macro="xu_ep2_universe_macro" faction="[otas]" relation="self" comparison="exact" matchextension="false"/>
+      <module>
+        <select ware="da_laborunion_contracts" race="otas" faction="otas"/>
+      </module>
+    </product>	
+  </add>  
+</diff>

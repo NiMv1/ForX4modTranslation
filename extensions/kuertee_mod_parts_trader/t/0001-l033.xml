@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- english -->
+<language>
+	<!-- "kuertee mod part trader" = "kmpt" = "11 13 16 20" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="11131620" voice="no">
+		<t id="1">Marchand de pièces de modification</t>
+		<!-- config -->
+		<t id="2">Journal de débogage</t>
+		<t id="3">Activer la fonction de débogage</t>
+		<t id="4">Vendre les modifications aux marchands ?</t>
+		<t id="5">Multiplicateur de valeur de vente</t>
+		<t id="6">Acheter les modifications auprès des marchands ?</t>
+		<t id="7">Multiplicateur de valeur d'achat</t>
+		<!-- convo -->
+		<t id="100">Commerce ?</t>
+		<!-- ui -->
+		<t id="200">Pièce de modification</t>
+		<t id="201">Valeur</t>
+		<t id="202">Quantité</t>
+		<t id="203">Valeur d'échange</t>
+		<t id="204">Valeur totale</t>
+		<t id="205">Valeur monétaire</t>
+		<t id="206">Valeur nette</t>
+		<!-- station -->
+		<t id="300">Marchand de pièces de modification</t>
+
+		<!-- mycu_verbose_transaction_log mod -->
+		<t id="401">Échange de pièces de modification</t>
+
+	</page>
+</language>

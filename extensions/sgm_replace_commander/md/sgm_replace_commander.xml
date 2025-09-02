@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="sgm_replace_commander" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="SgmReplaceCmdr" namespace="this">
+			<conditions>
+				<check_any>
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+			</conditions>
+			<actions>
+				<debug_text text="'event.name: ' + event.name" />
+				<set_value name="$debugChance" exact="100" />
+			</actions>
+			<cues>
+				<cue name="Init">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<event_game_loaded />
+						</check_any>
+					</conditions>
+					<actions>
+						<debug_text text="'$debugChance: ' + $debugChance" />
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="OnModInstall">
+					<actions>
+						<debug_text text="'$debugChance: ' + $debugChance" />
+						<signal_cue cue="Init" />
+					</actions>
+				</cue>
+				<cue name="InteractMenu_ReplaceCom" instantiate="true">
+					<conditions>
+						<event_cue_signalled cue="md.Interact_Menu_API.Get_Actions" />
+					</conditions>
+					<actions>
+						<set_value name="$newCmdr" exact="@event.param.$selectedplayerships.{1}" /> <!-- selected = new commander -->
+						<set_value name="$oldCmdr" exact="@event.param.$object" />                  <!-- right clicked = current commander -->
+						<debug_text text="'$newCmdr: ' + $newCmdr + ' (' + @$newCmdr.knownname + ')'" chance="SgmReplaceCmdr.$debugChance" />
+						<debug_text text="'$oldCmdr: ' + $oldCmdr + ' (' + @$oldCmdr.knownname + ')'" chance="SgmReplaceCmdr.$debugChance" />
+						<!-- Requirements for the "Replace Commander" option to show -->
+						<do_if value="$newCmdr.isclass.ship and 
+									  $newCmdr.isoperational and 
+						              $newCmdr.trueowner == faction.player and 									  
+									  $newCmdr.subordinates.count == 0 and
+									  $oldCmdr.isclass.ship and 
+									  $oldCmdr.trueowner == faction.player and
+									  $oldCmdr.subordinates.count gt 0 ">
+							<!-- "Replace Commander" interact menu option -->
+							<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param = "table[
+								$id = 'order_replace_commander',
+								$section = 'selected_orders',
+								$text = 'Заменить командира флота',
+								$icon = 'order_assigncommander',
+								$callback = InteractMenu_OnReplaceCommander,
+								$echo='Immediate'
+							]" />
+						</do_if>
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="InteractMenu_OnReplaceCommander">
+					<conditions>
+						<event_cue_signalled />
+					</conditions>
+					<actions>
+						<!-- if the old commander has an assignment, copy it to the new commander -->
+						<do_if value="$oldCmdr.assignment">
+							<create_order id="'AssignCommander'" object="$newCmdr" immediate="true">
+								<param name="commander" value="$oldCmdr.commander"/>
+								<param name="subordinategroup" value="$oldCmdr.subordinategroupid"/>
+								<param name="assignment" value="$oldCmdr.assignment"/>
+								<param name="cancelorders" value="true"/>
+								<param name="debugchance" value="$debugChance"/>
+							</create_order>
+						</do_if>
+						<do_else>
+							<!-- otherwise remove the existing assignment of the new commander -->
+							<create_order id="'AssignCommander'" object="$newCmdr" immediate="true"/> <!-- unassigns because default commander is null -->
+						</do_else>					
+						<!-- transfer all subordinates and their assignment from the old commander to the new commander -->
+						<do_all exact="$oldCmdr.subordinates.count" counter="$_i">
+							<create_order id="'AssignCommander'" object="$oldCmdr.subordinates.{$_i}" immediate="true">
+								<param name="commander" value="$newCmdr"/>
+								<param name="subordinategroup" value="$oldCmdr.subordinates.{$_i}.subordinategroupid"/>
+								<param name="assignment" value="$oldCmdr.subordinates.{$_i}.assignment"/>
+								<param name="cancelorders" value="true"/>
+								<param name="debugchance" value="$debugChance"/>
+							</create_order>
+						</do_all>
+						<!-- remove the assignment of the old commander (which now has no subordinates anymore) -->
+						<create_order id="'AssignCommander'" object="$oldCmdr" immediate="true"/>
+						<reset_cue cue="this" />
+					</actions>
+				</cue>		
+				
+				<cue name="OnModInstallComplete">
+					<actions>
+						<set_value name="$debugChance" exact="0" />
+						<debug_text text="'$debugChance: ' + $debugChance" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+	</cues>
+</mdscript>

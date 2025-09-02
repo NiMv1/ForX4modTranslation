@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="Sladernimo_SkipIntro" name="SkipIntro" date="2018-12-12" version="100" save="false" enabled="true">
+  <text language="07" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+  <text language="33" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+  <text language="34" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+  <text language="39" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+  <text language="44" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+  <text language="49" name="Überspringe Intro" description="Diese Mod überspringt das Intro Video beim Spielstart." author="Sladernimo" />
+  <text language="55" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+  <text language="81" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+  <text language="82" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+  <text language="86" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+  <text language="88" name="Skip Intro" description="This mod skips the intro video on game start." author="Sladernimo" />
+</content>

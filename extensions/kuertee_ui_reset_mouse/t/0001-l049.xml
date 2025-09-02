@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+	<!-- "kuertee reset mouse" = "krm" = "11 18 13" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="111813" voice="no">
+		<!-- config -->
+		<t id="688900">kuertee: UI: Mausreset</t>
+		<t id="688901">Debug-Protokoll</t>
+		<t id="688902">Bei Vollbild-Menüschliessung, Maus zurücksetzen nach</t>
+		<t id="688903">Zentrum</t>
+		<t id="688904">Oben links</t>
+		<t id="688905">Oben rechts</t>
+		<t id="688906">Unten links</t>
+		<t id="688907">Unten rechts</t>
+		<t id="688908">Bei Controlleraktion, Maus zurücksetzen nach</t>
+		<t id="688909">Bei Mausnutzung nach Controlleraktion, Maus zurücksetzen nach</t>
+		<t id="688910">Zurück zu Vorherigem</t>
+		<t id="688911">Bei Autopilot-Abschaltung, Maus zurücksetzen nach</t>
+	</page>
+</language>

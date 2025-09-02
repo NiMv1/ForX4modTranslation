@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- order and spacing is shared with 'factions.xml' file for side-by-side viewing -->
+<diff>
+	<replace sel="/language/page[@id='20203']/t[@id='103']/text()">\033#ff39ff40#ИГ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='203']/text()">\033#ff0055ff#АРГ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='303']/text()">\033#ff5097de#АНТ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='403']/text()">\033#ff8000ff#ПАР</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='503']/text()">\033#ffff72ad#СОП</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='603']/text()">\033#ffa9c22e#ТЕЛ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='703']/text()">\033#ff94bc92#МИН</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='803']/text()">\033#ffb03cca#АЛЬ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='903']/text()">\033#ff20f6fd#ХАТ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1003']/text()">\033#ff89823a#ЧЕШ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1103']/text()">\033#ffc90000#КСЕ</replace>
+	<!-- <t id="1203">ЗЕМ</t> -->
+	<replace sel="/language/page[@id='20203']/t[@id='1303']/text()">\033#ff4dc4ff#БОР</replace>
+	<!-- <t id="1403">ЗРТ</t> -->
+	<replace sel="/language/page[@id='20203']/t[@id='1503']/text()">\033#fff0aeed#ХАА</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1603']/text()">\033#ffff9e00#СВС</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1703']/text()">\033#fffbb298#ПДС</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1803']/text()">\033#ffffd500#СБР</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='1903']/text()">\033#ffffd500#ЛОЖ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2003']/text()">\033#ffff691e#ЗЬЯ</replace>
+	<!-- <t id="2103">НУУ</t> -->
+	<replace sel="/language/page[@id='20203']/t[@id='2203']/text()">\033#ffff691e#РАК</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2303']/text()">\033#ffbf39d7#ТРО</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2403']/text()">\033#ff5a00ff#БУК</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2503']/text()">\033#ff5a00ff#ОРД</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2603']/text()">\033#ff8a0101#АСО</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2803']/text()">\033#fffe8dfa#ЯКИ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='2903']/text()">\033#ff41aa9a#ПИО</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='3003']/text()">\033#ffbcd0fb#ЗЕМ</replace>
+	<!-- <t id="3103">???</t> -->
+	<replace sel="/language/page[@id='20203']/t[@id='3203']/text()">\033#ff5480a0#ВОЛ</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='3303']/text()">\033#ff978296#СИН</replace>
+	<replace sel="/language/page[@id='20203']/t[@id='3403']/text()">\033#ff4dc4ff#БОР</replace>
+</diff>

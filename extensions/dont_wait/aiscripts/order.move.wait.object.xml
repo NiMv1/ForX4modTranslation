@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<add sel="//params">
+		<param name="dontwait" type="bool" default="false" text="{867530966, 100}" comment="Don't wait at end of this order"/>
+	</add>
+
+	<add sel="//do_if[@value='this.isplayerowned and not $joinfleet and not this.isclass.computer and not this.assignedcontrolled.nextorder and (not this.assignedcontrolled.commander or (this.assignedcontrolled.commander == player.occupiedship)) and notification.npc_await_orders.active']" type="@chance">(not $dontwait) * 100</add>
+	
+	<add sel="//run_script[@name=&quot;'order.wait'&quot;]" type="@chance">(not $dontwait) * 100</add>
+
+</diff>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="kuerteeFriendlyFireTweaks"
+name="kuertee: Friendly fire tweaks"
+author="kuertee"
+version="750"
+date="2025-02-21"
+save="false"
+enabled="1">
+
+<text language=""
+description="Friendly fire tweaks&#13;&#10;
+https://www.nexusmods.com/x4foundations/mods/708&#13;&#10;
+&#13;&#10;
+Mod effects:&#13;&#10;
+============&#13;&#10;
+Friendly fire penalties on these conditions:
+(1) the victim is targeted,&#13;&#10;
+(2) their shields are less than 25%,&#13;&#10;
+(3) the damage is from your main gun(s).&#13;&#10;
+"/>
+</content>

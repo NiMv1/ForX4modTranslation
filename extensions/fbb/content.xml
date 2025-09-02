@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content name="Fly-by Lockbox" id="ws_1683356126" author="Assailer" version="112" date="2022-06-20" save="0" enabled="1" description="Fly-by Lockbox&#13;&#10;Version 1.12&#13;&#10;&#13;&#10;Lockboxes within 5km range will spawn their content and disappear. Locks will get unlocked automatically.&#13;&#10;&#13;&#10;There are no known compatibility issues with any other mods, also uninstalling shall not affect your save games." sync="false" lastupdate="1655745728">
+  <text language="7" name="Fly-by Lockbox" description="Мод разблокирует контейнеры снимая замки и выбрасывая из них лут в радиусе 5 км. "/>
+  <text language="33" name="Fly-by Lockbox" description="Fly-by Lockbox"/>
+  <text language="34" name="Fly-by Lockbox" description="Fly-by Lockbox"/>
+  <text language="39" name="Fly-by Lockbox" description="Fly-by Lockbox"/>
+  <text language="44" name="Fly-by Lockbox" description="Fly-by Lockbox"/>
+  <text language="49" name="Fly-by Lockbox" description="Ausserhalb von Highways werden Sicherheitscontainer innerhalb 5km Reichweite automatisch entriegelt und deren Inhalt freigegeben.\n Keine Probleme mit Savegames oder zu anderen MODs bekannt."/>
+  <text language="86" name="Fly-by Lockbox" description="Fly-by Lockbox"/>
+  <text language="88" name="Fly-by Lockbox" description="Fly-by Lockbox"/>
+</content>

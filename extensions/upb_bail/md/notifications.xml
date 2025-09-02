@@ -1,0 +1,1062 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diff>
+
+	<replace sel='//cue[@name="PlayerOwnedShipAttacks"]'>
+
+
+        <cue name="PlayerOwnedShipAttacks" instantiate="true" namespace="this">
+			<conditions>
+			  	<check_any>
+					<check_all comment="owned atttack.">
+						<event_object_signalled object="player.galaxy" param3="'shouldwebail.PlayerOwned'" comment="param == attacker, param2 == [target, component] "/>
+						<set_value name="$attacker" 		exact="event.param"/>
+						<set_value name="$target" 			exact="event.param2.{1}"/>
+						<set_value name="$component" 		exact="event.param2.{2}"/>
+						<!-- <debug_text text="'C O N D I T I O N   attacker: %s %s %s,  target: %s %s %s'.[@$attacker.idcode, @$attacker.knownname, @$attacker, $target.idcode, @$target.knownname, @$target]" />-->
+					</check_all>
+					<check_all comment="Player atttack.">
+						<event_player_attacked_object comment="attacker always the player.occupiedship , param = target, param3.{1} == component, param2 == kill method "/>
+						<set_value name="$target" 		exact="event.param"/>
+						<set_value name="$component"	exact="event.param3.{1}"/>
+						<check_value value="player.occupiedship"/>
+						<check_value value="not player.occupiedship.isclass.spacesuit"/>
+						<check_value value="not $target.isplayerowned"/>
+						<check_value value="$target and $target.isoperational"/>
+						<check_value value="$target.isclass.ship and $target.pilot.exists"/>
+						<check_value value="not $target.isunit"/>
+						<check_value value="not $target.islasertower" />
+						<check_any>
+							<check_value value="@$target.order.state != orderstate.critical"/>
+							<!-- SalvageCrush has handling for being interrupted while critical -->
+							<check_value value="@$target.order.id == 'SalvageCrush'"/>
+						</check_any>
+						<check_value value="
+						if $target == $component then
+							@global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$Hull.$Player
+						else
+							@global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$Equipment.$Player
+						"/>
+					</check_all>
+					<check_all comment="Surrender from in md.Conversations">
+						<event_cue_signalled comment="signalled from md.Conversations. param == target, attacker always the player"/>
+						<set_value name="$target" 		exact="event.param"/>
+						<check_value value="player.occupiedship"/>
+						<check_value value="not player.occupiedship.isclass.spacesuit"/>
+						<check_value value="not $target.isplayerowned"/>
+						<check_value value="$target and $target.isoperational"/>
+						<check_value value="$target.isclass.ship and $target.pilot.exists"/>
+						<check_value value="not $target.isunit"/>
+						<check_value value="not $target.islasertower" />
+						<check_any>
+							<check_value value="@$target.order.state != orderstate.critical"/>
+							<!-- SalvageCrush has handling for being interrupted while critical -->
+							<check_value value="@$target.order.id == 'SalvageCrush'"/>
+						</check_any>
+						<check_value value="@global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$Hull.$Player"/>
+					</check_all>
+				</check_any>
+			</conditions>
+			<actions>
+				
+				<set_value name="$debugDir" exact="global.$upbBail.$Debug.$LogDir" />
+
+				<do_if value="event.name == 'event_player_attacked_object'">
+					<set_value name="$attacker" 	exact="player.occupiedship"/>
+					<set_value name="$target" 		exact="event.param"/>
+					<set_value name="$component" 	exact="event.param3.{1}" />
+				</do_if>
+				<do_elseif value="(event.name == 'event_cue_signalled') and player.occupiedship">
+					<set_value name="$attacker" 	exact="player.occupiedship"/>
+					<set_value name="$target" 		exact="event.param"/>
+					<set_value name="$component" 	exact="$target" />
+				</do_elseif>
+				<do_elseif value="(event.name == 'event_object_signalled') and (event.param3 == 'shouldwebail.PlayerOwned')">
+					<set_value name="$attacker" 	exact="event.param"/>
+					<set_value name="$target" 		exact="event.param2.{1}"/>
+					<set_value name="$component" 	exact="event.param2.{2}" />
+				</do_elseif>
+				<do_else>
+					<debug_text text="'invalid call. event: %s\nobject: %s\nparam: %s\nparam2: %s\nparam3: %s'.[event.name, event.object, event.param, event.param2, event.param3]" filter="error"/>
+					<cancel_cue cue="this"/>
+				</do_else>
+
+				<set_value name="$attackerKey" exact="if $attacker == player.occupiedship then '$Player' else '$PlayerOwned' " />
+
+				<do_if value="$attacker == player.occupiedship">
+					<set_value name="$debugFile" exact="global.$upbBail.$Debug.$Files.$Player" />
+					<set_value name="$debugFileChance" exact="global.$upbBail.$Debug.$LogChances.$Player" />
+				</do_if>
+				<do_else>
+					<set_value name="$debugFile" exact="global.$upbBail.$Debug.$Files.$PlayerOwned" />
+					<set_value name="$debugFileChance" exact="global.$upbBail.$Debug.$LogChances.$PlayerOwned" />
+				</do_else>
+
+				<set_value name="$issubcomponent" exact="@$target != @$component"/>
+				<set_value name="$classKey" exact="'$' + @$target.realclass" />
+
+				<!-- needed for $scuttle which has to happen after pilot ejects and partly depends on that pilot's skill -->
+				<set_value name="$targetpilotskill" exact="0"/>
+				<do_if value="$target.pilot.exists">
+					<set_value name="$targetpilotskill" exact="$target.pilot.combinedskill"/>
+				</do_if>
+
+				<do_if value="not $attacker.isclass.controllable">
+					<debug_text text="'attacker: %s %s %s is not a controllable. skipping actions.'.[@$attacker.idcode, @$attacker.knownname, @$attacker]" filter="error"/>
+					<cancel_cue cue="this"/>
+				</do_if>
+				
+				<set_value name="$isValidAttack" exact="false" />
+				<do_if value="$issubcomponent">
+					<set_value name="$isValidAttack" exact="global.$upbBail.$class.{$classKey}.$validAttacks.$Equipment.{$attackerKey}" />
+				</do_if>
+				<do_else>
+					<set_value name="$isValidAttack" exact="global.$upbBail.$class.{$classKey}.$validAttacks.$Hull.{$attackerKey}" />
+				</do_else>
+
+				<debug_text text="'\n
+				event: &lt;%s&gt;%s \n
+					[ iscapturable = %s ] , [ isValidAttack = %s ]    %s %s \n
+					[ %s check bail criteria ]  (shield %s, hull %s) \n
+					[#people = %s] , capacity= %s , PM= %s  \n
+					[%s] surrender : (#p/cap)(%s) is LT (%s)( (16 - PM) /16 ) \n
+						$attacker = %s %s,  $target = %s %s
+				'.[
+				event.name, if event.name == 'event_cue_signalled' then ' [Surrender]' else '', 
+				if $target.iscapturable then 'YES' else 'No', 
+				if $isValidAttack then 'YES' else 'No',
+				$attackerKey,
+				if $issubcomponent then
+					if global.$upbBail.$class.{$classKey}.$validAttacks.$Equipment.{$attackerKey} then
+						'[ Checked   OK  ], Attacking on Equipment %s'.[$component.knownname]
+					else
+						'[UnChecked SKIPP], Attacking on Equipment %s'.[$component.knownname]
+				else
+					if global.$upbBail.$class.{$classKey}.$validAttacks.$Hull.{$attackerKey} then
+						'[ Checked   OK  ], Attacking on Hull %s'.[$component.knownname]
+					else
+						'[UnChecked SKIPP], Attacking on Hull %s'.[$component.knownname]
+				,
+				(((not $target.maxshield) or ($target.shieldpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$shieldpercent)) and ($target.hullpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$hullpercent1) and not $target.assigneddock and (not $target.iscapitalship or $target.people.count) ),
+				$target.shieldpercentage, $target.hullpercentage,
+				$target.people.count, $target.people.capacity, $target.pilot.skill.morale,
+				if $target.people.capacity gt 0 then (if (($target.people.count)f / ($target.people.capacity)f) lt ((16 - $target.pilot.skill.morale)f / 16.0) then 'TRUE' else 'FALSE') else 'FALSE',
+				if $target.people.capacity gt 0 then (($target.people.count)f / ($target.people.capacity)f) else 0,
+				((16 - $target.pilot.skill.morale)f / 16.0),
+				$attacker.knownname, $attacker.idcode,
+				$target.knownname, $target.idcode
+				]" chance="global.$upbBail.$Debug.$Deep"/>
+
+				<!-- MAINTENANCE: keep synced with surrender conditions in md.Conversations.DefaultComm -->
+				<!-- chance that the pilot bails out -->
+				<do_if value="$target.iscapturable and $isValidAttack ">
+
+					<do_if value="event.name == 'event_cue_signalled'">
+						<set_value name="$Speak_Line" exact="5037" comment="(refusal to surrender - in danger)" />
+					</do_if>
+					<!-- Dismiss ship if it has shields which above 20%, hull above 75%, or is a capital ship with no service personnel on board. -->
+					<do_if value="if not $testcheat? then (((not $target.maxshield) or ($target.shieldpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$shieldpercent)) and ($target.hullpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$hullpercent1) and not $target.assigneddock and (not $target.iscapitalship or $target.people.count) ) else true">
+						<do_if value="not $target.pilot.$nextcapturechance?">
+							<set_value name="$target.pilot.$nextcapturechance" exact="player.age - 1s" />
+						</do_if>
+						
+						<do_if value="if not $testcheat? then ($target.pilot.$nextcapturechance lt player.age) else true">
+							<!-- TODO: chance to reduce morale? -->
+							<!-- response to demand to surrender. reflects the nerve of the captain and his ability to hold the crew together. -->
+							<set_value name="$chkSurrender" exact="(($target.people.count)f / ($target.people.capacity)f) lt ((16 - $target.pilot.skill.morale)f / 16.0)"/>
+							<do_if value="event.name != 'event_cue_signalled' or ( $chkSurrender and $target.hullpercentage gt 0)">
+
+								<set_value name="$basechance" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$basechance1" />
+								<do_if value="$target.hullpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$hullpercent3">
+									<set_value name="$basechance" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$basechance3" />
+								</do_if>
+								<do_elseif value="$target.hullpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$hullpercent2">
+									<set_value name="$basechance" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$basechance2" />
+								</do_elseif>
+								<!-- remainingcrewchance  -5 ve +5 arası değer alacak 
+									full kapasite personel -5 getirecek bu değeri şans azaltımı için kullancağız
+									yarı yarıya kapasitede ekleme değeri 0 a ulaşacak
+									personel yarından aşağa düştükçe + değer oluşacak ve bail şansını artıracak 
+								 -->
+								<set_value name="$remainingcrewchance" exact="5 - ( ( ($target.people.count)f / ($target.people.capacity)f ) * 10)" />
+								<!-- 
+								<set_value name="$remainingcrewchance" exact="if ($remainingcrewchance lt 0) then 0 else $remainingcrewchance" />
+								<set_value name="$remainingcrewchance" exact="if ($remainingcrewchance gt 10) then 10 else $remainingcrewchance" />
+								-->
+								<set_value name="$hullshieldchance" exact="-100"/>
+								<do_if value="$target.hullpercentage gt 0">
+									<set_value name="$hullshieldchance" exact="(($attacker.shieldpercentage + $attacker.hullpercentage) / ($target.shieldpercentage + $target.hullpercentage))" />
+								</do_if>
+								
+								<set_value name="$hullshieldchance" exact="if ($hullshieldchance gt 10) then 10 else $hullshieldchance" />
+								<set_value name="$sizechance" exact="0" comment="küçük büyüğe saldırıyor" />
+								<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemiden küçük. etki=' + $sizechance" />
+								<do_if value="$attacker.class == $target.class">
+									<set_value name="$sizechance" exact="1" />
+									<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemi ile aynı sınıftan. etki=' + $sizechance" />
+								</do_if>
+								<do_if value="($attacker.isclass.[class.ship_xl] and $target.isclass.[class.ship_l]) or ($attacker.isclass.[class.ship_l] and $target.isclass.[class.ship_m]) or ($attacker.isclass.[class.ship_m] and ($target.isclass.[class.ship_s] or $target.isclass.[class.ship_xs]))">
+									<set_value name="$sizechance" exact="3" />
+									<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemi den 1 sınıf büyük. etki=' + $sizechance" />
+								</do_if>
+								<do_if value="($attacker.isclass.[class.ship_xl] and $target.isclass.[class.ship_m]) or ($attacker.isclass.[class.ship_l] and ($target.isclass.[class.ship_s] or $target.isclass.[class.ship_xs]))">
+									<set_value name="$sizechance" exact="6" />
+									<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemi den 2 sınıf büyük. etki=' + $sizechance" />
+								</do_if>
+								<do_if value="($attacker.isclass.[class.ship_xl] and ($target.isclass.[class.ship_s] or $target.isclass.[class.ship_xs]))">
+									<set_value name="$sizechance" exact="10.0" />
+									<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemi den 3 sınıf büyük. etki=' + $sizechance" />
+								</do_if>
+								<set_value name="$pilotmorale" exact="$target.pilot.skill.morale * 2" />
+
+								<set_value name="$ejectchance" exact="$basechance + $remainingcrewchance + $hullshieldchance + $sizechance - $pilotmorale" />
+
+								<!-- If target is small or medium combat ship then reduce the bail chance by 50%  - Capitals are taken care of below-->
+								<!-- 1.1 Fix added check for target class as well -->
+								 <!-- 
+								<do_if value="[shiptype.scout, shiptype.fighter, shiptype.heavyfighter, shiptype.interceptor, shiptype.corvette, shiptype.bomber, shiptype.gunboat,shiptype.scavenger ].indexof.{$target.type} and ($target.isclass.[class.ship_m] or $target.isclass.[class.ship_s] or $target.isclass.[class.ship_xs])">
+									<set_value name="$ejectchance" exact="$ejectchance / 2" />
+								</do_if>
+								-->
+								<do_if value="$ejectchance le 1">
+									<set_value name="$ejectchance" exact="1" />
+								</do_if>
+								<set_value name="$chanceforfullbail" min="1" max="100" />
+
+								<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="
+									'[ %s %s(%s) ]     &gt;&gt;&gt;     [ %s %s(%s) ]     %s     [ Sector %s ] ( %s )\n
+									[People %s] , [Eject Chance %s] = + BaseChance: %s + RemainingCrewChance: %s + RelativeDamageChance: %s + SizeTypeChance: %s  (Factor %s)\n
+										- PilotMoraleChange: %s\n
+										[ %s ]										
+									'
+									.[
+									$attacker.knownname, $attacker.idcode,if $attacker.isclass.ship then $attacker.type else 'station',
+									$target.knownname, $target.idcode, $target.type, 
+									if $issubcomponent then '&gt;&gt;&gt; Component[ %s ]'.[$component.knownname] else '',
+									$attacker.sector.knownname,
+									player.age,
+									$target.people.count, $ejectchance,
+									$basechance, $remainingcrewchance, $hullshieldchance, $sizechance, $sizechanceFactor, 
+									$pilotmorale,
+									if $target.hullpercentage gt 0 then 'target OK' else ' target DESTROYED'
+									]" append="true" />
+
+
+								<do_if value="true" chance="if not $testcheat? then $ejectchance else 100">
+									<set_value name="$maxcrewbailing" exact="$target.people.count" />
+
+									<do_if value="$target.isplayerowned">
+
+										<set_value name="$bail_role" exact="entityrole.service" />
+										<do_if value="not $target.people.{entityrole.service}.{0}.count">
+											<set_value name="$bail_role" exact="entityrole.marine" />
+										</do_if>
+										<set_value name="$maxcrewbailing" exact="$target.people.{$bail_role}.{0}.count" />
+
+									</do_if>
+
+
+									<do_if value="event.name == 'event_cue_signalled'">
+										<set_value name="$numcrewbailing" exact="$maxcrewbailing" />
+									</do_if>
+									<do_else>
+
+										<set_value name="$MinEjectPercent" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$ejectpercentage.$min / 100f" />
+										<set_value name="$MinEject" exact="[ ($target.people.count * $MinEjectPercent)i, 1].max" />
+										<set_value name="$MaxEjectPercent" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$ejectpercentage.$max / 100f" />
+										<set_value name="$MaxEject" exact="[ ($target.people.count * $MaxEjectPercent)i, 1].max" />
+
+										<!-- 
+										<do_if value="[shiptype.scavenger, shiptype.destroyer, shiptype.frigate, shiptype.carrier, shiptype.battleship, shiptype.resupplier, shiptype.builder].indexof.{$target.type} 
+											and ($target.isclass.[class.ship_xl] or $target.isclass.[class.ship_l])">
+											<set_value name="$MinEjectPercent" exact="global.$upbBail.$perejectminpercentageLXL / 100f" />
+											<set_value name="$MinEject" exact="[ ($target.people.count * $MinEjectPercent)i, 1].max" />
+											<set_value name="$MaxEjectPercent" exact="global.$upbBail.$perejectmaxpercentageLXL / 100f" />
+											<set_value name="$MaxEject" exact="($target.people.count * $MaxEjectPercent)i" />
+										</do_if>
+										<do_else>
+											<set_value name="$MinEjectPercent" exact="global.$upbBail.$perejectminpercentageSM / 100f" />
+											<set_value name="$MinEject" exact="[ ($target.people.count * $MinEjectPercent)i, 1].max" />
+											<set_value name="$MaxEjectPercent" exact="global.$upbBail.$perejectmaxpercentageSM / 100f" />
+											<set_value name="$MaxEject" exact="($target.people.count * $MaxEjectPercent)i" />
+										</do_else>
+										-->
+
+										<do_if value="$MinEject lt $MaxEject">
+											<set_value name="$numcrewbailing" min="$MinEject" max="$MaxEject" />
+										</do_if>
+										<do_elseif value="$MinEject == $MaxEject">
+											<set_value name="$numcrewbailing" exact="$MaxEject" />
+										</do_elseif>
+										<do_else>
+											<set_value name="$numcrewbailing" exact="$target.people.count" />
+										</do_else>
+										<do_if value="$numcrewbailing gt $target.people.count">
+											<set_value name="$numcrewbailing" exact="$target.people.count" />
+										</do_if>
+										
+										<set_value name="$critHullTresh" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$critChk.$hullpercent" />
+										<set_value name="$critChanceTresh" exact="100-global.$upbBail.$class.{$classKey}.$bailcriteria.$critChk.$chance" />
+
+										<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+				[numcrewbailing : %s]   Calculated MinBailnumbers %s%% and MaxBailnumbers %s%% of people count  (Min:%s , Max:%s) / People Count: %s    %s
+											'.[
+												$numcrewbailing,
+												$MinEjectPercent * 100,
+												$MaxEjectPercent * 100,
+												$MinEject,
+												$MaxEject,
+												$target.people.count, 
+												if ($target.hullpercentage le $critHullTresh) and ($chanceforfullbail ge $critChanceTresh ) then '(Chance for fullbail ' + $chanceforfullbail + ')' else ''
+												]" append="true" />
+
+										<do_if value="$target.hullpercentage le $critHullTresh and $chanceforfullbail ge $critChanceTresh">
+											<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+													[FULL BAIL] Critical Damage Full Crew Bail Occurred ' + $target.knownname + ' (' + $target.idcode + ') ' + $target + 
+													' Target Hull Percent (tresh.' + $critHullTresh + ') : ' + $target.hullpercentage + '  Change for FullBail (tresh.' + $critChanceTresh + ') : ' + $chanceforfullbail " append="true" />
+											<set_value name="$numcrewbailing" exact="$target.people.count" />
+											<set_value name="$isCritBail" />
+										</do_if>
+										<do_else>
+											<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+													[None Full Bail] Limiting MAX bail to leave %s%% of people count.   [%s]\n
+															($numcrewbailing) %s is GT %s ($MaxEject)   [ %s ]
+												'
+												.[
+												$MaxEjectPercent * 100, $MaxEject ,
+												$numcrewbailing, $MaxEject, (if $numcrewbailing gt $MaxEject then 'true' else 'false')
+												]" />
+											<do_if value="$numcrewbailing gt $MaxEject">
+												<do_if value="$MinEject lt $MaxEject">
+													<set_value name="$numcrewbailing" min="$MinEject" max="$MaxEject" />
+												</do_if>
+												<do_else>
+													<set_value name="$numcrewbailing" exact="$MaxEject" />
+												</do_else>
+												<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+														NEW ($numcrewbailing) %s = (min:%s , max:%s)
+												'
+												.[
+												$numcrewbailing, $MinEject, $MaxEject
+												]" />
+											</do_if>
+											<do_if value="($target.isclass.[class.ship_l] or $target.isclass.[class.ship_xl])">
+												<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+														BIGSHIP (people count) %s is LT 3  [ %s ] OR [ %s ]  (people-numbailing) %s is LT 3
+													'
+													.[
+													$target.people.count, (if $target.people.count lt 3 then 'true' else 'false'),
+													(if ($target.people.count - $numcrewbailing) lt 3 then 'true' else 'false'),
+													($target.people.count - $numcrewbailing)
+													]" />
+												<do_if value="($target.people.count lt 3) or ($target.people.count - $numcrewbailing) lt 3 ">
+													<set_value name="$numcrewbailing" exact="$target.people.count" />
+													<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+															NEW ($numcrewbailing) %s = %s (people count)
+													'
+													.[
+													$numcrewbailing, $target.people.count
+													]" />
+												</do_if>
+											</do_if>
+										</do_else>
+
+										<!-- 
+										<do_if value="[shiptype.scavenger, shiptype.destroyer, shiptype.frigate, shiptype.carrier, shiptype.battleship, shiptype.resupplier, shiptype.builder].indexof.{$target.type} 
+											and ($target.isclass.[class.ship_xl] or $target.isclass.[class.ship_l])">
+											<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+													Large Military Ship detected preventing pilot bail and limiting max bail to leave %s%% of people count.   [%s]\n
+															($numcrewbailing) %s is GT %s ($MaxEject)   [ %s ]
+												'
+												.[
+												$MaxEjectPercent * 100, $MaxEject ,
+												$numcrewbailing, $MaxEject, (if $numcrewbailing gt $MaxEject then 'true' else 'false')
+												]" />
+											<do_if value="$numcrewbailing gt $MaxEject">
+												<do_if value="$MinEject lt $MaxEject">
+													<set_value name="$numcrewbailing" min="$MinEject" max="$MaxEject" />
+												</do_if>
+												<do_else>
+													<set_value name="$numcrewbailing" exact="$MaxEject" />
+												</do_else>
+												<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+														NEW ($numcrewbailing) %s = (min:%s , max:%s)
+												'
+												.[
+												$numcrewbailing, $MinEject, $MaxEject
+												]" />
+											</do_if>
+											<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+													(people count) %s is LT 3  [ %s ] OR [ %s ]  (people-numbailing) %s is LT 3
+												'
+												.[
+												$target.people.count, (if $target.people.count lt 3 then 'true' else 'false'),
+												(if ($target.people.count - $numcrewbailing) lt 3 then 'true' else 'false'),
+												($target.people.count - $numcrewbailing)
+												]" />
+											<do_if value="($target.people.count lt 3) or ($target.people.count - $numcrewbailing) lt 3 ">
+												<set_value name="$numcrewbailing" exact="$target.people.count" />
+												<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+														NEW ($numcrewbailing) %s = %s (people count)
+												'
+												.[
+												$numcrewbailing, $target.people.count
+												]" />
+											</do_if>
+
+										</do_if>
+										<do_else>
+											<do_if value="$target.hullpercentage le global.$upbBail.$crit_hullpercentChk and $chanceforfullbail ge (100-global.$upbBail.$crit_chanceChk)">
+												<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="' Critical Damage Full Crew Bail Occurred ' + $target.knownname + ' (' + $target.idcode + ') ' + $target + 
+													' Target Hull Percent (tresh.' + global.$upbBail.$crit_hullpercentChk + ') : ' + $target.hullpercentage + '  Change for FullBail (tresh.' + (100-global.$upbBail.$crit_chanceChk) + ') : ' + $chanceforfullbail " append="true" />
+												<set_value name="$numcrewbailing" exact="$target.people.count" />
+												<set_value name="$isCritBail" />
+											</do_if>
+										</do_else>
+										-->
+
+									</do_else>
+
+
+									<!-- <do_if value="($numcrewbailing ge $target.people.count) and not $target.iscapitalship and not $target.isplayerowned and ($attacker.isplayerowned or @$attacker.signal.{'foundabandonedship'}.response.id == 'claim')"> -->
+									<do_if value="($numcrewbailing ge $target.people.count) and (not $target.isplayerowned)">
+										<!-- pilot and remaining crew all bail -->
+										<set_value name="$pilotbail" />
+										<do_if value="$attacker == player.occupiedship">
+											<set_value name="$Speak_Line" exact="10034" />
+										</do_if>
+									</do_if>
+
+									<set_value name="$eject" />
+
+								</do_if>
+
+								<do_if value="not @$pilotbail">
+									<!-- increment nextcapturechance regardless of whether any crew bails unless the pilot is set to bail, but only if ejectchance is actually evaluated. -->
+									<set_value name="$target.pilot.$nextcapturechance" exact="player.age + (global.$upbBail.$class.{$classKey}.$bailcriteria.$nextcapturetimeinc)s" />
+								</do_if>
+
+							</do_if>
+						</do_if>
+					</do_if>
+
+					<do_if value="$Speak_Line? and ($target.owner != faction.xenon) and ($target.owner != faction.khaak)">
+						<do_if value="event.name == 'event_cue_signalled' and player.isinconversation">
+							<!-- Add NPC response for 'g_surrender' conversation section -->
+							<add_npc_line line="$Speak_Line" />
+						</do_if>
+						<do_else>
+							<speak actor="$target.pilot" line="$Speak_Line" />
+						</do_else>
+					</do_if>
+
+
+					<do_if value="$eject?">
+
+						<set_value name="$ejectedpeople" exact="$numcrewbailing"/>
+
+						<!-- Bail_role göre şu an çalışmıyor-->
+						<do_if value="$bail_role?">
+							<eject_people object="$target" attacker="$attacker" max="$numcrewbailing" role="$bail_role" level="0" />
+						</do_if>
+						<do_else>
+							<eject_people object="$target" attacker="$attacker" max="$numcrewbailing" />
+						</do_else>
+
+						<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+				[Ejected: %s], [Remaining: %s],  %s  BailRole: %s (%s)
+								'.[
+								$ejectedpeople,
+								$target.people.count - $ejectedpeople ,
+								if $pilotbail? then 'PILOT BAIL' else  '',
+								(if $bail_role? then $bail_role else 'random'),
+								(if $bail_role? then $target.people.{$bail_role}.{0}.count else $numcrewbailing)
+								]" append="true" />
+
+						<!-- 
+						<remove_value name="$numcrewbailing" />
+						-->
+
+						<do_if value="$pilotbail?">
+
+							<!-- ommandeered statement from 4.1 beta 4 -->
+							<do_if value="$target.iscommandeered">
+								<release_commandeered_object object="$target" />
+							</do_if>
+							<!-- release $ship from command hierarchy -->
+							<remove_object_commander object="$target" comment="Free ship from control of previous owner (which can be a station)"/>
+							<!-- clean up order queue -->
+							<create_order id="'Wait'" object="$target" default="true">
+								<param name="allowdocked" value="not $target.iscapitalship" />
+							</create_order>
+							<cancel_all_orders object="$target" />
+
+							<do_if value="global.$upbBail.$class.{$classKey}.$removecargo">
+								<do_all exact="$target.cargo.count" counter="$i" reverse="true">
+									<set_value name="$removedware" exact="$target.cargo.list.{$i}" />
+									<set_value name="$removedmaxamount" exact="($target.cargo.{$removedware}.count * ($target.pilot.combinedskill / 100.0))i" />
+									<remove_cargo object="$target" ware="$removedware" min="($removedmaxamount * 0.8)i" max="$removedmaxamount" />
+								</do_all>
+							</do_if>
+
+							<cease_fire object="$target" />
+							<eject_npcs object="$target" />
+							<do_if value="$target.pilot.exists and not $target.pilot.isclass.npc">
+								<destroy_object object="$target.pilot"/>
+							</do_if>
+			
+							<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="' EJECTED COMMANDER Time : ' + player.systemtime.{'%F %X'} + '
+										%s %s (%s) attacked to %s %s (%s) in Sector %s 
+									'.[
+								$attacker.knownname, $attacker.idcode, $attacker, 
+								$target.knownname, $target.idcode, $target, 
+								$attacker.sector.knownname
+								]" append="true" />
+
+							<do_if value="$target.exists">
+
+								<do_if value="$attacker == player.occupiedship">
+									<add_effect object="$target" effect="$target.scuttleeffect" />
+									<substitute_text text="$logtext" source="{1016,79}" comment="Forced pilot to leave ship $SHIP$ in sector $SECTOR$.">
+										<replace string="'$SHIP$'" with="$target.knownname + ' ' + $target.idcode" />
+										<replace string="'$SECTOR$'" with="$target.sector.knownname" />
+									</substitute_text>
+									<write_to_logbook category="upkeep" title="'\033G' + $logtext + '\033X'" interaction="showonmap" object="$target" />
+									<signal_objects object="player.entity" param="'player_owned_forced_bail'" param2="$target" param3="$attacker"/>
+								</do_if>
+								<do_else>
+									
+									<run_actions ref="md.Upb_Bail.ShowReport" >
+										<param name="object" value="$target" />
+										<param name="debugFile" value="$debugFile"/>
+										<param name="debugFileChance" value="$debugFileChance"/>
+									</run_actions>
+		
+								</do_else>
+
+								<!-- Add bailed ship to clean up list with a lifetime of 2 hours-->
+								<signal_cue_instantly cue="md.Upb_Bail.CalculateCleanUpShips" param="[ true, true ]"/>
+								<set_value name="$expiretime" exact="player.age + ( global.$upbBail.$class.{$classKey}.$expiretime.$start )min" />
+								<run_actions ref="md.Upb_Bail.AppendToAbandonedShipList" result="md.Upb_Bail.BailMain.$abandonedShipList">
+									<param name="ShipList" value="md.Upb_Bail.BailMain.$abandonedShipList" />
+									<param name="object" value="$target" />
+									<param name="expiretime" value="$expiretime" />
+								</run_actions>
+								
+								<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="
+										'   ' + player.age + ': Appending to Bail List: %s %s | Sector: %s | DestroyTimer: %s (%s mins left) \n
+										----------------------------------------------------------------------------------------------------'.[
+										$target.idcode, $target.knownname, $target.sector.knownname, $expiretime, (($expiretime-player.age) / 60) 
+									]" append="true" />
+								<debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="$debugDir" chance="@global.$upbBail.$Debug.$LogChances.$Abandoned" text="' %s === Ship: %s %s | Sector: %s | Delete Time: %s (%s mins left) | Player In Sector: %s '.[
+										md.Upb_Bail.BailMain.$abandonedShipList.count, $target.idcode, $target.knownname, 
+										$target.sector.knownname, $expiretime, (($expiretime-player.age) / 60) , ($target.sector == player.sector)]" />
+								<remove_value name="$expiretime"/>
+								<!-- 
+								<run_actions ref="md.Upb_Bail.SetInformationsToPlayer">
+									<param name="OpenLuaMenu" value="false"/>
+								</run_actions>
+								-->
+							</do_if>
+
+							<do_if value="$attacker.isplayerowned">
+								<set_value name="stat.pilots_bailed" operation="add" />
+							</do_if>
+							<!-- 
+							<remove_value name="$pilotbail" />
+							-->
+
+						</do_if>
+
+						<!-- 
+						<remove_value name="$eject" />
+						-->
+					</do_if>
+
+					<include_actions ref="md.Upb_Bail.ShowNotification" />
+
+					<remove_value name="$numcrewbailing" />
+					<remove_value name="$eject" />
+					<remove_value name="$pilotbail" />
+					<remove_value name="$isLargeMilitary" />
+					<remove_value name="$ejectedpeople" />
+					<remove_value name="$isCritBail" />
+
+				</do_if>
+
+
+				<do_if value="$attacker == player.occupiedship">
+					<do_if value="not global.$last_npc_notification?">
+						<set_value name="global.$last_npc_notification" exact="0s" />
+					</do_if>
+
+					<!-- Object speak (at least a few seconds of wait) -->
+					<do_if value="global.$last_npc_notification le (player.age - 50s) and ($target.pilot.page != 0) and not player.isinconversation">
+						<remove_value name="$Speak_Line" />
+
+						<!-- Plead for life (escape pod) -->
+						<do_if value="$target.type == shiptype.escapepod">
+							<set_value name="$Speak_Line" exact="[10024, 10025].random" comment="(plea for life)" />
+						</do_if>
+						<!-- The object is attacking the player -->
+						<do_elseif value="$target.pilot.command.value == command.attackobject and $target.pilot.command.param == player.controlled">
+							<!--Kill-relation case: Fight or flight-->
+							<do_if value="$target.pilot.mayattack.{player.controlled}">
+								<set_value name="$Speak_Line"  exact="10015" comment="(player attacks enemy object)" />
+							</do_if>
+							<!--Enemy (non-kill), Neutral or friendly case-->
+							<do_else>
+								<do_if value="$target.pilot.hasrelation.friend.{player.controlled}">
+									<set_value name="$Speak_Line" exact="[10047, 10048, 10049].random" comment="(player attacks friendly ship)" />
+								</do_if>
+								<!--Neutral and Enemy(non-kill) case-->
+								<do_else>
+									<set_value name="$Speak_Line" exact="[10047, 10048, 10049].random" comment="(player attacks neutral ship)" />
+								</do_else>
+							</do_else>
+						</do_elseif>
+						<!-- If not -->
+						<do_else>
+						<!-- Depending on hull/shield, say something according to it -->
+							<do_if value="$target.shieldpercentage" min="50">
+								<do_if value="$target.people.count == 1">
+									<set_value name="$Speak_Line" exact="[10047, 10048, 10049].random" comment="(hit without taking serious damage)"/>
+								</do_if>
+								<do_else>
+									<set_value name="$Speak_Line" exact="[10004, 10005, 10006].random" comment="(hit without taking serious damage)"/>
+								</do_else>
+							</do_if>
+							<do_elseif value="$target.shieldpercentage" min="10">
+								<set_value name="$Speak_Line" exact="[10007, 10008].random" comment="(serious threat threshold reached)"/>
+							</do_elseif>
+							<do_elseif value="$target.hullpercentage" min="20">
+								<do_if value="$target.people.count == 1">
+									<set_value name="$Speak_Line" exact="[10024, 10025, 10028, 10029].random" comment="(generic life threat threshold reached)"/>
+								</do_if>
+								<do_else>
+									<set_value name="$Speak_Line" exact="[10024, 10025, 10026, 10027].random" comment="(generic life threat threshold reached)"/>
+								</do_else>
+							</do_elseif>
+							<do_elseif value="$target.hullpercentage" max="5">
+								<set_value name="$Speak_Line" exact="10035" comment="(deathrattle)"/>
+							</do_elseif>
+						</do_else>
+
+						<do_if value="$Speak_Line? and $target.owner != faction.xenon">
+							<speak actor="$target.pilot" line="$Speak_Line" />
+							<set_value name="global.$last_npc_notification" exact="player.age"/>
+						</do_if>
+
+					</do_if>
+				</do_if>
+			</actions>
+	  	</cue>
+
+
+	</replace>
+
+	<add sel='//cue[@name="PlayerOwnedShipAttacks"]' pos="before">
+		<cue name="NPCShipAttacks" instantiate="true" namespace="this">
+			<conditions>
+				<check_all >
+					<event_object_signalled object="player.galaxy" param3="'shouldwebail.NPC'" comment="param == attacker, param2 == [target, component] "/>
+					<set_value name="$target" 		exact="event.param2.{1}"/>
+					<check_value value="$target and $target.isoperational"/>
+				</check_all>
+			</conditions>
+			<actions>
+				<set_value name="$target" exact="event.param2.{1}"/>
+				<set_value name="$component" exact="event.param2.{2}"/>
+				<set_value name="$issubcomponent" exact="$target != $component"/>
+
+				<set_value name="$attacker" exact="event.param"/>
+
+				
+				<set_value name="$debugDir" exact="global.$upbBail.$Debug.$LogDir" />
+
+				<set_value name="$debugFile" exact="global.$upbBail.$Debug.$Files.$NPC" />
+				<set_value name="$debugFileChance" exact="global.$upbBail.$Debug.$LogChances.$NPC" />
+				
+				<set_value name="$deepdebugchance" exact="($debugFileChance / 100) * (global.$upbBail.$Debug.$Deep / 100) * 100" />
+
+				<debug_text text="'\n
+				event: %s , iscapturable = %s \n 
+					#people = %s , capacity = %s , pm= %s , attacker = NPC \n
+					[%s] hesaplama: (#p/cap)[%s] is LT [%s]( (16 - pm) /16 )  , $attacker = %s %s,  $target = %s %s
+				'.[
+				event.name, $target.iscapturable,
+				$target.people.count, $target.people.capacity, $target.pilot.skill.morale,
+				if $target.people.capacity gt 0 then (if (($target.people.count)f / ($target.people.capacity)f) lt ((16 - $target.pilot.skill.morale)f / 16.0) then 'TRUE' else 'FALSE') else 'FALSE',
+				if $target.people.capacity gt 0 then (($target.people.count)f / ($target.people.capacity)f) else 0,
+				((16 - $target.pilot.skill.morale)f / 16.0),
+				$attacker.knownname, $attacker.idcode,
+				$target.knownname, $target.idcode
+				]" chance="$deepdebugchance"/>
+
+				<do_if value="$target.iscapturable">
+					<set_value name="$classKey" exact="'$' + $target.realclass" />
+
+					<do_if value="event.name == 'event_cue_signalled'">
+						<set_value name="$Speak_Line" exact="5037" comment="(refusal to surrender - in danger)" />
+					</do_if>
+					<!-- Dismiss ship if it has shields which above 20%, hull above 75%, or is a capital ship with no service personnel on board. -->
+					<do_if value="if not $testcheat? then (((not $target.maxshield) or ($target.shieldpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$shieldpercent)) and ($target.hullpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$hullpercent1) and not $target.assigneddock and (not $target.iscapitalship or $target.people.count) ) else true">
+
+						<do_if value="not $target.pilot.$nextcapturechance?">
+							<set_value name="$target.pilot.$nextcapturechance" exact="player.age - 1s" />
+						</do_if>
+						<do_if value="if not $testcheat? then ($target.pilot.$nextcapturechance lt player.age) else true">
+							<!-- TODO: chance to reduce morale? -->
+							<!-- response to demand to surrender. reflects the nerve of the captain and his ability to hold the crew together. -->
+							<do_if value="event.name != 'event_cue_signalled' or ( (($target.people.count)f / ($target.people.capacity)f) lt ((16 - $target.pilot.skill.morale)f / 16.0) and $target.hullpercentage gt 0)">
+
+								<set_value name="$basechance" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$basechance1" />
+								<do_if value="$target.hullpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$hullpercent3">
+									<set_value name="$basechance" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$basechance3" />
+								</do_if>
+								<do_elseif value="$target.hullpercentage le global.$upbBail.$class.{$classKey}.$bailcriteria.$hullpercent2">
+									<set_value name="$basechance" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$basechance2" />
+								</do_elseif>
+								<set_value name="$remainingcrewchance" exact="5 - ( ( ($target.people.count)f / ($target.people.capacity)f ) * 10)" />
+								<!-- 
+								<set_value name="$remainingcrewchance" exact="10 - ((($target.people.count + 1)f / ($target.people.capacity)f) * 10)" />
+								<set_value name="$remainingcrewchance" exact="if ($remainingcrewchance lt 0) then 0 else $remainingcrewchance" />
+								<set_value name="$remainingcrewchance" exact="if ($remainingcrewchance gt 10) then 10 else $remainingcrewchance" />
+								-->
+								<set_value name="$hullshieldchance" exact="-100"/>
+								<do_if value="$target.hullpercentage gt 0">
+									<set_value name="$hullshieldchance" exact="(($attacker.shieldpercentage + $attacker.hullpercentage) / ($target.shieldpercentage + $target.hullpercentage))" />
+								</do_if>
+								
+								<set_value name="$hullshieldchance" exact="if ($hullshieldchance gt 10) then 10 else $hullshieldchance" />
+								<set_value name="$sizechance" exact="0" comment="küçük büyüğe saldırıyor" />
+								<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemiden küçük. etki=' + $sizechance" />
+								<do_if value="$attacker.class == $target.class">
+									<set_value name="$sizechance" exact="1" />
+									<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemi ile aynı sınıftan. etki=' + $sizechance" />
+								</do_if>
+								<do_if value="($attacker.isclass.[class.ship_xl] and $target.isclass.[class.ship_l]) or ($attacker.isclass.[class.ship_l] and $target.isclass.[class.ship_m]) or ($attacker.isclass.[class.ship_m] and ($target.isclass.[class.ship_s] or $target.isclass.[class.ship_xs]))">
+									<set_value name="$sizechance" exact="3" />
+									<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemi den 1 sınıf büyük. etki=' + $sizechance" />
+								</do_if>
+								<do_if value="($attacker.isclass.[class.ship_xl] and $target.isclass.[class.ship_m]) or ($attacker.isclass.[class.ship_l] and ($target.isclass.[class.ship_s] or $target.isclass.[class.ship_xs]))">
+									<set_value name="$sizechance" exact="6" />
+									<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemi den 2 sınıf büyük. etki=' + $sizechance" />
+								</do_if>
+								<do_if value="($attacker.isclass.[class.ship_xl] and ($target.isclass.[class.ship_s] or $target.isclass.[class.ship_xs]))">
+									<set_value name="$sizechance" exact="10.0" />
+									<set_value name="$sizechanceFactor" exact="'Saldırgan Hedef gemi den 3 sınıf büyük. etki=' + $sizechance" />
+								</do_if>
+								<set_value name="$pilotmorale" exact="$target.pilot.skill.morale * 2" />
+
+								<set_value name="$ejectchance" exact="$basechance + $remainingcrewchance + $hullshieldchance + $sizechance - $pilotmorale" />
+
+								<!-- If target is small or medium combat ship then reduce the bail chance by 50%  - Capitals are taken care of below-->
+								<!-- 1.1 Fix added check for target class as well -->
+								 <!-- 
+								<do_if value="[shiptype.scout, shiptype.fighter, shiptype.heavyfighter, shiptype.interceptor, shiptype.corvette, shiptype.bomber, shiptype.gunboat,shiptype.scavenger ].indexof.{$target.type} and ($target.isclass.[class.ship_m] or $target.isclass.[class.ship_s] or $target.isclass.[class.ship_xs])">
+									<set_value name="$ejectchance" exact="$ejectchance / 2" />
+								</do_if>
+								-->
+								<do_if value="$ejectchance le 1">
+									<set_value name="$ejectchance" exact="1" />
+								</do_if>
+								<set_value name="$chanceforfullbail" min="1" max="100" />
+
+								<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="
+									'[ %s %s(%s) ]     &gt;&gt;&gt;     [ %s %s(%s) ]     %s     [ Sector %s ] ( %s )\n
+									[People %s] , [Eject Chance %s] = + BaseChance: %s + RemainingCrewChance: %s + RelativeDamageChance: %s + SizeTypeChance: %s  (Factor %s)\n
+										- PilotMoraleChange: %s\n
+										[ %s ]
+									'
+									.[
+									$attacker.knownname, $attacker.idcode,if $attacker.isclass.ship then $attacker.type else 'station',
+									$target.knownname, $target.idcode, $target.type, 
+									if $issubcomponent then '&gt;&gt;&gt; Component[ %s ]'.[$component.knownname] else '',
+									$attacker.sector.knownname, player.age,
+									$target.people.count, $ejectchance,
+									$basechance, $remainingcrewchance, $hullshieldchance, $sizechance, $sizechanceFactor, 
+									$pilotmorale,
+									if $target.hullpercentage gt 0 then 'target OK' else ' target DESTROYED'
+									]" append="true" />
+
+
+								<do_if value="true" chance="if not $testcheat? then $ejectchance else 100">
+									<set_value name="$maxcrewbailing" exact="$target.people.count" />
+
+									<do_if value="$target.isplayerowned">
+
+										<set_value name="$bail_role" exact="entityrole.service" />
+										<do_if value="not $target.people.{entityrole.service}.{0}.count">
+											<set_value name="$bail_role" exact="entityrole.marine" />
+										</do_if>
+										<set_value name="$maxcrewbailing" exact="$target.people.{$bail_role}.{0}.count" />
+
+									</do_if>
+
+
+									<do_if value="event.name == 'event_cue_signalled'">
+										<set_value name="$numcrewbailing" exact="$maxcrewbailing" />
+									</do_if>
+									<do_else>
+										
+										<set_value name="$MinEjectPercent" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$ejectpercentage.$min / 100f" />
+										<set_value name="$MinEject" exact="[ ($target.people.count * $MinEjectPercent)i, 1].max" />
+										<set_value name="$MaxEjectPercent" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$ejectpercentage.$max / 100f" />
+										<set_value name="$MaxEject" exact="[ ($target.people.count * $MaxEjectPercent)i, 1].max" />
+
+										<do_if value="$MinEject lt $MaxEject">
+											<set_value name="$numcrewbailing" min="$MinEject" max="$MaxEject" />
+										</do_if>
+										<do_elseif value="$MinEject == $MaxEject">
+											<set_value name="$numcrewbailing" exact="$MaxEject" />
+										</do_elseif>
+										<do_else>
+											<set_value name="$numcrewbailing" exact="$target.people.count" />
+										</do_else>
+										<do_if value="$numcrewbailing gt $target.people.count">
+											<set_value name="$numcrewbailing" exact="$target.people.count" />
+										</do_if>
+
+										<set_value name="$critHullTresh" exact="global.$upbBail.$class.{$classKey}.$bailcriteria.$critChk.$hullpercent" />
+										<set_value name="$critChanceTresh" exact="100-global.$upbBail.$class.{$classKey}.$bailcriteria.$critChk.$chance" />
+
+										<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+				[numcrewbailing : %s]   Calculated MinBailnumbers %s%% and MaxBailnumbers %s%% of people count  (Min:%s , Max:%s) / People Count: %s    %s
+											  '.[
+												  $numcrewbailing,
+												  $MinEjectPercent * 100,
+												$MaxEjectPercent * 100,
+												$MinEject,
+												$MaxEject,
+												$target.people.count, 
+												if ($target.hullpercentage le $critHullTresh) and ($chanceforfullbail ge $critChanceTresh) then 
+													'(Chance for fullbail ' + $chanceforfullbail + ')' 
+													else ''
+												]" append="true" />
+
+										<do_if value="$target.hullpercentage le $critHullTresh and $chanceforfullbail ge $critChanceTresh">
+											<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+													[FULL BAIL] Critical Damage Full Crew Bail Occurred ' + $target.knownname + ' (' + $target.idcode + ') ' + $target + 
+													' Target Hull Percent (tresh.' + $critHullTresh + ') : ' + $target.hullpercentage + '  Change for FullBail (tresh.' + $critChanceTresh + ') : ' + $chanceforfullbail " append="true" />
+											<set_value name="$numcrewbailing" exact="$target.people.count" />
+											<set_value name="$isCritBail" />
+										</do_if>
+										<do_else>
+											<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+													[None Full Bail] Limiting MAX bail to leave %s%% of people count.   [%s]\n
+															($numcrewbailing) %s is GT %s ($MaxEject)   [ %s ]
+												'
+												.[
+												$MaxEjectPercent * 100, $MaxEject ,
+												$numcrewbailing, $MaxEject, (if $numcrewbailing gt $MaxEject then 'true' else 'false')
+												]" />
+											<do_if value="$numcrewbailing gt $MaxEject">
+												<do_if value="$MinEject lt $MaxEject">
+													<set_value name="$numcrewbailing" min="$MinEject" max="$MaxEject" />
+												</do_if>
+												<do_else>
+													<set_value name="$numcrewbailing" exact="$MaxEject" />
+												</do_else>
+												<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+														NEW ($numcrewbailing) %s = (min:%s , max:%s)
+												'
+												.[
+												$numcrewbailing, $MinEject, $MaxEject
+												]" />
+											</do_if>
+											<do_if value="($target.isclass.[class.ship_l] or $target.isclass.[class.ship_xl])">
+												<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+														BIGSHIP (people count) %s is LT 3  [ %s ] OR [ %s ]  (people-numbailing) %s is LT 3
+													'
+													.[
+													$target.people.count, (if $target.people.count lt 3 then 'true' else 'false'),
+													(if ($target.people.count - $numcrewbailing) lt 3 then 'true' else 'false'),
+													($target.people.count - $numcrewbailing)
+													]" />
+												<do_if value="($target.people.count lt 3) or ($target.people.count - $numcrewbailing) lt 3 ">
+													<set_value name="$numcrewbailing" exact="$target.people.count" />
+													<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+															NEW ($numcrewbailing) %s = %s (people count)
+													'
+													.[
+													$numcrewbailing, $target.people.count
+													]" />
+												</do_if>
+											</do_if>
+										</do_else>
+
+									</do_else>
+
+									<!-- <do_if value="($numcrewbailing ge $target.people.count) and not $target.iscapitalship and not $target.isplayerowned and ($attacker.isplayerowned or @$attacker.signal.{'foundabandonedship'}.response.id == 'claim')"> -->
+									<do_if value="($numcrewbailing ge $target.people.count) and (not $target.isplayerowned)">
+										<!-- pilot and remaining crew all bail -->
+										<set_value name="$pilotbail" />
+									</do_if>
+
+									<set_value name="$eject" />
+
+								</do_if>
+
+								<do_if value="not @$pilotbail">
+									<!-- increment nextcapturechance regardless of whether any crew bails unless the pilot is set to bail, but only if ejectchance is actually evaluated. -->
+									<set_value name="$target.pilot.$nextcapturechance" exact="player.age + (global.$upbBail.$class.{$classKey}.$bailcriteria.$nextcapturetimeinc)s" />
+								</do_if>
+
+							</do_if>
+						</do_if>
+					</do_if>
+
+					<do_if value="$Speak_Line? and ($target.owner != faction.xenon) and ($target.owner != faction.khaak)">
+						<do_if value="event.name == 'event_cue_signalled' and player.isinconversation">
+							<!-- Add NPC response for 'g_surrender' conversation section -->
+							<add_npc_line line="$Speak_Line"/>
+						</do_if>
+						<do_else>
+							<speak actor="$target.pilot" line="$Speak_Line" />
+						</do_else>
+					</do_if>
+
+					<do_if value="$eject?">
+
+						<set_value name="$ejectedpeople" exact="$numcrewbailing"/>
+
+						<!-- Bail_role göre şu an çalışmıyor-->
+						<do_if value="$bail_role?">
+							<eject_people object="$target" attacker="$attacker" max="$numcrewbailing" role="$bail_role" level="0" />
+						</do_if>
+						<do_else>
+							<eject_people object="$target" attacker="$attacker" max="$numcrewbailing" />
+						</do_else>
+
+
+						<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="'
+				[Ejected: %s], [Remaining: %s],  %s  BailRole: %s (%s)
+								'.[
+								$ejectedpeople,
+								$target.people.count - $ejectedpeople ,
+								if $pilotbail? then 'PILOT BAIL' else  '',
+								(if $bail_role? then $bail_role else 'random'),
+								(if $bail_role? then $target.people.{$bail_role}.{0}.count else $numcrewbailing)
+								]" append="true" />
+
+
+						<!-- 
+						<remove_value name="$numcrewbailing" />
+						-->
+
+
+						<do_if value="$pilotbail?">
+							
+							<set_value name="$faction" exact="$target.trueowner" />
+
+							<!-- ommandeered statement from 4.1 beta 4 -->
+							<do_if value="$target.iscommandeered">
+								<release_commandeered_object object="$target" />
+							</do_if>
+							<!-- release $ship from command hierarchy -->
+							<remove_object_commander object="$target" comment="Free ship from control of previous owner (which can be a station)"/>
+							<!-- clean up order queue -->
+							<create_order id="'Wait'" object="$target" default="true">
+								<param name="allowdocked" value="not $target.iscapitalship" />
+							</create_order>
+							<cancel_all_orders object="$target" />
+
+							<do_if value="global.$upbBail.$class.{$classKey}.$removecargo">
+								<do_all exact="$target.cargo.count" counter="$i" reverse="true">
+									<set_value name="$removedware" exact="$target.cargo.list.{$i}" />
+									<set_value name="$removedmaxamount" exact="($target.cargo.{$removedware}.count * ($target.pilot.combinedskill / 100.0))i" />
+									<remove_cargo object="$target" ware="$removedware" min="($removedmaxamount * 0.8)i" max="$removedmaxamount" />
+								</do_all>
+							</do_if>
+
+							<cease_fire object="$target" />
+							<eject_npcs object="$target" />
+
+							<do_if value="$target.pilot.exists and not $target.pilot.isclass.npc">
+								<destroy_object object="$target.pilot"/>
+							</do_if>
+		
+							<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="' EJECTED COMMANDER Time : ' + player.systemtime.{'%F %X'} + '
+										%s %s (%s) attacked to %s %s (%s) in Sector %s 
+									'.[
+								$attacker.knownname, $attacker.idcode, $attacker, 
+								$target.knownname, $target.idcode, $target, 
+								$attacker.sector.knownname
+								]" append="true" />
+
+							<do_if value="$target.exists">
+								<find_object_component name="$subcomponents" object="$target" class="[class.shieldgenerator, class.turret, class.weapon]" multiple="true" />
+
+								<do_if value="$attacker == player.occupiedship">
+									<add_effect object="$target" effect="$target.scuttleeffect" />
+									<substitute_text text="$logtext" source="{1016,79}" comment="Forced pilot to leave ship $SHIP$ in sector $SECTOR$.">
+										<replace string="'$SHIP$'" with="$target.knownname + ' ' + $target.idcode" />
+										<replace string="'$SECTOR$'" with="$target.sector.knownname" />
+									</substitute_text>
+									<write_to_logbook category="upkeep" title="'\033G' + $logtext + '\033X'" interaction="showonmap" object="$target" />
+								</do_if>
+								<do_else>
+
+									<run_actions ref="md.Upb_Bail.ShowReport" >
+										<param name="object" value="$target" />
+										<param name="debugFile" value="$debugFile"/>
+										<param name="debugFileChance" value="$debugFileChance"/>
+									</run_actions>
+
+								</do_else>
+
+								<!-- Add bailed ship to clean up list with a lifetime of 5 hours-->
+								<signal_cue_instantly cue="md.Upb_Bail.CalculateCleanUpShips" param="[ true, true ]"/>
+								<set_value name="$expiretime" exact="player.age + (global.$upbBail.$class.{$classKey}.$expiretime.$start )min" />
+								<run_actions ref="md.Upb_Bail.AppendToAbandonedShipList" result="md.Upb_Bail.BailMain.$abandonedShipList">
+									<param name="ShipList" value="md.Upb_Bail.BailMain.$abandonedShipList" />
+									<param name="object" value="$target" />
+									<param name="expiretime" value="$expiretime" />
+								</run_actions>
+
+								<debug_to_file name="$debugFile" directory="$debugDir" chance="$debugFileChance" text="
+										'   ' + player.age + ': Appending to Bail List: %s %s | Sector: %s | DestroyTimer: %s (%s mins left) \n
+										----------------------------------------------------------------------------------------------------'.[
+										$target.idcode, $target.knownname, $target.sector.knownname, $expiretime, (($expiretime-player.age) / 60) 
+									]" append="true" />
+								<debug_to_file name="global.$upbBail.$Debug.$Files.$Abandoned" directory="$debugDir" chance="@global.$upbBail.$Debug.$LogChances.$Abandoned" text="' %s === Ship: %s %s | Sector: %s | Delete Time: %s (%s mins left) | Player In Sector: %s '.[
+										md.Upb_Bail.BailMain.$abandonedShipList.count, $target.idcode, $target.knownname, 
+										$target.sector.knownname, $expiretime, (($expiretime-player.age) / 60) , ($target.sector == player.sector)]" />
+								<remove_value name="$expiretime"/>
+								<!-- 
+								<run_actions ref="md.Upb_Bail.SetInformationsToPlayer">
+									<param name="OpenLuaMenu" value="false"/>
+								</run_actions>
+								-->
+							</do_if>
+
+							<do_if value="$attacker.isplayerowned">
+								<set_value name="stat.pilots_bailed" operation="add" />
+							</do_if>
+							<!-- 
+							<remove_value name="$pilotbail" />
+							-->
+
+						</do_if>
+
+						<!-- 
+						<remove_value name="$eject" />
+						-->
+					</do_if>
+
+
+					<remove_value name="$numcrewbailing" />
+					<remove_value name="$eject" />
+					<remove_value name="$pilotbail" />
+					<remove_value name="$isLargeMilitary" />
+					<remove_value name="$ejectedpeople" />
+					<remove_value name="$isCritBail" />
+
+				</do_if>
+
+
+			</actions>
+		</cue>
+	</add>
+
+</diff>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<!--
+		<library name="RenameActions" purpose="include_actions">
+			...
+			<do_if value="$object.isclass.station">
+	-->
+	<add sel="//library[@name=&quot;RenameActions&quot;]//do_if[@value=&quot;$object.isclass.station&quot;]">
+		<!-- trade analytics profile name -->
+		<debug_text text="'profileListOrdersByStation.{$object}: ' + player.entity.$profileListOrdersByStation.{$object}" chance="md.kuertee_trade_analytics.UserSettings.$debugChance" />
+		<do_if value="@player.entity.$profileListOrdersByStation.{$object}">
+			<set_value name="$profileId" exact="player.entity.$profileListOrdersByStation.{$object}" />
+			<debug_text text="$object.knownname + ' ' + $object.idcode + ' $profileId: ' + $profileId + ' ' + readtext.{11201}.{$profileId * 10} + ' ' + readtext.{11201}.{20102 + $profileId}" chance="md.kuertee_trade_analytics.UserSettings.$debugChance" />
+			<substitute_text text="$nameA">
+				<replace string="{11201,20101}" with="readtext.{11201}.{$profileId * 10}" />
+				<replace string="{11201,20102}" with="readtext.{11201}.{20102 + $profileId}" />
+			</substitute_text>
+		</do_if>
+	</add>
+</diff>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="ws_2459571337" name="Deploy All Laser Towers" author="Shawdown" version="1" date="2024-09-13" save="false" enabled="1" description="Allows deployment of all laser towers mk1/mk2 for the selected ships at their current positions." sync="false" lastupdate="1621699639">
+	<dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs"/>
+</content>

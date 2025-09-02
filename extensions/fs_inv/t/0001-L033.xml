@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<page id="314153" voice="no">
+		<t id="1">..: Collecteur d'inventaire :..</t>
+		<t id="2">\033C%1\033X a collecté des objets depuis \033C%2\033X:\n%3</t>
+		<t id="3">Démarrer la collecte d'inventaire</t>
+		<t id="4">Arrêter la collecte d'inventaire</t>
+		<t id="5"> \033Y%1\033X\033C x%2\033X\n</t>
+		<t id="6">Visit Small Ships</t>
+		<t id="7">Visit Medium Ships</t>
+		<t id="8">Visit Capital Ships</t>
+		<t id="9">Use Global Blacklist</t>
+		<t id="10">Blacklist</t>
+		<t id="11">Deposit to HQ</t>
+                <t id="12">Deposit to Player</t>
+                <t id="13">Revisit interval</t>
+	</page>
+</language>

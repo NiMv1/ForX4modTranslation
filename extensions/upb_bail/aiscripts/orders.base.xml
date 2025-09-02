@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<add sel="//interrupts">
+		
+		<handler name="Detect_NPCAttacks">
+			<conditions>
+				<!-- Event for the specified object being attacked (object = attacked object object, param = attacker, param2 = previous sector) -->
+				<event_object_attacked_object object="this.defensible"/>
+				<set_value name="$attacker" exact="event.object"/>
+				<set_value name="$target" exact="event.param"/>
+				<!-- condition içindeki debug text Sadece test amaçlıdır, açılmayacak, !!! açılıdığında chance propertysi eklemek hata verdiriyor.-->
+				<!-- 
+				<debug_text text="'\n
+[ %s %s ]  &gt;&gt;&gt;		[ %s %s	]     [ %s ] ( %s )\n
+					NPCBail    Attacks        %s\n
+					Lasertower Attacks        %s\n
+					target.isoperational      %s\n
+					trueowners                %s\n
+					target.isclass.ship       %s\n
+					target.pilot.exists       %s\n
+					target.isunit             %s\n
+					target.islasertower       %s\n
+					attacker.isplayerowned    %s\n
+					target.isplayerowned      %s\n
+					target.pilot.isplayer     %s\n
+					order                     %s\n
+					Hull attack               %s\n
+					nextcapturechance         %s
+				'.[$attacker.knownname, $attacker.idcode, $target.knownname, $target.idcode, $target.sector.knownname, player.age,
+					if @global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$Hull.$NPC then '[CHK OK]' else '-CHK ERR Disabled NPC Hull Attacks',
+					if @$attacker.islasertower 								then 
+						if @global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$LaserTowers then
+							'[CHK OK]'
+						else
+							'-CHK ERR Disabled Lasertowers Attacks '
+					else 
+						'[CHK OK]'
+					,
+					if $target.isoperational 								then '[CHK OK]' else '-CHK ERR no operational',
+					if $target.trueowner != $attacker.trueowner 			then '[CHK OK]' else '-CHK ERR same owners',
+					if $target.isclass.ship 								then '[CHK OK]' else '-CHK ERR no Ship (maybe station)',
+					if $target.pilot.exists 								then '[CHK OK]' else '-CHK ERR no Pilot',
+					if not $target.isunit 									then '[CHK OK]' else '-CHK ERR target is an unit',
+					if not @$target.islasertower 							then '[CHK OK]' else '-CHK ERR target is a lasertower',
+					if not $attacker.isplayerowned 							then '[CHK OK]' else '-CHK ERR attacker is playerowned',
+					if not $target.isplayerowned 							then '[CHK OK]' else '-CHK ERR target is playerowned',
+					if not $target.pilot.isclass.player						then '[CHK OK]' else '-CHK ERR target pilot is player',
+					if (@$target.order.state != orderstate.critical) or (@$target.order.id == 'SalvageCrush') then
+						'[CHK OK]'
+					else
+						'-CHK ERR %s %s'.[@$target.order.state, @$target.order.id]
+					,
+					if $target == event.param3.{1} 							then '[CHK OK]' else '-CHK ERR attacking component (%s)'.[event.param3.{1}.knownname],
+					if (not event.param.pilot.$nextcapturechance?) or @event.param.pilot.$nextcapturechance lt player.age then
+						'[CHK OK]'
+					else
+						if event.param.pilot.$nextcapturechance? then
+							'-CHK ERR before started bail'
+						else
+							if @event.param.pilot.$nextcapturechance ge player.age then
+								'-CHK ERR next is big from age'
+							else
+								'-CHK ERR next %s, age %s'.[@event.param.pilot.$nextcapturechance, player.age]
+					,
+				]" />
+				-->
+				<check_value value="$target.isoperational"/>
+				<check_value value="$target.trueowner != $attacker.trueowner"/>
+				<check_value value="$target.isclass.ship and $target.pilot.exists"/>
+				<check_value value="@global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$Hull.$NPC" />
+				<check_value value="
+					if @$attacker.islasertower then 
+						@global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$LaserTowers 
+					else
+						true
+				" comment="istasyonların propertysi yok @ ile geçiyoruz."/>
+				<check_value value="not $target.isunit"/>
+				<check_value value="not $target.islasertower"/>
+				<check_value value="not $attacker.isplayerowned"/>
+				<check_value value="$attacker and $attacker != player.occupiedship"/>
+				<check_value value="not $target.isplayerowned"/>
+				<check_value value="not $target.pilot.isclass.player"/>
+				<check_any>
+					<check_value value="@$target.order.state != orderstate.critical"/>
+					<!-- SalvageCrush has handling for being interrupted while critical -->
+					<check_value value="@$target.order.id == 'SalvageCrush'"/>
+				</check_any>
+			</conditions>
+			<actions>
+				<set_value name="$attacker" exact="event.object"/>
+				<set_value name="$target" exact="event.param"/>
+
+				<set_value name="$issubcomponent" exact="$target != event.param3.{1}"/>
+				<debug_to_file name="global.$upbBail.$Debug.$Files.$DetectAttacks.$NPC" directory="global.$upbBail.$Debug.$LogDir"
+					chance="global.$upbBail.$Debug.$LogChances.$DetectAttacks.$NPC" 
+					text="'[ %s %s ]   &gt;&gt;&gt;   [ %s %s ]  %s  [Sector %s] ( %s )\n
+					SIGNAL %s'
+					.[
+					event.object.idcode, event.object.knownname, event.param.idcode, event.param.knownname, 
+					if $issubcomponent then '[Component %s %s]'.[event.param3.{1}.knownname, @event.param3.{1}.idcode] else '',
+					@event.param.pilot.sector.knownname, 
+					player.age,
+					if (not $issubcomponent) and ((not event.param.pilot.$nextcapturechance?) or @event.param.pilot.$nextcapturechance lt player.age) then 
+						'_OK_' 
+					else 
+						'--none--
+						\n        Attacking %s. ( killmethod = %s )
+						\n        Bail Available = %s
+						'.[
+							if $issubcomponent then '* component %s'.[event.param3.{1}.knownname] else'Chassis', event.param2, 
+							if ((not event.param.pilot.$nextcapturechance?) or (@event.param.pilot.$nextcapturechance lt player.age)) then
+								'Yes'
+							else
+								'%s ( Waiting for Next Capture Time = %s )'.[
+									if event.param.pilot.$nextcapturechance? then 'Signalled before.' else '--none--',
+									@event.param.pilot.$nextcapturechance
+								]
+						]
+					]" />
+
+				<!--Check attack not on subcomponent and capture possible-->
+				<do_if value="not $issubcomponent or ($issubcomponent and global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$Equipment.$NPC) ">
+					<do_if value="((not event.param.pilot.$nextcapturechance?) or (@event.param.pilot.$nextcapturechance lt player.age))">
+						<debug_text text="'NPC Object Signalling.. %s %s  &gt;&gt;&gt;  %s %s'.[event.object.knownname, event.object.idcode, event.param.knownname, event.param.idcode]" chance="global.$upbBail.$Debug.$Deep * global.$upbBail.$Debug.$LogChances.$DetectAttacks.$NPC"/>
+						<!-- param = attacker param2 = [target, component]-->
+						<signal_objects object="player.galaxy" param="event.object" param2="[event.param, event.param3.{1}]" param3="'shouldwebail.NPC'" />
+					</do_if>
+				</do_if>
+				
+			</actions>
+		</handler>
+
+		<handler name="Detect_PlayerOwnedAttacks">
+			<conditions>
+				<!-- Event for the specified object being attacked (object = attacked object object, param = attacker, param2 = previous sector) -->
+				<event_object_attacked_object object="this.defensible"/>
+				<set_value name="$attacker" exact="event.object"/>
+				<set_value name="$target" exact="event.param"/>
+				<set_value name="$component" exact="event.param3.{1}"/>
+				<!-- condition içindeki debug text Sadece test amaçlıdır, açılmayacak, !!! açılıdığında chance propertysi eklemek hata verdiriyor.-->
+				<!-- 
+				<debug_text text="'\n
+[ %s %s ]  &gt;&gt;&gt;		[ %s %s	]     [ %s ] ( %s )\n
+					NPCBail    Attacks        %s\n
+					Lasertower Attacks        %s\n
+					target.isoperational      %s\n
+					trueowners                %s\n
+					target.isclass.ship       %s\n
+					target.pilot.exists       %s\n
+					target.isunit             %s\n
+					target.islasertower       %s\n
+					attacker.isplayerowned    %s\n
+					target.isplayerowned      %s\n
+					target.pilot.isplayer     %s\n
+					order                     %s\n
+					Hull attack               %s\n
+					nextcapturechance         %s
+				'.[$attacker.knownname, $attacker.idcode, $target.knownname, $target.idcode, $target.sector.knownname, player.age,
+					if @global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$Hull.$PlayerOwned then '[CHK OK]' else '-CHK ERR Disabled PlayerOwned Hull Attacks',
+					if @$attacker.islasertower 								then 
+						if @global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$LaserTowers then
+							'[CHK OK]'
+						else
+							'-CHK ERR Disabled Lasertowers Attacks '
+					else 
+						'[CHK OK]'
+					,
+					if $target.isoperational 								then '[CHK OK]' else '-CHK ERR no operational',
+					if $target.trueowner != $attacker.trueowner 			then '[CHK OK]' else '-CHK ERR same owner',
+					if $target.isclass.ship 								then '[CHK OK]' else '-CHK ERR no Ship (maybe station)',
+					if $target.pilot.exists 								then '[CHK OK]' else '-CHK ERR no Pilot',
+					if not $target.isunit 									then '[CHK OK]' else '-CHK ERR target is an unit',
+					if not @$target.islasertower 							then '[CHK OK]' else '-CHK ERR target is a lasertower',
+					if $attacker.isplayerowned 								then '[CHK OK]' else '-CHK ERR attacker is NOT playerowned',
+					if not $target.isplayerowned 							then '[CHK OK]' else '-CHK ERR target is playerowned',
+					if not $target.pilot.isclass.player						then '[CHK OK]' else '-CHK ERR target pilot is player',
+					if (@$target.order.state != orderstate.critical) or (@$target.order.id == 'SalvageCrush') then
+						'[CHK OK]'
+					else
+						'-CHK ERR %s %s'.[@$target.order.state, @$target.order.id]
+					,
+					if $target == event.param3.{1} 							then '[CHK OK]' else '-CHK ERR attacking component (%s)'.[event.param3.{1}.knownname],
+					if (not event.param.pilot.$nextcapturechance?) or @event.param.pilot.$nextcapturechance lt player.age then
+						'[CHK OK]'
+					else
+						if event.param.pilot.$nextcapturechance? then
+							'-CHK ERR before started bail'
+						else
+							if @event.param.pilot.$nextcapturechance ge player.age then
+								'-CHK ERR next is big from age'
+							else
+								'-CHK ERR next %s, age %s'.[@event.param.pilot.$nextcapturechance, player.age]
+					,
+				]" />
+				-->
+				<check_value value="$attacker.isplayerowned"/>
+				<check_value value="not $target.isplayerowned"/>
+				<check_value value="not $target.pilot.isclass.player"/>
+				<check_value value="$target and $target.isoperational"/>
+				<check_value value="$target.trueowner != $attacker.trueowner"/>
+				<check_value value="$target.isclass.ship and $target.pilot.exists"/>
+
+				<check_value value="@global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$Hull.$PlayerOwned" />
+				<check_value value="
+					if @$attacker.islasertower then 
+						@global.$upbBail.$class.{'$'+ $target.realclass}.$validAttacks.$LaserTowers 
+					else
+						true
+				" comment="istasyonların propertysi yok @ ile geçiyoruz."/>
+				<check_value value="not $target.isunit"/>
+				<check_value value="not $target.islasertower"/>
+				
+				<check_any>
+					<check_value value="@$target.order.state != orderstate.critical"/>
+					<!-- SalvageCrush has handling for being interrupted while critical -->
+					<check_value value="@$target.order.id == 'SalvageCrush'"/>
+				</check_any>
+			</conditions>
+			<actions>
+				<set_value name="$attacker" 	exact="event.object"/>
+				<set_value name="$target" 		exact="event.param"/>
+				<set_value name="$component" 	exact="event.param3.{1}"/>
+				<set_value name="$classKey" 		exact="'$'+ $target.realclass"/>
+				<set_value name="$issubcomponent" 	exact="$target != $component"/>
+				<set_value name="$attackerKey" exact="'$PlayerOwned'" />
+				<set_value name="$isValidAttack" exact="false" />
+				<do_if value="$issubcomponent">
+					<set_value name="$isValidAttack" exact="global.$upbBail.$class.{$classKey}.$validAttacks.$Equipment.{$attackerKey}" />
+				</do_if>
+				<do_else>
+					<set_value name="$isValidAttack" exact="global.$upbBail.$class.{$classKey}.$validAttacks.$Hull.{$attackerKey}" />
+				</do_else>
+
+				<debug_to_file name="global.$upbBail.$Debug.$Files.$DetectAttacks.$PlayerOwned" directory="global.$upbBail.$Debug.$LogDir"
+					chance="global.$upbBail.$Debug.$LogChances.$DetectAttacks.$PlayerOwned" 
+					text="'[ %s %s ]   &gt;&gt;&gt;   [ %s %s ]  %s  [Sector %s] ( %s )\n
+					SIGNAL CHECKS %s'
+					.[
+					event.object.idcode, event.object.knownname, event.param.idcode, event.param.knownname, 
+					if $issubcomponent then '[Component %s %s]'.[event.param3.{1}.knownname, @event.param3.{1}.idcode] else '',
+					@event.param.pilot.sector.knownname, 
+					player.age,
+					if $isValidAttack and ((not event.param.pilot.$nextcapturechance?) or @event.param.pilot.$nextcapturechance lt player.age) then 
+						'_OK_' 
+					else 
+						'--none--
+						\n        Attacking %s.  [ %s ].%s = %s  ( killmethod = %s )
+						\n        Bail Available = %s
+						'.[
+							if $issubcomponent then '* component %s'.[event.param3.{1}.knownname] else'Chassis', 
+							$classKey, 
+							if $issubcomponent then 'Hull' else 'Equipment' ,
+							if $issubcomponent then global.$upbBail.$class.{$classKey}.$validAttacks.$Equipment.{$attackerKey} else global.$upbBail.$class.{$classKey}.$validAttacks.$Hull.{$attackerKey},
+							event.param2, 
+							if ((not event.param.pilot.$nextcapturechance?) or (@event.param.pilot.$nextcapturechance lt player.age)) then
+								'Yes'
+							else
+								'%s ( Waiting for Next Capture Time = %s )'.[
+									if event.param.pilot.$nextcapturechance? then 'Signalled before.' else '--none--',
+									@event.param.pilot.$nextcapturechance
+								]
+						]
+					]" />
+
+				<!--Check attack not on subcomponent and capture possible-->
+
+				<do_if value="$isValidAttack ">
+					<do_if value="((not $target.pilot.$nextcapturechance?) or (@$target.pilot.$nextcapturechance lt player.age))">
+						<debug_text text="'Playerowned Object Signalling.. %s %s  &gt;&gt;&gt;  %s %s'.[$attacker.knownname, $attacker.idcode, $target.knownname, $target.idcode]" chance="global.$upbBail.$Debug.$Deep * global.$upbBail.$Debug.$LogChances.$DetectAttacks.$PlayerOwned"/>
+						<!-- param = attacker param2 = [target, component] -->
+						<signal_objects object="player.galaxy" param="$attacker" param2="[$target, $component]" param3="'shouldwebail.PlayerOwned'" />
+					</do_if>
+				</do_if>
+				
+			</actions>
+		</handler>
+
+	</add>
+</diff>

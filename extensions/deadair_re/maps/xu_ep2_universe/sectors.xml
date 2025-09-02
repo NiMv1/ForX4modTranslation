@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diff>
+  <remove sel="/macros/macro[@name='Cluster_28_Sector001_macro']/connections/connection[@name='ZoneDAG3_Cluster_28_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_41_Sector001_macro']/connections/connection[@name='ZoneDAG6_Cluster_41_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_46_Sector001_macro']/connections/connection[@name='ZoneDAG3_Cluster_46_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_08_Sector001_macro']/connections/connection[@name='ZoneDAG6_Cluster_08_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_15_Sector001_macro']/connections/connection[@name='ZoneDAG5_Cluster_15_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_43_Sector001_macro']/connections/connection[@name='ZoneDAG2_Cluster_43_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_19_Sector001_macro']/connections/connection[@name='ZoneDAG6_Cluster_19_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_09_Sector001_macro']/connections/connection[@name='ZoneDAG3_Cluster_09_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_18_Sector001_macro']/connections/connection[@name='ZoneDAG4_Cluster_18_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_23_Sector001_macro']/connections/connection[@name='ZoneDAG1_Cluster_23_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_14_Sector001_macro']/connections/connection[@name='ZoneDAG3_Cluster_14_Sector001_connection']"/>
+  <remove sel="/macros/macro[@name='Cluster_06_Sector001_macro']/connections/connection[@name='ZoneDAG1_Cluster_06_Sector001_connection']"/>   
+</diff>

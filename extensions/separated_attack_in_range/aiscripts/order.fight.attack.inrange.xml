@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+  <add sel="//params">
+    <param name="targetclasses" type="list" default="[class.defensible]" />
+  </add>
+  <replace sel="//find_gravidar_contact[@groupname='$targets']/@class">$targetclasses</replace>
+  <add sel="//find_gravidar_contact[@groupname='$targets']" pos="before">
+    <debug_text text="'targetclasses = %s'.[$targetclasses]" chance="$debugchance" />
+  </add>
+</diff>

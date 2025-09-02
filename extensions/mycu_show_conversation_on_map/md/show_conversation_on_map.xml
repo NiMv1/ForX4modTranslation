@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="ShowConversationOnMap" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../#modding/xsd/md.xsd">
+    <cues>
+        <cue name="SCM_Main">
+            <conditions>
+                <event_cue_signalled />
+            </conditions>
+            <delay exact="500ms" />
+            <actions>
+                <debug_text text="SCM_Main: Showing conversation ship on map" />
+                <raise_lua_event name="'showConversationOnMap'" param="event.param"/>
+            </actions>
+        </cue>
+    </cues>
+</mdscript>

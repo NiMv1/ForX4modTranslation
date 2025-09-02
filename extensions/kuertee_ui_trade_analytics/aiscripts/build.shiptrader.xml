@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+	<!-- <signal_objects object="player.galaxy" param="'kTAnalytics_repair'" param2="table[
+		$ship = this.assignedcontrolled,
+		$station = $destination,
+		$price = $repairprice,
+		$aiScriptId = this.assignedcontrolled.order.id
+	]" />
+	 -->
+	<!--
+		<interrupts>
+			<handler>
+				<actions>
+					<do_if value="event.name == 'event_build_finished'">
+						<do_if value="$object">
+							<do_if value="event.param3.exists and $object.isclass.ship">
+								<set_value name="$playerownedobject" exact="$object.isplayerowned"/>
+								<set_value name="$playerownedbuilder" exact="this.isplayerowned"/>
+								<do_if value="event.param3.construction">
+								<do_elseif value="event.param3.base and event.param3.isshipbuild">
+									<set_value name="$logbooktext" exact="{1016,96}.[$object.knownname, $object.idcode, this.object.knownname, this.object.idcode, $finishedbuildprice.formatted.default]"/>
+									<write_to_logbook category="upkeep" title="{1016,150}" text="$logbooktext" interaction="showonmap" object="this.object" faction="$object.owner" money="$finishedbuildprice"/>
+								<do_elseif value="event.param3.base and event.param3.isshipmodification">
+									<set_value name="$logbooktext" exact="{1016,97}.[$object.knownname, $object.idcode, this.object.knownname, this.object.idcode, event.param3.price.formatted.default]"/>
+									<write_to_logbook category="upkeep" title="{1016,151}" text="$logbooktext" interaction="showonmap" object="this.object" faction="$object.owner" money="event.param3.price"/>
+	-->
+	<add sel="//interrupts/handler/actions//do_if[@value=&quot;event.name == 'event_build_finished'&quot;]/do_if[@value=&quot;$object&quot;]/do_if[@value=&quot;event.param3.exists and $object.isclass.ship&quot;]//do_if[@value=&quot;event.param3.construction&quot;]">
+		<do_if value="this.isplayerowned">
+			<set_value name="$kTA_build" exact="event.param3" />
+			<!-- <debug_text text="'kTAnalytics $object %s %s'.[$object.knownname, $object.idcode]" />
+			<debug_text text="'kTAnalytics $kTA_build.$macro %s'.[event.param3.macro]" />
+			<debug_text text="'kTAnalytics $kTA_build.$faction %s'.[event.param3.faction]" />
+			<debug_text text="'kTAnalytics $kTA_build.$price %s'.[event.param3.price]" />
+			<debug_text text="'kTAnalytics $kTA_build.$transferredamount %s'.[event.param3.transferredamount]" />
+			<debug_text text="'kTAnalytics signal_objects kTAnalytics_ship_constructed'" /> -->
+			<signal_objects object="player.galaxy" param="'kTAnalytics_ship_constructed'" param2="table[
+				$ship = $object,
+				$station = this.assignedcontrolled,
+				$price = $object.value,
+				$aiScriptId = @this.order.script
+			]" />
+		</do_if>
+	</add>
+	<add sel="//interrupts/handler/actions//do_if[@value=&quot;event.name == 'event_build_finished'&quot;]/do_if[@value=&quot;$object&quot;]/do_if[@value=&quot;event.param3.exists and $object.isclass.ship&quot;]//do_elseif[@value=&quot;event.param3.base and event.param3.isshipbuild&quot;]">
+		<!-- <t id="150">Ship constructed</t>
+		<t id="96">%1(ship name) \(%2\)(ship ID code) finished construction at station: %3(station name) \(%4\)(station ID code). They have paid the station %5(price) Cr.</t> -->
+		<do_if value="this.isplayerowned">
+			<!-- <debug_text text="'kTAnalytics signal_objects kTAnalytics_ship_constructed'" /> -->
+			<signal_objects object="player.galaxy" param="'kTAnalytics_ship_constructed'" param2="table[
+				$ship = $object,
+				$station = this.assignedcontrolled,
+				$price = @$finishedbuildprice,
+				$aiScriptId = @this.order.script
+			]" />
+		</do_if>
+	</add>
+	<add sel="//interrupts/handler/actions//do_if[@value=&quot;event.name == 'event_build_finished'&quot;]/do_if[@value=&quot;$object&quot;]/do_if[@value=&quot;event.param3.exists and $object.isclass.ship&quot;]//do_elseif[@value=&quot;event.param3.base and event.param3.isshipmodification&quot;]">
+		<!-- <t id="151">Ship resupplied</t>
+		<t id="97">%1(ship name) \(%2\)(ship ID code) finished resupplying at station: %3(station name) \(%4\)(station ID code). They have paid the station %5(price) Cr.</t> -->
+		<do_if value="this.isplayerowned">
+			<!-- <debug_text text="'kTAnalytics signal_objects kTAnalytics_ship_resupplied'" /> -->
+			<signal_objects object="player.galaxy" param="'kTAnalytics_ship_resupplied'" param2="table[
+				$ship = $object,
+				$station = this.assignedcontrolled,
+				$price = @event.param3.price,
+				$aiScriptId = @this.order.script
+			]" />
+		</do_if>
+	</add>
+</diff>

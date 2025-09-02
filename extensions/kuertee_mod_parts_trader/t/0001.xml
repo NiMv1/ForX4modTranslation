@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- english -->
+<language>
+	<!-- "kuertee mod part trader" = "kmpt" = "11 13 16 20" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="11131620" voice="no">
+		<t id="1">kuertee: Modification parts trader</t>
+		<!-- config -->
+		<t id="2">Debug log</t>
+		<t id="3">Do debug function</t>
+		<t id="4">Sell to traders?</t>
+		<t id="5">Sale value multiplier</t>
+		<t id="6">Buy from traders?</t>
+		<t id="7">Purchase value multiplier</t>
+		<!-- convo -->
+		<t id="100">Trade?</t>
+		<!-- ui -->
+		<t id="200">Modification Part</t>
+		<t id="201">Value</t>
+		<t id="202">Amount</t>
+		<t id="203">Barter Value</t>
+		<t id="204">Total Value</t>
+		<t id="205">Money Value</t>
+		<t id="206">Net Value</t>
+		<!-- station -->
+		<t id="300">Modification Parts Trader</t>
+
+		<!-- mycu_verbose_transaction_log mod -->
+		<t id="401">Modifications parts barter</t>
+	</page>
+</language>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+	<!-- "kuertee fft" = "kfft" = "11 6 6 20" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="116620" voice="no">
+		<!-- config -->
+		<t id="1">kuertee : Ajustements des tirs amis</t>
+		<t id="2">Journal de débogage</t>
+		<t id="3">Pénaliser les tirs amis dans ces conditions :</t>
+		<t id="4">La victime est ciblée</t>
+		<t id="5">Off pour n'importe quelle victime</t>
+		<t id="6">Les boucliers du vaisseau victime sont à 25% ou moins</t>
+		<t id="7">Off pour n'importe quel niveau de bouclier</t>
+		<t id="8">Off pour n'importe quelle arme</t>
+		<t id="9">Les tirs proviennent des canons principaux</t>
+		<t id="10">Journal de débogage \(verbeux\)</t>
+		<t id="11">Journal de débogage \(réponse non ignorée uniquement\)</t>
+	</page>
+</language>

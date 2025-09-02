@@ -1,0 +1,1580 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="kuertee_trade_analytics" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+		<cue name="OnModLuaInit">
+			<conditions>
+				<event_ui_triggered screen="'Interact_Menu_API'" control="'reloaded'" />
+			</conditions>
+			<actions>
+				<debug_text text="event.name + ' param: ' + @event.param + ' param2: ' + @event.param2" />
+				<raise_lua_event name="'Interact_Menu_API.Add_Custom_Actions_Group_Id'" param="'actions_trade_analytics_station_profiles'" />
+				<raise_lua_event name="'Interact_Menu_API.Add_Custom_Actions_Group_Text'" param="{11201, 1}" />
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="ResetAll" namespace="this">
+			<conditions>
+				<check_any>
+					<event_cue_signalled />
+					<check_all>
+						<event_ui_triggered screen="'Chat_Window_API'" control="'text_entered'" />
+						<check_value value="event.param3.$text == 'reset tanalytics'" />
+					</check_all>
+				</check_any>
+			</conditions>
+			<actions>
+				<debug_text text="'reset_cue ' + kTAnalytics" />
+				<reset_cue cue="UserSettings" />
+				<reset_cue cue="kTAnalytics" />
+			</actions>
+			<cues>
+				<cue name="ResetAll2">
+					<actions>
+						<signal_cue cue="UserSettings" />
+						<debug_text text="'signal_cue ' + kTAnalytics" />
+						<signal_cue cue="kTAnalytics" />
+						<raise_lua_event name="'Chat_Window_API.Print'" param="'ResetAll ' + kTAnalytics + ' done.'" />
+						<reset_cue cue="parent" />
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+		<cue name="UserSettings" version="6">
+			<conditions>
+				<check_any>
+					<event_cue_signalled />
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+				<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+			</conditions>
+			<actions>
+				<set_value name="UserSettings.$debugChance" exact="0" />
+				<set_value name="UserSettings.$debugChance2" exact="0" />
+				<!-- constants -->
+				<!-- user settings -->
+				<set_value name="UserSettings.$user_removeDataOfDestroyedTraders" exact="true" />
+			</actions>
+			<patch sinceversion="2">
+				<debug_text text="'patch sinceversion 2'" />
+				<set_value name="UserSettings.$debugThisShip" exact="null" />
+			</patch>
+			<patch sinceversion="3">
+				<debug_text text="'patch sinceversion 3'" />
+				<set_value name="UserSettings.$debugChance" exact="0" />
+			</patch>
+			<patch sinceversion="4">
+				<debug_text text="'patch sinceversion 4'" />
+				<set_value name="UserSettings.$user_removeDataOfDestroyedTraders" exact="true" />
+			</patch>
+			<patch sinceversion="5">
+				<debug_text text="'patch sinceversion 5'" />
+				<set_value name="UserSettings.$user_removeDataOfDestroyedTraders" exact="true" />
+			</patch>
+			<patch sinceversion="6">
+				<debug_text text="'patch sinceversion 6'" />
+				<set_value name="UserSettings.$debugChance2" exact="0" />
+			</patch>
+		</cue>
+		<cue name="kTAnalytics" namespace="this" version="14">
+			<conditions>
+				<check_any>
+					<event_cue_signalled />
+					<event_cue_signalled cue="md.Setup.GameStart" />
+					<event_game_loaded />
+				</check_any>
+				<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+			</conditions>
+			<actions>
+				<debug_text text="'event.name: ' + event.name" />
+				<set_value name="global.$md_kTA" exact="md.kuertee_trade_analytics" />
+				<set_value name="player.entity.$profileListOrdersByStation" exact="table[]" />
+				<set_value name="$tradesByTradeDataId" exact="table[]" />
+			</actions>
+			<patch sinceversion="2">
+				<debug_text text="'patch sinceversion 2, state: ' + this.state" />
+				<do_all counter="$i" exact="$tradesByTraders.keys.count">
+					<set_value name="$trader" exact="$tradesByTraders.keys.{$i}" />
+					<set_value name="$buys" exact="$tradesByTraders.{$trader}.$buysFromByTrader" />
+					<do_all counter="$j" exact="$buys.keys.count" reverse="true">
+						<set_value name="$trader_other" exact="$buys.keys.{$j}" />
+						<!-- buys from $trader_other -->
+						<do_all counter="$k" exact="$buys.{$trader_other}.$tradesByShip.keys.count">
+							<set_value name="$tradeShip" exact="$buys.{$trader_other}.$tradesByShip.keys.{$k}" />
+							<do_if value="$tradeShip.isplayerowned and $tradeShip != $trader and $tradeShip.toplevelcommander != $trader">
+								<!-- $tradeShip that delivered to $trader from $trader_other -->
+								<run_actions ref="AddBuyData">
+									<param name="Trader" value="$tradeShip" />
+									<param name="Seller" value="$trader_other" />
+									<param name="Ware" value="0" />
+									<param name="Amount" value="$buys.{$trader_other}.$tradesByShip.{$tradeShip}.$amount" />
+									<param name="Price" value="$buys.{$trader_other}.$tradesByShip.{$tradeShip}.$price" />
+									<param name="Ship" value="$tradeShip" />
+								</run_actions>
+								<set_value name="$tradesByTraders.{$tradeShip}.$buysFromByTrader.{$trader_other}.$count" exact="$buys.{$trader_other}.$tradesByShip.{$tradeShip}.$count" />
+							</do_if>
+						</do_all>
+						<do_if value="not $trader_other.isplayerowned">
+							<!-- remove this because, this data will be in egosoft's transaction log -->
+							<remove_value name="$buys.{$trader_other}" />
+						</do_if>
+						<do_else>
+							<set_value name="$buys.{$trader_other}.$gateDistance" exact="$trader.distanceto.{$trader_other}" />
+						</do_else>
+					</do_all>
+					<set_value name="$sales" exact="$tradesByTraders.{$trader}.$salesToByTrader" />
+					<do_all counter="$j" exact="$sales.keys.count" reverse="true">
+						<set_value name="$trader_other" exact="$sales.keys.{$j}" />
+						<!-- sales to $trader_other -->
+						<do_all counter="$k" exact="$sales.{$trader_other}.$tradesByShip.keys.count">
+							<set_value name="$tradeShip" exact="$sales.{$trader_other}.$tradesByShip.keys.{$k}" />
+							<do_if value="$tradeShip.isplayerowned and $tradeShip != $trader and $tradeShip.toplevelcommander == $trader">
+								<!-- $tradeShip delivered to $trader_other from $trader -->
+								<run_actions ref="AddSaleData">
+									<param name="Trader" value="$tradeShip" />
+									<param name="Buyer" value="$trader_other" />
+									<param name="Ware" value="0" />
+									<param name="Amount" value="$sales.{$trader_other}.$tradesByShip.{$tradeShip}.$amount" />
+									<param name="Price" value="$sales.{$trader_other}.$tradesByShip.{$tradeShip}.$price" />
+									<param name="Ship" value="$tradeShip" />
+								</run_actions>
+								<set_value name="$tradesByTraders.{$tradeShip}.$salesToByTrader.{$trader_other}.$count" exact="$sales.{$trader_other}.$tradesByShip.{$tradeShip}.$count" />
+							</do_if>
+						</do_all>
+						<do_if value="not $trader_other.isplayerowned">
+							<!-- remove this because, this data will be in egosoft's transaction log -->
+							<remove_value name="$sales.{$trader_other}" />
+						</do_if>
+						<do_else>
+							<set_value name="$sales.{$trader_other}.$gateDistance" exact="$trader.distanceto.{$trader_other}" />
+						</do_else>
+					</do_all>
+					<set_value name="$mined" exact="$tradesByTraders.{$trader}.$miningByMiner" />
+					<do_all counter="$j" exact="$mined.keys.count" reverse="true">
+						<set_value name="$miner" exact="$mined.keys.{$j}" />
+						<!-- mined for $trader -->
+						<do_all counter="$k" exact="$mined.{$miner}.$tradesByWare.keys.count">
+							<set_value name="$ware" exact="$mined.{$miner}.$tradesByWare.keys.{$k}" />
+							<run_actions ref="AddSaleData">
+								<param name="Trader" value="$miner" />
+								<param name="Buyer" value="$trader" />
+								<param name="Ware" value="$ware" />
+								<param name="Amount" value="$mined.{$miner}.$tradesByWare.{$ware}.$amount" />
+								<param name="Price" value="$mined.{$miner}.$tradesByWare.{$ware}.$price" />
+								<param name="Ship" value="$miner" />
+							</run_actions>
+							<set_value name="$tradesByTraders.{$miner}.$salesToByTrader.{$trader}.$count" exact="$mined.{$miner}.$tradesByWare.{$ware}.$count" />
+						</do_all>
+					</do_all>
+				</do_all>
+			</patch>
+			<patch sinceversion="3">
+				<debug_text text="'patch sinceversion 3, state: ' + this.state" />
+				<run_actions ref="V3_CleanData" result="$tradesByTraders">
+					<param name="Data" value="$tradesByTraders" />
+				</run_actions>
+				<!-- <set_value name="$tradesByTraders" exact="table[]" /> -->
+				<set_value name="UserSettings.$debugChance" exact="0" />
+			</patch>
+			<patch sinceversion="4">
+				<debug_text text="'patch sinceversion 4, state: ' + this.state" />
+				<set_value name="$stationProfilesByStation" exact="table[]" />
+			</patch>
+			<patch sinceversion="5">
+				<debug_text text="'patch sinceversion 5, state: ' + this.state" />
+				<remove_value name="$stationProfilesByStation" />
+			</patch>
+			<patch sinceversion="6">
+				<debug_text text="'patch sinceversion 6, state: ' + this.state" />
+				<set_value name="$profileListOrdersByStation" exact="table[]" />
+			</patch>
+			<patch sinceversion="7">
+				<set_value name="global.$md_kTA" exact="md.kuertee_trade_analytics" />
+				<remove_value name="$profileListOrdersByStation" />
+				<set_value name="player.entity.$profileListOrdersByStation" exact="table[]" />
+			</patch>
+			<patch sinceversion="8">
+				<debug_text text="'patch sinceversion 8'" />
+				<do_if value="not player.entity.$profileListOrdersByStation">
+					<set_value name="player.entity.$profileListOrdersByStation" exact="table[]" />
+				</do_if>
+				<debug_text text="'$profileListOrdersByStation: ' + player.entity.$profileListOrdersByStation" />
+			</patch>
+			<patch sinceversion="9">
+				<debug_text text="'patch sinceversion 9'" />
+				<set_value name="$processedWareBasketByTrader" exact="table[]" />
+			</patch>
+			<patch sinceversion="11">
+				<debug_text text="'patch sinceversion 11'" />
+				<set_value name="$tradesByTradeDataId" exact="table[]" />
+				<run_actions ref="Patch11_ConvertData" />
+				<remove_value name="$tradesByTraders" />
+			</patch>
+			<patch sinceversion="12">
+				<set_value name="$count_data" exact="$tradesByTradeDataId.keys.count" />
+				<set_value name="$tradeDataIds_toRemove" exact="[]" />
+				<!-- start: ensure traderA is buying/repairing, swap traderA and traderB, if not -->
+				<debug_text text="'ensure traderA is buying/repairing'" />
+				<do_for_each name="$tradeDataId" valuename="$tradeData" in="$tradesByTradeDataId">
+					<debug_text text="'$tradeDataId: ' + $tradeDataId + ' $traderA (' + @$tradeData.$traderA.idcode + ') $traderB (' + @$tradeData.$traderB.idcode + ') $isTraderABuying (' + $tradeData.$isTraderABuying + ')'" />
+					<set_value name="$isSwap" exact="false" />
+					<do_if value="(not @$tradeData.$traderA.isoperational) or (not @$tradeData.$traderB.isoperational)">
+						<debug_text text="'    remove: $traderA.isoperational (' + $tradeData.$traderA.isoperational + ') or $traderB.isoperational (' + $tradeData.$traderB.isoperational + ')'" />
+						<append_to_list name="$tradeDataIds_toRemove" exact="$tradeDataId" />
+						<continue />
+					</do_if>
+					<do_elseif value="$tradeData.$traderA == $tradeData.$traderB">
+						<debug_text text="'    remove: $traderA (' + $tradeData.$traderA + ') == $traderB (' + $tradeData.$traderB + ')'" />
+						<append_to_list name="$tradeDataIds_toRemove" exact="$tradeDataId" />
+						<continue />
+					</do_elseif>
+					<do_elseif value="$tradeData.$isTraderARepairing">
+						<do_if value="@$tradeData.$traderA.isclass.ship and @$tradeData.$traderB.isrealclass.station">
+							<set_value name="$isSwap" exact="true" />
+							<debug_text text="'    swap: $isTraderARepairing but $traderA.isclass.ship (' + $tradeData.$traderA.isclass.ship + ')'" />
+						</do_if>
+					</do_elseif>
+					<do_else>
+						<run_actions ref="GetTradeDataId" result="$tradeDataId_traderABuying">
+							<param name="Trader" value="$tradeData.$traderA" />
+							<param name="TradingPartner" value="$tradeData.$traderB" />
+							<param name="IsTraderBuying" value="true" />
+						</run_actions>
+						<run_actions ref="GetTradeDataId" result="$tradeDataId_traderASelling">
+							<param name="Trader" value="$tradeData.$traderA" />
+							<param name="TradingPartner" value="$tradeData.$traderB" />
+							<param name="IsTraderBuying" value="false" />
+						</run_actions>
+						<do_if value="$tradeDataId != $tradeDataId_traderABuying">
+							<set_value name="$isSwap" exact="true" />
+							<debug_text text="'    swap: $tradeDataId != $tradeDataId_traderABuying (' + $tradeDataId_traderABuying + ')'" />
+						</do_if>
+						<set_value name="$tradeData.$isTraderABuying" exact="true" comment="ensures traderA is buying" />
+					</do_else>
+					<do_if value="$isSwap">
+						<set_value name="$traderB_old" exact="$tradeData.$traderB" />
+						<set_value name="$tradeData.$traderB" exact="$tradeData.$traderA" />
+						<set_value name="$tradeData.$traderA" exact="$traderB_old" />
+						<debug_text text="'    swapped: $traderA (' + $tradeData.$traderA.idcode + ') $traderB (' + $tradeData.$traderB.idcode + ')'" />
+					</do_if>
+					<debug_text text="'    $tradeDataId: ' + $tradeDataId + ' $traderA (' + @$tradeData.$traderA.idcode + ') $traderB (' + @$tradeData.$traderB.idcode + ') $isTraderABuying (' + $tradeData.$isTraderABuying + ')'" />
+				</do_for_each>
+				<!-- end: ensure traderA is buying/repairing, swap traderA and traderB, if not -->
+				<!-- start: remove station-station trades, data is already in the ship-station trades -->
+				<debug_text text="'remove station-station trades'" />
+				<do_for_each name="$tradeDataId" valuename="$tradeData" in="$tradesByTradeDataId">
+					<debug_text text="'$tradeDataId: ' + $tradeDataId + ' $traderA (' + @$tradeData.$traderA.idcode + ', ' + @$tradeData.$traderA.class + ') $traderB (' + @$tradeData.$traderB.idcode + ', ' + @$tradeData.$traderB.class + ')'" />
+					<do_if value="$tradeData.$traderA.isrealclass.station and $tradeData.$traderB.isrealclass.station" comment="station to station trades">
+						<debug_text text="'    remove: station-station tradeData'" />
+						<append_to_list name="$tradeDataIds_toRemove" exact="$tradeDataId" />
+					</do_if>
+				</do_for_each>
+				<!-- end: remove station-station trades, data is already in the ship-station trades -->
+				<do_for_each name="$tradeDataId" in="$tradeDataIds_toRemove">
+					<remove_value name="$tradesByTradeDataId.{$tradeDataId}" />
+				</do_for_each>
+				<set_value name="$count_dataNew" exact="$tradesByTradeDataId.keys.count" />
+				<debug_text text="'$count_data: ' + $count_data" />
+				<debug_text text="'$count_dataNew: ' + $count_dataNew" />
+				<do_if value="$count_data">
+					<debug_text text="'new data size: ' + ($count_dataNew / ($count_data)f * 100) + '%'" />
+				</do_if>
+			</patch>
+			<patch sinceversion="13">
+				<remove_value name="$processedWareBasketByTrader" />
+			</patch>
+			<patch sinceversion="14">
+				<debug_text text="'patch sinceversion 14'" />
+				<run_actions ref="Patch14_ConvertRepairsTradingPartnersToFaction" />
+			</patch>
+			<cues>
+				<library name="V3_CleanData" purpose="run_actions">
+					<params>
+						<param name="Data" />
+					</params>
+					<actions>
+						<set_value name="$newData" exact="table[]" />
+						<do_all counter="$i" exact="$Data.keys.count">
+							<set_value name="$key" exact="$Data.keys.{$i}" />
+							<do_if value="typeof $Data.{$key} == datatype.table">
+								<run_actions ref="V3_CleanData" result="$newData.{$key}">
+									<param name="Data" value="$Data.{$key}" />
+								</run_actions>
+							</do_if>
+							<do_else>
+								<set_value name="$newData.{$key}" exact="$Data.{$key}" />
+							</do_else>
+							<do_if value="@$newData.$price">
+								<set_value name="$newData.$price" exact="($newData.$price)f" />
+							</do_if>
+							<do_if value="@$key.isclass.component and (not $key.isplayerowned)">
+								<remove_value name="$newData.{$key}" />
+							</do_if>
+							<!-- <debug_text text="'cleaned key: ' + $key + ' to: ' + @$newData.{$key}" /> -->
+						</do_all>
+						<return value="$newData" />
+					</actions>
+				</library>
+				<library name="Patch11_ConvertData" purpose="run_actions">
+					<actions>
+						<set_value name="UserSettings.$isDebugLogPrePatch11StationStationTrade" exact="false" />
+						<set_value name="UserSettings.$isDebugLogPrePatch11StationShipTrade" exact="false" />
+						<set_value name="UserSettings.$isDebugLogPrePatch11Mining" exact="false" />
+						<set_value name="UserSettings.$isDebugLogPrePatch11Repair" exact="false" />
+						<set_value name="$data_total" exact="0" />
+						<set_value name="$data_removedTotal" exact="0" />
+						<set_value name="$data_consolidatedTotal" exact="0" />
+						<do_for_each name="$trader" valuename="$tradesData" in="kTAnalytics.$tradesByTraders" reverse="true">
+							<run_actions ref="Patch11_ConvertData_PopulateData_Step1" result="$countsData">
+								<param name="Trader" value="$trader" />
+								<param name="TradesData" value="$tradesData" />
+							</run_actions>
+							<set_value name="$data_total" operation="add" exact="$countsData.$data_total" />
+							<set_value name="$data_removedTotal" operation="add" exact="$countsData.$data_removedTotal" />
+							<set_value name="$data_consolidatedTotal" operation="add" exact="$countsData.$data_consolidatedTotal" />
+						</do_for_each>
+						<debug_text text="'$data_total: ' + $data_total" />
+						<debug_text text="'$data_removedTotal: ' + $data_removedTotal" />
+						<debug_text text="'$data_consolidatedTotal: ' + $data_consolidatedTotal" />
+						<set_value name="$data_newTotal" exact="$data_total - ($data_removedTotal + $data_consolidatedTotal)" />
+						<debug_text text="'$data_newTotal: ' + $data_newTotal" />
+						<do_if value="$data_total">
+							<debug_text text="'new data size: ' + ($data_newTotal / ($data_total)f * 100) + '%'" />
+						</do_if>
+						<run_actions ref="DebugLogPatch11TradesByTraderId" />
+					</actions>
+				</library>
+				<library name="Patch11_ConvertData_PopulateData_Step1" purpose="run_actions">
+					<params>
+						<param name="Trader" />
+						<param name="TradesData" />
+					</params>
+					<actions>
+						<debug_text text="'$Trader.idcode: ' + $Trader.idcode + ' (' + $Trader.class + ')'" chance="UserSettings.$debugChance" />
+						<set_value name="$data_total" exact="0" />
+						<set_value name="$data_removedTotal" exact="0" />
+						<set_value name="$data_consolidatedTotal" exact="0" />
+						<do_if value="@$TradesData.$miningByMiner.keys.count">
+							<run_actions ref="Patch11_ConvertData_PopulateData_Step2" result="$countsData">
+								<param name="Trader" value="$Trader" />
+								<param name="TradeData_PopulateFrom" value="$TradesData.$miningByMiner" />
+								<param name="IsTraderBuying" value="true" />
+							</run_actions>
+							<set_value name="$data_total" operation="add" exact="$countsData.$data_total" />
+							<set_value name="$data_removedTotal" operation="add" exact="$countsData.$data_removedTotal" />
+							<set_value name="$data_consolidatedTotal" operation="add" exact="$countsData.$data_consolidatedTotal" />
+						</do_if>
+						<do_if value="@$TradesData.$salesToByTrader.keys.count">
+							<run_actions ref="Patch11_ConvertData_PopulateData_Step2" result="$countsData">
+								<param name="Trader" value="$Trader" />
+								<param name="TradeData_PopulateFrom" value="$TradesData.$salesToByTrader" />
+								<param name="IsTraderBuying" value="false" />
+							</run_actions>
+							<set_value name="$data_total" operation="add" exact="$countsData.$data_total" />
+							<set_value name="$data_removedTotal" operation="add" exact="$countsData.$data_removedTotal" />
+							<set_value name="$data_consolidatedTotal" operation="add" exact="$countsData.$data_consolidatedTotal" />
+						</do_if>
+						<do_if value="@$TradesData.$buysFromByTrader.keys.count">
+							<run_actions ref="Patch11_ConvertData_PopulateData_Step2" result="$countsData">
+								<param name="Trader" value="$Trader" />
+								<param name="TradeData_PopulateFrom" value="$TradesData.$buysFromByTrader" />
+								<param name="IsTraderBuying" value="true" />
+							</run_actions>
+							<set_value name="$data_total" operation="add" exact="$countsData.$data_total" />
+							<set_value name="$data_removedTotal" operation="add" exact="$countsData.$data_removedTotal" />
+							<set_value name="$data_consolidatedTotal" operation="add" exact="$countsData.$data_consolidatedTotal" />
+						</do_if>
+						<do_if value="@$TradesData.$repairsByFaction.keys.count">
+							<run_actions ref="Patch11_ConvertData_PopulateData_Step2" result="$countsData">
+								<param name="Trader" value="$Trader" />
+								<param name="TradeData_PopulateFrom" value="$TradesData.$repairsByFaction" />
+								<param name="IsTraderRepairing" value="true" />
+							</run_actions>
+							<set_value name="$data_total" operation="add" exact="$countsData.$data_total" />
+							<set_value name="$data_removedTotal" operation="add" exact="$countsData.$data_removedTotal" />
+							<set_value name="$data_consolidatedTotal" operation="add" exact="$countsData.$data_consolidatedTotal" />
+						</do_if>
+						<debug_text text="'------------------------------'" chance="UserSettings.$debugChance" />
+						<return value="table[$data_total = $data_total, $data_removedTotal = $data_removedTotal, $data_consolidatedTotal = $data_consolidatedTotal]" />
+					</actions>
+				</library>
+				<library name="Patch11_ConvertData_PopulateData_Step2" purpose="run_actions">
+					<params>
+						<param name="Trader" />
+						<param name="TradeData_PopulateFrom" />
+						<param name="IsTraderBuying" default="false" />
+						<param name="IsTraderRepairing" default="false" />
+					</params>
+					<actions>
+						<set_value name="$data_total" exact="0" />
+						<set_value name="$data_removedTotal" exact="0" />
+						<set_value name="$data_consolidatedTotal" exact="0" />
+						<set_value name="$tradesByTradeDataId" exact="kTAnalytics.$tradesByTradeDataId" />
+						<do_for_each name="$tradingPartner" valuename="$tradeData" in="$TradeData_PopulateFrom" reverse="true">
+							<run_actions ref="DebugLogPrePatch11TradesByTrader">
+								<param name="Trader" value="$Trader" />
+								<param name="TradingPartner" value="$tradingPartner" />
+								<param name="TradeData" value="$tradeData" />
+								<param name="IsTraderRepairing" value="$IsTraderRepairing" />
+							</run_actions>
+							<set_value name="$data_total" operation="add" exact="1" />
+							<do_if value="not $tradingPartner.exists">
+								<set_value name="$data_removedTotal" operation="add" exact="1" />
+							</do_if>
+							<do_else>
+								<do_if value="
+									(not @$tradeData.$tradesByWare.keys.count) and
+									(not @$tradeData.$repairsByMacro.keys.count)">
+									<debug_text text="'    $tradeData is empty: ' + $tradeData" chance="UserSettings.$debugChance" />
+									<set_value name="$data_removedTotal" operation="add" exact="1" />
+									<continue />
+								</do_if>
+								<run_actions ref="GetTradeDataId" result="$tradeDataId">
+									<param name="Trader" value="$Trader" />
+									<param name="TradingPartner" value="$tradingPartner" />
+									<param name="IsTraderBuying" value="$IsTraderBuying" />
+									<param name="IsTraderRepairing" value="$IsTraderRepairing" />
+								</run_actions>
+								<debug_text text="'    $tradeDataId: ' + $tradeDataId + ' $Trader: ' + $Trader.knownname + ' ' + $Trader.idcode + ' $tradingPartner: ' + $tradingPartner.knownname + ' ' + $tradingPartner.idcode" chance="UserSettings.$debugChance" />
+								<set_value name="$isAddData" exact="false" />
+								<set_value name="$traderA" exact="$Trader" />
+								<set_value name="$isTraderABuildStorageSwapped" exact="false" />
+								<set_value name="$isTraderBBuildStorageSwapped" exact="false" />
+								<do_if value="$traderA.isclass.buildstorage and $traderA.base">
+									<set_value name="$isTraderABuildStorageSwapped" exact="true" />
+									<set_value name="$isAddData" exact="true" />
+									<set_value name="$traderA" exact="$traderA.base" />
+									<debug_text text="'    add to $traderA buildstorage base data: ' + @$traderA.knownname + ' ' + @$traderA.idcode" chance="UserSettings.$debugChance" />
+								</do_if>
+								<set_value name="$traderB" exact="$tradingPartner" />
+								<do_if value="$traderB.isclass.buildstorage and $traderB.base">
+									<set_value name="$isTraderBBuildStorageSwapped" exact="true" />
+									<set_value name="$isAddData" exact="true" />
+									<set_value name="$traderB" exact="$traderB.base" />
+									<debug_text text="'    add to $traderB buildstorage base data: ' + @$traderB.knownname + ' ' + @$traderB.idcode" chance="UserSettings.$debugChance" />
+								</do_if>
+								<do_if value="$traderA == $traderB">
+									<debug_text text="'    trading with self. cancel'" chance="UserSettings.$debugChance" />
+									<set_value name="$data_removedTotal" operation="add" exact="1" />
+									<continue />
+								</do_if>
+								<do_if value="$isTraderABuildStorageSwapped">
+									<set_value name="$data_consolidatedTotal" operation="add" exact="1" />
+								</do_if>
+								<do_if value="$isTraderBBuildStorageSwapped">
+									<set_value name="$data_consolidatedTotal" operation="add" exact="1" />
+								</do_if>
+								<do_if value="not @$tradesByTradeDataId.{$tradeDataId}">
+									<set_value name="$tradesByTradeDataId.{$tradeDataId}" exact="table[]" />
+								</do_if>
+								<set_value name="$tradesByTradeDataId.{$tradeDataId}.$traderA" exact="$traderA" />
+								<set_value name="$tradesByTradeDataId.{$tradeDataId}.$traderB" exact="$traderB" />
+								<set_value name="$tradesByTradeDataId.{$tradeDataId}.$isTraderABuying" exact="$IsTraderBuying" />
+								<set_value name="$tradesByTradeDataId.{$tradeDataId}.$isTraderARepairing" exact="$IsTraderRepairing" />
+								<do_if value="@$tradeData.$tradesByWare.keys.count">
+									<debug_text text="'    updating from $tradeData.$tradesByWare ' + @$tradeData.$tradesByWare" chance="UserSettings.$debugChance" />
+									<do_if value="not @$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare">
+										<set_value name="$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare" exact="table[]" />
+									</do_if>
+									<do_for_each name="$ware" valuename="$wareTradeData" in="$tradeData.$tradesByWare">
+										<do_if value="not @$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare.{$ware}">
+											<set_value name="$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare.{$ware}" exact="table[]" />
+										</do_if>
+										<run_actions ref="UpdateWareData">
+											<param name="WareData" value="$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare.{$ware}" />
+											<param name="From" value="$wareTradeData" />
+											<param name="IsSetToMax" value="not $isAddData" />
+										</run_actions>
+									</do_for_each>
+								</do_if>
+								<do_if value="@$tradeData.$repairsByMacro.keys.count">
+									<debug_text text="'    updating from $tradeData.$repairsByMacro ' + @$tradeData.$repairsByMacro" chance="UserSettings.$debugChance" />
+									<do_if value="not @$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare">
+										<set_value name="$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare" exact="table[]" />
+									</do_if>
+									<do_for_each name="$macro" valuename="$macroRepairData" in="$tradeData.$repairsByMacro">
+										<do_if value="not @$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare.{$macro}">
+											<set_value name="$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare.{$macro}" exact="table[]" />
+										</do_if>
+										<run_actions ref="UpdateWareData">
+											<param name="WareData" value="$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare.{$macro}" />
+											<param name="From" value="$macroRepairData" />
+											<param name="IsSetToMax" value="true" />
+										</run_actions>
+									</do_for_each>
+								</do_if>
+							</do_else>
+						</do_for_each>
+						<return value="table[$data_total = $data_total, $data_removedTotal = $data_removedTotal, $data_consolidatedTotal = $data_consolidatedTotal]" />
+					</actions>
+				</library>
+				<library name="Patch14_ConvertRepairsTradingPartnersToFaction" purpose="run_actions">
+					<actions>
+						<set_value name="$adds" exact="[]" />
+						<set_value name="$removes" exact="[]" />
+						<set_value name="$tradeDataIds" exact="kTAnalytics.$tradesByTradeDataId.keys.list.clone" />
+						<do_for_each name="$tradeDataId" in="$tradeDataIds">
+							<set_value name="$tradeData" exact="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}" />
+							<do_if value="$tradeData.$isTraderARepairing">
+								<append_to_list name="$removes" exact="$tradeDataId" />
+								<do_if value="@$tradeData.$traderB.owner">
+									<run_actions ref="GetTradeDataId" result="$tradeDataId_forRepair">
+										<param name="Trader" value="$tradeData.$traderA" />
+										<param name="TradingPartner" value="$tradeData.$traderB.owner" />
+										<param name="IsTraderBuying" value="$tradeData.$isTraderABuying" />
+										<param name="IsTraderRepairing" value="$tradeData.$isTraderARepairing" />
+									</run_actions>
+									<do_if value="not kTAnalytics.$tradesByTradeDataId.{$tradeDataId_forRepair}?">
+										<append_to_list name="$adds" exact="$tradeDataId_forRepair" />
+										<debug_text text="'$tradeDataId_forRepair (adding) %s'.[$tradeDataId_forRepair]" />
+										<set_value name="kTAnalytics.$tradesByTradeDataId.{$tradeDataId_forRepair}" exact="table[
+											$traderA = $tradeData.$traderA,
+											$traderB = $tradeData.$traderB.owner,
+											$isTraderABuying = $tradeData.$isTraderABuying,
+											$isTraderARepairing = $tradeData.$isTraderARepairing,
+											$analyticsByWare = table[],
+										]" />
+									</do_if>
+									<do_else>
+										<debug_text text="'$tradeDataId_forRepair (use existing) %s'.[$tradeDataId_forRepair]" />
+									</do_else>
+									<do_for_each name="$wareOrMacro" valuename="$analytics" in="$tradeData.$analyticsByWare">
+										<debug_text text="'    $wareOrMacro (old data) %s $analytics %s'.[$wareOrMacro, $analytics]" />
+										<do_if value="not @kTAnalytics.$tradesByTradeDataId.{$tradeDataId_forRepair}.$analyticsByWare.{$wareOrMacro}">
+											<set_value name="kTAnalytics.$tradesByTradeDataId.{$tradeDataId_forRepair}.$analyticsByWare.{$wareOrMacro}" exact="table[
+												$count = 0,
+												$amount = 0,
+												$price = 0,
+												$time = 0]" />
+										</do_if>
+										<run_actions ref="UpdateWareData">
+											<param name="WareData" value="kTAnalytics.$tradesByTradeDataId.{$tradeDataId_forRepair}.$analyticsByWare.{$wareOrMacro}" />
+											<param name="From" value="$analytics" />
+										</run_actions>
+										<debug_text text="'    $wareOrMacro (in new data) %s $analytics %s'.[$wareOrMacro, kTAnalytics.$tradesByTradeDataId.{$tradeDataId_forRepair}.$analyticsByWare.{$wareOrMacro}]" />
+									</do_for_each>
+									<debug_text text="'    $tradeDataId_forRepair %s tradeData %s'.[$tradeDataId_forRepair, kTAnalytics.$tradesByTradeDataId.{$tradeDataId_forRepair}]" />
+								</do_if>
+							</do_if>
+						</do_for_each>
+						<debug_text text="'$adds %s %s'.[$adds.count, $adds]" />
+						<debug_text text="'$removes %s %s'.[$removes.count, $removes]" />
+						<do_for_each name="$tradeDataId" in="$removes">
+							<debug_text text="'remove_value (pre) $tradeDataId %s tradeData %s'.[$tradeDataId, kTAnalytics.$tradesByTradeDataId.{$tradeDataId}]" />
+							<remove_value name="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}" />
+							<debug_text text="'remove_value (post) $tradeDataId %s tradeData %s'.[$tradeDataId, @kTAnalytics.$tradesByTradeDataId.{$tradeDataId}]" />
+						</do_for_each>
+					</actions>
+				</library>
+				<cue name="Init" version="4">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<event_game_loaded />
+						</check_any>
+						<!-- <check_value value="not @player.allmodules.{player.module}.isscenario" /> -->
+					</conditions>
+					<actions>
+						<set_value name="$debugChance_old" exact="UserSettings.$debugChance" />
+						<set_value name="UserSettings.$debugChance" exact="100" />
+						<debug_text text="'event.name: ' + event.name + ', UserSettings.$debugChance: ' + UserSettings.$debugChance" />
+						<set_value name="UserSettings.$debugChance" exact="$debugChance_old" />
+						<remove_value name="$debugChance_old" />
+						<reset_cue cue="this" />
+					</actions>
+					<patch sinceversion="3">
+						<set_value name="$debugChance" exact="0" />
+						<set_value name="$debugChance_old" exact="0" />
+					</patch>
+				</cue>
+				<cue name="Trade" instantiate="true">
+					<conditions>
+						<event_object_signalled object="player.galaxy" param="'kTAnalytics_trade'" />
+					</conditions>
+					<actions>
+						<set_value name="$tradeOffer" exact="event.param2.$tradeOffer" />
+						<do_if value="@$tradeOffer.buyer.isplayerowned and @$tradeOffer.seller.isplayerowned">
+							<set_value name="$amount" exact="event.param2.$amount" />
+							<set_value name="$result" exact="event.param2.$result" />
+							<set_value name="$aiScriptId" exact="event.param2.$aiScriptId" />
+							<set_value name="$price" exact="$amount * ($tradeOffer.unitprice)f" />
+							<do_if value="UserSettings.$debugChance">
+								<debug_text text="'    $amount: ' + $amount" />
+								<debug_text text="'    $price: ' + $price" />
+								<debug_text text="'    $tradeOffer.buyer: ' + $tradeOffer.buyer + ' (' + @$tradeOffer.buyer.knownname + ' ' + @$tradeOffer.buyer.idcode + ', ' + @$tradeOffer.buyer.owner + ')'" />
+								<debug_text text="'    $tradeOffer.seller: ' + $tradeOffer.seller + ' (' + @$tradeOffer.seller.knownname + ' ' + @$tradeOffer.seller.idcode + ', ' + @$tradeOffer.seller.owner + ')'" />
+								<debug_text text="'    $tradeOffer.ware: ' + $tradeOffer.ware" />
+								<debug_text text="'    $tradeOffer.amount: ' + $tradeOffer.amount" />
+								<debug_text text="'    $tradeOffer.desiredamount: ' + $tradeOffer.desiredamount" />
+								<debug_text text="'    $tradeOffer.transferredamount: ' + $tradeOffer.transferredamount" />
+								<debug_text text="'    $tradeOffer.destroyedamount: ' + $tradeOffer.destroyedamount" />
+								<debug_text text="'    $tradeOffer.price: ' + $tradeOffer.price" />
+								<debug_text text="'    $tradeOffer.unitprice: ' + $tradeOffer.unitprice" />
+								<debug_text text="'    $result: ' + $result + ' (' + (typeof $result) + ')'" />
+								<debug_text text="'    $aiScriptId: ' + $aiScriptId" />
+								<debug_text text="'    $tradeOffer.unitprice: ' + $tradeOffer.unitprice" chance="UserSettings.$debugChance" />
+								<!-- <debug_text text="'    $price: ' + ($price).formatted.{'%s %Cr'}" chance="UserSettings.$debugChance" /> -->
+							</do_if>
+							<run_actions ref="AddTradeData">
+								<param name="Trader" value="$tradeOffer.buyer" />
+								<param name="TradingPartner" value="$tradeOffer.seller" />
+								<param name="IsTraderBuying" value="true" />
+								<param name="WareOrRepairMacro" value="$tradeOffer.ware" />
+								<param name="Amount" value="$tradeOffer.transferredamount" />
+								<param name="Price" value="$price" />
+							</run_actions>
+						</do_if>
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="Repair" instantiate="true">
+					<conditions>
+						<event_object_signalled object="player.galaxy" param="'kTAnalytics_repair'" />
+					</conditions>
+					<actions>
+						<set_value name="$repairData" exact="event.param2" />
+						<do_if value="$repairData.$station.isplayerowned or $repairData.$ship.isplayerowned">
+							<debug_text text="'$repairData: ' + $repairData" chance="UserSettings.$debugChance" />
+							<run_actions ref="AddTradeData">
+								<param name="Trader" value="$repairData.$station" />
+								<param name="TradingPartner" value="$repairData.$ship.owner" />
+								<param name="IsTraderRepairing" value="true" />
+								<param name="WareOrRepairMacro" value="$repairData.$ship.macro" />
+								<param name="Amount" value="1" />
+								<param name="Price" value="$repairData.$price" />
+							</run_actions>
+						</do_if>
+					</actions>
+				</cue>
+				<cue name="ShipConstructed" instantiate="true">
+					<conditions>
+						<event_object_signalled object="player.galaxy" param="'kTAnalytics_ship_constructed'" />
+					</conditions>
+					<actions>
+						<set_value name="$constructionData" exact="event.param2" />
+						<do_if value="$constructionData.$station.isplayerowned or $constructionData.$ship.isplayerowned">
+							<debug_text text="'$constructionData: ' + $constructionData" chance="UserSettings.$debugChance" />
+							<run_actions ref="AddTradeData">
+								<param name="Trader" value="$constructionData.$station" />
+								<param name="TradingPartner" value="$constructionData.$ship.owner" />
+								<param name="IsTraderRepairing" value="false" />
+								<param name="WareOrRepairMacro" value="$constructionData.$ship.macro" />
+								<param name="Amount" value="1" />
+								<param name="Price" value="$constructionData.$price" />
+							</run_actions>
+						</do_if>
+					</actions>
+				</cue>
+				<cue name="ShipResupplied" instantiate="true">
+					<conditions>
+						<event_object_signalled object="player.galaxy" param="'kTAnalytics_ship_resupplied'" />
+					</conditions>
+					<actions>
+						<set_value name="$resupplyData" exact="event.param2" />
+						<do_if value="$resupplyData.$station.isplayerowned or $resupplyData.$ship.isplayerowned">
+							<debug_text text="'$resupplyData: ' + $resupplyData" chance="UserSettings.$debugChance" />
+							<run_actions ref="AddTradeData">
+								<param name="Trader" value="$resupplyData.$station" />
+								<param name="TradingPartner" value="$resupplyData.$ship.owner" />
+								<param name="IsTraderRepairing" value="true" />
+								<param name="WareOrRepairMacro" value="$resupplyData.$ship.macro" />
+								<param name="Amount" value="1" />
+								<param name="Price" value="$resupplyData.$price" />
+							</run_actions>
+						</do_if>
+					</actions>
+				</cue>
+				<!--
+					$tradesByTradeDataId = table[
+						{$tradeDataId} = table[
+							$isTraderABuying = true/false,
+							$isTraderARepairing = true/false,
+							$analyticsByWare = table[
+								{ware or macro} = table[
+									$count = x,
+									$amount = x,
+									$price = x,
+									$time = x,
+								],
+							],
+						],
+					]
+				-->
+				<library name="GetTradeDataId" purpose="run_actions">
+					<params>
+						<param name="Trader" />
+						<param name="TradingPartner" />
+						<param name="IsTraderBuying" default="false" />
+						<param name="IsTraderRepairing" default="false" />
+						<param name="DebugSpacer" default="''" />
+					</params>
+					<actions>
+						<set_value name="$traderId" exact="@$Trader.idcode" />
+						<set_value name="$tradingPartnerId" exact="@$TradingPartner.idcode" />
+						<do_if value="$Trader.isclass.buildstorage and $Trader.base">
+							<set_value name="$Trader" exact="$Trader.base" />
+							<set_value name="$traderId" exact="$Trader.idcode" />
+							<debug_text text="$DebugSpacer + '$traderId (use base of buildstorage): ' + $traderId" chance="UserSettings.$debugChance" />
+						</do_if>
+						<do_if value="typeof $TradingPartner == datatype.faction">
+							<set_value name="$tradingPartnerId" exact="$TradingPartner.id" />
+							<debug_text text="$DebugSpacer + '$TradingPartnerId (faction): ' + $tradingPartnerId" chance="UserSettings.$debugChance" />
+						</do_if>
+						<do_elseif value="$TradingPartner.isclass.buildstorage and $TradingPartner.base">
+							<set_value name="$TradingPartner" exact="$TradingPartner.base" />
+							<set_value name="$tradingPartnerId" exact="$TradingPartner.idcode" />
+							<debug_text text="$DebugSpacer + '$tradingPartnerId (use base of buildstorage): ' + $tradingPartnerId" chance="UserSettings.$debugChance" />
+						</do_elseif>
+						<do_if value="$IsTraderBuying">
+							<set_value name="$tradeDataId" exact="'$b' + $traderId + 'x' + $tradingPartnerId" />
+						</do_if>
+						<do_elseif value="$IsTraderRepairing">
+							<set_value name="$tradeDataId" exact="'$r' + $traderId + 'x' + $tradingPartnerId" />
+						</do_elseif>
+						<do_else>
+							<set_value name="$tradeDataId" exact="'$b' + $tradingPartnerId + 'x' + $traderId" />
+						</do_else>
+						<debug_text text="$DebugSpacer + '$tradeDataId: ' + $tradeDataId" chance="UserSettings.$debugChance" />
+						<return value="$tradeDataId" />
+					</actions>
+				</library>
+				<library name="GetIsTradingDataExists" purpose="run_actions">
+					<params>
+						<param name="Trader" />
+						<param name="TradingPartner" />
+						<param name="Activity" default="'any'" comment="'any', 'buy', 'sell', 'repair'" />
+						<param name="DebugChance" default="0" />
+					</params>
+					<actions>
+						<run_actions ref="GetTradeDataId" result="$tradeDataId_traderABuying">
+							<param name="Trader" value="$Trader" />
+							<param name="TradingPartner" value="$TradingPartner" />
+							<param name="IsTraderBuying" value="true" />
+						</run_actions>
+						<run_actions ref="GetTradeDataId" result="$tradeDataId_traderARepairing">
+							<param name="Trader" value="$Trader" />
+							<param name="TradingPartner" value="$TradingPartner" />
+							<param name="IsTraderRepairing" value="true" />
+						</run_actions>
+						<run_actions ref="GetTradeDataId" result="$tradeDataId_traderASelling">
+							<param name="Trader" value="$Trader" />
+							<param name="TradingPartner" value="$TradingPartner" />
+						</run_actions>
+						<!-- <debug_text text="'$tradeDataId_traderABuying: ' + $tradeDataId_traderABuying + ' $tradeData: ' + @kTAnalytics.$tradesByTradeDataId.{$tradeDataId_traderABuying}" chance="$DebugChance" />
+						<debug_text text="'$tradeDataId_traderARepairing: ' + $tradeDataId_traderARepairing + ' $tradeData: ' + @kTAnalytics.$tradesByTradeDataId.{$tradeDataId_traderARepairing}" chance="$DebugChance" />
+						<debug_text text="'$tradeDataId_traderASelling: ' + $tradeDataId_traderASelling + ' $tradeData: ' + @kTAnalytics.$tradesByTradeDataId.{$tradeDataId_traderASelling}" chance="$DebugChance" /> -->
+						<do_if value="$Activity == 'any'">
+							<return value="
+								@kTAnalytics.$tradesByTradeDataId.{$tradeDataId_traderABuying} or
+								@kTAnalytics.$tradesByTradeDataId.{$tradeDataId_traderASelling} or
+								@kTAnalytics.$tradesByTradeDataId.{$tradeDataId_traderARepairing}
+							" />
+						</do_if>
+						<do_elseif value="$Activity == 'buy'">
+							<return value="@kTAnalytics.$tradesByTradeDataId.{$tradeDataId_traderABuying}" />
+						</do_elseif>
+						<do_elseif value="$Activity == 'repair'">
+							<return value="@kTAnalytics.$tradesByTradeDataId.{$tradeDataId_traderARepairing}" />
+						</do_elseif>
+						<do_elseif value="$Activity == 'sell'">
+							<return value="@kTAnalytics.$tradesByTradeDataId.{$tradeDataId_traderASelling}" />
+						</do_elseif>
+					</actions>
+				</library>
+				<library name="AddTradeData" purpose="run_actions">
+					<params>
+						<param name="Trader" />
+						<param name="TradingPartner" />
+						<param name="WareOrRepairMacro" />
+						<param name="Count" default="1" />
+						<param name="Amount" />
+						<param name="Price" />
+						<param name="Time" default="player.age" />
+						<param name="IsTraderBuying" default="false" />
+						<param name="IsTraderRepairing" default="false" />
+					</params>
+					<actions>
+						<set_value name="$Price" exact="($Price)f" />
+						<run_actions ref="GetTradeDataId" result="$tradeDataId">
+							<param name="Trader" value="$Trader" />
+							<param name="TradingPartner" value="$TradingPartner" />
+							<param name="IsTraderBuying" value="$IsTraderBuying" />
+							<param name="IsTraderRepairing" value="$IsTraderRepairing" />
+						</run_actions>
+						<debug_text text="'$tradeDataId: ' + $tradeDataId" chance="UserSettings.$debugChance" />
+						<do_if value="not @kTAnalytics.$tradesByTradeDataId.{$tradeDataId}">
+							<set_value name="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}" exact="table[
+								$traderA = $Trader,
+								$traderB = $TradingPartner,
+								$isTraderABuying = $IsTraderBuying,
+								$isTraderARepairing = $IsTraderRepairing,
+								$analyticsByWare = table[],
+							]" />
+						</do_if>
+						<do_if value="not @kTAnalytics.$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare.{$WareOrRepairMacro}">
+							<set_value name="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare.{$WareOrRepairMacro}" exact="table[
+								$count = 0,
+								$amount = 0,
+								$price = 0,
+								$time = 0]" />
+						</do_if>
+						<run_actions ref="UpdateWareData">
+							<param name="WareData" value="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}.$analyticsByWare.{$WareOrRepairMacro}" />
+							<param name="From" value="table[
+								$count = $Count,
+								$amount = $Amount,
+								$price = $Price,
+								$time = $Time,
+							]" />
+						</run_actions>
+						<debug_text text="'kTAnalytics.$tradesByTradeDataId.{$tradeDataId}: ' + kTAnalytics.$tradesByTradeDataId.{$tradeDataId}" chance="UserSettings.$debugChance" />
+						<!-- <do_if value="not $IsTraderRepairing">
+							<do_if value="$Trader.isclass.ship and @$Trader.toplevelcommander.isclass.station and @$TradingPartner.isclass.station">
+								<debug_text text="'save toplevelcommander to toplevelcommander trade'" chance="UserSettings.$debugChance" />
+								<run_actions ref="AddTradeData">
+									<param name="Trader" value="$Trader.toplevelcommander" />
+									<param name="TradingPartner" value="$TradingPartner" />
+									<param name="IsTraderBuying" value="$IsTraderBuying" />
+									<param name="WareOrRepairMacro" value="$WareOrRepairMacro" />
+									<param name="Amount" value="$Amount" />
+									<param name="Price" value="$Price" />
+								</run_actions>
+							</do_if>
+						</do_if> -->
+					</actions>
+				</library>
+				<library name="UpdateWareData" purpose="run_actions">
+					<params>
+						<param name="WareData" />
+						<param name="From" />
+						<param name="IsSetToMax" default="false" />
+					</params>
+					<actions>
+						<do_if value="$IsSetToMax">
+							<set_value name="$WareData.$count" exact="[@$WareData.$count, @$From.$count].max" />
+							<set_value name="$WareData.$amount" exact="[@$WareData.$amount, @$From.$amount].max" />
+							<set_value name="$WareData.$price" exact="[@$WareData.$price, @$From.$price].max" />
+						</do_if>
+						<do_else>
+							<set_value name="$WareData.$count" operation="add" exact="@$From.$count" />
+							<set_value name="$WareData.$amount" operation="add" exact="@$From.$amount" />
+							<set_value name="$WareData.$price" operation="add" exact="@$From.$price" />
+						</do_else>
+						<set_value name="$WareData.$time" exact="[@$WareData.$time, @$From.$time].max" />
+					</actions>
+				</library>
+				<library name="DebugLogPrePatch11TradesByTrader" purpose="run_actions">
+					<params>
+						<param name="Trader" />
+						<param name="TradingPartner" />
+						<param name="TradeData" />
+						<param name="IsTraderRepairing" />
+					</params>
+					<actions>
+						<set_value name="$isDebugLogThis" exact="false" />
+						<do_if value="not UserSettings.$isDebugLogPrePatch11StationStationTrade">
+							<do_if value="$Trader.isclass.station and @$TradingPartner.isclass.station">
+								<set_value name="UserSettings.$isDebugLogPrePatch11StationStationTrade" exact="true" />
+								<debug_text text="'$TradeData ($isDebugLogPrePatch11StationStationTrade): ' + $TradeData" />
+								<set_value name="$isDebugLogThis" exact="true" />
+							</do_if>
+						</do_if>
+						<do_if value="not UserSettings.$isDebugLogPrePatch11StationShipTrade">
+							<do_if value="$Trader.isclass.ship and $Trader.primarypurpose == purpose.trade and @$TradingPartner.isclass.station">
+								<set_value name="UserSettings.$isDebugLogPrePatch11StationShipTrade" exact="true" />
+								<debug_text text="'$TradeData ($isDebugLogPrePatch11StationShipTrade): ' + $TradeData" />
+								<set_value name="$isDebugLogThis" exact="true" />
+							</do_if>
+						</do_if>
+						<do_if value="not UserSettings.$isDebugLogPrePatch11Mining">
+							<do_if value="$Trader.isclass.ship and $Trader.primarypurpose == purpose.mine and @$TradingPartner.isclass.station">
+								<set_value name="UserSettings.$isDebugLogPrePatch11Mining" exact="true" />
+								<debug_text text="'$TradeData ($isDebugLogPrePatch11Mining): ' + $TradeData" />
+								<set_value name="$isDebugLogThis" exact="true" />
+							</do_if>
+						</do_if>
+						<do_if value="not UserSettings.$isDebugLogPrePatch11Repair">
+							<do_if value="$IsTraderRepairing">
+								<set_value name="UserSettings.$isDebugLogPrePatch11Repair" exact="true" />
+								<debug_text text="'$TradeData ($isDebugLogPrePatch11Repair): ' + $TradeData" />
+								<set_value name="$isDebugLogThis" exact="true" />
+							</do_if>
+						</do_if>
+						<do_if value="$isDebugLogThis">
+							<do_for_each name="$key" valuename="$value" in="$TradeData">
+								<debug_text text="'$key: ' + $key + ' $value: ' + $value + ' knownname: ' + @$value.knownname + ' idcode: ' + @$value.idcode" /> 
+							</do_for_each>
+						</do_if>
+					</actions>
+				</library>
+				<library name="DebugLogPatch11TradesByTraderId" purpose="run_actions">
+					<actions>
+						<set_value name="UserSettings.$isDebugLogMining" exact="false" />
+						<set_value name="UserSettings.$isDebugLogBuy" exact="false" />
+						<set_value name="UserSettings.$isDebugLogSale" exact="false" />
+						<set_value name="UserSettings.$isDebugLogRepair" exact="false" />
+						<do_for_each name="$tradeDataId" valuename="$tradeData" in="kTAnalytics.$tradesByTradeDataId">
+							<set_value name="$isDebugLogThis" exact="false" />
+							<do_if value="
+								$tradeData.$traderA.isclass.station and
+								$tradeData.$traderB.isclass.ship and
+								$tradeData.$traderB.primarypurpose == purpose.mine and
+								(not $tradeData.$isTraderARepairing)">
+								<do_if value="not UserSettings.$isDebugLogMining">
+									<set_value name="UserSettings.$isDebugLogMining" exact="true" />
+									<debug_text text="'$tradeData ($isDebugLogMining): ' + $tradeData" />
+									<set_value name="$isDebugLogThis" exact="true" />
+								</do_if>
+							</do_if>
+							<do_elseif value="$tradeData.$isTraderABuying">
+								<do_if value="not UserSettings.$isDebugLogBuy">
+									<set_value name="UserSettings.$isDebugLogBuy" exact="true" />
+									<debug_text text="'$tradeData ($isDebugLogBuy): ' + $tradeData" />
+									<set_value name="$isDebugLogThis" exact="true" />
+								</do_if>
+							</do_elseif>
+							<do_elseif value="$tradeData.$isTraderARepairing">
+								<do_if value="not UserSettings.$isDebugLogRepair">
+									<set_value name="UserSettings.$isDebugLogRepair" exact="true" />
+									<debug_text text="'$tradeData ($isDebugLogRepair): ' + $tradeData" />
+									<set_value name="$isDebugLogThis" exact="true" />
+								</do_if>
+							</do_elseif>
+							<do_else>
+								<do_if value="not UserSettings.$isDebugLogSale">
+									<set_value name="UserSettings.$isDebugLogSale" exact="true" />
+									<debug_text text="'$tradeData ($isDebugLogSale): ' + $tradeData" />
+									<set_value name="$isDebugLogThis" exact="true" />
+								</do_if>
+							</do_else>
+							<do_if value="$isDebugLogThis">
+								<debug_text text="'$tradeDataId: ' + $tradeDataId" />
+								<do_for_each name="$key" valuename="$value" in="$tradeData">
+									<debug_text text="'$key: ' + $key + ' $value: ' + $value + ' knownname: ' + @$value.knownname + ' idcode: ' + @$value.idcode" /> 
+								</do_for_each>
+							</do_if>
+						</do_for_each>
+					</actions>
+				</library>
+				<library name="RemoveInvalidKeys" purpose="run_actions">
+					<params>
+						<param name="Table" />
+						<param name="TableName" />
+					</params>
+					<actions>
+						<set_value name="$keysCount" exact="$Table.keys.count" />
+						<do_if value="$Table">
+							<do_for_each name="$key" valuename="$value" in="$Table">
+								<debug_text text="'$key: ' + $key + ' exists: ' + @$key.exists + ' iswreck: ' + @$key.iswreck + ' isoperational: ' + @$key.isoperational + ' $value: ' + $value + ' (' + @$key.knownname + ' ' + @key.idCode + ')'" chance="UserSettings.$debugChance" />
+								<do_if value="(not @$key.exists) or @$key.iswreck">
+									<remove_value name="$Table.{$key}" />
+								</do_if>
+							</do_for_each>
+							<do_if value="$Table.keys.count != $keysCount">
+								<debug_text text="$TableName + ' keys removed: ' + ($keysCount - $Table.keys.count)" chance="UserSettings.$debugChance" />
+							</do_if>
+						</do_if>
+					</actions>
+				</library>
+				<cue name="RemoveInvalidKeys_Now">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<event_game_loaded />
+							<event_ui_triggered screen="'MapMenu'" />
+						</check_any>
+					</conditions>
+					<actions>
+						<debug_text text="event.name" chance="UserSettings.$debugChance" />
+						<debug_text text="'player.entity.$profileListOrdersByStation: ' + player.entity.$profileListOrdersByStation" chance="UserSettings.$debugChance" />
+						<set_value name="player.entity.$kTAnalytics_uiData" exact="null" />
+						<do_if value="player.entity.$profileListOrdersByStation?">
+							<run_actions ref="RemoveInvalidKeys">
+								<param name="Table" value="player.entity.$profileListOrdersByStation" />
+								<param name="TableName" value="'player.entity.$profileListOrdersByStation'" />
+							</run_actions>
+						</do_if>
+						<do_if value="event.name != 'event_ui_triggered'">
+							<debug_text text="'reset_cue ' + RemoveInvalidKeys_Now" chance="UserSettings.$debugChance" />
+							<reset_cue cue="RemoveInvalidKeys_Now" />
+						</do_if>
+					</actions>
+					<cues>
+						<cue name="RemoveInvalidKeys_Now_Finish" instantiate="true">
+							<conditions>
+								<check_any>
+									<event_ui_triggered screen="'MapMenu'" control="'menu_close'" />
+									<event_game_loaded comment="in case game exited while map is open" />
+								</check_any>
+							</conditions>
+							<actions>
+								<debug_text text="event.name" chance="UserSettings.$debugChance" />
+								<reset_cue cue="RemoveInvalidKeys_Now" />
+							</actions>
+						</cue>
+					</cues>
+				</cue>
+				<cue name="RemoveInvalidKeys_Now_RunOnce" namespace="this">
+					<actions>
+						<debug_text text="event.name" />
+						<set_value name="$debugChance_old" exact="UserSettings.$debugChance" />
+						<set_value name="UserSettings.$debugChance" exact="100" />
+						<debug_text text="'RemoveInvalidKeys_Now.state: ' + RemoveInvalidKeys_Now.state" chance="UserSettings.$debugChance" />
+						<do_if value="RemoveInvalidKeys_Now.state == cuestate.waiting">
+							<signal_cue_instantly cue="RemoveInvalidKeys_Now" />
+						</do_if>
+						<set_value name="UserSettings.$debugChance" exact="$debugChance_old" />
+					</actions>
+				</cue>
+				<cue name="OnTransactionLogOpen" namespace="this" instantiate="true">
+					<conditions>
+						<check_any>
+							<event_cue_signalled />
+							<event_ui_triggered screen="'TransactionLogMenu'" />
+							<event_ui_triggered screen="'kTAnalytic_ui_trigger'" />
+						</check_any>
+					</conditions>
+					<actions>
+						<debug_text text="event.name + ' event.param: ' + event.param + ' event.param2: ' + event.param2 + ' event.param3: ' + event.param3" chance="UserSettings.$debugChance" />
+						<do_if value="event.param == 'kTAnalytic_ui_trigger' and event.param2 == 'uiData_request'">
+							<set_value name="$trader" exact="event.param3" />
+							<run_actions ref="GetTAnalytics" result="player.entity.$kTAnalytics_uiData">
+								<param name="Trader" value="$trader" />
+								<param name="DebugChance" value="UserSettings.$debugChance2" />
+							</run_actions>
+							<raise_lua_event name="'kTAnalytics_uiData_loaded'" />
+						</do_if>
+						<do_elseif value="event.param == 'TransactionLogMenu' and event.param2 == 'menu_close'">
+							<set_value name="player.entity.$kTAnalytics_uiData" exact="null" />
+							<raise_lua_event name="'cleanup_transactionLogMenu'" /> 
+						</do_elseif>
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+				<library name="GetTAnalytics" purpose="run_actions">
+					<params>
+						<param name="Trader" />
+						<param name="IgnoreTradingPartners" default="[]" />
+						<param name="DebugChance" value="0" />
+					</params>
+					<actions>
+						<debug_text text="'==================='" chance="$DebugChance" />
+						<debug_text text="'==================='" chance="$DebugChance" />
+						<debug_text text="'==================='" chance="$DebugChance" />
+						<debug_text text="'BEGIN GetTAnalytics'" chance="$DebugChance" />
+						<debug_text text="'$Trader: ' + $Trader + ' ' + $Trader.knownname + ' ' + $Trader.idcode" chance="$DebugChance" />
+						<set_value name="$tAnalytics" exact="table[
+							$miningByMiner = table[],
+							$salesToByTrader = table[],
+							$buysFromByTrader = table[],
+							$repairsByShip = table[],
+						]" />
+						<set_value name="$tradeDataForTradesByShipsByTradingPartner" exact="table[]" />
+						<do_for_each name="$tradeDataId" valuename="$tradeData" in="kTAnalytics.$tradesByTradeDataId">
+							<do_if value="$tradeData.$traderA == $Trader or $tradeData.$traderB == $Trader">
+								<debug_text text="'$tradeDataId: ' + $tradeDataId" chance="$DebugChance" />
+								<debug_text text="'$tradeData: ' + $tradeData" chance="$DebugChance" />
+								<run_actions ref="GetTradeDataActions" result="$tradeDataActions">
+									<param name="Trader" value="$Trader" />
+									<param name="TradeData" value="$tradeData" />
+								</run_actions>
+								<do_if value="$tradeData.$traderA == $Trader">
+									<set_value name="$tradingPartner" exact="$tradeData.$traderB" />
+								</do_if>
+								<do_elseif value="$tradeData.$traderB == $Trader">
+									<set_value name="$tradingPartner" exact="$tradeData.$traderA" />
+								</do_elseif>
+								<debug_text text="'$tradingPartner: ' + $tradingPartner + ' ' + @$tradingPartner.knownname + ' ' + @$tradingPartner.idcode" chance="$DebugChance" />
+								<do_if value="(typeof $tradingPartner != datatype.faction) and (not @$tradingPartner.exists)">
+									<debug_text text="'    skip because $tradingPartner.exists: ' + @$tradingPartner.exists" chance="$DebugChance" />
+									<continue />
+								</do_if>
+								<do_elseif value="$IgnoreTradingPartners.indexof.{$tradingPartner}">
+									<debug_text text="'    skip because $IgnoreTradingPartners.indexof.{$tradingPartner}: ' + $IgnoreTradingPartners.indexof.{$tradingPartner}" chance="$DebugChance" />
+									<continue />
+								</do_elseif>
+								<do_elseif value="$Trader == $tradingPartner">
+									<debug_text text="'    skip because $Trader == $tradingPartner: ' + ($Trader == $tradingPartner)" chance="$DebugChance" />
+									<continue />
+								</do_elseif>
+								<!-- note that if $tradingPartner has no commander, then toplevelcommander is $tradingPartner -->
+								<set_value name="$commander_of_tradingPartner" exact="@$tradingPartner.toplevelcommander" />
+								<!-- <debug_text text="'$tradingPartner %s %s %s'.[@$tradingPartner.knownname, @$tradingPartner.idcode, @$tradingPartner.exists]" /> -->
+								<!-- <debug_text text="'$commander_of_tradingPartner %s %s %s'.[@$commander_of_tradingPartner.knownname, @$commander_of_tradingPartner.idcode, @$commander_of_tradingPartner.exists]" /> -->
+								<do_if value="
+									(@$commander_of_tradingPartner.exists and $commander_of_tradingPartner != $Trader) or
+									(typeof $tradingPartner == datatype.faction) or
+									$tradeDataActions.$isMiningForTrader or
+									$tradeDataActions.$isTraderRepairing">
+									<do_if value="$tradeDataActions.$isMiningForTrader">
+										<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+											<param name="TAnalyticsData" value="$tAnalytics.$miningByMiner" />
+											<param name="TradingPartner" value="$tradingPartner" />
+											<param name="AnalyticsByWare" value="$tradeData.$analyticsByWare" />
+											<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+										</run_actions>
+									</do_if>
+									<do_elseif value="$tradeDataActions.$isTraderBuying">
+										<do_if value="typeof $tradingPartner == datatype.faction">
+											<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+												<param name="TAnalyticsData" value="$tAnalytics.$buysFromByTrader" />
+												<param name="TradingPartner" value="$tradingPartner" />
+												<param name="AnalyticsByWare" value="$tradeData.$analyticsByWare" />
+												<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+											</run_actions>
+										</do_if>
+										<do_else>
+											<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+												<param name="TAnalyticsData" value="$tAnalytics.$buysFromByTrader" />
+												<param name="TradingPartner" value="$commander_of_tradingPartner" />
+												<param name="AnalyticsByWare" value="$tradeData.$analyticsByWare" />
+												<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+											</run_actions>
+										</do_else>
+									</do_elseif>
+									<do_elseif value="$tradeDataActions.$isTraderRepairing">
+										<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+											<param name="TAnalyticsData" value="$tAnalytics.$repairsByShip" />
+											<param name="TradingPartner" value="$tradingPartner" />
+											<param name="AnalyticsByWare" value="$tradeData.$analyticsByWare" />
+											<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+										</run_actions>
+									</do_elseif>
+									<do_else>
+										<do_if value="typeof $tradingPartner == datatype.faction">
+											<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+												<param name="TAnalyticsData" value="$tAnalytics.$salesToByTrader" />
+												<param name="TradingPartner" value="$tradingPartner" />
+												<param name="AnalyticsByWare" value="$tradeData.$analyticsByWare" />
+												<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+											</run_actions>
+										</do_if>
+										<do_else>
+											<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+												<param name="TAnalyticsData" value="$tAnalytics.$salesToByTrader" />
+												<param name="TradingPartner" value="$commander_of_tradingPartner" />
+												<param name="AnalyticsByWare" value="$tradeData.$analyticsByWare" />
+												<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+											</run_actions>
+										</do_else>
+									</do_else>
+								</do_if>
+								<do_elseif value="@$commander_of_tradingPartner.isoperational and $commander_of_tradingPartner == $Trader">
+									<!-- get this $tradingPartner's trades with other stations, and add its data to trader's data -->
+									<do_for_each name="$tradeDataId2" valuename="$tradeData2" in="kTAnalytics.$tradesByTradeDataId">
+										<do_if value="
+											($tradeData2.$traderA == $tradingPartner and $tradeData2.$traderB != $Trader) or
+											($tradeData2.$traderB == $tradingPartner and $tradeData2.$traderA != $Trader)">
+											<set_value name="$tradingPartner_of_tradingPartner" exact="null" />
+											<do_if value="$tradeData2.$traderA == $tradingPartner">
+												<set_value name="$tradingPartner_of_tradingPartner" exact="$tradeData2.$traderB" />
+											</do_if>
+											<do_elseif value="$tradeData2.$traderB == $tradingPartner">
+												<set_value name="$tradingPartner_of_tradingPartner" exact="$tradeData2.$traderA" />
+											</do_elseif>
+											<!-- <debug_text text="'$tradingPartner_of_tradingPartner %s %s %s'.[@$tradingPartner_of_tradingPartner.knownname, @$tradingPartner_of_tradingPartner.idcode, @$tradingPartner_of_tradingPartner.exists]" /> -->
+											<do_if value="@$tradingPartner_of_tradingPartner.exists or (typeof $tradingPartner_of_tradingPartner == datatype.faction)">
+												<!-- this is a $tradingPartner's trade with another station -->
+												<run_actions ref="GetTradeDataActions" result="$tradeDataActions2">
+													<param name="Trader" value="$tradingPartner" />
+													<param name="TradeData" value="$tradeData2" />
+												</run_actions>
+												<do_if value="$tradeDataActions2.$isMiningForTrader">
+													<!-- $tradingPartner is mining for other station, so this is $Trader's sell -->
+													<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+														<param name="TAnalyticsData" value="$tAnalytics.$salesToByTrader" />
+														<param name="TradingPartner" value="$tradingPartner_of_tradingPartner" />
+														<param name="AnalyticsByWare" value="$tradeData2.$analyticsByWare" />
+														<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+													</run_actions>
+												</do_if>
+												<do_elseif value="$tradeDataActions2.$isTraderBuying">
+													<!-- $tradingPartner is buying from other station, so this is $Trader's buy -->
+													<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+														<param name="TAnalyticsData" value="$tAnalytics.$buysFromByTrader" />
+														<param name="TradingPartner" value="$tradingPartner_of_tradingPartner" />
+														<param name="AnalyticsByWare" value="$tradeData2.$analyticsByWare" />
+														<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+													</run_actions>
+												</do_elseif>
+												<do_elseif value="$tradeDataActions2.$isTraderRepairing">
+													<!-- $tradingPartner is repairing at other station, so this is $Trader's buy -->
+													<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+														<param name="TAnalyticsData" value="$tAnalytics.$buysFromByTrader" />
+														<param name="TradingPartner" value="$tradingPartner_of_tradingPartner" />
+														<param name="AnalyticsByWare" value="$tradeData2.$analyticsByWare" />
+														<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+													</run_actions>
+												</do_elseif>
+												<do_else>
+													<!-- $tradingPartner is selling to other station, so this is $Trader's sell -->
+													<run_actions ref="AddAnalyticsByWareToAnalyticsData">
+														<param name="TAnalyticsData" value="$tAnalytics.$salesToByTrader" />
+														<param name="TradingPartner" value="$tradingPartner_of_tradingPartner" />
+														<param name="AnalyticsByWare" value="$tradeData2.$analyticsByWare" />
+														<param name="Ship" value="if @$tradingPartner.isclass.ship then $tradingPartner else null" />
+													</run_actions>
+												</do_else>
+											</do_if>
+										</do_if>
+									</do_for_each>
+								</do_elseif>
+							</do_if>
+						</do_for_each>
+						<debug_text text="'$tAnalytics: ' + @$tAnalytics" chance="$DebugChance" />
+						<do_for_each name="$key" valuename="$value" in="$tAnalytics">
+							<debug_text text="'$key: ' + $key + ' $value: ' + $value" chance="$DebugChance" />
+						</do_for_each>
+						<debug_text text="'FINISH GetTAnalytics'" chance="$DebugChance" />
+						<debug_text text="'===================='" chance="$DebugChance" />
+						<return value="$tAnalytics" />
+					</actions>
+				</library>
+				<library name="GetTradeDataActions" purpose="run_actions">
+					<params>
+						<param name="Trader" />
+						<param name="TradeData" />
+					</params>
+					<actions>
+						<set_value name="$tradeDataActions" exact="table[
+							$isTraderBuying = false,
+							$isTraderRepairing = false,
+							$isMiningForTrader = false,
+							$isTraderSelling = false,
+						]" />
+						<do_if value="$TradeData.$traderA == $Trader">
+							<set_value name="$tradingPartner" exact="$TradeData.$traderB" />
+							<set_value name="$tradeDataActions.$isTraderBuying" exact="$TradeData.$isTraderABuying" />
+							<set_value name="$tradeDataActions.$isTraderRepairing" exact="$TradeData.$isTraderARepairing" />
+						</do_if>
+						<do_elseif value="$TradeData.$traderB == $Trader">
+							<set_value name="$tradingPartner" exact="$TradeData.$traderA" />
+							<set_value name="$tradeDataActions.$isTraderBuying" exact="not $TradeData.$isTraderABuying" />
+							<set_value name="$tradeDataActions.$isTraderRepairing" exact="false" />
+						</do_elseif>
+						<do_if value="$tradeDataActions.$isTraderBuying">
+							<do_if value="@$tradingPartner.isclass.ship and $tradingPartner.primarypurpose == purpose.mine">
+								<set_value name="$tradeDataActions.$isMiningForTrader" exact="$tradingPartner.toplevelcommander == $Trader" />
+							</do_if>
+						</do_if>
+						<set_value name="$tradeDataActions.$isTraderSelling" exact="
+							(not $tradeDataActions.$isTraderBuying) and
+							(not $tradeDataActions.$isMiningForTrader) and
+							(not $tradeDataActions.$isTraderRepairing)
+						" />
+						<debug_text text="'$tradeDataActions: ' + $tradeDataActions" chance="UserSettings.$debugChance2" />
+						<return value="$tradeDataActions" />
+					</actions>
+				</library>
+				<library name="AddAnalyticsByWareToAnalyticsData" purpose="run_actions">
+					<params>
+						<param name="TAnalyticsData" />
+						<param name="TradingPartner" />
+						<param name="AnalyticsByWare" />
+						<param name="Ship" />
+					</params>
+					<actions>
+						<!-- <debug_text text="'$tradingPartner %s %s %s'.[@$TradingPartner.knownname, @$TradingPartner.idcode, @$TradingPartner.exists]" /> -->
+						<do_if value="not @$TAnalyticsData.{$TradingPartner}">
+							<set_value name="$TAnalyticsData.{$TradingPartner}" exact="table[
+								$tradesByWare = table[],
+								$tradesByShip = table[],
+							]" />
+						</do_if>
+						<do_if value="@$AnalyticsByWare.keys.count">
+							<debug_text text="'    populating $tradesByWare'" chance="UserSettings.$debugChance2" />
+							<do_for_each name="$ware" valuename="$wareTradeData" in="$AnalyticsByWare">
+								<debug_text text="'        $ware: ' + $ware + ' $wareTradeData: ' + $wareTradeData" chance="UserSettings.$debugChance2" />
+								<do_if value="not @$TAnalyticsData.{$TradingPartner}.$tradesByWare.{$ware}">
+									<set_value name="$TAnalyticsData.{$TradingPartner}.$tradesByWare.{$ware}" exact="table[
+										$count = 0,
+										$amount = 0,
+										$price = 0,
+										$time = 0,
+									]" />
+								</do_if>
+								<run_actions ref="UpdateWareData">
+									<param name="WareData" value="$TAnalyticsData.{$TradingPartner}.$tradesByWare.{$ware}" />
+									<param name="From" value="$wareTradeData" />
+									<param name="IsSetToMax" value="true" />
+								</run_actions>
+								<set_value name="$TAnalyticsData.{$TradingPartner}.$tradesByWare.{$ware}.$ship" exact="$Ship" />
+								<do_if value="@$Ship.isoperational">
+									<do_if value="not @$TAnalyticsData.{$TradingPartner}.$tradesByShip.{$Ship}">
+										<set_value name="$TAnalyticsData.{$TradingPartner}.$tradesByShip.{$Ship}" exact="table[
+											$count = 0,
+											$amount = 0,
+											$price = 0,
+											$time = 0,
+										]" />
+									</do_if>
+									<run_actions ref="UpdateWareData">
+										<param name="WareData" value="$TAnalyticsData.{$TradingPartner}.$tradesByShip.{$Ship}" />
+										<param name="From" value="$wareTradeData" />
+										<param name="IsSetToMax" value="true" />
+									</run_actions>
+									<set_value name="$TAnalyticsData.{$TradingPartner}.$tradesByShip.{$Ship}.$ship" exact="$Ship" />
+								</do_if>
+							</do_for_each>
+						</do_if>
+					</actions>
+				</library>
+				<cue name="OnInteractMenu" namespace="this">
+					<conditions>
+						<event_cue_signalled cue="md.Interact_Menu_API.Get_Actions" />
+					</conditions>
+					<actions>
+						<do_for_each name="$property" valuename="$value" in="event.param" chance="UserSettings.$debugChance">
+							<debug_text text="$property + ': ' + $value" />
+						</do_for_each>
+						<set_value name="$isStation" exact="@event.param.$object.isclass.station and @event.param.$object.isplayerowned" />
+						<do_if value="not $isStation">
+							<do_for_each name="$selectedotherobject" in="event.param.$selectedotherobjects">
+								<set_value name="$isStation" exact="$selectedotherobject.isclass.station and @selectedotherobject.isplayerowned" />
+								<do_if value="$isStation">
+									<break />
+								</do_if>
+							</do_for_each>
+						</do_if>
+						<do_if value="$isStation">
+							<set_value name="$sections" exact="[]" />
+							<!-- <append_to_list name="$sections" exact="'interaction'" /> -->
+							<append_to_list name="$sections" exact="'actions_trade_analytics_station_profiles'" />
+							<do_for_each name="$section" in="$sections">
+								<set_value name="$StationBuySellProfiles" exact="player.entity.$StationBuySellProfiles" />
+								<set_value name="$profiles_sorted" exact="[]" />
+								<do_for_each name="$profileId" valuename="$settings" in="$StationBuySellProfiles">
+									<append_to_list name="$profiles_sorted" exact="$settings" />
+								</do_for_each>
+								<sort_list list="$profiles_sorted" sortbyvalue="loop.element.$list_order" sortdescending="false" />
+								<do_for_each name="$settings" in="$profiles_sorted">
+									<debug_text text="'$settings.$id: ' + $settings.$id" chance="UserSettings.$debugChance" />
+									<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param = "table[
+										$id = 'ktanalytics_SetStationProfile_' + $settings.$id + '_' + $section,
+										$section = $section,
+										$text = $settings.$callToAction,
+										$mouseover = $settings.$mouseOverText,
+										$callback = SetStationProfile,
+										$echo = $settings.$id
+									]" />
+								</do_for_each>
+							</do_for_each>
+						</do_if>
+						<do_elseif value="@event.param.$object.isclass.ship and @event.param.$object.isplayerowned">
+							<do_if value="UserSettings.$debugChance">
+								<do_if value="@UserSettings.$debugThisShip != event.param.$object">
+									<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param = "table[
+										$id = 'ktanalytics_Debug_ThisShip_Enable',
+										$section = 'actions_trade_analytics_station_profiles',
+										$text = 'debug this ship ',
+										$callback = Debug_ThisShip_Enable,
+									]" />
+								</do_if>
+							</do_if>
+							<do_if value="UserSettings.$debugChance or @UserSettings.$debugThisShip == event.param.$object">
+								<signal_cue_instantly cue="md.Interact_Menu_API.Add_Action" param = "table[
+									$id = 'ktanalytics_Debug_ThisShip_Disable',
+									$section = 'actions_trade_analytics_station_profiles',
+									$text = 'disable ship debugging',
+									$callback = Debug_ThisShip_Disable,
+								]" />
+							</do_if>
+						</do_elseif>
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="SetStationProfile">
+					<conditions>
+						<event_cue_signalled />
+					</conditions>
+					<actions>
+						<debug_text text="event.name" chance="UserSettings.$debugChance" />
+						<set_value name="$stations" exact="[event.param.$object]" />
+						<do_if value="@event.param.$selectedotherobjects.count gt 0">
+							<append_list_elements name="$stations" other="event.param.$selectedotherobjects" />
+						</do_if>
+						<debug_text text="'$stations.count: ' + $stations.count" chance="UserSettings.$debugChance" />
+						<debug_text text="'event.param.$echo: ' + event.param.$echo" chance="UserSettings.$debugChance" />
+						<set_value name="player.entity.$kTAnalytics_uiData" exact="table[$stations = $stations, $profileId = event.param.$echo]" />
+						<raise_lua_event name="'kTAnalytics_set_profile'" />
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="OnOptionsMenuClose" namespace="this">
+					<conditions>
+						<event_ui_triggered screen="'OptionsMenu'" control="'menu_close'" />
+					</conditions>
+					<actions>
+						<reset_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="OnModInstall">
+					<actions>
+						<debug_text text="'UserSettings.$debugChance: ' + UserSettings.$debugChance" />
+						<signal_cue_instantly cue="Init" />
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+				<cue name="OnModInstallComplete" checktime="player.age + 1s">
+					<actions>
+						<debug_text text="'UserSettings.$debugChance: ' + UserSettings.$debugChance" />
+						<cancel_cue cue="this" />
+					</actions>
+				</cue>
+			</cues>
+		</cue>
+		<cue name="DebugChat" namespace="this">
+			<conditions>
+				<event_ui_triggered screen="'Chat_Window_API'" control="'text_entered'" />
+				<check_any>
+					<check_value value="event.param3.$text == 'tanalytics debug data'" />
+					<check_value value="event.param3.$text == 'tanalytics debug spot check'" />
+					<check_value value="event.param3.$text == 'tanalytics debug cue check'" />
+				</check_any>
+			</conditions>
+			<actions>
+				<debug_text text="event.param3" />
+				<do_if value="event.param3.$text == 'tanalytics debug cue check'">
+					<debug_text text="RemoveInvalidKeys_Now + ' ' + RemoveInvalidKeys_Now.state" />
+				</do_if>
+				<do_if value="event.param3.$text == 'tanalytics debug spot check'">
+					<set_value name="$tradeDataId" exact="kTAnalytics.$tradesByTradeDataId.keys.random" />
+					<debug_text text="'$tradeDataId: ' + $tradeDataId" />
+					<do_for_each name="$key" valuename="$value" in="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}">
+						<debug_text text="$key + ': ' + $value + ' ' + @$value.knownname + ' ' + @$value.idcode" />
+					</do_for_each>
+					<run_actions ref="GetTradeDataId" result="$tradeDataId2">
+						<param name="Trader" value="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}.$traderB" />
+						<param name="TradingPartner" value="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}.$traderA" />
+						<param name="IsTraderBuying" value="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}.$isTraderABuying" />
+					</run_actions>
+					<debug_text text="'$tradeDataId2: ' + $tradeDataId2" />
+					<do_for_each name="$key" valuename="$value" in="kTAnalytics.$tradesByTradeDataId.{$tradeDataId2}">
+						<debug_text text="$key + ': ' + $value + ' ' + @$value.knownname + ' ' + @$value.idcode" />
+					</do_for_each>
+				</do_if>
+				<do_if value="event.param3.$text == 'tanalytics debug data'">
+					<set_value name="$tradeDataId" exact="'$bRHZ-710xsQPQ-288'" />
+					<set_value name="$tradeData" exact="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}" />
+					<do_for_each name="$key" valuename="$value" in="$tradeData">
+						<debug_text text="$key + ': ' + $value + ' ' + @$value.knownname + ' ' + @$value.idcode" />
+					</do_for_each>
+					<set_value name="$tradeDataId" exact="'$bQPQ-288xsRHZ-710'" />
+					<set_value name="$tradeData" exact="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}" />
+					<do_for_each name="$key" valuename="$value" in="$tradeData">
+						<debug_text text="$key + ': ' + $value + ' ' + @$value.knownname + ' ' + @$value.idcode" />
+					</do_for_each>
+					<set_value name="$tradeDataId" exact="'$bVES-234xsMIN-542'" />
+					<set_value name="$tradeData" exact="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}" />
+					<do_for_each name="$key" valuename="$value" in="$tradeData">
+						<debug_text text="$key + ': ' + $value + ' ' + @$value.knownname + ' ' + @$value.idcode" />
+					</do_for_each>
+					<set_value name="$tradeDataId" exact="'$bMIN-542xsVES-234'" />
+					<set_value name="$tradeData" exact="kTAnalytics.$tradesByTradeDataId.{$tradeDataId}" />
+					<do_for_each name="$key" valuename="$value" in="$tradeData">
+						<debug_text text="$key + ': ' + $value + ' ' + @$value.knownname + ' ' + @$value.idcode" />
+					</do_for_each>
+				</do_if>
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="Debug_ThisShip_Enable">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<set_value name="UserSettings.$debugThisShip" exact="event.param.$object" />
+				<debug_text text="'UserSettings.$debugThisShip.idcode: ' + @UserSettings.$debugThisShip.idcode" />
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="Debug_ThisShip_Disable">
+			<conditions>
+				<event_cue_signalled />
+			</conditions>
+			<actions>
+				<set_value name="UserSettings.$debugThisShip" exact="null" />
+				<debug_text text="'UserSettings.$debugThisShip.idcode: ' + @UserSettings.$debugThisShip.idcode" />
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="User_DebugEnableDisable" namespace="this">
+			<conditions>
+				<event_ui_triggered screen="'Chat_Window_API'" control="'text_entered'" />
+				<check_any>
+					<check_value value="event.param3.$text == 'tanalytics debug enable'" />
+					<check_value value="event.param3.$text == 'tanalytics debug disable'" />
+				</check_any>
+			</conditions>
+			<actions>
+				<debug_text text="event.param3" />
+				<do_if value="event.param3.$text == 'tanalytics debug enable'">
+					<set_value name="UserSettings.$debugChance" exact="100" />
+				</do_if>
+				<do_else>
+					<set_value name="UserSettings.$debugChance" exact="0" />
+				</do_else>
+				<debug_text text="'UserSettings.$debugChance: ' + UserSettings.$debugChance" />
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+		<cue name="User_DataClear" namespace="this">
+			<conditions>
+				<event_ui_triggered screen="'Chat_Window_API'" control="'text_entered'" />
+				<check_any>
+					<check_value value="event.param3.$text == 'tanalytics clear data'" />
+				</check_any>
+			</conditions>
+			<actions>
+				<set_value name="kTAnalytics.$tradesByTraders" exact="table[]" />
+				<raise_lua_event name="'Chat_Window_API.Print'" param="'data cleared'" />
+				<reset_cue cue="this" />
+			</actions>
+		</cue>
+		<library name="DebugData" purpose="run_actions">
+			<params>
+				<param name="Data" />
+				<param name="Depth" default="1" />
+				<param name="Prefix" default="''" />
+			</params>
+			<actions>
+				<set_value name="$indent" exact="''" />
+				<do_all counter="$i" exact="$Depth - 1">
+					<set_value name="$indent" exact="$indent + '    '" />
+				</do_all>
+				<do_if value="@$Prefix.knownname">
+					<set_value name="$Prefix" exact="$Prefix + ' (' + $Prefix.knownname + ')'" />
+				</do_if>
+				<do_elseif value="@$Prefix.name">
+					<set_value name="$Prefix" exact="$Prefix + ' (' + $Prefix.name + ')'" />
+				</do_elseif>
+				<do_if value="@$Data.knownname">
+					<set_value name="$Data" exact="$Data + ' (' + $Data.knownname + ')'" />
+				</do_if>
+				<do_elseif value="@$Data.name">
+					<set_value name="$Data" exact="$Data + ' (' + $Data.name + ')'" />
+				</do_elseif>
+				<debug_text text="$indent + $Prefix + ': ' + $Data" />
+				<do_if value="(typeof $Data == datatype.list) or (typeof $Data == datatype.group)">
+					<do_for_each name="$item" in="$Data" counter="$i">
+						<run_actions ref="DebugData">
+							<param name="Data" value="$item" />
+							<param name="Depth" value="$Depth + 1" />
+							<param name="Prefix" value="$i" />
+						</run_actions>
+					</do_for_each>
+				</do_if>
+				<do_elseif value="typeof $Data == datatype.table">
+					<do_for_each name="$key" valuename="$value" in="$Data">
+						<run_actions ref="DebugData">
+							<param name="Data" value="$value" />
+							<param name="Depth" value="$Depth + 1" />
+							<param name="Prefix" value="$key" />
+						</run_actions>
+					</do_for_each>
+				</do_elseif>
+			</actions>
+		</library>
+	</cues>
+</mdscript>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+	<!-- "kuertee fft" = "kfft" = "11 6 6 20" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="116620" voice="no">
+		<!-- config -->
+		<t id="1">kuertee: Friendly fire tweaks</t>
+		<t id="2">Debug log</t>
+		<t id="3">Penalise friendly fire on these conditions:</t>
+		<t id="4">Victim is targeted</t>
+		<t id="5">Off is on any victim</t>
+		<t id="6">Victim's shields are 25% or less</t>
+		<t id="7">Off is at any shield level</t>
+		<t id="8">Damage is from the main guns</t>
+		<t id="9">Off is from any weapon</t>
+		<t id="10">Debug log \(verbose\)</t>
+		<t id="11">Debug log \(unignored response only\)</t>
+	</page>
+</language>

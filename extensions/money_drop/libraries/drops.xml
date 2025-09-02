@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<diff>
+  <add sel="/droplists/droplist[@id='ship_small_military']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="5000" max="50000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_small_pirate']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="5000" max="25000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_small_civilian']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="1000" max="15000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_small_xenon']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="5000" max="50000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_small_khaak']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="5000" max="25000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_large_khaak']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="50000" max="100000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_medium_civilian']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="5000" max="30000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_medium_xenon']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="10000" max="50000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_large_civilian']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="10000" max="100000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_large_military']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="50000" max="200000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_large_xenon']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="50000" max="200000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='ship_large_xenon_tf']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="50000" max="200000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='masstraffic_civilian']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="100" max="1000" />
+      </collectable>
+    </drop>
+  </add>
+  <add sel="/droplists/droplist[@id='masstraffic_xenon']" pos="prepend">
+    <drop macro="sm_gen_credits_macro" min="1" max="1" chance="50">
+      <collectable>
+        <money min="100" max="1000" />
+      </collectable>
+    </drop>
+  </add>
+</diff>

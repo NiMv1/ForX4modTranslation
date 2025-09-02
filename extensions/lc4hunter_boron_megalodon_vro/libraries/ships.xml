@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff> 
+	<add sel="//ships">
+		<ship id="boron_battleship_xl_lc4" group="bor_battleship_xl_lc4">
+			<category tags="[military, battleship, mission]" faction="boron" size="ship_xl"/>
+					<pilot>
+					  <select faction="boron" tags="fighterpilot" />
+					</pilot>
+				<drop ref="ship_large_military"/>
+			<people ref="boron_military_crew" />
+		</ship>
+	</add>
+</diff>

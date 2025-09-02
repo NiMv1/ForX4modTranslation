@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<diff>
+<!--
+	<params>
+-->
+	<!-- <add sel="//params">
+		<param name="kFFT_reasons" default="''" />
+	</add> -->
+<!-- add. purpose: check for fft conditions.
+<handler name="AttackHandler">
+	<conditions>
+		<event_object_attacked object="this.defensible"/>
+			<check_any comment="fight or flight">
+			<check_all comment="fight">
+				<check_any>
+					<check_all>
+						<check_value value="event.object.signal.{'attacked'}.response.id == 'auto'"/>
+						<check_value value="not event.object.iscapitalship" comment="if this is a capship, let the Defence Computer handle it" />
+						<check_any>
+							<check_value value="(@event.object.order.id != 'Attack') and ((this.trueowner == faction.xenon) or (this.trueowner == faction.khaak))"/>
+							<check_value value="((event.param.hull + event.param.shield) / [event.object.dps.all, 1hp].max) lt ((event.object.hull + event.object.shield) / [event.param.dps.all, 1hp].max)"/>
+						</check_any>
+-->
+	<add sel="//handler[@name=&quot;AttackHandler&quot;]//check_all[@comment=&quot;fight&quot;]/check_any/check_all">
+		<set_value name="$kFFT_debugChance" exact="@$debugchance" />
+		<set_value name="$kFFT_debugChance2" exact="$kFFT_debugChance" />
+		<remove_value name="$kFFT_reason" />
+		<check_any comment="kFFT init: keep all occurences of 'KFFT init' similar">
+			<check_all>
+				<check_value value="event.name == 'event_object_attacked'" />
+				<set_value name="$kFFT_attacker" exact="event.param" />
+				<set_value name="$kFFT_victim" exact="event.object" />
+				<set_value name="$kFFT_attackId" exact="@$kFFT_attacker.idcode + '-' + @$kFFT_victim.idcode + ': ' + @$kFFT_attacker.class + '-' + @$kFFT_attacker.owner.id + ' vs ' + @$kFFT_victim.class + '-' + @$kFFT_victim.owner.id" />
+				<check_any comment="set debug chances">
+					<check_all>
+						<check_any>
+							<check_value value="$kFFT_attacker.isplayerowned" />
+							<check_value value="$kFFT_victim.isplayerowned" />
+						</check_any>
+						<set_value name="$kFFT_debugChance" exact="@global.$kFFT.$debugChance" />
+						<set_value name="$kFFT_debugChance2" exact="@global.$kFFT.$debugChance_verbose" />
+					</check_all>
+					<check_all>
+						<set_value name="$kFFT_debugChance" exact="[@global.$kFFT.$debugChance_verbose, @$debugchance].max" />
+						<set_value name="$kFFT_debugChance2" exact="$kFFT_debugChance" />
+					</check_all>
+				</check_any>
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': ' + event.name + '. if WILL RESPOND TO ATTACK is not listed after this line, then the attack is ignored.'" debugchance="$kFFT_debugChance2" />
+			</check_all>
+			<check_value value="event.name != 'event_object_attacked'" />
+		</check_any>
+		<check_any comment="kFFT tests: keep all occurences of 'KFFT tests' the same">
+			<check_all>
+				<set_value name="$kFFT_reason" exact="'not an attack event'" />
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+				<check_value value="event.name != 'event_object_attacked'" />
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+			</check_all>
+			<check_all>
+				<set_value name="$kFFT_reason" exact="'isscenario'" />
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+				<check_value value="@player.allmodules.{player.module}.isscenario" />
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+			</check_all>
+			<check_all comment="no player-owned ships/stations are involved in this attack">
+				<set_value name="$kFFT_reason" exact="'neither are player-owned'" />
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+				<check_value value="not @$kFFT_victim.isplayerowned" />
+				<check_value value="not @$kFFT_attacker.isplayerowned" />
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+			</check_all>
+			<check_all comment="enemies">
+				<set_value name="$kFFT_reason" exact="'are enemies'" />
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+				<check_any>
+					<check_value value="@$kFFT_victim.mayattack.{@$kFFT_attacker}" />
+					<check_value value="@$kFFT_attacker.mayattack.{@$kFFT_victim}" />
+				</check_any>
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+			</check_all>
+			<check_all comment="test for global.$kFFT.$is_targeted, $is_lowShields, $is_mainGuns. note that $is_mainGuns is a test only on player-attacks on @$kFFT_victim.">
+				<set_value name="$kFFT_reason" exact="'kFFT'" />
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : kFFT'" debugchance="$kFFT_debugChance2" />
+				<check_any comment="test for $is_targeted">
+					<check_all>
+						<set_value name="$kFFT_reason" exact="'$is_targeted disabled'" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+						<check_value value="not global.$kFFT.$is_targeted" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed  : ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+					</check_all>
+					<check_all comment="option is set, check if @$kFFT_attacker is actually attacking @$kFFT_victim">
+						<set_value name="$kFFT_reason" exact="'$is_targeted enabled'" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+						<check_value value="global.$kFFT.$is_targeted" />
+						<check_any>
+							<check_all comment="attacker is player.occupiedship">
+								<set_value name="$kFFT_reason" exact="'targeted by player'" />
+								<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+								<check_value value="@$kFFT_attacker == player.occupiedship" />
+								<check_any>
+									<check_value value="player.target == @$kFFT_victim" />
+									<check_all>
+										<check_value value="@$kFFT_victim.defensible" />
+										<check_value value="player.target == @$kFFT_victim.defensible" />
+									</check_all>
+								</check_any>
+							</check_all>
+							<check_all comment="attacker is player-owned npc ship">
+								<set_value name="$kFFT_reason" exact="'targeted by ' + @$kFFT_attacker.idcode + ''" />
+								<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+								<check_value value="@$kFFT_attacker != player.occupiedship" />
+								<check_any>
+									<check_value value="@$kFFT_attacker.order.$primarytarget == @$kFFT_victim" />
+									<check_value value="@$kFFT_attacker.order.$secondarytargets.indexof.{@$kFFT_victim}" />
+									<check_all>
+										<check_value value="@$kFFT_victim.defensible" />
+										<check_any>
+											<check_value value="@$kFFT_attacker.order.$primarytarget == @$kFFT_victim.defensible" />
+											<check_value value="@$kFFT_attacker.order.$secondarytargets.indexof.{@$kFFT_victim.defensible}" />
+										</check_any>
+									</check_all>
+								</check_any>
+							</check_all>
+						</check_any>
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+					</check_all>
+				</check_any>
+				<check_any comment="test for $is_lowShields">
+					<check_all>
+						<set_value name="$kFFT_reason" exact="'$is_lowShields disabled'" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+						<check_value value="not global.$kFFT.$is_lowShields" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+					</check_all>
+					<check_all comment="option is set, check if @$kFFT_victim has low shields">
+						<set_value name="$kFFT_reason" exact="'$is_lowShields enabled'" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+						<check_value value="global.$kFFT.$is_lowShields" />
+						<check_any>
+							<check_all comment="test shieldpercentage on ships only. i.e. station's shieldpercentage is always 0">
+								<set_value name="$kFFT_reason" exact="@$kFFT_victim.idcode + ' has low shields.'" debugchance="$kFFT_debugChance" />
+								<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+								<check_value value="@$kFFT_victim.isclass.ship" />
+								<check_value value="@$kFFT_victim.shieldpercentage lt 25" />
+							</check_all>
+							<check_all>
+								<set_value name="$kFFT_reason" exact="@$kFFT_victim.idcode + ' not a ship. has low hull.'" debugchance="$kFFT_debugChance" />
+								<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+								<check_value value="@$kFFT_victim.shieldpercentage lt 25" />
+								<check_value value="@$kFFT_victim.hullpercentage lt 25" />
+							</check_all>
+						</check_any>
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+					</check_all>
+				</check_any>
+				<check_any comment="test for $is_mainGuns">
+					<check_all>
+						<set_value name="$kFFT_reason" exact="'$is_mainGuns disabled'" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+						<check_value value="not global.$kFFT.$is_mainGuns" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+					</check_all>
+					<check_all>
+						<set_value name="$kFFT_reason" exact="@$kFFT_attacker.idcode + ' is npc. $is_mainGuns only tests against players'" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+						<check_value value="@$kFFT_attacker != player.occupiedship" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+					</check_all>
+					<check_all comment="tests is against variables set at md.Notifications.PlayerAttacks">
+						<set_value name="$kFFT_reason" exact="'player hit ' + @$kFFT_victim.idcode + ' with main guns'" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': test  : ' + $kFFT_reason" debugchance="$kFFT_debugChance2" />
+						<check_value value="global.$kFFT.$is_mainGuns" />
+						<check_value value="@$kFFT_attacker == player.occupiedship" />
+						<check_value value="global.$kFFT.$playerAttackedObject == @$kFFT_victim" />
+						<check_value value="global.$kFFT.$playerAttackedObjectWithMainGuns" />
+						<check_value value="player.age - global.$kFFT.$playerAttackedObjectTime lt 5s" />
+						<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: ' + $kFFT_reason" debugchance="$kFFT_debugChance" />
+					</check_all>
+				</check_any>
+				<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': passed: kFFT'" debugchance="$kFFT_debugChance" />
+			</check_all>
+		</check_any>
+	</add>
+	<add pos="prepend" sel="//library/handler[@name=&quot;AttackHandler&quot;]/actions">
+		<do_if value="event.name == 'event_object_attacked' and @$kFFT_reason and @$kFFT_reason != ''">
+			<debug_text text="'kuertee_fft ' + $kFFT_attackId + ': WILL RESPOND TO ATTACK: attacks by ' + @$kFFT_attacker.idcode + ' will NOT be ignored by ' + @$kFFT_victim.idcode + ' $kFFT_reason: ' + @$kFFT_reason" chance="[@$kFFT_debugChance, @$kFFT_debugChance2, @global.$kFFT.$debugChance_resultOnly].max" />
+		</do_if>
+	</add>
+</diff>

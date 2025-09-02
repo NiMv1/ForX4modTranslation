@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<diff> 
+	<add sel="/icons">
+
+	<icon name="Eagle_Ferris" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\eagle_ferris.dds" height="256" width="256"></icon>
+	<icon name="Felon" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\felon.dds" height="256" width="256"></icon>
+	<icon name="Felon_ALT" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\felon_alt.dds" height="256" width="256"></icon>
+	<icon name="Flanker" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\flanker.dds" height="256" width="256"></icon>
+	<icon name="Flanker_Grey" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\flanker_grey.dds" height="256" width="256"></icon>
+	<icon name="Fullback" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\fullback.dds" height="256" width="256"></icon>
+	<icon name="Harrier_Hawker" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\harrier_hawker.dds" height="256" width="256"></icon>
+	<icon name="IDF_Desert" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\idf_desert.dds" height="256" width="256"></icon>
+	<icon name="IDF_Skyhawk" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\idf_skyhawk.dds" height="256" width="256"></icon>
+	<icon name="JAP_Naval" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\jap_naval.dds" height="256" width="256"></icon>
+	<icon name="JAP_Tiger" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\jap_tiger.dds" height="256" width="256"></icon>
+	<icon name="SK_Pixel" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\sk_pixel.dds" height="256" width="256"></icon>
+	<icon name="checkmate_21" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\checkmate_21.dds" height="256" width="256"></icon>
+	<icon name="checkmate_23" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\checkmate_23.dds" height="256" width="256"></icon>
+	<icon name="checkmate_23_alt" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\checkmate_23_alt.dds" height="256" width="256"></icon>	
+	<icon name="checkmate_pro" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\checkmate_pro.dds" height="256" width="256"></icon>
+	<icon name="checkmate_pro_max" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\checkmate_pro_max.dds" height="256" width="256"></icon>
+	<icon name="m346_ami" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\m346_ami.dds" height="256" width="256"></icon>
+	<icon name="tomcat_iriaf" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\tomcat_iriaf.dds" height="256" width="256"></icon>
+	<icon name="viper_aggressor" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\viper_aggressor.dds" height="256" width="256"></icon>
+	<icon name="almolivra" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\almolivra.dds" height="256" width="256"></icon>
+	<icon name="asterhite" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\asterhite.dds" height="256" width="256"></icon>
+	<icon name="blotdon" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\blotdon.dds" height="256" width="256"></icon>
+	<icon name="icedragon" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\icedragon.dds" height="256" width="256"></icon>
+	<icon name="lightromentar" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\lightromentar.dds" height="256" width="256"></icon>
+	<icon name="moonsite" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\moonsite.dds" height="256" width="256"></icon>
+	<icon name="starrynight" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\starrynight.dds" height="256" width="256"></icon>
+	<icon name="tomcat_aunwha" texture="extensions\gloryforspacecamo\assets\fx\gui\textures\paintmods\tomcat_aunwha.dds" height="256" width="256"></icon>
+	</add>
+</diff>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- german -->
+<language>
+	<!-- "kuertee trade analytics" = "kta" = "11 20 1" = "11201" in https://www.boxentriq.com/code-breaking/letters-to-numbers -->
+	<page id="11201" voice="no">
+		<t id="1">kuertee: UI: Handelsanalysen</t>
+		<t id="2">Debug-Protokoll</t>
+		<t id="3">Daten von zerstörten Händlern entfernen</t>
+		<t id="7">Warenprofil: %s.</t>
+		<t id="8">Stationsvoreinstellungen</t>
+		<t id="9">Stellen Sie das Verhalten dieser Station ein, indem Sie auf eine der Voreinstellungen klicken. Eine Voreinstellung legt die Preise und Handelsbeschränkungen dieser Station für Produktion und Handel fest.</t>
+		<t id="10">Fabrik</t>
+		<t id="11">Kaufpreise: %s. Verkaufspreise: %s. Fabriken verkaufen an unsere Distributionszentren, Versorgungslager und Fabrikverkaufsstellen.</t>
+		<t id="12">Kaufen: %s, %s. Verkauf: %s, %s.</t>
+		<t id="13">Fabrikvoreinstellung einstellen</t>
+		<t id="20">Vertriebszentrum</t>
+		<t id="21">Einkaufspreise: %s. Verkaufspreise: %s. Distributionszentren kaufen von unseren Fabriken. Vertriebszentren verkaufen an unsere Versorgungslager, an unsere Fabrikverkaufsstellen, an unsere Handelsstationen, an unsere Bahnhofsprojekte und an unsere Bauprojekte.</t>
+		<t id="23">Voreinstellung Verteilzentrum setzen</t>
+		<t id="30">Lager für Lieferungen</t>
+		<t id="31">Einkaufspreise: %s. Verkaufspreise: %s. Versorgungslager kaufen von unseren Fabriken und von unseren Vertriebszentren. Versorgungslager verkaufen an unsere Bahnhofsprojekte und an unsere Bauprojekte.</t>
+		<t id="33">Voreinstellung Versorgungslager setzen</t>
+		<t id="40">Fabrikverkauf</t>
+		<t id="41">Einkaufspreise: %s. Verkaufspreise: %s. Fabrikverkaufsstellen kaufen von unseren Fabriken und von unseren Vertriebszentren. Fabrikverkaufsstellen verkaufen an alle Fraktionen, an unsere Stationsprojekte und an unsere Bauprojekte.</t>
+		<t id="43">Voreinstellung Fabrikverkauf einstellen</t>
+		<t id="50">Handelsplatz</t>
+		<t id="51">Einkaufspreise: %s. Verkaufspreise: %s. Handelsstationen kaufen von allen und verkaufen an alle.</t>
+		<t id="53">Voreinstellung für Handelsstationen festlegen</t>
+		<t id="54">deaktiviert</t>
+		<t id="55">automatisch</t>
+		<t id="56">unbeschränkt</t>
+		<t id="57">eingeschränkt</t>
+		<!-- ui -->
+		<t id="101">Handelsanalysen</t>
+		<!-- categories -->
+		<t id="1001">Bergbau</t>
+		<t id="1002">Käufe</t>
+		<t id="1003">Verkäufe</t>
+		<t id="1004">Von anderen Fraktionen</t>
+		<t id="1005">Von eigener Fraktion</t>
+		<t id="1006">Von allen Fraktionen</t>
+		<t id="1007">An andere Fraktionen</t>
+		<t id="1008">An eigene Fraktion</t>
+		<t id="1009">An alle Fraktionen</t>
+		<t id="1010">Filter:</t>
+		<t id="1011">Käufe &#38; Verkäufe</t>
+		<t id="1012">Käufe, Verkäufe &#38; Bergbau</t>
+		<t id="1013">An/Von andere Fraktionen</t>
+		<t id="1014">An/Von eigene Fraktion</t>
+		<t id="1015">An/Von alle Fraktionen</t>
+		<t id="1016">Von %s(Fraktion)</t>
+		<t id="1017">An %s(Fraktion)</t>
+		<t id="1018">An/Von %s(Fraktion)</t>
+		<t id="1019">Reparaturen</t>
+		<t id="1020">Tätigkeiten</t>
+		<t id="1021">Aktivitäten: %s(actions shown)</t>
+		<!-- modes -->
+		<t id="2001">Nach Gesamtwert</t>
+		<t id="2002">Alle Waren</t>
+		<t id="2003">Nach Schiff</t>
+		<t id="2004">Handel mit:</t>
+		<t id="2005">Nach %s(Warenname)</t>
+		<!-- columns -->
+		<t id="3001">Handelspartner</t>
+		<t id="3002">Distanz zu %s(Sektorname)</t>
+		<t id="3003">Handel</t>
+		<t id="3004">Gesamt Stk.</t>
+		<t id="3005">Gesamt Cr.</t>
+		<t id="3006">&#216; Stk.</t>
+		<t id="3007">&#216; Cr.</t>
+		<t id="3008">Produkt</t>
+		<t id="3009">Sektor</t>
+		<t id="3010">Schiff</t>
+		<t id="3011">Summe</t>
+		<!-- by time segment -->
+		<t id="4001">Nicht nach Zeit gruppiert</t>
+		<t id="4002">Gruppiert nach Stunde</t>
+		<t id="4003">Bis vor einer Stunde</t>
+		<t id="4004">Von $FROM$:00 bis $TO$:59 Stunden</t>
+		<t id="4005">Stundensummen</t>
+		<!-- misc -->
+		<t id="10001">%s(Torentfernung) \(%s(Sektor)\)</t>
+		<t id="10002">existiert nicht mehr</t>
+		<t id="10003">Lade Handelsanalysen ...</t>
+		<t id="10004">Keine Transaktionen in dieser Kategorie.</t>
+		<t id="10005">Keine Analysen für diesen Händler vorhanden.</t>
+		<t id="10006">(ship trader with no station assignment)Freier Händler</t>
+		<t id="10007">(Keine Daten aufgezeichnet)unbekannt</t>
+		<t id="10008">%s(Waren- oder Schiffsname) \(Stk: %s(Anzahl)\)</t>
+		<!-- misc unitraders advanced renaming shortcuts -->
+		<t id="20001">(not used)</t>
+		<t id="20002">(not used)</t>
+		<t id="20003">(not used)</t>
+		<t id="20004">(not used)</t>
+		<t id="20005">(not used)</t>
+		<t id="20006">(not used)</t>
+		<t id="20101">(profile name - full)$kTAP</t>
+		<t id="20102">(profile name - acronym)$kTAp</t>
+		<t id="20103">F</t>
+		<t id="20104">VZ</t>
+		<t id="20105">LfL</t>
+		<t id="20106">FV</t>
+		<t id="20107">HP</t>
+		<!-- mschf's Finance Hub: Transfers -->
+		<t id="30001">Führen Sie alle Transfers in einem Logbucheintrag auf{1001,120}(colon)</t>
+		<t id="30140">Spieler zu $COUNT$ x Stationen{1001,120}(colon) $AMOUNT$</t>
+		<t id="30190">Spieler bis $COUNT$ x Gebäude{1001,120}(colon) $AMOUNT$</t>
+		<t id="301010">$COUNT$ x Bahnhöfe zu Spieler{1001,120}(colon) $AMOUNT$</t>
+		<t id="301020">$COUNT$ x Stationen zu $COUNT$ x Gebäude{1001,120}(colon) $AMOUNT$</t>
+		<t id="301030">$COUNT$ x Bauen bis Spieler{1001,120}(colon) $AMOUNT$</t>
+		<t id="301040">$COUNT$ x Bauen bis $COUNT$ x Stationen{1001,120}(colon) $AMOUNT$</t>
+	</page>
+</language>

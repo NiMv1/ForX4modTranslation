@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='utf-8'?>
+<diff>
+  <replace sel="/aiscript/init/set_value[@name='$scantime']/@exact">1s</replace>
+  <add sel="/aiscript/init/create_group[@groupname='$miningtargets']" pos="before">
+    <create_group groupname="$mines"/>
+  </add>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='$turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones) or ($turretmodes.indexof.{weaponmode.mining} and this.ship == player.occupiedship) or ($turretmodes.indexof.{weaponmode.autoassist} and $autoassist_active?) or (($defencedronemode == dronemode.autoassist) and $dronetargets.count) or @$primarytarget.canbeattacked or @$targets.count']/@value">$turretmodes.indexof.{weaponmode.prefermissiles} or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones) or ($turretmodes.indexof.{weaponmode.mining} and this.ship == player.occupiedship) or ($turretmodes.indexof.{weaponmode.autoassist} and $autoassist_active?) or (($defencedronemode == dronemode.autoassist) and $dronetargets.count) or @$primarytarget.canbeattacked or @$targets.count</replace>
+  <replace sel="/aiscript/attention[@min='visible']/actions/set_value[@name='$scantime']/@exact">1s</replace>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='@$allowothertargets or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones)']/@value">@$allowothertargets or $turretmodes.indexof.{weaponmode.prefermissiles} or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones)</replace>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='@$allowothertargets or $turretmodes.indexof.{weaponmode.prefermissiles} or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones)']/clear_table" pos="before">
+    <do_if value="$mines?">
+      <clear_group group="$mines"/>
+    </do_if>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='@$allowothertargets or $turretmodes.indexof.{weaponmode.prefermissiles} or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones)']/do_if[@value='$defencedronemode == dronemode.attackenemies']" pos="before">
+    <find_object groupname="$othersmissiles" space="this.zone" class="class.missile" multiple="true" comment="ChillTurrets: intercept missiles not targetting this ship">
+      <match_distance object="this.assignedcontrolled" max="this.assignedcontrolled.currentradarrange"/>
+      <match owner="this.ship.owner" negate="true"/>
+    </find_object>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='@$allowothertargets or $turretmodes.indexof.{weaponmode.prefermissiles} or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones)']/do_if[@value='$defencedronemode == dronemode.attackenemies']" pos="before">
+    <do_if value="$othersmissiles.count">
+      <do_for_each name="$missile" in="$othersmissiles">
+        <do_if value="not $incomingmissiles.indexof.{$missile}">
+          <add_to_group groupname="$incomingmissiles" object="$missile"/>
+          <debug_text text="'ChillTurrets: saw missile inflight targetting %s. Launcher is %s.'.[$missile.target.knownname,$missile.launcher.knownname]" chance="0"/>
+        </do_if>
+      </do_for_each>
+    </do_if>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='@$allowothertargets or $turretmodes.indexof.{weaponmode.prefermissiles} or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones)']/do_if[@value='$defencedronemode == dronemode.attackenemies']" pos="before">
+    <find_object space="this.zone" groupname="$mines" multiple="true" class="class.mine" comment="ChillTurrets mine defense">
+      <match_distance object="this.assignedcontrolled" max="this.assignedcontrolled.maxcombatrange.{weaponmode.prefermissiles}.all"/>
+      <match owner="this.ship.owner" negate="true"/>
+    </find_object>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='@$allowothertargets or $turretmodes.indexof.{weaponmode.prefermissiles} or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones)']/do_if[@value='$defencedronemode == dronemode.attackenemies']" pos="before">
+    <do_all exact="$mines.count" counter="$i" reverse="true">
+      <do_if value="($mines.{$i}.isfriendfoe and not $mines.{$i}.foelist.indexof.{this.ship.owner})">
+        <remove_from_group group="$mines" object="$mines.{$i}"/>
+      </do_if>
+      <remove_value name="$mine"/>
+    </do_all>
+  </add>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship))']/@value">this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)</replace>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/comment()[2]">
+    <!-- ChillTurrets: set all large turrets to attack capitals always. L Turrets -> Engines -> Hull -> Fighters -> Any -->
+  </replace>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']/set_value/@name">$LTurrets</replace>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']/set_value/@exact">[]</replace>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']/do_if">
+    <set_value name="$LEngines" exact="[]"/>
+  </replace>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']/debug_text">
+    <set_value name="$ourturretlist" exact="[]"/>
+  </replace>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']/set_turret_targets">
+    <set_value name="$LOSTurrets" exact="[]"/>
+  </replace>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <set_value name="$LOSEngines" exact="[]"/>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <set_value name="$launcherpresent" exact="false"/>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <sort_group group="$targets_capital" sortbydistanceto="this.ship" sortdescending="false"/>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <set_value name="$locpreferred" exact="$targets_capital.{1}"/>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <debug_text text="'ChillTurrets: Targeting Info:\nRanges: distance to component: %s maxcombatrange: %s\n Loc Preferred: %s Hull Target: %s'.[$locpreferred.parent.distanceto.{this.assignedcontrolled},this.assignedcontrolled.maxcombatrange.{weaponmode.prefercapital}.all,$locpreferred.name,$locpreferred.parent.knownname]" chance="0"/>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <do_all exact="this.ship.turrets.operational.list.count" counter="$i">
+      <do_if value="this.ship.turrets.operational.list.{$i}.mode == weaponmode.prefercapital">
+        <append_to_list name="$ourturretlist" exact="this.ship.turrets.operational.list.{$i}"/>
+        <do_for_each name="$missturret" in="$ourturretlist">
+          <do_if value="$missturret.ammo.capacity">
+            <set_value name="$launcherpresent" exact="true"/>
+          </do_if>
+        </do_for_each>
+      </do_if>
+    </do_all>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <debug_text text="'ChillTurrets: Our prefercapital turrets count: %s'.[$ourturretlist.count]" chance="0"/>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <do_if value="$locpreferred.parent.distanceto.{this.assignedcontrolled} le this.assignedcontrolled.maxcombatrange.{weaponmode.prefercapital}.all">
+      <find_object_component name="$LTurrets" object="$locpreferred.parent" class="class.turret" checkoperational="true" indestructible="false" invulnerable="false" integrated="false" multiple="true" tag="tag.large"/>
+      <find_object_component name="$LTurrets" object="$locpreferred.parent" class="class.turret" checkoperational="true" indestructible="false" invulnerable="false" integrated="false" multiple="true" tag="tag.extralarge" append="true"/>
+      <find_object_component name="$LEngines" object="$locpreferred.parent" class="class.engine" checkoperational="true" indestructible="false" invulnerable="false" integrated="false" multiple="true"/>
+      <do_for_each name="$ourturret" in="$ourturretlist">
+        <do_for_each name="$LOSTurret" in="$LTurrets">
+          <check_line_of_sight object="$ourturret" target="$LOSTurret" name="$isLOS"/>
+          <do_if value="$isLOS and not $LOSTurrets.indexof.{$LOSTurret}">
+            <append_to_list name="$LOSTurrets" exact="$LOSTurret"/>
+          </do_if>
+        </do_for_each>
+        <do_for_each name="$LOSEngine" in="$LEngines">
+          <check_line_of_sight object="$ourturret" target="$LOSEngine" name="$isLOS"/>
+          <do_if value="$isLOS and not $LOSEngines.indexof.{$LOSEngine}">
+            <append_to_list name="$LOSEngines" exact="$LOSEngine"/>
+          </do_if>
+        </do_for_each>
+      </do_for_each>
+      <debug_text text="'ChillTurrets: %s: Enemy turrets total: %s LOS Turrets: %s Engines total: %s Engines LOS: %s'.[this.assignedcontrolled.knownname,$LTurrets.count,$LOSTurrets.count,$LEngines.count,$LOSEngines.count]" chance="0"/>
+      <do_if value="$LOSTurrets.count">
+        <sort_list list="$LOSTurrets" sortbyvalue="this.ship.distanceto.{loop.element}" sortdescending="false"/>
+        <set_turret_targets object="this.ship" target="$LOSTurrets" weaponmode="weaponmode.prefercapital" preferredtarget="$LOSTurrets.{1}"/>
+      </do_if>
+      <do_elseif value="$LOSEngines.count">
+        <debug_text text="'ChillTurrets: Primarying capital ship engines. %s with %s engines'.[@$locpreferred.parent.knownname,$LOSEngines.count]" chance="0"/>
+        <set_turret_targets object="this.ship" target="$targets_capital.list" weaponmode="weaponmode.prefercapital" preferredtarget="$LOSEngines.random"/>
+      </do_elseif>
+      <do_else>
+        <debug_text text="'ChillTurrets: %s: no LTurrets or Engines found or in sight so attacking other capital submods. %s possible targets on radar.'.[this.assignedcontrolled.knownname,$targets_capital.count]" chance="0"/>
+        <set_turret_targets object="this.ship" target="$targets_capital.list" weaponmode="weaponmode.prefercapital" preferredtarget="$locpreferred.parent"/>
+      </do_else>
+    </do_if>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <do_elseif value="not $launcherpresent and @global.$ChillTurretsPotShots == true">
+      <debug_text text="'ChillTurrets: %s: L Turrets: large target detected but too far away to attack, so take pot shots at small bois if they get in range: watching %s fighter targets on radar to get in range.'.[this.assignedcontrolled.knownname,$targets_fighters.count]" chance="$debugchance"/>
+      <sort_group group="$targets_fighters" sortbydistanceto="this.ship" sortdescending="false"/>
+      <set_turret_targets object="this.ship" target="$targets_fighters.list" weaponmode="weaponmode.prefercapital" preferredtarget="@$targets_fighters.{1}"/>
+    </do_elseif>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <remove_value name="$LTurrets"/>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$targets_capital.count and $turretmodes.indexof.{weaponmode.prefercapital}']">
+    <remove_value name="$LEngines"/>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/comment()[3]" pos="before">
+    <!-- no capitals at all -->
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/comment()[4]" pos="before">
+    <do_elseif value="not $targets_capital.count and $targets_fighters.count and $turretmodes.indexof.{weaponmode.prefercapital} and not @$launcherpresent and @global.$ChillTurretsPotShots == true">
+      <debug_text text="'ChillTurrets: L Turrets: no large targets on radar, so take pot shots at small bois if they get in range. Watching %s fighters on radar to get in range.'.[$targets_fighters.count]" chance="$debugchance"/>
+      <sort_group group="$targets_fighters" sortbydistanceto="this.ship" sortdescending="false"/>
+      <set_turret_targets object="this.ship" target="$targets_fighters.list" weaponmode="weaponmode.prefercapital" preferredtarget="@$targets_fighters.{1}"/>
+    </do_elseif>
+  </add>
+  <remove sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/comment()[6]"/>
+  <replace sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$incomingmissiles.count and $turretmodes.indexof.{weaponmode.prefermissiles}']/debug_text">
+    <do_if value="not $locpreferred">
+      <sort_group group="$incomingmissiles" sortbydistanceto="this.ship" sortdescending="false"/>
+      <set_value name="$locpreferred" exact="$incomingmissiles.{1}"/>
+    </do_if>
+  </replace>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/do_if[@value='$incomingmissiles.count and $turretmodes.indexof.{weaponmode.prefermissiles}']/set_turret_targets" pos="before">
+    <debug_text text="'ChillTurrets: prefermissiles turrets tracking %s incoming missiles. LocPreferred: %s'.[$incomingmissiles.count,$locpreferred?]" chance="$debugchance"/>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/comment()[6]" pos="before">
+    <do_elseif value="$targets_fighters.count and $turretmodes.indexof.{weaponmode.prefermissiles}">
+      <sort_group group="$targets_fighters" sortbydistanceto="this.ship" sortdescending="false"/>
+      <debug_text text="'ChillTurrets: prefermissiles turrets tracking %s fighters.'.[$targets_fighters.count]" chance="$debugchance"/>
+      <set_turret_targets object="this.ship" target="$targets_fighters.list" weaponmode="weaponmode.prefermissiles" preferredtarget="@$targets_fighters.{1}"/>
+    </do_elseif>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/comment()[6]" pos="before">
+    <do_elseif value="$mines.count and $turretmodes.indexof.{weaponmode.prefermissiles}">
+      <sort_group group="$mines" sortbydistanceto="this.ship" sortdescending="false"/>
+      <debug_text text="'ChillTurrets: prefermissiles turrets tracking %s mines.'.[$mines.count]" chance="$debugchance"/>
+      <set_turret_targets object="this.ship" target="$mines.list" weaponmode="weaponmode.prefermissiles" preferredtarget="@$mines.{1}"/>
+    </do_elseif>
+  </add>
+  <add sel="/aiscript/attention[@min='visible']/actions/do_if[@value='this.ship.pilot and (@$targets.count or $dronetargets.count or ($miningtargets.count and this.ship == player.occupiedship) or @$incomingmissiles.count or @$mines.count)']/do_else/comment()[6]" pos="before">
+    <do_elseif value="$turretmodes.indexof.{weaponmode.prefermissiles}">
+      <debug_text text="'ChillTurrets: prefermissiles tracking any target. Preferred: %s'.[$targets.count,$targets.{1}.knownname]" chance="$debugchance"/>
+      <sort_group group="$targets" sortbydistanceto="this.ship" sortdescending="false"/>
+      <set_turret_targets object="this.ship" target="$targets.list" weaponmode="weaponmode.prefermissiles" preferredtarget="@$targets.{1}.parent"/>
+    </do_elseif>
+  </add>
+  <replace sel="/aiscript/attention[@min='unknown']/actions/do_if[@value='$turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies) or @$primarytarget.canbeattacked or @$targets.count']/@value">$turretmodes.indexof.{weaponmode.prefermissiles} or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies) or @$primarytarget.canbeattacked or @$targets.count</replace>
+  <replace sel="/aiscript/attention[@min='unknown']/actions/do_if[@value='@$allowothertargets or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones)']/@value">@$allowothertargets or $turretmodes.indexof.{weaponmode.prefermissiles} or $turretmodes.indexof.{weaponmode.attackenemies} or $turretmodes.indexof.{weaponmode.prefercapital} or $turretmodes.indexof.{weaponmode.preferfighters} or ($defencedronemode == dronemode.attackenemies and this.assignedcontrolled.hasarmeddefencedrones)</replace>
+</diff>

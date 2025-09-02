@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<content name="Fly-by Looting" id="ws_1683358279" author="Assailer" version="111" date="2020-04-09" save="0" enabled="1" description="Fly-by Looting&#13;&#10;Version 1.11&#13;&#10;&#13;&#10;There is no known compatibility issue with any other mods, also uninstalling shall not affect your save games." sync="false" lastupdate="1586440720">
+  <text language="44" name="Fly-by Looting" description="Fly-by Looting"/>
+  <text language="49" name="Fly-by Looting" description="Ausserhalb von Highways wird der Inhalt von Containern innerhalb 10km Reichweite automatisch komplett geborgen.\n Keine Probleme mit Savegames oder zu anderen MODs bekannt."/>
+</content>

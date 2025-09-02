@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<language>
+	<page id="8008577" title="Chill Turrets T Files" descr="No idea why this exists" voice="no">
+		<t id="100">Chill Turrets Installed. Set all Large to Attack Capitals and Mediums to Missile Defence or see Extension Option</t>
+		<t id="101">Chill Turrets Settings</t>
+		<t id="102">Attack Capitals also target fighters</t>
+		<t id="103">Large turrets take potshots at fighters if no other suitable targets</t>
+		<t id="104">Automatically Set Player Turret Modes</t>
+		<t id="105">All ships will immediately be set to this mods preference and all future built ships as well.</t>
+		<t id="106"></t>
+		<t id="107"></t>
+		<t id="138">Enabled</t>
+		<t id="139">Disabled</t>
+	</page>
+</language>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content id="ws_3500896293" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE" version="101" date="2025-08-01" save="false" enabled="1" sync="false" lastupdate="1754033768">
+  <!-- Английский (0) -->
+  <text language="0" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Русский (7) -->
+  <text language="7" name="Исправление камеры" description="Данный мод фиксирует камеру на кораблях классов L и XL, предотвращая её нежелательное перемещение." author="CODE"/>
+  <!-- Французский (33) -->
+  <text language="33" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Испанский (34) -->
+  <text language="34" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Итальянский (39) -->
+  <text language="39" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Английский UK (44) -->
+  <text language="44" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Немецкий (49) -->
+  <text language="49" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Польский (48) -->
+  <text language="48" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Португальский (55) -->
+  <text language="55" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Китайский упрощенный (86) -->
+  <text language="86" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Китайский традиционный (88) -->
+  <text language="88" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Японский (81) -->
+  <text language="81" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <!-- Корейский (82) -->
+  <text language="82" name="Camera fix" description="This mod fixes the camera on L and XL class ships, preventing unwanted movement." author="CODE"/>
+  <dependency version="100"/>
+  <!-- Опциональные DLC -->
+  <dependencies>
+    <dependency id="ego_dlc_split" version="100" optional="true"/>
+    <dependency id="ego_dlc_terran" version="100" optional="true"/>
+    <dependency id="ego_dlc_pirate" version="100" optional="true"/>
+    <dependency id="ego_dlc_boron" version="100" optional="true"/>
+    <dependency id="ego_dlc_timelines" version="100" optional="true"/>
+  </dependencies>
+</content>

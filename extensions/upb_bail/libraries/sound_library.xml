@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diff>
+    <add sel="/soundlibrary">
+      <sound id="notification_bail_created" description="sound bail" repeat="1" is3d="1" preload="0" tag="notification_bail_created_eventm">
+        <sample start="extensions\upb_bail\sfx\1009"/>
+        <volume start="0.7" distance="0.1"/>
+      </sound>
+
+      <sound id="bail_click" description="sound click" repeat="1" is3d="1" preload="0" tag="bail_click_eventm">
+        <sample start="extensions\upb_bail\sfx\kblip"/>
+        <volume start="0.3" distance="0.01"/>
+      </sound>
+    </add>
+</diff>

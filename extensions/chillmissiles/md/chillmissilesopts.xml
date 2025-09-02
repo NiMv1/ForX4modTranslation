@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="ChillMissilesOpts" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+    <cues>
+        <cue name="Init">
+			<conditions>
+				<event_universe_generated/>
+			</conditions>
+			<actions>
+                <set_value name="$ChillDebug" exact="0" />
+				<do_if value="not global.$ChillMissilesDelay?">
+					<set_value name="global.$ChillMissilesDelay" exact="0" />
+                    <debug_text text="'ChillMissiles: initial variables loaded.'" filter="scripts" chance="$ChillDebug" />
+				</do_if>
+                <show_help color="[179,102,255,255]" duration="10s" halign="'center'" position="1" custom="'Replenish Missiles Mod Installed. Default refresh is 0 seconds.'" allowclose="true" />
+			</actions>
+		</cue>
+        <cue name="CinOptsInit" instantiate="false">
+            <cues>
+                <cue name="CinRegisterOpts" instantiate="true">
+                    <conditions>
+                        <event_cue_signalled cue="md.Simple_Menu_API.Reloaded" />
+                    </conditions>
+                    <actions>
+                        <signal_cue_instantly
+                            cue="md.Simple_Menu_API.Register_Options_Menu"
+                            param="table[
+                    $id = 'ChillMissilesOptions',
+                    $columns = 3, 
+                    $title = 'Replenish Missiles Settings',
+                    $onOpen = MissileOptsMenu
+                    ]" />
+                    </actions>
+                </cue>
+                <cue name="MissileOptsMenu" instantiate="true">
+                    <conditions>
+                        <event_cue_signalled />
+                    </conditions>
+                    <actions>
+                        <signal_cue_instantly cue="md.Simple_Menu_API.Add_Row" />
+                        <signal_cue_instantly cue="md.Simple_Menu_API.Make_Text"
+                            param="table[
+								$col = 1,
+								$colSpan = 1,
+								$text = 'Missile Refresh Delay',
+							]" />
+                            <signal_cue_instantly cue="md.Simple_Menu_API.Make_Slider" 
+                            param="table[
+                                $col = 2,
+                                $colSpan=2,
+                                $start = if global.$ChillMissilesDelay != null then global.$ChillMissilesDelay else 0 ,
+                                $suffix = 'Seconds',
+                                $min = 0,
+                                $max = 60,
+                                $step = 1,
+                                $onSliderCellConfirm = MissileDelayConfirm,
+                            ]" />
+                    </actions>
+                </cue>
+                <cue name="MissileDelayConfirm" instantiate="true">
+                    <conditions><event_cue_signalled /></conditions>
+                    <actions>
+                        <set_value name="global.$ChillMissilesDelay" exact="event.param.$value" />
+                    </actions>
+                </cue>
+            </cues>
+        </cue>
+    </cues>
+</mdscript>

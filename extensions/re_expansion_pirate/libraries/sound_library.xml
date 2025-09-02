@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diff>
+  <add sel="//soundlibrary">
+	<sound id="19530201_normal" description="Pirate Audio" repeat="1" is3d="1" preload="0">
+	  <sample start="extensions\re_expansion_pirate\voice\19530201\normal"/>
+	  <effects>
+		<reverb room="sewer pipe" roomsize="10" drymix="5" density="90"/>
+	  </effects>			
+	</sound>
+		
+	<!--INCENDIARY BOMB LAUNCHER-->
+	<sound id="turret_ibl_shoot" description="IBL SHOOTING" repeat="1" is3d="1" preload="0">
+	  <sample selection="random">
+		<select start="extensions\re_expansion_pirate\sfx\weapons\ibl1" />
+		<select start="extensions\re_expansion_pirate\sfx\weapons\ibl2" />	
+		<select start="extensions\re_expansion_pirate\sfx\weapons\ibl3" />
+		<select start="extensions\re_expansion_pirate\sfx\weapons\ibl4" />	
+		<select start="extensions\re_expansion_pirate\sfx\weapons\ibl5" />
+		<select start="extensions\re_expansion_pirate\sfx\weapons\ibl6" />			
+	  </sample>
+	  <volume start="2" distance="15" />
+	</sound>	
+
+	<!--INCENDIARY BOMB LAUNCHER-->
+	<sound id="weapon_ibm_shoot" description="IBM SHOOTING" repeat="1" is3d="1" preload="0">
+	  <sample selection="random">
+		<select start="extensions\re_expansion_pirate\sfx\weapons\ibm1" />
+		<select start="extensions\re_expansion_pirate\sfx\weapons\ibm2" />		
+	  </sample>
+	  <volume start="2" distance="15" />
+	</sound>	
+  </add>
+</diff>

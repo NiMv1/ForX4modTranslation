@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<macros xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <macro name="shiptest_gen_cluster00_macro" class="cluster">
+    <component ref="standardcluster" />
+    <connections>
+      <connection name="shiptest_gen_sector00_cluster00_connection" ref="sectors">
+        <offset>
+          <position x="0" y="0" z="0" />
+        </offset>
+        <macro ref="shiptest_gen_sector00_cluster00_macro" connection="cluster" />
+      </connection>
+      <connection ref="content">
+        <macro>
+          <component connection="space" ref="Cluster_35" />
+        </macro>
+      </connection>
+    </connections>
+  </macro>
+</macros>
