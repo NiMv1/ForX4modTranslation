@@ -43,6 +43,13 @@ if (-not (Test-Path $RepoExtensions)) {
   exit 1
 }
 
+# Диагностика параметров
+try {
+  $modsDbg = if ($Mods) { $Mods } else { @() }
+  $modsDbgStr = if ($modsDbg.Count -gt 0) { $modsDbg -join ', ' } else { '<none>' }
+  Write-Log ("Params: ModsCount=" + $modsDbg.Count + ", Mods=" + $modsDbgStr + ", AutoOnly=" + [bool]$AutoOnly + ", Validate=" + [bool]$Validate + ", BackupExisting=" + [bool]$BackupExisting + ", Force=" + [bool]$Force + ", DryRun=" + [bool]$DryRun)
+} catch {}
+
 if (-not (Test-Path $GameExtensionsPath)) {
   if ($DryRun) {
     Write-Host "[DRY] Создал бы папку игры: $GameExtensionsPath"
@@ -59,11 +66,19 @@ if (-not (Test-IsAdmin)) {
 
 function Get-TargetMods {
   param([string[]]$Filter)
-  $dirs = Get-ChildItem -Path $RepoExtensions -Directory | ForEach-Object { $_.Name }
-  if ($Filter -and $Filter.Count -gt 0) {
-    return $dirs | Where-Object { $Filter -contains $_ }
+  try {
+    $dirs = Get-ChildItem -Path $RepoExtensions -Directory | ForEach-Object { $_.Name }
+    Write-Log ("Get-TargetMods: raw dirs count=" + ($dirs.Count))
+    if ($Filter -and $Filter.Count -gt 0) {
+      $filtered = $dirs | Where-Object { $Filter -contains $_ }
+      Write-Log ("Get-TargetMods: filtered by Mods count=" + ($filtered.Count))
+      return $filtered
+    }
+    return $dirs
+  } catch {
+    Write-Log ("Get-TargetMods: exception: " + $_.Exception.Message)
+    return @()
   }
-  return $dirs
 }
 
 function Test-RuAuto {

@@ -65,11 +65,15 @@ function Invoke-FileDownload {
 # Определяем URL ZIP-архива
 function Get-ZipUrl {
   param([string]$Url, [string]$Ref)
-  if ($Url.ToLower().EndsWith('.zip')) { return $Url }
+  $stamp = [DateTime]::UtcNow.ToString('yyyyMMddHHmmss')
+  if ($Url.ToLower().EndsWith('.zip')) {
+    if ($Url -match '\\?') { return "$Url&cb=$stamp" }
+    else { return "$Url?cb=$stamp" }
+  }
   if ($Url -match 'https?://github.com/.+?/.+?($|\s|/?)') {
     # Преобразуем ссылку на репозиторий GitHub в ссылку на ZIP нужной ветки/тэга
     $clean = $Url.TrimEnd('/')
-    return "$clean/archive/refs/heads/$Ref.zip"
+    return "$clean/archive/refs/heads/$Ref.zip?cb=$stamp"
   }
   throw "Неизвестный формат RepoUrl. Укажите прямую ссылку на .zip или GitHub-репозиторий."
 }
