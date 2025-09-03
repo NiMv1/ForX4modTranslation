@@ -168,7 +168,16 @@ function Uninstall-Mod {
 }
 
 $modsToProcess = Get-TargetMods -Filter $Mods
+Write-Log ("RepoRoot: " + $RepoRoot)
+Write-Log ("RepoExtensions: " + $RepoExtensions)
+Write-Log ("Found mods count: " + ($modsToProcess.Count))
+if ($modsToProcess.Count -gt 0) { Write-Log ("Found mods: " + ($modsToProcess -join ', ')) }
 if (-not $modsToProcess -or $modsToProcess.Count -eq 0) {
+  # Дополнительно выведем содержимое каталога для диагностики
+  try {
+    $dirsDbg = (Get-ChildItem -Path $RepoExtensions -Directory | ForEach-Object { $_.Name })
+    Write-Log ("Extensions dir listing: " + ($dirsDbg -join ', '))
+  } catch {}
   Write-Host 'Нет модов для обработки.'
   exit 0
 }
