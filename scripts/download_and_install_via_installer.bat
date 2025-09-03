@@ -22,8 +22,14 @@ REM Важно: не передавать внешние аргументы (%*)
 set ERR=%ERRORLEVEL%
 if %ERR% NEQ 0 (
   echo Finished with error code %ERR%. See log: "%LOG%"
+  echo.
+  echo Установка завершена с ошибкой. Чтобы выйти, нажмите ПРОБЕЛ.
+  powershell -NoProfile -Command "do{$k=$Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')}while($k.Character -ne ' ')" 1>nul 2>nul
   exit /b %ERR%
 )
 
 echo Done. See log: "%LOG%"
+echo.
+echo Установка завершена. Чтобы выйти, нажмите ПРОБЕЛ.
+powershell -NoProfile -Command "do{$k=$Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')}while($k.Character -ne ' ')" 1>nul 2>nul
 endlocal & exit /b 0
