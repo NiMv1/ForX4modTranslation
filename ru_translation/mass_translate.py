@@ -219,7 +219,7 @@ def ensure_ru_language_node(content_node: ET.Element) -> ET.Element:
     return ru_lang_node
 
 
-def process_mod(mod_dir: Path, *, force: bool, only_missing: bool, no_mark: bool, dry_run: bool, do_backup: bool) -> bool:
+def process_mod(mod_dir: Path, *, force: bool, only_missing: bool, no_mark: bool, dry_run: bool, do_backup: bool, cleanup_only: bool) -> bool:
     cx = mod_dir / 'content.xml'
     if not cx.exists():
         return False
@@ -234,21 +234,58 @@ def process_mod(mod_dir: Path, *, force: bool, only_missing: bool, no_mark: bool
 
     t_ru = content.find('.//text[@language="7"]')
     l_ru = content.find('.//language[@language="7"]')
-    name_ru_curr = (t_ru.get('name') if t_ru is not None else '') or (content.get('name') or '')
-    desc_ru_curr = (
-        (t_ru.get('description') if t_ru is not None else '')
-        or (l_ru.get('description') if l_ru is not None else '')
-        or (content.get('description') or '')
-    )
+    name_ru_curr = (t_ru.get('name') if t_ru is not None else None) or content.get('name')
+    desc_ru_curr = (t_ru.get('description') if t_ru is not None else None) or content.get('description')
     if MARKER in name_ru_curr:
         name_ru_curr = name_ru_curr.replace(MARKER, '').strip()
     if MARKER in desc_ru_curr:
         desc_ru_curr = desc_ru_curr.replace(MARKER, '').strip()
 
     # Если и имя, и описание уже нормальные RU без меток и не плейсхолдеры —
-    # не меняем тексты, но помечаем ru_auto="1" при отсутствии атрибута.
+    # не меняем тексты, но помечаем ru_auto="1"
     name_ok = bool(name_ru_curr) and has_cyrillic(name_ru_curr) and (MARKER not in name_ru_curr)
     desc_ok = bool(desc_ru_curr) and has_cyrillic(desc_ru_curr) and (MARKER not in desc_ru_curr) and (not is_placeholder(desc_ru_curr))
+
+    # Режим чистки: только удалить маркеры из уже существующих RU, ничего не синтезировать
+    if cleanup_only:
+        changed = False
+        # Узлы
+        tnode = ensure_ru_text_node(content)
+        lnode = ensure_ru_language_node(content)
+        # content attrs
+        for attr in ('name', 'description'):
+            old = content.get(attr) or ''
+            new = strip_markers(old) if old else old
+            if new != old and new is not None:
+                content.set(attr, new)
+                changed = True
+        # text node attrs
+        for attr in ('name', 'description'):
+            old = (tnode.get(attr) or '')
+            new = strip_markers(old) if old else old
+            if new != old and new is not None:
+                tnode.set(attr, new)
+                changed = True
+        # language node desc
+        old = (lnode.get('description') or '')
+        new = strip_markers(old) if old else old
+        if new != old and new is not None:
+            lnode.set('description', new)
+            changed = True
+        if changed and (not no_mark) and content.get('ru_auto') != '1':
+            content.set('ru_auto', '1')
+        if changed:
+            if dry_run:
+                return False
+            if do_backup:
+                ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+                backup_path = cx.with_suffix(f'.xml.bak_{ts}')
+                try:
+                    shutil.copy2(cx, backup_path)
+                except Exception:
+                    pass
+            tree.write(cx, encoding='utf-8', xml_declaration=True)
+        return changed
 
     # Собираем EN
     en_name, en_desc = collect_en(content)
@@ -337,6 +374,7 @@ def parse_args():
     ap.add_argument('--only-missing', action='store_true', help='Трогать только те, где RU отсутствует/плейсхолдер/с метками')
     ap.add_argument('--no-mark', action='store_true', help='Не проставлять атрибут ru_auto')
     ap.add_argument('--backup', action='store_true', help='Перед записью создать бэкап content.xml')
+    ap.add_argument('--cleanup-only', action='store_true', help='Только удалить метки [ТРЕБУЕТ ПЕРЕВОД] из существующих RU-полей, без генерации')
     return ap.parse_args()
 
 
@@ -354,7 +392,7 @@ def main():
             continue
         total += 1
         try:
-            if process_mod(mod, force=args.force, only_missing=args.only_missing, no_mark=args.no_mark, dry_run=args.dry_run, do_backup=args.backup):
+            if process_mod(mod, force=args.force, only_missing=args.only_missing, no_mark=args.no_mark, dry_run=args.dry_run, do_backup=args.backup, cleanup_only=args.cleanup_only):
                 changed += 1
                 print(f"✔ Переведён: {mod.name}")
         except Exception as e:
