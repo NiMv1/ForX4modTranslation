@@ -19,7 +19,7 @@ REM ==================================
 
 if errorlevel 1 (
   echo.
-  echo [Ошибка] Установка завершилась с ошибкой. Попробуйте запустить от имени администратора.
+  echo Error: Installation failed. Try running as Administrator.
   echo.
   echo Установка завершена с ошибкой. Чтобы выйти, нажмите ПРОБЕЛ.
   powershell -NoProfile -Command "do{$k=$Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')}while($k.Character -ne ' ')" 1>nul 2>nul
@@ -27,8 +27,8 @@ if errorlevel 1 (
 )
 
 echo.
-echo Готово. Бэкапы (если были) сохранены в _backup_forx4translation в папке extensions игры.
+echo Done. Backups (if any) are saved in _backup_forx4translation under the game's extensions folder.
 echo.
-echo Установка завершена. Чтобы выйти, нажмите ПРОБЕЛ.
+echo Setup finished. Press SPACE to exit.
 powershell -NoProfile -Command "do{$k=$Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown')}while($k.Character -ne ' ')" 1>nul 2>nul
 endlocal
