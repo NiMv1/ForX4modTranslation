@@ -65,15 +65,11 @@ function Invoke-FileDownload {
 # Определяем URL ZIP-архива
 function Get-ZipUrl {
   param([string]$Url, [string]$Ref)
-  $stamp = [DateTime]::UtcNow.ToString('yyyyMMddHHmmss')
-  if ($Url.ToLower().EndsWith('.zip')) {
-    if ($Url -match '\\?') { return "$Url&cb=$stamp" }
-    else { return "$Url?cb=$stamp" }
-  }
+  if ($Url -match '\.zip(\?|$)') { return $Url }
   if ($Url -match 'https?://github.com/.+?/.+?($|\s|/?)') {
     # Преобразуем ссылку на репозиторий GitHub в ссылку на ZIP нужной ветки/тэга
     $clean = $Url.TrimEnd('/')
-    return "$clean/archive/refs/heads/$Ref.zip?cb=$stamp"
+    return "$clean/archive/refs/heads/$Ref.zip"
   }
   throw "Неизвестный формат RepoUrl. Укажите прямую ссылку на .zip или GitHub-репозиторий."
 }
@@ -163,17 +159,20 @@ try {
   Write-Host "==> Запуск установщика перевода"
   Write-Progress -Activity 'Установка модов' -Status 'Запуск установщика' -PercentComplete 10
 
-  $args = @('-ExecutionPolicy','Bypass','-File', $installer, '-Action','install', '-GameExtensionsPath', $GameExtensionsPath)
-  if ($AutoOnly)       { $args += '-AutoOnly' }
-  if ($Validate)       { $args += '-Validate' }
-  if ($BackupExisting) { $args += '-BackupExisting' }
-  if ($Force)          { $args += '-Force' }
-  if ($DryRun)         { $args += '-DryRun' }
-  if ($LogPath)        { $args += @('-LogPath', $LogPath) }
+  # Собираем аргументы Powershell.exe, корректно цитируя пути с пробелами
+  $quotedInstaller = '"' + $installer + '"'
+  $quotedGameExt   = '"' + $GameExtensionsPath + '"'
+  $psArgs = @('-NoProfile','-ExecutionPolicy','Bypass','-File', $quotedInstaller, '-Action','install', '-GameExtensionsPath', $quotedGameExt)
+  if ($AutoOnly)       { $psArgs += '-AutoOnly' }
+  if ($Validate)       { $psArgs += '-Validate' }
+  if ($BackupExisting) { $psArgs += '-BackupExisting' }
+  if ($Force)          { $psArgs += '-Force' }
+  if ($DryRun)         { $psArgs += '-DryRun' }
+  if ($LogPath)        { $psArgs += @('-LogPath', ('"' + $LogPath + '"')) }
 
-  Write-Host ("powershell " + ($args -join ' '))
+  Write-Host ("powershell " + ($psArgs -join ' '))
   if (-not $DryRun) {
-    $p = Start-Process -FilePath 'powershell' -ArgumentList $args -NoNewWindow -Wait -PassThru
+    $p = Start-Process -FilePath 'powershell' -ArgumentList $psArgs -NoNewWindow -Wait -PassThru
     Write-Progress -Activity 'Установка модов' -Status 'Применение файлов...' -PercentComplete 60
     if ($p.ExitCode -ne 0) { Write-Progress -Activity 'Установка модов' -Completed; throw "Установщик завершился с кодом $($p.ExitCode)" }
   }

@@ -5,7 +5,7 @@ REM Download repo ZIP and run installer (NOT OnlyExtensionsCopy)
 set "PS=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
 
 REM ===== DEFAULT SETTINGS =====
-set "REPO_URL=https://github.com/NiMv1/ForX4modTranslation/archive/refs/heads/main.zip"
+set "REPO_URL=https://github.com/NiMv1/ForX4modTranslation/archive/refs/heads/main.zip?cb=%RANDOM%"
 set "REF=main"
 set "LOG=%~dp0download_and_install_via_installer.log"
 REM ============================
@@ -16,7 +16,8 @@ echo Starting download and install via installer... > "%LOG%"
   -Ref "%REF%" ^
   -GameExtensionsPath "C:\Program Files (x86)\Steam\steamapps\common\X4 Foundations\extensions" ^
   -Validate -BackupExisting -Force ^
-  -LogPath "%LOG%" %*
+  -LogPath "%LOG%"
+REM Важно: не передавать внешние аргументы (%*) во избежание случайной фильтрации -Mods
 
 set ERR=%ERRORLEVEL%
 if %ERR% NEQ 0 (
