@@ -43,6 +43,8 @@ extensions/**/*.ogg
 **/*.bak*
 **/~$*
 **/*.tmp
+*.log
+scripts/*.log
 
 # Do track XML and content files
 !extensions/**/*.xml

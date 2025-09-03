@@ -10,8 +10,12 @@ python .\ru_translation\fix_english_content.py
 Write-Host "==> Проверка полноты перевода"
 python .\ru_translation\check_translation_completeness.py
 
-Write-Host "==> Сканирование ReadText по всем XML"
-python .\ru_translation\scan_readtext.py
+if ($env:SKIP_SCAN_READTEXT -ne '1') {
+  Write-Host "==> Сканирование ReadText по всем XML"
+  python .\ru_translation\scan_readtext.py
+} else {
+  Write-Host "==> Пропуск сканирования ReadText (SKIP_SCAN_READTEXT=1)"
+}
 
 Write-Host "==> Валидация t-файлов (наличие RU и покрытие ReadText)"
 python .\ru_translation\t_validator.py

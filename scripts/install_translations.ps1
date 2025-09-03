@@ -4,7 +4,11 @@ param(
   [string]$GameExtensionsPath = 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\X4 Foundations\\extensions',
   [string[]]$Mods,
   [switch]$Force,
-  [switch]$DryRun
+  [switch]$DryRun,
+  [switch]$AutoOnly,
+  [switch]$Validate,
+  [switch]$BackupExisting,
+  [string]$LogPath
 )
 
 $ErrorActionPreference = 'Stop'
@@ -23,6 +27,17 @@ $RepoExtensions = Join-Path $RepoRoot 'extensions'
 $ManifestPath = Join-Path $GameExtensionsPath '.forx4translation_manifest.json'
 $MarkerName = '.installed_by_forx4_translation'
 
+if ($LogPath) {
+  try {
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $LogPath) | Out-Null
+  } catch {}
+}
+
+function Write-Log {
+  param([string]$msg)
+  if ($LogPath) { $msg | Out-File -FilePath $LogPath -Append -Encoding UTF8 }
+}
+
 if (-not (Test-Path $RepoExtensions)) {
   Write-Error "Не найдена папка с модами: $RepoExtensions"
   exit 1
@@ -31,8 +46,10 @@ if (-not (Test-Path $RepoExtensions)) {
 if (-not (Test-Path $GameExtensionsPath)) {
   if ($DryRun) {
     Write-Host "[DRY] Создал бы папку игры: $GameExtensionsPath"
+    Write-Log  "[DRY] mkdir $GameExtensionsPath"
   } else {
     New-Item -ItemType Directory -Path $GameExtensionsPath -Force | Out-Null
+    Write-Log  "mkdir $GameExtensionsPath"
   }
 }
 
@@ -47,6 +64,33 @@ function Get-TargetMods {
     return $dirs | Where-Object { $Filter -contains $_ }
   }
   return $dirs
+}
+
+function Test-RuAuto {
+  param([string]$ModName)
+  $cx = Join-Path (Join-Path $RepoExtensions $ModName) 'content.xml'
+  if (-not (Test-Path $cx)) { return $false }
+  try {
+    [xml]$doc = Get-Content $cx -Raw -Encoding UTF8
+    $node = $doc.SelectSingleNode('//content')
+    if ($node -and $node.ru_auto -eq '1') { return $true }
+  } catch {}
+  return $false
+}
+
+function Test-ContentXml {
+  param([string]$ModName)
+  if (-not $Validate) { return $true }
+  $cx = Join-Path (Join-Path $RepoExtensions $ModName) 'content.xml'
+  if (-not (Test-Path $cx)) { Write-Host "Внимание: нет content.xml у $ModName"; return $false }
+  try {
+    [xml]$doc = Get-Content $cx -Raw -Encoding UTF8
+    $node = $doc.SelectSingleNode('//content')
+    return [bool]$node
+  } catch {
+    Write-Host "Внимание: невалидный content.xml у ${ModName}: $($_.Exception.Message)"
+    return $false
+  }
 }
 
 function Read-Manifest {
@@ -71,24 +115,41 @@ function Install-Mod {
   $src = Join-Path $RepoExtensions $ModName
   $dst = Join-Path $GameExtensionsPath $ModName
   if (-not (Test-Path $src)) { Write-Warning "Пропуск: нет исходника $src"; return $false }
+  if ($AutoOnly -and -not (Test-RuAuto -ModName $ModName)) {
+    Write-Host "Пропуск: $ModName без ru_auto=1 (AutoOnly)"; Write-Log "skip AutoOnly $ModName"; return $false
+  }
+  if (-not (Test-ContentXml -ModName $ModName)) {
+    Write-Host "Пропуск: $ModName не прошёл валидацию content.xml"; Write-Log "skip invalid $ModName"; return $false
+  }
 
   if (Test-Path $dst) {
     if ($Force) {
-      if ($DryRun) { Write-Host "[DRY] Удалил бы существующую папку: $dst" }
-      else { Remove-Item -Recurse -Force -Path $dst }
+      if ($BackupExisting) {
+        $bkRoot = Join-Path $GameExtensionsPath '_backup_forx4translation'
+        $ts = Get-Date -Format 'yyyyMMdd_HHmmss'
+        $bkDir = Join-Path $bkRoot ("$ModName`_$ts")
+        if ($DryRun) { Write-Host "[DRY] Бэкап $dst -> $bkDir"; Write-Log "[DRY] backup $dst -> $bkDir" }
+        else {
+          New-Item -ItemType Directory -Force -Path $bkDir | Out-Null
+          Copy-Item -Recurse -Force -Path $dst -Destination $bkDir
+          Write-Log "backup $dst -> $bkDir"
+        }
+      }
+      if ($DryRun) { Write-Host "[DRY] Удалил бы существующую папку: $dst"; Write-Log "[DRY] remove $dst" }
+      else { Remove-Item -Recurse -Force -Path $dst; Write-Log "remove $dst" }
     } else {
       Write-Host "Существует: $dst (используйте -Force для перезаписи)"
       return $false
     }
   }
-  if ($DryRun) { Write-Host "[DRY] Скопировал бы $src -> $dst" }
-  else { Copy-Item -Recurse -Force -Path $src -Destination $dst }
+  if ($DryRun) { Write-Host "[DRY] Скопировал бы $src -> $dst"; Write-Log "[DRY] copy $src -> $dst" }
+  else { Copy-Item -Recurse -Force -Path $src -Destination $dst; Write-Log "copy $src -> $dst" }
 
   # Маркер
   $marker = Join-Path $dst $MarkerName
   $markerContent = "installed: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`nsource: $src"
-  if ($DryRun) { Write-Host "[DRY] Создал бы маркер: $marker" }
-  else { $markerContent | Out-File -FilePath $marker -Encoding UTF8 }
+  if ($DryRun) { Write-Host "[DRY] Создал бы маркер: $marker"; Write-Log "[DRY] marker $marker" }
+  else { $markerContent | Out-File -FilePath $marker -Encoding UTF8; Write-Log "marker $marker" }
   return $true
 }
 
@@ -101,8 +162,8 @@ function Uninstall-Mod {
     Write-Host "Пропуск: $ModName не помечен как установленный этим скриптом (используйте -Force для удаления)"
     return $false
   }
-  if ($DryRun) { Write-Host "[DRY] Удалил бы папку: $dst" }
-  else { Remove-Item -Recurse -Force -Path $dst }
+  if ($DryRun) { Write-Host "[DRY] Удалил бы папку: $dst"; Write-Log "[DRY] remove $dst" }
+  else { Remove-Item -Recurse -Force -Path $dst; Write-Log "remove $dst" }
   return $true
 }
 
@@ -126,6 +187,7 @@ switch ($Action) {
       Write-Manifest -obj $manifest
     }
     Write-Host "Готово: установлено $($installed.Count)."
+    Write-Log  "installed: $($installed -join ', ')"
   }
   'uninstall' {
     # Если фильтр не задан — берём из манифеста
@@ -138,5 +200,6 @@ switch ($Action) {
       Write-Manifest -obj $manifest
     }
     Write-Host "Готово: удалено $($removed.Count)."
+    Write-Log  "removed: $($removed -join ', ')"
   }
 }
